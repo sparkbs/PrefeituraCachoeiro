@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "PrefeituraCachoeiro.Compartilhado/1.0.0": {
+        "runtime": {
+          "PrefeituraCachoeiro.Compartilhado.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "PrefeituraCachoeiro.Compartilhado/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

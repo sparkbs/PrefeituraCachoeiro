@@ -1,0 +1,292 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PrefeituraCachoeiro.Api</name>
+    </assembly>
+    <members>
+        <member name="T:PrefeituraCachoeiro.Api.Controllers.ContratosController">
+            <summary>
+            Controller responsável pelo gerenciamento dos contratos
+            </summary>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.ContratosController.#ctor(PrefeituraCachoeiro.Aplicacao.Interfaces.IContratosService)">
+            <summary>
+            Construtor parametrizado
+            </summary>
+            <param name="contratosService">Instância de IContratosService</param>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.ContratosController.BuscarPorIdAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retorna um contrato pelo identificador
+            </summary>
+            <response code="200">Retorna um contrato pelo identificador</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.ContratosController.BuscarTodosAsync(PrefeituraCachoeiro.Dados.Filtros.ContratosFilter,System.Threading.CancellationToken)">
+            <summary>
+            Retorna todos os contratos de acordo com os parâmetros de pesquisa
+            </summary>
+            <response code="200">Retorna uma lista de contratos</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.ContratosController.InserirAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.CriarContratoRequest,System.Threading.CancellationToken)">
+            <summary>
+            Cria um novo contrato
+            </summary>
+            <response code="200">Retorna id do contrato criado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.ContratosController.AtualizarAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.AtualizarContratosRequest,System.Threading.CancellationToken)">
+            <summary>
+            Atualiza um contrato.
+            </summary>
+            <response code="200">Retorna id do contrato atualizado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="T:PrefeituraCachoeiro.Api.Controllers.GruposController">
+            <summary>
+            Controller responsável pelo gerenciamento dos grupos
+            </summary>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.GruposController.#ctor(PrefeituraCachoeiro.Aplicacao.Interfaces.IGruposService)">
+            <summary>
+            Construtor parametrizado
+            </summary>
+            <param name="gruposService">Instância de IGruposService</param>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.GruposController.BuscarPorIdAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retorna um grupo pelo identificador
+            </summary>
+            <response code="200">Retorna um grupo pelo identificador</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.GruposController.BuscarTodosAsync(PrefeituraCachoeiro.Dados.Filtros.GruposFilter,System.Threading.CancellationToken)">
+            <summary>
+            Retorna todos os grupos de acordo com os parâmetros de pesquisa
+            </summary>
+            <response code="200">Retorna uma lista de grupos</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.GruposController.InserirAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.CriarGrupoRequest,System.Threading.CancellationToken)">
+            <summary>
+            Cria um novo grupo
+            </summary>
+            <response code="200">Retorna id do grupo criado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.GruposController.AtualizarAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.AtualizarGrupoRequest,System.Threading.CancellationToken)">
+            <summary>
+            Atualiza um grupo.
+            </summary>
+            <response code="200">Retorna id do grupo atualizado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.GruposController.DeletarAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Deleta um grupo
+            </summary>
+            <response code="200">Retorna id do grupo deletado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="T:PrefeituraCachoeiro.Api.Controllers.LoginController">
+            <summary>
+            Controle responsável por realizar o login do usuário
+            </summary>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.LoginController.#ctor(PrefeituraCachoeiro.Aplicacao.Interfaces.ILoginService)">
+            <summary>
+            Construtor parametrizado
+            </summary>
+            <param name="loginService">Instância da classe ILoginService</param>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.LoginController.VerificarLoginAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.VerificarLoginRequest,System.Threading.CancellationToken)">
+            <summary>
+            Verificar se o login e senha informados são válidos
+            </summary>
+            <response code="200">Retorna um token de acesso</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="T:PrefeituraCachoeiro.Api.Controllers.PermissaoController">
+            <summary>
+            Controller responsável pelo gerenciamento de permissões de grupos
+            </summary>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.PermissaoController.#ctor(PrefeituraCachoeiro.Aplicacao.Interfaces.IPermissoesService)">
+            <summary>
+            Construtor parametrizado
+            </summary>
+            <param name="usuariosGruposService">Instância da classe IPermissoesService</param>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.PermissaoController.BuscarPermissoesPorGrupoIdAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.CriarBuscarPermissoesPorGrupoIdRequest,System.Threading.CancellationToken)">
+            <summary>
+            Retorna todas as permissões associadas ao grupo informado
+            </summary>
+            <response code="200">Retorna uma lista de tipos de permissões</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.PermissaoController.InserirAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.CriarPermissoesRequest,System.Threading.CancellationToken)">
+            <summary>
+            Associar a permissão ao grupo informado
+            </summary>
+            <response code="200">Retorna id da permissão criada</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.PermissaoController.DeletarAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.DeletarPermissaoRequest,System.Threading.CancellationToken)">
+            <summary>
+            Deleta uma permissão de um determinado grupo
+            </summary>
+            <response code="200">Retorna uma mensagem de erro</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="T:PrefeituraCachoeiro.Api.Controllers.ProjetoController">
+            <summary>
+            Construtor parametrizado
+            </summary>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.ProjetoController.#ctor(PrefeituraCachoeiro.Aplicacao.Interfaces.IProjetoService)">
+            <summary>
+            Construtor parametrizado
+            </summary>
+            <param name="projetoService">Instância da classe IProjetoService</param>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.ProjetoController.BuscarPorIdAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retorna um projeto pelo identificador
+            </summary>
+            <response code="200">Retorna um projeto pelo identificador</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.ProjetoController.BuscarTodosAsync(PrefeituraCachoeiro.Dados.Filtros.ProjetosFilter,System.Threading.CancellationToken)">
+            <summary>
+            Retorna todos os projetos de acordo com os parâmetros de pesquisa
+            </summary>
+            <response code="200">Retorna uma lista de projeto</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.ProjetoController.InserirAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.CriarProjetoRequest,System.Threading.CancellationToken)">
+            <summary>
+            Cria um novo projeto
+            </summary>
+            <response code="200">Retorna id do projeto criado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.ProjetoController.AtualizarAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.AtualizarProjetoRequest,System.Threading.CancellationToken)">
+            <summary>
+            Atualiza um projeto.
+            </summary>
+            <response code="200">Retorna id do projeto atualizado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.ProjetoController.DeletarAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Deleta um projeto
+            </summary>
+            <response code="200">Retorna id do projeto deletado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="T:PrefeituraCachoeiro.Api.Controllers.TiposPermissoesController">
+            <summary>
+            Controller responsável por listar os tipos de permissões
+            </summary>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.TiposPermissoesController.#ctor(PrefeituraCachoeiro.Aplicacao.Interfaces.ITiposPermissoesService)">
+            <summary>
+            Construtor parametrizado
+            </summary>
+            <param name="gruposService">Instância de ITiposPermissoesService</param>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.TiposPermissoesController.BuscarTodosAsync(System.Threading.CancellationToken)">
+            <summary>
+            Retorna todos os tipos de permissões existentes no sistema
+            </summary>
+            <response code="200">Retorna uma lista dos tipos de permissões</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="T:PrefeituraCachoeiro.Api.Controllers.UsuariosController">
+            <summary>
+            Controller responsável pelo gerenciamento do usuário
+            </summary>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.UsuariosController.#ctor(PrefeituraCachoeiro.Aplicacao.Interfaces.IUsuariosService)">
+            <summary>
+            Construtor parametrizado
+            </summary>
+            <param name="usuariosService">Instância da classe IUsuariosService</param>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.UsuariosController.BuscarPorIdAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retorna um usuário pelo identificador
+            </summary>
+            <response code="200">Retorna um usuário pelo identificador</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.UsuariosController.BuscarTodosAsync(PrefeituraCachoeiro.Dados.Filtros.UsuariosFilter,System.Threading.CancellationToken)">
+            <summary>
+            Retorna todos os usuários de acordo com os parâmetros de pesquisa
+            </summary>
+            <response code="200">Retorna uma lista de usuarios</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.UsuariosController.InserirAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.CriarUsuarioRequest,System.Threading.CancellationToken)">
+            <summary>
+            Cria um novo usuário
+            </summary>
+            <response code="200">Retorna id do usuário criado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.UsuariosController.AtualizarAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.AtualizarUsuarioRequest,System.Threading.CancellationToken)">
+            <summary>
+            Atualiza um usuário.
+            </summary>
+            <response code="200">Retorna id do usuário atualizado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.UsuariosController.DeletarAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Deleta um usuário
+            </summary>
+            <response code="200">Retorna id do usuário deletado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="T:PrefeituraCachoeiro.Api.Controllers.UsuariosGruposController">
+            <summary>
+            Controller responsável pelo gerenciamento de adicionar usuários a grupos
+            </summary>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.UsuariosGruposController.#ctor(PrefeituraCachoeiro.Aplicacao.Interfaces.IUsuariosGruposService)">
+            <summary>
+            Construtor parametrizado
+            </summary>
+            <param name="usuariosGruposService">Instância da classe IUsuariosGruposService</param>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.UsuariosGruposController.BuscarGruposPorUsuarioIdAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.BuscarGruposPorUsuarioIdRequest,System.Threading.CancellationToken)">
+            <summary>
+            Retorna todos os grupos associados ao usuário informado
+            </summary>
+            <response code="200">Retorna uma lista de grupos</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.UsuariosGruposController.BuscarGruposDisponiveisPorUsuarioIdAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.BuscarGruposDisponiveisPorUsuarioIdRequest,System.Threading.CancellationToken)">
+            <summary>
+            Retorna todos os grupos disponíveis para associar ao usuário informado
+            </summary>
+            <response code="200">Retorna uma lista de grupos</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.UsuariosGruposController.InserirAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.CriarUsuariosGruposRequest,System.Threading.CancellationToken)">
+            <summary>
+            Associar o usuário ao grupo informado
+            </summary>
+            <response code="200">Retorna id do usuário grupo criado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.UsuariosGruposController.DeletarAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.DeletarUsuarioGrupoRequest,System.Threading.CancellationToken)">
+            <summary>
+            Deleta um usuário de um determinado grupo
+            </summary>
+            <response code="200">Retorna uma mensagem de erro</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+    </members>
+</doc>

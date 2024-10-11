@@ -1,0 +1,39 @@
+"Detalhamento do Projeto
+Cadastro e Gerenciamento de Projetos
+Funcionalidade: Cadastro detalhado de informações dos projetos.
+Detalhes:
+Dados contratuais.
+Dados quantitativos.
+Cadastro e Gerenciamento de Itens
+Funcionalidade: Cadastro de itens.
+Detalhes:
+Diversas unidades de medida (km, unidade, A1).
+Medição e Controle de Saldo
+Funcionalidade: Controle de medições.
+Detalhes:
+Total medido.
+Saldo restante.
+Relatórios Personalizados
+Funcionalidade: Geração de relatórios.
+Formatos: PDF, Excel.
+Segurança e Permissões
+Funcionalidade: Controle de acesso e permissões.
+Detalhes:
+Permissões diferenciadas para usuários.
+Integração com Banco de Dados
+Funcionalidade: Integração com banco de dados centralizado.
+Detalhes:
+Integração segura e eficiente.
+Macro Fluxo de Trabalho
+Preenchimento da Base de Dados
+Inserção de informações contratuais.
+Geração de Consórcio
+Transferência de informações para Controle de Saldo.
+Controle de Saldo
+Exibição do total medido versus saldo restante.
+Lançamento de Projetos nas Medições
+Inserção de medições específicas para cada projeto.
+Aprovação de Medições
+Revisão e aprovação das medições.
+Geração de Relatórios e Faturamento
+Geração de relatórios detalhados para envio e faturamento.

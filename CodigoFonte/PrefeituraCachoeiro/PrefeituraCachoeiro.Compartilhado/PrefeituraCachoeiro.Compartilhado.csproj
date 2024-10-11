@@ -1,0 +1,79 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="Contratos.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Contratos.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Grupos.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Grupos.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Login.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Login.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Permissao.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Permissao.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Projetos.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Projetos.resx</DependentUpon>
+    </Compile>
+    <Compile Update="UsuarioGrupo.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UsuarioGrupo.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Usuarios.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Usuarios.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Contratos.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Contratos.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Grupos.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Grupos.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Login.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Login.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Permissao.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Permissao.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Projetos.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Projetos.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="UsuarioGrupo.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UsuarioGrupo.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Usuarios.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Usuarios.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

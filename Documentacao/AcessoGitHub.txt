@@ -1,0 +1,8 @@
+url: https://github.com/sparkbs
+User: sparkbs
+Pass: Sp@rk5B5
+
+E-mail
+url: https://webmail-seguro.com.br/
+login: aws@sparkbs.com.br
+senha: AwSparks@2024

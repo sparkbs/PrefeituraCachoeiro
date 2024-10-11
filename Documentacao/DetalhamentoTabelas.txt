@@ -1,0 +1,122 @@
+1) Criar a tabela de projetos
+     tb_projetos
+       IdProjeto int identity(1,1) not null primary key
+       NomeProjeto varchar(500) not null
+       DataCriacao DateTime not null default getdate()
+
+2) Criar a tabela de Item
+   tb_item
+     IdItem int identity(1,1) not null primary key
+     Identificador varchar(50) not null
+     Código varchar(50) not null
+     IdOrigem int not null
+     Descricao varchar(1000) not null
+     Unidade decimal(10,2) null
+     IdQuantidade int null,
+     ValorSemBdi decimal(10,2) null
+     ValorComBdi decimal(10,2) null
+     ValorTotalComBdi decimal(10,2) null (Fórmula Unidade * ValorComBdi)
+     IdItemPai int null (Autorelacionamento)
+     DataCriacao DateTime not null default getdate()
+
+3) Criar a tabela de Origem
+   tb_origem
+    IdOrigem int not null primary key
+    Nome varchar(50) not null
+    DataCriacao DateTime not null default getdate()
+
+4) Cria a tabela de Quantidade
+   tb_quantidade
+     IdQuantidade int not null primary key
+     Nome varchar(10) not null
+     DataCriacao DateTime not null default getdate()  
+
+5) Criar a tabela de Contratos
+   tb_contratos
+    IdContrato int identity(1,1) not null primary key
+    IdProjeto int not null
+    DataContrato datetime not null default getdate()
+    NumeroContrato varchar(50) not null
+    ValorTotalPrevisto decimal(10,2) null
+    ValorTotalSolicitado decimal(10,2) null
+    ValorTotalMedido decimal(10,2) null
+    ValorSaldoRestante decimal(10,2) null
+    DataCriacao DateTime not null default getdate()
+
+6) Criar a tabela de Items de Contrato
+    tb_items_contrato
+     IdItemContrato int identity(1,1) not null primary key,
+     IdContrato int not null,
+     IdItem int not null,
+     IdQuantidade int not null,
+     Unidade decimal(10,2) not null,
+     ValorSemBdi decimal(10,2) not null,
+     ValorComBdi decimal(10,2) not null,
+     ValorTotalComBdi decimal(10,2) not null (Fórmula Unidade * ValorComBdi)
+     DataCriacao DateTime not null default getdate()
+
+7) Criar a tabela de Medições do Projeto
+   tb_medicoes_projeto
+    IdMedicoesProjeto int identity(1,1) not null primary key
+    NumeroMedicao int not null
+    IdContrato int not null
+    DataMedicao datetime not null
+    Resumo varchar(5000) null
+    IdStatusMedicao int not null
+
+8) Criar a tabela de Items de Medições do Projeto
+   tb_items_medicoes_projeto
+     IdItemMedicoesProjeto int identity(1,1) not null primary key,
+     IdMedicoesProjeto int not null,
+     IdItemContrato int not null
+     Unidade decimal(10,2) not null    
+     DataCriacao DateTime not null default getdate()
+     
+9) Criar a tabela de Usuários
+   tb_usuarios
+     IdUsuario int not null identity(1,1) primary key,
+     Login varchar(50) not null
+     Nome varchar(1000)
+     Senha varchar(5000) not null (guardar o hash de senha)
+     DataCriacao DateTime not null default getdate()
+
+10) Criar a tabela de Permissões
+    tb_permissoes
+      IdPermissao int not null identity(1,1) primary key
+      IdTipoPermissao int not null,
+      IdUsuario int not null
+      DataCriacao DateTime not null default getdate()
+      
+11) Criar a tabela de Tipos Permissões
+    tb_tipos_permissoes
+      IdTipoPermissao int not null primary key
+      Nome varchar(100) not null
+      DataCriacao DateTime not null default getdate()
+
+12) Criar a tabela de status de medição
+    tb_status_medicao
+     IdStatusMedicao int not null primary key
+     Nome varchar(50) not null (Valores válidos para inserir, Criada, Aprovada, Reprovada)
+     DataCriacao DateTime not null default getdate()
+
+13) Criar a tabela de Log de status de medição
+    tb_log_status_medicao
+      IdLogStatusMedicao int not null identity(1,1) primary key
+      IdUsuario int not null,
+      Datalog datetime not null default getdate()
+      IdMedicoesProjeto int not null
+      IdStatusMedicao int not null
+      MotivoStatusMedicao varchar(500) null
+
+//Criar a tabela de grupos de usuários
+
+Dúvidas: 
+
+1) Esse número do contrato que aparece na aba de saldo. É um campo aberto que eles irão digitar no momento de gerar um consórcio?
+2) O saldo restante é o valor total do projeto que ainda resta a ser trabalhado? Isso mesmo
+3) Como é calculado o total previsto?
+4) Como é calculado o total medido?
+5) Como é calculado o total solicitado?
+5) Qual a diferença entre total previsto e total solicitado?
+6) Quais serão os tipos de permissões a serem criadas no sistema?
+7) Quais serão os tipos de status de medição a serem criados no sistema?

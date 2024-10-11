@@ -1,0 +1,105 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{91AC3DF5-801B-4787-800F-25EDB2FD965D}|PrefeituraCachoeiro.Aplicacao\\PrefeituraCachoeiro.Aplicacao.csproj|c:\\projetos\\eduardo\\projetoprefeituracachoeiro\\codigofonte\\prefeituracachoeiro\\prefeituracachoeiro.aplicacao\\servicos\\contratosservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{91AC3DF5-801B-4787-800F-25EDB2FD965D}|PrefeituraCachoeiro.Aplicacao\\PrefeituraCachoeiro.Aplicacao.csproj|solutionrelative:prefeituracachoeiro.aplicacao\\servicos\\contratosservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{571FB56D-D26A-4E12-8D28-562D456CFD42}|PrefeituraCachoeiro.Dados\\PrefeituraCachoeiro.Dados.csproj|c:\\projetos\\eduardo\\projetoprefeituracachoeiro\\codigofonte\\prefeituracachoeiro\\prefeituracachoeiro.dados\\repositorios\\contratosrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{571FB56D-D26A-4E12-8D28-562D456CFD42}|PrefeituraCachoeiro.Dados\\PrefeituraCachoeiro.Dados.csproj|solutionrelative:prefeituracachoeiro.dados\\repositorios\\contratosrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|c:\\projetos\\eduardo\\projetoprefeituracachoeiro\\codigofonte\\prefeituracachoeiro\\prefeituracachoeiro.api\\controllers\\contratoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|solutionrelative:prefeituracachoeiro.api\\controllers\\contratoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{91AC3DF5-801B-4787-800F-25EDB2FD965D}|PrefeituraCachoeiro.Aplicacao\\PrefeituraCachoeiro.Aplicacao.csproj|c:\\projetos\\eduardo\\projetoprefeituracachoeiro\\codigofonte\\prefeituracachoeiro\\prefeituracachoeiro.aplicacao\\automapper\\mapeamentos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{91AC3DF5-801B-4787-800F-25EDB2FD965D}|PrefeituraCachoeiro.Aplicacao\\PrefeituraCachoeiro.Aplicacao.csproj|solutionrelative:prefeituracachoeiro.aplicacao\\automapper\\mapeamentos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{498BBC0B-B68E-45FA-85BA-3563636359ED}|PrefeituraCachoeiro.Ioc\\PrefeituraCachoeiro.Ioc.csproj|c:\\projetos\\eduardo\\projetoprefeituracachoeiro\\codigofonte\\prefeituracachoeiro\\prefeituracachoeiro.ioc\\di.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{498BBC0B-B68E-45FA-85BA-3563636359ED}|PrefeituraCachoeiro.Ioc\\PrefeituraCachoeiro.Ioc.csproj|solutionrelative:prefeituracachoeiro.ioc\\di.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ContratosRepository.cs",
+              "DocumentMoniker": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dados\\Repositorios\\ContratosRepository.cs",
+              "RelativeDocumentMoniker": "PrefeituraCachoeiro.Dados\\Repositorios\\ContratosRepository.cs",
+              "ToolTip": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dados\\Repositorios\\ContratosRepository.cs",
+              "RelativeToolTip": "PrefeituraCachoeiro.Dados\\Repositorios\\ContratosRepository.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAADwv0UAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-11T02:49:18.098Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ContratosController.cs",
+              "DocumentMoniker": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Api\\Controllers\\ContratosController.cs",
+              "RelativeDocumentMoniker": "PrefeituraCachoeiro.Api\\Controllers\\ContratosController.cs",
+              "ToolTip": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Api\\Controllers\\ContratosController.cs",
+              "RelativeToolTip": "PrefeituraCachoeiro.Api\\Controllers\\ContratosController.cs",
+              "ViewState": "AgIAADcAAAAAAAAAAAASwEUAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-11T02:19:11.218Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Mapeamentos.cs",
+              "DocumentMoniker": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Aplicacao\\AutoMapper\\Mapeamentos.cs",
+              "RelativeDocumentMoniker": "PrefeituraCachoeiro.Aplicacao\\AutoMapper\\Mapeamentos.cs",
+              "ToolTip": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Aplicacao\\AutoMapper\\Mapeamentos.cs",
+              "RelativeToolTip": "PrefeituraCachoeiro.Aplicacao\\AutoMapper\\Mapeamentos.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAswBIAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-11T01:12:05.303Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ContratosService.cs",
+              "DocumentMoniker": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Aplicacao\\Servicos\\ContratosService.cs",
+              "RelativeDocumentMoniker": "PrefeituraCachoeiro.Aplicacao\\Servicos\\ContratosService.cs",
+              "ToolTip": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Aplicacao\\Servicos\\ContratosService.cs",
+              "RelativeToolTip": "PrefeituraCachoeiro.Aplicacao\\Servicos\\ContratosService.cs",
+              "ViewState": "AgIAAKIAAAAAAAAAAAAuwK4AAABWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-11T01:05:40.112Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DI.cs",
+              "DocumentMoniker": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Ioc\\DI.cs",
+              "RelativeDocumentMoniker": "PrefeituraCachoeiro.Ioc\\DI.cs",
+              "ToolTip": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Ioc\\DI.cs",
+              "RelativeToolTip": "PrefeituraCachoeiro.Ioc\\DI.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAACkAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-11T01:05:02.379Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
