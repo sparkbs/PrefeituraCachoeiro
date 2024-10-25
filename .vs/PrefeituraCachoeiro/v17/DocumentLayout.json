@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Projetos comerciais\\PrefeituraCachoeiro\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|c:\\projetos comerciais\\prefeituracachoeiro\\prefeituracachoeiro.api\\controllers\\contratoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|solutionrelative:prefeituracachoeiro.api\\controllers\\contratoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ContratosController.cs",
+              "DocumentMoniker": "C:\\Projetos comerciais\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Api\\Controllers\\ContratosController.cs",
+              "RelativeDocumentMoniker": "PrefeituraCachoeiro.Api\\Controllers\\ContratosController.cs",
+              "ToolTip": "C:\\Projetos comerciais\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Api\\Controllers\\ContratosController.cs",
+              "RelativeToolTip": "PrefeituraCachoeiro.Api\\Controllers\\ContratosController.cs",
+              "ViewState": "AQIAADoAAAAAAAAAAAAAAEUAAABNAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-24T21:10:14.22Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

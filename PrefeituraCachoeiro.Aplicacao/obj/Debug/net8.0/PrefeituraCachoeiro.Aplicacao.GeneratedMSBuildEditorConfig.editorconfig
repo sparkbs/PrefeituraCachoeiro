@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = PrefeituraCachoeiro.Aplicacao
-build_property.ProjectDir = C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\
+build_property.ProjectDir = C:\Projetos comerciais\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
