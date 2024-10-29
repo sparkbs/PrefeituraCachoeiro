@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Editar_criar_contratosComponent } from './editar_criar_contratos/editar_criar_contratos.component';
+import { AditivosContratosComponent } from './aditivos-contratos/aditivos-contratos.component';
 
 export interface Item {
   id:number;
@@ -84,6 +85,14 @@ export class ContratosComponent implements AfterViewInit {
       this.dataSource = new MatTableDataSource(this.lista);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;    
+    });
+  }
+
+  abrirAditivos(){
+    const dialogRef = this.dialog.open(AditivosContratosComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
     });
   }
 }

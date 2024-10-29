@@ -14,9 +14,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Editar_criar_contratosComponent } from './editar_criar_contratos/editar_criar_contratos.component';
 import { FormsModule } from '@angular/forms';
+import { AditivosContratosComponent } from './aditivos-contratos/aditivos-contratos.component';
 
 @NgModule({
-  declarations: [ ContratosComponent, Editar_criar_contratosComponent ],
+  declarations: [ ContratosComponent, Editar_criar_contratosComponent, AditivosContratosComponent ],
   imports: [
     CommonModule,
     MatCardModule,
