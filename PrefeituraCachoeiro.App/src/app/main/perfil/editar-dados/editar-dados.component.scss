@@ -1,0 +1,25 @@
+.editar-dados-body {
+  background-color: rgba(248, 249, 250, 0.8);
+  padding: 1%;
+}
+
+.editar-dados-body span {
+  font-size: 21px;
+}
+
+.form-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3%;
+}
+
+.group-buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 2%;
+  gap: 10px;
+}

@@ -14,11 +14,7 @@ export class ProjetosComponent {
   openDialog(): void {
     const dialogRef = this.dialog.open(IncluirEditarProjetoComponent, {
       width: window.innerWidth >= 1450 ? '50%' : '50%',
-      data: { name: 'Nome do Projeto' }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('O diálogo foi fechado');
+      data: { }
     });
   }
 }
