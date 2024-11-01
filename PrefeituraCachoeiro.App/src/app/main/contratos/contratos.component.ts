@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Editar_criar_contratosComponent } from './editar_criar_contratos/editar_criar_contratos.component';
 import { AditivosContratosComponent } from './aditivos-contratos/aditivos-contratos.component';
 import { ContratosService } from 'src/app/services/contratos.service';
+import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
 
 export interface Item {
   id:number;
@@ -75,7 +76,7 @@ export class ContratosComponent implements AfterViewInit {
   }
 
   async editContrato(row: Item){
-    await this.api.BuscarTodosContratos()
+    await this.api.BuscarTodosContratos(new BuscarContratosRequest())
     .then((result) => {
       console.log(result);
     });

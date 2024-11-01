@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
@@ -6,6 +6,7 @@ import { GenericResultResponse } from '../response/genericResultResponse';
 import { TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
 import { DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
 import { AtualizarContratoRequest } from '../request/ContratoRequest/atualizarContratoRequest';
+import { BuscarContratosRequest } from '../request/ContratoRequest/buscarContratosRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,11 @@ import { AtualizarContratoRequest } from '../request/ContratoRequest/atualizarCo
 export class ContratosService {
   constructor(private readonly http: HttpClient) { }
 
-  public async BuscarTodosContratos(): Promise<GenericResultResponse<TodosContratosResponse>> {
+  public async BuscarTodosContratos(request: BuscarContratosRequest): Promise<GenericResultResponse<TodosContratosResponse>> {
     return await firstValueFrom(
       this.http.post<GenericResultResponse<TodosContratosResponse>>(
         `${Environments.APIUrl}/contratos/buscartodos`,
-        {}
+        request
       )
     );
   }
