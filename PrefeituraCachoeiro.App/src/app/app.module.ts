@@ -17,8 +17,8 @@ import { NavbarComponent } from './layout/components/navbar/navbar.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { ConfiguracoesModule } from './main/configuracoes/configuracoes.module';
 import {MatCardModule} from '@angular/material/card';
-import { PerfilComponent } from './main/perfil/perfil.component';
 import { PerfilModule } from './main/perfil/perfil.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [ AppComponent, MainComponent, SidebarComponent, NavbarComponent ],
@@ -26,7 +26,8 @@ import { PerfilModule } from './main/perfil/perfil.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-
+    HttpClientModule,
+    
     // Autenticação
     LoginModule,
     RegistrarModule,
