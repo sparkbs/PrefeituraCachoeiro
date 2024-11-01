@@ -3,16 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\Pichau\\Desktop\\PrefeituraCachoeiro\\PrefeituraCachoeiro\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|c:\\users\\pichau\\desktop\\prefeituracachoeiro\\prefeituracachoeiro\\prefeituracachoeiro.api\\controllers\\usuariosgruposcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|solutionrelative:prefeituracachoeiro.api\\controllers\\usuariosgruposcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|c:\\users\\pichau\\desktop\\prefeituracachoeiro\\prefeituracachoeiro\\prefeituracachoeiro.api\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|solutionrelative:prefeituracachoeiro.api\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|c:\\users\\pichau\\desktop\\prefeituracachoeiro\\prefeituracachoeiro\\prefeituracachoeiro.api\\controllers\\gruposcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|solutionrelative:prefeituracachoeiro.api\\controllers\\gruposcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|c:\\users\\pichau\\desktop\\prefeituracachoeiro\\prefeituracachoeiro\\prefeituracachoeiro.api\\controllers\\contratoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|solutionrelative:prefeituracachoeiro.api\\controllers\\contratoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{6ED57982-9603-4613-9CCB-16F93494CCF0}|ConsoleTeste\\ConsoleTeste.csproj|c:\\users\\pichau\\desktop\\prefeituracachoeiro\\prefeituracachoeiro\\consoleteste\\consoleteste.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{6ED57982-9603-4613-9CCB-16F93494CCF0}|ConsoleTeste\\ConsoleTeste.csproj|solutionrelative:consoleteste\\consoleteste.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Pichau\\Desktop\\PrefeituraCachoeiro\\PrefeituraCachoeiro\\.vs\\tasks.vs.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.vs\\tasks.vs.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|c:\\users\\pichau\\desktop\\prefeituracachoeiro\\prefeituracachoeiro\\prefeituracachoeiro.api\\controllers\\contratoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{86AFE8EB-3FDA-4CC7-B17A-0ABA8F903E0D}|PrefeituraCachoeiro.Api\\PrefeituraCachoeiro.Api.csproj|solutionrelative:prefeituracachoeiro.api\\controllers\\contratoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,6 +39,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "UsuariosGruposController.cs",
+              "DocumentMoniker": "C:\\Users\\Pichau\\Desktop\\PrefeituraCachoeiro\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Api\\Controllers\\UsuariosGruposController.cs",
+              "RelativeDocumentMoniker": "PrefeituraCachoeiro.Api\\Controllers\\UsuariosGruposController.cs",
+              "ToolTip": "C:\\Users\\Pichau\\Desktop\\PrefeituraCachoeiro\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Api\\Controllers\\UsuariosGruposController.cs",
+              "RelativeToolTip": "PrefeituraCachoeiro.Api\\Controllers\\UsuariosGruposController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-01T00:48:41.807Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UsuariosController.cs",
+              "DocumentMoniker": "C:\\Users\\Pichau\\Desktop\\PrefeituraCachoeiro\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Api\\Controllers\\UsuariosController.cs",
+              "RelativeDocumentMoniker": "PrefeituraCachoeiro.Api\\Controllers\\UsuariosController.cs",
+              "ToolTip": "C:\\Users\\Pichau\\Desktop\\PrefeituraCachoeiro\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Api\\Controllers\\UsuariosController.cs",
+              "RelativeToolTip": "PrefeituraCachoeiro.Api\\Controllers\\UsuariosController.cs",
+              "ViewState": "AgIAAFAAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-01T00:48:28.238Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GruposController.cs",
+              "DocumentMoniker": "C:\\Users\\Pichau\\Desktop\\PrefeituraCachoeiro\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Api\\Controllers\\GruposController.cs",
+              "RelativeDocumentMoniker": "PrefeituraCachoeiro.Api\\Controllers\\GruposController.cs",
+              "ToolTip": "C:\\Users\\Pichau\\Desktop\\PrefeituraCachoeiro\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Api\\Controllers\\GruposController.cs",
+              "RelativeToolTip": "PrefeituraCachoeiro.Api\\Controllers\\GruposController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-01T00:48:20.813Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "ConsoleTeste.csproj",
               "DocumentMoniker": "C:\\Users\\Pichau\\Desktop\\PrefeituraCachoeiro\\PrefeituraCachoeiro\\ConsoleTeste\\ConsoleTeste.csproj",
               "RelativeDocumentMoniker": "ConsoleTeste\\ConsoleTeste.csproj",
@@ -39,7 +90,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "tasks.vs.json",
               "DocumentMoniker": "C:\\Users\\Pichau\\Desktop\\PrefeituraCachoeiro\\PrefeituraCachoeiro\\.vs\\tasks.vs.json",
               "RelativeDocumentMoniker": ".vs\\tasks.vs.json",
@@ -51,15 +102,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "ContratosController.cs",
               "DocumentMoniker": "C:\\Users\\Pichau\\Desktop\\PrefeituraCachoeiro\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Api\\Controllers\\ContratosController.cs",
               "RelativeDocumentMoniker": "PrefeituraCachoeiro.Api\\Controllers\\ContratosController.cs",
               "ToolTip": "C:\\Users\\Pichau\\Desktop\\PrefeituraCachoeiro\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Api\\Controllers\\ContratosController.cs",
               "RelativeToolTip": "PrefeituraCachoeiro.Api\\Controllers\\ContratosController.cs",
-              "ViewState": "AgIAADoAAAAAAAAAAAAAAEUAAABNAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEUAAABNAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-24T21:10:14.22Z"
+              "WhenOpened": "2024-10-24T21:10:14.22Z",
+              "EditorCaption": ""
             }
           ]
         }

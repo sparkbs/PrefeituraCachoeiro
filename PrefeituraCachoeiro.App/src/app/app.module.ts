@@ -9,7 +9,7 @@ import { LoginModule } from './authentication/login/login.module';
 import { RegistrarModule } from './authentication/registrar/registrar.module';
 import { HomeModule } from './main/home/home.module';
 import { ProjetosModule } from './main/projetos/projetos.module';
-import { AuthService } from './_services/auth.service';
+import { AuthService } from './services/auth.service';
 import { MainComponent } from './main/main.component';
 import { SidebarComponent } from './layout/components/sidebar/sidebar.component';
 import { ContratosModule } from './main/contratos/contratos.module';
