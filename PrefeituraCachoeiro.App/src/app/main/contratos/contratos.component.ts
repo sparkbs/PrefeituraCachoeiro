@@ -5,6 +5,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Editar_criar_contratosComponent } from './editar_criar_contratos/editar_criar_contratos.component';
 import { AditivosContratosComponent } from './aditivos-contratos/aditivos-contratos.component';
+import { ContratosService } from 'src/app/services/contratos.service';
+import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
 
 export interface Item {
   id:number;
@@ -36,8 +38,8 @@ export class ContratosComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor() {
-    this.dataSource = new MatTableDataSource(this.lista);
+  constructor(private readonly api: ContratosService) {
+    this.dataSource = new MatTableDataSource(this.lista);    
   }
 
   ngAfterViewInit() {
@@ -73,7 +75,11 @@ export class ContratosComponent implements AfterViewInit {
 
   }
 
-  editContrato(row: Item){
+  async editContrato(row: Item){
+    await this.api.BuscarTodosContratos(new BuscarContratosRequest())
+    .then((result) => {
+      console.log(result);
+    });
     const dialogRef = this.dialog.open(Editar_criar_contratosComponent,{
       data: row
     });
