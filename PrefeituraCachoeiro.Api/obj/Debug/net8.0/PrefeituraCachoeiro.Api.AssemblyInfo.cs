@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PrefeituraCachoeiro.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+67a119e0b9492d0be0da3bba638a174af5f003d6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1a5f9690da9ec02530b69d192fbf8ce6add3d400")]
 [assembly: System.Reflection.AssemblyProductAttribute("PrefeituraCachoeiro.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PrefeituraCachoeiro.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -55,6 +55,7 @@ namespace PrefeituraCachoeiro.Api
                 options.DocumentTitle = "Prefeitura de Cachoeiro - Gestor de Medições de Projetos";
             });
 
+            app.UseRouting();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
