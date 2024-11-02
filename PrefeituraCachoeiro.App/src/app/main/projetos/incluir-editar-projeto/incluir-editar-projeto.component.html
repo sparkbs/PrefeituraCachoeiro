@@ -1,5 +1,5 @@
 <div class="incluir-body">
-  <span>Adicionar Projeto</span>
+  <span>Editar Projeto</span>
   <div class="form-body">
     <div class="form-content">
       <form>
@@ -8,10 +8,10 @@
           <input matInput >
         </mat-form-field>
       </form>
-      <button mat-raised-button>Adicionar Medição</button>
+      <button mat-raised-button (click)="openDialog()">Adicionar Medição</button>
     </div>
     <div class="cards-medicao">
-      <mat-card class="card-medicao-content">
+      <mat-card class="card-medicao-content" (click)="openDialog(true)">
         <mat-card-header>
           Medição 1
         </mat-card-header>
@@ -23,7 +23,7 @@
         </mat-card-footer>
       </mat-card>
 
-      <mat-card class="card-medicao-content">
+      <mat-card class="card-medicao-content" (click)="openDialog()">
         <mat-card-header>
           Medição 2
         </mat-card-header>

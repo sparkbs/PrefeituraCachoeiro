@@ -10,9 +10,13 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { IncluirEditarMedicaoComponent } from './incluir-editar-medicao/incluir-editar-medicao.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
-  declarations: [ ProjetosComponent, IncluirEditarProjetoComponent ],
+  declarations: [ ProjetosComponent, IncluirEditarProjetoComponent, IncluirEditarMedicaoComponent ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -22,7 +26,10 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     FormsModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSelectModule
   ]
 })
 export class ProjetosModule { }
