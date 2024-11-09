@@ -1,0 +1,666 @@
+<div class="contratos-body">
+  <mat-card class="card-content">
+      <mat-card-header><span>Medições</span></mat-card-header>
+      <mat-card-content>  
+        <div >
+          <h3>Informe um contrato para exibir as medições</h3>          
+            <mat-form-field >
+              <mat-label>Selecione o contrato</mat-label>
+              <mat-select disableRipple>
+                <mat-option value="1">Contrato 1</mat-option>
+                <mat-option value="2">Contrato 2</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -10px; "  (click)="buscar()">Buscar</button>
+            <button mat-button style="background-color:white; color: black; margin-left: 10px;margin-top: -10px; "  (click)="limpar()">Limpar</button>
+        </div>    
+        <div class="mat-elevation-z8" [style.display]="exibir ? 'block' : 'none'">
+          <div class="example-action-buttons">
+            <button mat-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: 8px; "  (click)="accordion.openAll()">Exibir todos</button>
+            <button mat-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: 8px; "  (click)="accordion.closeAll()">Ocultar todos</button>
+          </div>
+          <mat-accordion class="example-headers-align" multi>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Medição 1 </mat-panel-title>
+                <mat-panel-description>
+                  Ao expandir, devem ser exibidos todos os projetos medidos na "Medição 1"
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-tab-group>
+                <mat-tab label="Córrego seco"> 
+                  <div class="list-container">
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Engenheiro Consultor </span>
+                          <span matListItemLine>2</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Engenheiro/Arquiteto Consultor</span>
+                          <span>12</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Engenheiro/Arquiteto Junior</span>
+                          <span>11</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Desenhista Projetista</span>
+                          <span matListItemLine>5</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Desenhista Cadista</span>
+                          <span>1</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Desenhista Copista</span>
+                          <span>3</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Auxiliar Administrativo Sênior</span>
+                          <span matListItemLine>15</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Auxiliar Administrativo Intermediário</span>
+                          <span>9</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Auxiliar Administrativo Junior</span>
+                          <span>1</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Técnico Senior</span>
+                          <span matListItemLine>0</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Técnico Intermediário</span>
+                          <span>1</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Técnico Junior</span>
+                          <span>7</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Projeto Eletrico</span>
+                          <span matListItemLine>0</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Projeto de irrigação</span>
+                          <span>4</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Projeto de ar condicionado</span>
+                          <span>3</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                  </div>
+                </mat-tab>
+                <mat-tab label="Grota II"> 
+                  <div class="list-container">
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Engenheiro Consultor </span>
+                          <span matListItemLine>23</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Engenheiro/Arquiteto Consultor</span>
+                          <span>2</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Engenheiro/Arquiteto Junior</span>
+                          <span>1</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Desenhista Projetista</span>
+                          <span matListItemLine>25</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Desenhista Cadista</span>
+                          <span>11</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Desenhista Copista</span>
+                          <span>13</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Auxiliar Administrativo Sênior</span>
+                          <span matListItemLine>15</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Auxiliar Administrativo Intermediário</span>
+                          <span>9</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Auxiliar Administrativo Junior</span>
+                          <span>1</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Técnico Senior</span>
+                          <span matListItemLine>10</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Técnico Intermediário</span>
+                          <span>21</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Técnico Junior</span>
+                          <span>7</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Projeto Eletrico</span>
+                          <span matListItemLine>0</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Projeto de irrigação</span>
+                          <span>14</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Projeto de ar condicionado</span>
+                          <span>3</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                  </div>
+                </mat-tab>
+                <mat-tab label="Arrojado"> 
+                  <div class="list-container">
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Engenheiro Consultor </span>
+                          <span matListItemLine>5</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Engenheiro/Arquiteto Consultor</span>
+                          <span>1</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Engenheiro/Arquiteto Junior</span>
+                          <span>18</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Desenhista Projetista</span>
+                          <span matListItemLine>25</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Desenhista Cadista</span>
+                          <span>12</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Desenhista Copista</span>
+                          <span>23</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Auxiliar Administrativo Sênior</span>
+                          <span matListItemLine>15</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Auxiliar Administrativo Intermediário</span>
+                          <span>29</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Auxiliar Administrativo Junior</span>
+                          <span>11</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Técnico Senior</span>
+                          <span matListItemLine>10</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Técnico Intermediário</span>
+                          <span>15</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Técnico Junior</span>
+                          <span>7</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                    <div>
+                      <mat-list>
+                        <mat-list-item>
+                          <span matListItemTitle>Projeto Eletrico</span>
+                          <span matListItemLine>0</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Projeto de irrigação</span>
+                          <span>24</span>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <span matListItemTitle>Projeto de ar condicionado</span>
+                          <span>3</span>
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
+                  </div>
+                </mat-tab>
+              </mat-tab-group>
+            </mat-expansion-panel>
+          
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Medição 2 </mat-panel-title>
+                <mat-panel-description>
+                  Ao expandir, devem ser exibidos todos os projetos medidos na "Medição 2"
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="rounded-shadow-div">
+                <h3> Córrego seco</h3>
+              </div>
+              <div class="list-container">                
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Engenheiro Consultor </span>
+                      <span matListItemLine>2</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Engenheiro/Arquiteto Consultor</span>
+                      <span>12</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Engenheiro/Arquiteto Junior</span>
+                      <span>11</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Desenhista Projetista</span>
+                      <span matListItemLine>5</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Desenhista Cadista</span>
+                      <span>1</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Desenhista Copista</span>
+                      <span>3</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Auxiliar Administrativo Sênior</span>
+                      <span matListItemLine>15</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Auxiliar Administrativo Intermediário</span>
+                      <span>9</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Auxiliar Administrativo Junior</span>
+                      <span>1</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Técnico Senior</span>
+                      <span matListItemLine>0</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Técnico Intermediário</span>
+                      <span>1</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Técnico Junior</span>
+                      <span>7</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Projeto Eletrico</span>
+                      <span matListItemLine>0</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Projeto de irrigação</span>
+                      <span>4</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Projeto de ar condicionado</span>
+                      <span>3</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+              </div>
+
+              <div style="font-weight: bold; margin-left: 16px; font-size: 17px;margin-bottom: 10px;">
+                <span>Valor Total: R$ 1.000.000,00</span>
+              </div>
+
+              <div class="rounded-shadow-div">
+                <h3> Arrojado</h3>
+              </div>
+              <div class="list-container">                
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Engenheiro Consultor </span>
+                      <span matListItemLine>5</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Engenheiro/Arquiteto Consultor</span>
+                      <span>1</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Engenheiro/Arquiteto Junior</span>
+                      <span>18</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Desenhista Projetista</span>
+                      <span matListItemLine>25</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Desenhista Cadista</span>
+                      <span>12</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Desenhista Copista</span>
+                      <span>23</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Auxiliar Administrativo Sênior</span>
+                      <span matListItemLine>15</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Auxiliar Administrativo Intermediário</span>
+                      <span>29</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Auxiliar Administrativo Junior</span>
+                      <span>11</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Técnico Senior</span>
+                      <span matListItemLine>10</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Técnico Intermediário</span>
+                      <span>15</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Técnico Junior</span>
+                      <span>7</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Projeto Eletrico</span>
+                      <span matListItemLine>0</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Projeto de irrigação</span>
+                      <span>24</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Projeto de ar condicionado</span>
+                      <span>3</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+              </div>
+
+              <div style="font-weight: bold; margin-left: 16px; font-size: 17px;margin-bottom: 10px;">
+                <span>Valor Total: R$ 2.000.000,00</span>
+              </div>
+
+              <div class="rounded-shadow-div">
+                <h3> Grota II</h3>
+              </div>
+              <div class="list-container">                
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Engenheiro Consultor </span>
+                      <span matListItemLine>23</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Engenheiro/Arquiteto Consultor</span>
+                      <span>2</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Engenheiro/Arquiteto Junior</span>
+                      <span>1</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Desenhista Projetista</span>
+                      <span matListItemLine>25</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Desenhista Cadista</span>
+                      <span>11</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Desenhista Copista</span>
+                      <span>13</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Auxiliar Administrativo Sênior</span>
+                      <span matListItemLine>15</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Auxiliar Administrativo Intermediário</span>
+                      <span>9</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Auxiliar Administrativo Junior</span>
+                      <span>1</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Técnico Senior</span>
+                      <span matListItemLine>10</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Técnico Intermediário</span>
+                      <span>21</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Técnico Junior</span>
+                      <span>7</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+                <div>
+                  <mat-list>
+                    <mat-list-item>
+                      <span matListItemTitle>Projeto Eletrico</span>
+                      <span matListItemLine>0</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Projeto de irrigação</span>
+                      <span>14</span>
+                    </mat-list-item>
+                    <mat-list-item>
+                      <span matListItemTitle>Projeto de ar condicionado</span>
+                      <span>3</span>
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+              </div>
+              <div style="font-weight: bold; margin-left: 16px; font-size: 17px;">
+                <span>Valor Total: R$ 3.000.000,00</span>
+              </div>
+            </mat-expansion-panel>
+         
+
+          </mat-accordion>
+        </div>
+      </mat-card-content>
+  </mat-card>
+</div>
+
+<div class="contratos-body" >
+  <mat-card class="card-content" [style.display]="exibir ? 'block' : 'none'">
+    <mat-card-header class="rounded-shadow-div">
+      <div style="font-size: 15px;">
+        <h3> Resumo </h3>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+
+      <div class="list-container">                
+        <div>
+          <mat-list>
+            <mat-list-item>
+              <span matListItemTitle>Engenheiro Consultor </span>
+              <span matListItemLine>30</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Engenheiro/Arquiteto Consultor</span>
+              <span>15</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Engenheiro/Arquiteto Junior</span>
+              <span>30</span>
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <div>
+          <mat-list>
+            <mat-list-item>
+              <span matListItemTitle>Desenhista Projetista</span>
+              <span matListItemLine>55</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Desenhista Cadista</span>
+              <span>24</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Desenhista Copista</span>
+              <span>39</span>
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <div>
+          <mat-list>
+            <mat-list-item>
+              <span matListItemTitle>Auxiliar Administrativo Sênior</span>
+              <span matListItemLine>45</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Auxiliar Administrativo Intermediário</span>
+              <span>47</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Auxiliar Administrativo Junior</span>
+              <span>13</span>
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <div>
+          <mat-list>
+            <mat-list-item>
+              <span matListItemTitle>Técnico Senior</span>
+              <span matListItemLine>20</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Técnico Intermediário</span>
+              <span>37</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Técnico Junior</span>
+              <span>21</span>
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <div>
+          <mat-list>
+            <mat-list-item>
+              <span matListItemTitle>Projeto Eletrico</span>
+              <span matListItemLine>0</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Projeto de irrigação</span>
+              <span>42</span>
+            </mat-list-item>
+            <mat-list-item>
+              <span matListItemTitle>Projeto de ar condicionado</span>
+              <span>9</span>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
+      <div style="font-weight: bold; margin-left: 16px; font-size: 17px;color: black;">
+        <span>Valor Total: R$ 6.000.000,00</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -19,6 +19,7 @@ import { ConfiguracoesModule } from './main/configuracoes/configuracoes.module';
 import {MatCardModule} from '@angular/material/card';
 import { PerfilModule } from './main/perfil/perfil.module';
 import { HttpClientModule } from '@angular/common/http';
+import { RelatorioProjetosPorMedicaoModule } from './main/relatorios/relatorioProjetosPorMedicao/relatorioProjetosPorMedicao.component.module';
 
 @NgModule({
   declarations: [ AppComponent, MainComponent, SidebarComponent, NavbarComponent ],
@@ -38,7 +39,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatTooltipModule,
     ConfiguracoesModule,
     MatCardModule,
-    PerfilModule
+    PerfilModule,
+    RelatorioProjetosPorMedicaoModule
+    
   ],
   providers: [ AuthService ],
   bootstrap: [ AppComponent ]
