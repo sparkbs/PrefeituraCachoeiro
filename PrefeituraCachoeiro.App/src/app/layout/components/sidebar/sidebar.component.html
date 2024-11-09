@@ -29,6 +29,25 @@
           <span>Contrato</span>
         </span>
       </button>
+
+      <button (click)="toggleRelatorios()">
+        <span class="menu">
+          <div>
+            <mat-icon>bar_chart</mat-icon>
+            <span>Relatórios</span>
+          </div>
+          <div class="collapsed-menu">
+            <mat-icon *ngIf="relatoriosExpanded">expand_less</mat-icon>
+            <mat-icon *ngIf="!relatoriosExpanded">expand_more</mat-icon>
+          </div>
+        </span>
+      </button>
+
+      <div *ngIf="relatoriosExpanded" class="submenu">
+        <button [routerLink]="['/main/relatorios/relatorio1']">Relatório 1</button>
+        <button [routerLink]="['/main/relatorios/relatorio2']">Relatório 2</button>
+        <button [routerLink]="['/main/relatorios/relatorio3']">Relatório 3</button>
+      </div>
     </nav>
   </aside>
 </div>
