@@ -6,18 +6,18 @@
     <p>Fazendo a diferença na vida das pessoas</p>
     <form class="form-register" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline">
-        <mat-label>Nome</mat-label>
-        <input matInput>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input matInput>
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Senha</mat-label>
+        <mat-label>Senha atual</mat-label>
         <input matInput>
       </mat-form-field>
-      <button mat-raised-button color="primary">Cadastrar</button>
+      <mat-form-field appearance="outline">
+        <mat-label>Senha nova</mat-label>
+        <input matInput>
+      </mat-form-field>
+      <button mat-raised-button color="primary">Salvar</button>
       <button mat-raised-button color="accent" class="btn-return" type="button" (click)="onReturn()">Voltar para tela inicial</button>
     </form>
   </div>

@@ -20,3 +20,26 @@ C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\P
 C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\PrefeituraCachoeiro.TratadorControlador.pdb
 C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\PrefeituraCachoeiro.Aplicacao.csproj.AssemblyReference.cache
 C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\Prefeitu.E7A3E5C0.Up2Date
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\Projetos.resx
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\PrefeituraCachoeiro.Aplicacao.deps.json
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\PrefeituraCachoeiro.Aplicacao.dll
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\PrefeituraCachoeiro.Aplicacao.pdb
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\PrefeituraCachoeiro.Compartilhado.dll
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\PrefeituraCachoeiro.Dados.dll
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\PrefeituraCachoeiro.Dominio.dll
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\PrefeituraCachoeiro.TratadorControlador.dll
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\PrefeituraCachoeiro.Compartilhado.pdb
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\PrefeituraCachoeiro.Dados.pdb
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\PrefeituraCachoeiro.Dominio.pdb
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\bin\Debug\net8.0\PrefeituraCachoeiro.TratadorControlador.pdb
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\PrefeituraCachoeiro.Aplicacao.csproj.AssemblyReference.cache
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\PrefeituraCachoeiro.Aplicacao.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\PrefeituraCachoeiro.Aplicacao.AssemblyInfoInputs.cache
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\PrefeituraCachoeiro.Aplicacao.AssemblyInfo.cs
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\PrefeituraCachoeiro.Aplicacao.csproj.CoreCompileInputs.cache
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\PrefeituraCachoeiro.Aplicacao.sourcelink.json
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\Prefeitu.E7A3E5C0.Up2Date
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\PrefeituraCachoeiro.Aplicacao.dll
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\refint\PrefeituraCachoeiro.Aplicacao.dll
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\PrefeituraCachoeiro.Aplicacao.pdb
+C:\Projetos comerciais\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Aplicacao\obj\Debug\net8.0\ref\PrefeituraCachoeiro.Aplicacao.dll

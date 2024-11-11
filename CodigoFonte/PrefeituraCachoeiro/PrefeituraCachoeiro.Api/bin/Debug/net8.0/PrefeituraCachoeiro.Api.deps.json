@@ -780,6 +780,12 @@
       "System.Text.Json/8.0.4": {
         "dependencies": {
           "System.Text.Encodings.Web": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/System.Text.Json.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.724.31311"
+          }
         }
       },
       "System.Threading.Channels/6.0.0": {},
@@ -798,18 +804,12 @@
           "System.IdentityModel.Tokens.Jwt": "8.1.1"
         },
         "runtime": {
-          "PrefeituraCachoeiro.Aplicacao.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "PrefeituraCachoeiro.Aplicacao.dll": {}
         }
       },
       "PrefeituraCachoeiro.Compartilhado/1.0.0": {
         "runtime": {
-          "PrefeituraCachoeiro.Compartilhado.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "PrefeituraCachoeiro.Compartilhado.dll": {}
         }
       },
       "PrefeituraCachoeiro.Dados/1.0.0": {
@@ -821,10 +821,7 @@
           "PrefeituraCachoeiro.Dominio": "1.0.0"
         },
         "runtime": {
-          "PrefeituraCachoeiro.Dados.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "PrefeituraCachoeiro.Dados.dll": {}
         }
       },
       "PrefeituraCachoeiro.Dominio/1.0.0": {
@@ -834,10 +831,7 @@
           "PrefeituraCachoeiro.TratadorControlador": "1.0.0"
         },
         "runtime": {
-          "PrefeituraCachoeiro.Dominio.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "PrefeituraCachoeiro.Dominio.dll": {}
         }
       },
       "PrefeituraCachoeiro.Ioc/1.0.0": {
@@ -850,10 +844,7 @@
           "RestSharp": "112.1.0"
         },
         "runtime": {
-          "PrefeituraCachoeiro.Ioc.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "PrefeituraCachoeiro.Ioc.dll": {}
         }
       },
       "PrefeituraCachoeiro.TratadorControlador/1.0.0": {
@@ -863,10 +854,7 @@
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
-          "PrefeituraCachoeiro.TratadorControlador.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "PrefeituraCachoeiro.TratadorControlador.dll": {}
         }
       }
     }

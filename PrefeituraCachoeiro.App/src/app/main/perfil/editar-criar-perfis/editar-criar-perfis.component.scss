@@ -1,19 +1,22 @@
-.editar-dados-body {
-  background-color: rgba(248, 249, 250, 0.8);
+.perfis-body {
   padding: 1%;
 }
 
-.editar-dados-body span {
+.title-content {
+  width: 100%;
+  height: 10%;
+}
+
+.title-content span{
   font-size: 21px;
 }
 
-.form-body {
-  width: 100%;
+.perfis-body form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 3%;
+  margin-top: 2%;
 }
 
 .group-buttons {
@@ -22,4 +25,9 @@
   width: 100%;
   margin-top: 2%;
   gap: 10px;
+}
+
+.group-buttons button {
+  width: 10%;
+  color: #f0f0f0;
 }

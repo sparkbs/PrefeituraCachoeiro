@@ -812,10 +812,7 @@
       "System.Threading.Tasks.Extensions/4.5.1": {},
       "PrefeituraCachoeiro.Compartilhado/1.0.0": {
         "runtime": {
-          "PrefeituraCachoeiro.Compartilhado.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "PrefeituraCachoeiro.Compartilhado.dll": {}
         }
       },
       "PrefeituraCachoeiro.Dados/1.0.0": {
@@ -827,10 +824,7 @@
           "PrefeituraCachoeiro.Dominio": "1.0.0"
         },
         "runtime": {
-          "PrefeituraCachoeiro.Dados.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "PrefeituraCachoeiro.Dados.dll": {}
         }
       },
       "PrefeituraCachoeiro.Dominio/1.0.0": {
@@ -840,10 +834,7 @@
           "PrefeituraCachoeiro.TratadorControlador": "1.0.0"
         },
         "runtime": {
-          "PrefeituraCachoeiro.Dominio.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "PrefeituraCachoeiro.Dominio.dll": {}
         }
       },
       "PrefeituraCachoeiro.TratadorControlador/1.0.0": {
@@ -853,10 +844,7 @@
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
-          "PrefeituraCachoeiro.TratadorControlador.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "PrefeituraCachoeiro.TratadorControlador.dll": {}
         }
       }
     }

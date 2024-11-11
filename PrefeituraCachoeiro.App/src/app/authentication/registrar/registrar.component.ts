@@ -13,7 +13,7 @@ export class RegistrarComponent {
   }
 
   onSubmit() {
-    this._router.navigate(['/main/home']);
+    this._router.navigate(['']);
   }
 
   onReturn() {

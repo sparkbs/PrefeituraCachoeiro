@@ -30,13 +30,6 @@
         </span>
       </button>
 
-      <button [routerLink]="['/main/relatorioProjetosPorMedicao']">
-        <span>
-          <mat-icon>dashboard</mat-icon>
-          <span>Relatorios Medição</span>
-        </span>
-      </button>
-
       <button (click)="toggleRelatorios()">
         <span class="menu">
           <div>
@@ -51,9 +44,7 @@
       </button>
 
       <div *ngIf="relatoriosExpanded" class="submenu">
-        <button [routerLink]="['/main/relatorios/relatorio1']">Relatório 1</button>
-        <button [routerLink]="['/main/relatorios/relatorio2']">Relatório 2</button>
-        <button [routerLink]="['/main/relatorios/relatorio3']">Relatório 3</button>
+        <button [routerLink]="['/main/relatorioProjetosPorMedicao']">Medições</button>
       </div>
     </nav>
   </aside>

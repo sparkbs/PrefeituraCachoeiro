@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { EditarDadosComponent } from './editar-dados/editar-dados.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -8,13 +7,14 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./perfil.component.scss']
 })
 export class PerfilComponent {
+  visiblePerfis: boolean = false;
 
   constructor(public dialog: MatDialog){}
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(EditarDadosComponent, {
-      width: window.innerWidth >= 1450 ? '50%' : '50%',
-      data: {  }
-    });
+  }
+
+  openPerfis() {
+    this.visiblePerfis = !this.visiblePerfis;
   }
 }
