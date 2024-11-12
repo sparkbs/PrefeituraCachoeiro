@@ -290,23 +290,118 @@
                   Ao expandir, devem ser exibidos todos os projetos medidos na "Medição 2"
                 </mat-panel-description>
               </mat-expansion-panel-header>
-              <div class="rounded-shadow-div">
-                <h3> Córrego seco</h3>
+                    <div class="rounded-shadow-div" style="font-size: 15px;">
+                      <h3> Resumo Medição 2</h3>
+                    </div>            
+                    <div class="list-container">                
+                      <div>
+                        <mat-list>
+                          <mat-list-item>
+                            <span matListItemTitle>Engenheiro Consultor </span>
+                            <span matListItemLine>30</span>
+                          </mat-list-item>
+                          <mat-list-item>
+                            <span matListItemTitle>Engenheiro/Arquiteto Consultor</span>
+                            <span>15</span>
+                          </mat-list-item>
+                          <mat-list-item>
+                            <span matListItemTitle>Engenheiro/Arquiteto Junior</span>
+                            <span>30</span>
+                          </mat-list-item>
+                        </mat-list>
+                      </div>
+                      <div>
+                        <mat-list>
+                          <mat-list-item>
+                            <span matListItemTitle>Desenhista Projetista</span>
+                            <span matListItemLine>55</span>
+                          </mat-list-item>
+                          <mat-list-item>
+                            <span matListItemTitle>Desenhista Cadista</span>
+                            <span>24</span>
+                          </mat-list-item>
+                          <mat-list-item>
+                            <span matListItemTitle>Desenhista Copista</span>
+                            <span>39</span>
+                          </mat-list-item>
+                        </mat-list>
+                      </div>
+                      <div>
+                        <mat-list>
+                          <mat-list-item>
+                            <span matListItemTitle>Auxiliar Administrativo Sênior</span>
+                            <span matListItemLine>45</span>
+                          </mat-list-item>
+                          <mat-list-item>
+                            <span matListItemTitle>Auxiliar Administrativo Intermediário</span>
+                            <span>47</span>
+                          </mat-list-item>
+                          <mat-list-item>
+                            <span matListItemTitle>Auxiliar Administrativo Junior</span>
+                            <span>13</span>
+                          </mat-list-item>
+                        </mat-list>
+                      </div>
+                      <div>
+                        <mat-list>
+                          <mat-list-item>
+                            <span matListItemTitle>Técnico Senior</span>
+                            <span matListItemLine>20</span>
+                          </mat-list-item>
+                          <mat-list-item>
+                            <span matListItemTitle>Técnico Intermediário</span>
+                            <span>37</span>
+                          </mat-list-item>
+                          <mat-list-item>
+                            <span matListItemTitle>Técnico Junior</span>
+                            <span>21</span>
+                          </mat-list-item>
+                        </mat-list>
+                      </div>
+                      <div>
+                        <mat-list>
+                          <mat-list-item>
+                            <span matListItemTitle>Projeto Eletrico</span>
+                            <span matListItemLine>0</span>
+                          </mat-list-item>
+                          <mat-list-item>
+                            <span matListItemTitle>Projeto de irrigação</span>
+                            <span>42</span>
+                          </mat-list-item>
+                          <mat-list-item>
+                            <span matListItemTitle>Projeto de ar condicionado</span>
+                            <span>9</span>
+                          </mat-list-item>
+                        </mat-list>
+                      </div>
+                    </div>
+                    <div style="font-weight: bold; margin-left: 16px; font-size: 17px;color: black;">
+                      <span>Valor Total: R$ 6.000.000,00</span>
+                    </div>
+          
+              <div class="container rounded-shadow-div" style="margin-top: 50px;">
+                <h3 class="texto"> Córrego seco</h3>
+                <button mat-button mat-stroked-button style="margin-right: 16px; padding-right: 0px;" (click)="editProjeto1()">
+                  <mat-icon class="mat-icon">edit</mat-icon>
+                </button>
               </div>
               <div class="list-container">                
                 <div>
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Engenheiro Consultor </span>
-                      <span matListItemLine>2</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">2</span>
+                      <input matInput style="margin-top: 5px;" [value]=2 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Engenheiro/Arquiteto Consultor</span>
-                      <span>12</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">12</span>
+                      <input matInput style="margin-top: 5px;" [value]=12 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Engenheiro/Arquiteto Junior</span>
-                      <span>11</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">11</span>
+                      <input matInput style="margin-top: 5px;" [value]=11 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -314,15 +409,18 @@
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Desenhista Projetista</span>
-                      <span matListItemLine>5</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">5</span>
+                      <input matInput style="margin-top: 5px;" [value]=5 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Desenhista Cadista</span>
-                      <span>1</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">1</span>
+                      <input matInput style="margin-top: 5px;" [value]=1 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Desenhista Copista</span>
-                      <span>3</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">3</span>
+                      <input matInput style="margin-top: 5px;" [value]=3 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -330,15 +428,18 @@
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Auxiliar Administrativo Sênior</span>
-                      <span matListItemLine>15</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">15</span>
+                      <input matInput style="margin-top: 5px;" [value]=15 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Auxiliar Administrativo Intermediário</span>
-                      <span>9</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">9</span>
+                      <input matInput style="margin-top: 5px;" [value]=9 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Auxiliar Administrativo Junior</span>
-                      <span>1</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">1</span>
+                      <input matInput style="margin-top: 5px;" [value]=1 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -346,15 +447,18 @@
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Técnico Senior</span>
-                      <span matListItemLine>0</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">0</span>
+                      <input matInput style="margin-top: 5px;" [value]=0 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Técnico Intermediário</span>
-                      <span>1</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">1</span>
+                      <input matInput style="margin-top: 5px;" [value]=1 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Técnico Junior</span>
-                      <span>7</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">7</span>
+                      <input matInput style="margin-top: 5px;" [value]=7 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -362,41 +466,56 @@
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Projeto Eletrico</span>
-                      <span matListItemLine>0</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">0</span>
+                      <input matInput style="margin-top: 5px;" [value]=0 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Projeto de irrigação</span>
-                      <span>4</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">4</span>
+                      <input matInput style="margin-top: 5px;" [value]=4 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Projeto de ar condicionado</span>
-                      <span>3</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto1 ? 'block' : 'none'">3</span>
+                      <input matInput style="margin-top: 5px;" [value]=3 [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
               </div>
-
-              <div style="font-weight: bold; margin-left: 16px; font-size: 17px;margin-bottom: 10px;">
+              <div style="font-weight: bold; font-size: 17px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px;">
                 <span>Valor Total: R$ 1.000.000,00</span>
+                <mat-form-field>
+                  <mat-label>Status</mat-label>
+                  <mat-select>
+                    <mat-option value="Medido">Medido</mat-option>
+                    <mat-option value="Solicitado">Solicitado</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <button mat-button [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'" style="background-color: royalblue; color: white;">Salvar</button>
               </div>
 
-              <div class="rounded-shadow-div">
-                <h3> Arrojado</h3>
-              </div>
+              <div class="container rounded-shadow-div" style="margin-top: 15px;">
+                <h3 class="texto"> Arrojado</h3>
+                <button mat-button mat-stroked-button style="margin-right: 16px; padding-right: 0px;" (click)="editProjeto2()">
+                  <mat-icon class="mat-icon">edit</mat-icon>
+                </button>              </div>
               <div class="list-container">                
                 <div>
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Engenheiro Consultor </span>
-                      <span matListItemLine>5</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">5</span>
+                      <input matInput style="margin-top: 5px;" [value]=5 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Engenheiro/Arquiteto Consultor</span>
-                      <span>1</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">1</span>
+                      <input matInput style="margin-top: 5px;" [value]=1 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Engenheiro/Arquiteto Junior</span>
-                      <span>18</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">18</span>
+                      <input matInput style="margin-top: 5px;" [value]=18 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -404,15 +523,18 @@
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Desenhista Projetista</span>
-                      <span matListItemLine>25</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">25</span>
+                      <input matInput style="margin-top: 5px;" [value]=25 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Desenhista Cadista</span>
-                      <span>12</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">12</span>
+                      <input matInput style="margin-top: 5px;" [value]=12 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Desenhista Copista</span>
-                      <span>23</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">23</span>
+                      <input matInput style="margin-top: 5px;" [value]=23 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -420,15 +542,18 @@
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Auxiliar Administrativo Sênior</span>
-                      <span matListItemLine>15</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">15</span>
+                      <input matInput style="margin-top: 5px;" [value]=15 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Auxiliar Administrativo Intermediário</span>
-                      <span>29</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">29</span>
+                      <input matInput style="margin-top: 5px;" [value]=29 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Auxiliar Administrativo Junior</span>
-                      <span>11</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">11</span>
+                      <input matInput style="margin-top: 5px;" [value]=11 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -436,15 +561,18 @@
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Técnico Senior</span>
-                      <span matListItemLine>10</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">10</span>
+                      <input matInput style="margin-top: 5px;" [value]=10 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Técnico Intermediário</span>
-                      <span>15</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">15</span>
+                      <input matInput style="margin-top: 5px;" [value]=15 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Técnico Junior</span>
-                      <span>7</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">7</span>
+                      <input matInput style="margin-top: 5px;" [value]=7 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -452,41 +580,57 @@
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Projeto Eletrico</span>
-                      <span matListItemLine>0</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">0</span>
+                      <input matInput style="margin-top: 5px;" [value]=0 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Projeto de irrigação</span>
-                      <span>24</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">24</span>
+                      <input matInput style="margin-top: 5px;" [value]=24 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Projeto de ar condicionado</span>
-                      <span>3</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto2 ? 'block' : 'none'">3</span>
+                      <input matInput style="margin-top: 5px;" [value]=3 [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
               </div>
-
-              <div style="font-weight: bold; margin-left: 16px; font-size: 17px;margin-bottom: 10px;">
+              <div style="font-weight: bold; font-size: 17px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px;">
                 <span>Valor Total: R$ 2.000.000,00</span>
+                <mat-form-field>
+                  <mat-label>Status</mat-label>
+                  <mat-select>
+                    <mat-option value="Medido">Medido</mat-option>
+                    <mat-option value="Solicitado">Solicitado</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <button mat-button [style.display]="alterarMedicaoProjeto2 ? 'block' : 'none'" style="background-color: royalblue; color: white;">Salvar</button>
               </div>
 
-              <div class="rounded-shadow-div">
-                <h3> Grota II</h3>
+              <div class="container rounded-shadow-div" style="margin-top: 15px;">
+                <h3 class="texto"> Grota II</h3>
+                <button mat-button mat-stroked-button style="margin-right: 16px; padding-right: 0px;" (click)="editProjeto3()">
+                  <mat-icon class="mat-icon">edit</mat-icon>
+                </button>
               </div>
               <div class="list-container">                
                 <div>
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Engenheiro Consultor </span>
-                      <span matListItemLine>23</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">23</span>
+                      <input matInput style="margin-top: 5px;" [value]=23 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Engenheiro/Arquiteto Consultor</span>
-                      <span>2</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">2</span>
+                      <input matInput style="margin-top: 5px;" [value]=2 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Engenheiro/Arquiteto Junior</span>
-                      <span>1</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">1</span>
+                      <input matInput style="margin-top: 5px;" [value]=1 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -494,15 +638,18 @@
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Desenhista Projetista</span>
-                      <span matListItemLine>25</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">25</span>
+                      <input matInput style="margin-top: 5px;" [value]=25 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Desenhista Cadista</span>
-                      <span>11</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">11</span>
+                      <input matInput style="margin-top: 5px;" [value]=11 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Desenhista Copista</span>
-                      <span>13</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">13</span>
+                      <input matInput style="margin-top: 5px;" [value]=13 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -510,15 +657,18 @@
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Auxiliar Administrativo Sênior</span>
-                      <span matListItemLine>15</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">15</span>
+                      <input matInput style="margin-top: 5px;" [value]=15 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Auxiliar Administrativo Intermediário</span>
-                      <span>9</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">9</span>
+                      <input matInput style="margin-top: 5px;" [value]=9 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Auxiliar Administrativo Junior</span>
-                      <span>1</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">1</span>
+                      <input matInput style="margin-top: 5px;" [value]=1 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -526,15 +676,18 @@
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Técnico Senior</span>
-                      <span matListItemLine>10</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">10</span>
+                      <input matInput style="margin-top: 5px;" [value]=10 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Técnico Intermediário</span>
-                      <span>21</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">21</span>
+                      <input matInput style="margin-top: 5px;" [value]=21 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Técnico Junior</span>
-                      <span>7</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">7</span>
+                      <input matInput style="margin-top: 5px;" [value]=7 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
@@ -542,21 +695,32 @@
                   <mat-list>
                     <mat-list-item>
                       <span matListItemTitle>Projeto Eletrico</span>
-                      <span matListItemLine>0</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">0</span>
+                      <input matInput style="margin-top: 5px;" [value]=0 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Projeto de irrigação</span>
-                      <span>14</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">14</span>
+                      <input matInput style="margin-top: 5px;" [value]=14 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                     <mat-list-item>
                       <span matListItemTitle>Projeto de ar condicionado</span>
-                      <span>3</span>
+                      <span matListItemLine [style.display]="!alterarMedicaoProjeto3 ? 'block' : 'none'">3</span>
+                      <input matInput style="margin-top: 5px;" [value]=3 [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'">
                     </mat-list-item>
                   </mat-list>
                 </div>
               </div>
-              <div style="font-weight: bold; margin-left: 16px; font-size: 17px;">
+              <div style="font-weight: bold; font-size: 17px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px;">
                 <span>Valor Total: R$ 3.000.000,00</span>
+                <mat-form-field>
+                  <mat-label>Status</mat-label>
+                  <mat-select>
+                    <mat-option value="Medido">Medido</mat-option>
+                    <mat-option value="Solicitado">Solicitado</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <button mat-button [style.display]="alterarMedicaoProjeto3 ? 'block' : 'none'" style="background-color: royalblue; color: white;">Salvar</button>
               </div>
             </mat-expansion-panel>
          
@@ -571,7 +735,7 @@
   <mat-card class="card-content" [style.display]="exibir ? 'block' : 'none'">
     <mat-card-header class="rounded-shadow-div">
       <div style="font-size: 15px;">
-        <h3> Resumo </h3>
+        <h3> Resumo Todas Medições</h3>
       </div>
     </mat-card-header>
     <mat-card-content>

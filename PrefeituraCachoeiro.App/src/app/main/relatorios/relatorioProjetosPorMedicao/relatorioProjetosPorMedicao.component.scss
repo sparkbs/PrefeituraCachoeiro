@@ -7,6 +7,16 @@
     color: #667799;
   }
 
+  .container {
+    display: flex;
+    justify-content: space-between; /* Alinha o texto à esquerda e o ícone à direita */
+    align-items: center; /* Alinha verticalmente os itens no centro */
+  }
+  
+  .texto {
+    margin-left: 43%;
+  }
+
   .card-content {
     width: 90%;
     height: 90%;
@@ -56,4 +66,9 @@
     text-align: center;        /* Centraliza o texto */
     background-color: #f9f9f9; /* Cor de fundo (opcional) */
     margin: 0 auto;            /* Centraliza horizontalmente */
+  }
+
+  .mat-icon{
+    margin-left: 0px;
+    margin-right: 0px;
   }
