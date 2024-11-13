@@ -7,6 +7,7 @@
         public string? Nome { get; set; }
         public string? Senha { get; set; }
         public List<UsuariosGruposEntidade> Grupos { get; set; }
+        public List<LogStatusMedicaoEntidade> LogStatusMedicao { get; set; }
 
         public UsuariosEntidade(): base()
         {

@@ -12,10 +12,10 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.IdItem).HasColumnName("iditem").IsRequired();
             builder.Property(x => x.Identificador).HasColumnName("identificador").IsRequired().HasColumnType("varchar(50)");
             builder.Property(x => x.Codigo).HasColumnName("codigo").IsRequired().HasColumnType("varchar(50)");
-            builder.Property(x => x.OrigemIdOrigem).HasColumnName("OrigemIdOrigem").IsRequired();
+            builder.Property(x => x.OrigemId).HasColumnName("OrigemIdOrigem").IsRequired();
             builder.Property(x => x.Descricao).HasColumnName("descricao").IsRequired().HasColumnType("varchar(1000)");
             builder.Property(x => x.Unidade).HasColumnName("unidade");
-            builder.Property(x => x.QuantidadeIdQuantidade).HasColumnName("QuantidadeIdQuantidade");
+            builder.Property(x => x.QuantidadeId).HasColumnName("QuantidadeIdQuantidade");
             builder.Property(x => x.ValorSemBdi).HasColumnName("valorsembdi");
             builder.Property(x => x.ValorComBdi).HasColumnName("valorcombdi");
             builder.Property(x => x.ValorTotalComBdi).HasColumnName("valortotalcombdi");
@@ -23,6 +23,16 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.Ordem).HasColumnName("ordem").IsRequired();
             builder.Property(x => x.DataCriacao).HasColumnName("datacriacao").IsRequired();
             builder.Property(x => x.DataDelecao).HasColumnName("datadelecao");
+
+            builder.HasMany(x => x.ItemsContrato)
+                   .WithOne(x => x.Item)
+                   .HasForeignKey(x => x.ItemId)
+                   .HasConstraintName("fk_items_items_contrato");
+
+            builder.HasOne(x => x.Quantidade)
+                   .WithMany(x => x.ItemsQuantidade)
+                   .HasForeignKey(x => x.QuantidadeId)
+                   .HasConstraintName("fk_items_entidade_quantidade");
         }
     }
 }

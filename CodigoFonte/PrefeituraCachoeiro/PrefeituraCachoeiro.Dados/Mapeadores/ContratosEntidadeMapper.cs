@@ -9,7 +9,6 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
         public void Configure(EntityTypeBuilder<ContratosEntidade> builder)
         {
             builder.ToTable("tb_contratos").HasKey(i=> i.IdContrato);
-            builder.Property(x => x.IdContrato).HasColumnName("idcontrato").IsRequired();
             builder.Property(x => x.IdProjeto).HasColumnName("idprojeto").IsRequired();
             builder.Property(x => x.DataContrato).HasColumnName("datacontrato").IsRequired();
             builder.Property(x => x.NumeroContrato).HasColumnName("numerocontrato").IsRequired().HasColumnType("varchar(50)");
@@ -19,11 +18,43 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.ValorSaldoRestante).HasColumnName("valorsaldorestante");
             builder.Property(x => x.DataCriacao).HasColumnName("datacriacao").IsRequired();
             builder.Property(x => x.DataDelecao).HasColumnName("datadelecao");
+            builder.Property(x => x.EmpresaId).HasColumnName("empresaId").IsRequired(false);
+            builder.Property(x => x.Valor).HasColumnName("valor").IsRequired(false);
+            builder.Property(x => x.TipoContratacao).HasColumnName("tipocontratacao").IsRequired(false);
+            builder.Property(x => x.Gerente).HasColumnName("gerente").IsRequired(false).HasColumnType("varchar(200)");
+            builder.Property(x => x.DataTermino).HasColumnName("datatermino").IsRequired(false);
+            builder.Property(x => x.DataInicio).HasColumnName("datainicio").IsRequired(false);
+            builder.Property(x => x.PrefeituraId).HasColumnName("prefeituraId").IsRequired(false);
+
+            builder.Property(x => x.IdContrato)
+                   .HasColumnName("idcontrato")
+                   .ValueGeneratedOnAdd()
+                   .IsRequired();
+
+            builder.HasOne(x => x.Projeto)
+                   .WithMany(x => x.Contratos)
+                   .HasForeignKey(x => x.IdProjeto)
+                   .HasConstraintName("fk_contratos_projetos");
 
             builder.HasMany(x => x.Items)
-                .WithOne(x => x.Contratos)
-                .HasForeignKey(x => x.IdContrato)
-                .HasConstraintName("tb_items_contrato_tb_contratos_fk");
+                   .WithOne(x => x.Contrato)
+                   .HasForeignKey(x => x.ContratosId)
+                   .HasConstraintName("fk_contratos_items");
+
+            builder.HasMany(x => x.MedicoesProjeto)
+                   .WithOne(x => x.Contratos)
+                   .HasForeignKey(x => x.IdContrato)
+                   .HasConstraintName("fk_contratos_medicoesprojeto");
+
+            builder.HasOne(x => x.Empresa)
+                   .WithMany(x => x.Contratos)
+                   .HasForeignKey(x => x.EmpresaId)
+                   .HasConstraintName("fk_contratos_empresas");
+
+            builder.HasOne(x => x.Prefeitura)
+                   .WithMany(x => x.Contratos)
+                   .HasForeignKey(x => x.PrefeituraId)
+                   .HasConstraintName("fk_contratos_prefeituras");
         }
     }
 }

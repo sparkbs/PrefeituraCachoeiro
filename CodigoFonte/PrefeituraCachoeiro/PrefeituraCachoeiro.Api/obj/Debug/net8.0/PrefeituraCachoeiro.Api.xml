@@ -43,6 +43,52 @@
             <response code="200">Retorna id do contrato atualizado</response>
             <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         </member>
+        <member name="T:PrefeituraCachoeiro.Api.Controllers.EmpresaController">
+            <summary>
+            Controller responsável pelo gerenciamento das empresas
+            </summary>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.EmpresaController.#ctor(PrefeituraCachoeiro.Aplicacao.Interfaces.IEmpresaService)">
+            <summary>
+            Construtor parametrizado
+            </summary>
+            <param name="empresaService">Instância de IEmpresaService</param>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.EmpresaController.BuscarPorIdAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retorna uma empresa pelo identificador
+            </summary>
+            <response code="200">Retorna uma empresa pelo identificador</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.EmpresaController.BuscarTodosAsync(PrefeituraCachoeiro.Dados.Filtros.EmpresaFilter,System.Threading.CancellationToken)">
+            <summary>
+            Retorna todas as empresas de acordo com os parâmetros de pesquisa
+            </summary>
+            <response code="200">Retorna uma lista de empresas</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.EmpresaController.InserirAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.CriarEmpresaRequest,System.Threading.CancellationToken)">
+            <summary>
+            Cria uma nova empresa
+            </summary>
+            <response code="200">Retorna id da empresa criada</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.EmpresaController.AtualizarAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.AtualizarEmpresaRequest,System.Threading.CancellationToken)">
+            <summary>
+            Atualiza uma empresa
+            </summary>
+            <response code="200">Retorna id da empresa atualizada</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.EmpresaController.DeletarAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Deleta uma empresa
+            </summary>
+            <response code="200">Retorna uma mensagem da ação executada</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
         <member name="T:PrefeituraCachoeiro.Api.Controllers.GruposController">
             <summary>
             Controller responsável pelo gerenciamento dos grupos
@@ -107,6 +153,60 @@
             <response code="200">Retorna um token de acesso</response>
             <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         </member>
+        <member name="T:PrefeituraCachoeiro.Api.Controllers.MedicoesController">
+            <summary>
+            Controller responsável pelo gerenciamento das medições
+            </summary>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.MedicoesController.#ctor(PrefeituraCachoeiro.Aplicacao.Interfaces.IMedicoesProjetoService,PrefeituraCachoeiro.Aplicacao.Interfaces.IArquivosMedicoesProjetoService)">
+            <summary>
+            Construtor parametrizado
+            </summary>
+            <param name="medicoesProjetoService">Instância de IMedicoesProjetoService</param>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.MedicoesController.BuscarPorIdAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retorna uma medição pelo identificador
+            </summary>
+            <response code="200">Retorna uma medição pelo identificador</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.MedicoesController.BuscarTodosAsync(PrefeituraCachoeiro.Dados.Filtros.MedicoesProjetoFilter,System.Threading.CancellationToken)">
+            <summary>
+            Retorna todas as medições de acordo com os parâmetros de pesquisa
+            </summary>
+            <response code="200">Retorna uma lista de medições</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.MedicoesController.InserirAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.CriarMedicoesProjetoRequest,System.Threading.CancellationToken)">
+            <summary>
+            Cria uma nova medição
+            </summary>
+            <response code="200">Retorna id da medição criado</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.MedicoesController.AprovarAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.RegistrarAprovacaoMedicaoRequest,System.Threading.CancellationToken)">
+            <summary>
+            Aprovar uma medição específica
+            </summary>
+            <response code="200">Retorna sucesso ou a mensagem de erro</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.MedicoesController.BuscarArquivosMedicao(PrefeituraCachoeiro.Dados.Filtros.BuscarArquivosMedicoesProjetoFilter,System.Threading.CancellationToken)">
+            <summary>
+            Buscar os arquivos que foram aprovados junto com a medição
+            </summary>
+            <response code="200">Retorna uma lista de arquivos associados a medição</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.MedicoesController.ReprovarAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.RegistrarReprovacaoMedicaoRequest,System.Threading.CancellationToken)">
+            <summary>
+            Reprovar uma medição específica
+            </summary>
+            <response code="200">Retorna sucesso ou a mensagem de erro</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PrefeituraCachoeiro.Api.Controllers.MedicoesController.AtualizarAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.AtualizarMedicoesProjetoRequest,System.Threading.CancellationToken)" -->
         <member name="T:PrefeituraCachoeiro.Api.Controllers.PermissaoController">
             <summary>
             Controller responsável pelo gerenciamento de permissões de grupos
@@ -137,6 +237,52 @@
             Deleta uma permissão de um determinado grupo
             </summary>
             <response code="200">Retorna uma mensagem de erro</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="T:PrefeituraCachoeiro.Api.Controllers.PrefeituraController">
+            <summary>
+            Controller responsável pelo gerenciamento das prefeituras
+            </summary>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.PrefeituraController.#ctor(PrefeituraCachoeiro.Aplicacao.Interfaces.IPrefeituraService)">
+            <summary>
+            Construtor parametrizado
+            </summary>
+            <param name="prefeituraService">Instância de IPrefeituraService</param>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.PrefeituraController.BuscarPorIdAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retorna uma prefeitura pelo identificador
+            </summary>
+            <response code="200">Retorna uma prefeitura pelo identificador</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.PrefeituraController.BuscarTodosAsync(PrefeituraCachoeiro.Dados.Filtros.PrefeituraFilter,System.Threading.CancellationToken)">
+            <summary>
+            Retorna todas as prefeituras de acordo com os parâmetros de pesquisa
+            </summary>
+            <response code="200">Retorna uma lista de prefeituas</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.PrefeituraController.InserirAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.CriarPrefeituraRequest,System.Threading.CancellationToken)">
+            <summary>
+            Cria uma nova prefeitura
+            </summary>
+            <response code="200">Retorna id da prefeitura criada</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.PrefeituraController.AtualizarAsync(PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.AtualizarPrefeituraRequest,System.Threading.CancellationToken)">
+            <summary>
+            Atualiza uma prefeitura
+            </summary>
+            <response code="200">Retorna id da prefeitura atualizada</response>
+            <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        </member>
+        <member name="M:PrefeituraCachoeiro.Api.Controllers.PrefeituraController.DeletarAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Deleta uma prefeitura
+            </summary>
+            <response code="200">Retorna uma mensagem da ação executada</response>
             <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         </member>
         <member name="T:PrefeituraCachoeiro.Api.Controllers.ProjetoController">

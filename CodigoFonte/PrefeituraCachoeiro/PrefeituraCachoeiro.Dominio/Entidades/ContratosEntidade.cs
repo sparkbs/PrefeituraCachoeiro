@@ -1,6 +1,6 @@
 ﻿namespace PrefeituraCachoeiro.Dominio.Entidades
 {
-    public class ContratosEntidade: EntidadeBase
+    public class ContratosEntidade : EntidadeBase
     {
         public int IdContrato { get; set; }
         public int IdProjeto { get; set; }
@@ -12,6 +12,16 @@
         public decimal? ValorTotalMedido { get; set; }
         public decimal? ValorSaldoRestante { get; set; }
         public List<ItemsContratoEntidade> Items { get; set; }
+        public List<MedicoesProjetoEntidade> MedicoesProjeto { get; set; }
+        public int? EmpresaId { get; set; }
+        public EmpresaEntidade Empresa { get; set; }
+        public decimal? Valor { get; set; }
+        public int? TipoContratacao { get; set; }
+        public string Gerente { get; set; }
+        public DateTime? DataTermino { get; set; }
+        public DateTime? DataInicio { get; set; }
+        public int? PrefeituraId { get; set; }
+        public PrefeituraEntidade Prefeitura { get; set; }
 
         public ContratosEntidade(): base()
         {

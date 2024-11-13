@@ -79,6 +79,15 @@ namespace PrefeituraCachoeiro.Compartilhado {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi encontrado nenhum item de contrato com o identificador informado.
+        /// </summary>
+        public static string IdItemContratoNaoEncontrado {
+            get {
+                return ResourceManager.GetString("IdItemContratoNaoEncontrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O projeto informado já tem contrato criado.
         /// </summary>
         public static string ProjetoJaTemContratoCriado {

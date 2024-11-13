@@ -642,7 +642,10 @@
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
-          "PrefeituraCachoeiro.TratadorControlador.dll": {}
+          "PrefeituraCachoeiro.TratadorControlador.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }

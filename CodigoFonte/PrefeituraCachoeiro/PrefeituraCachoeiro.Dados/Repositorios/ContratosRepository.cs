@@ -18,6 +18,8 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
         {
             var query = _context.ContratosEntidade
                                 .Include(i => i.Projeto)
+                                .Include(i => i.Prefeitura)
+                                .Include(i => i.Empresa)
                                 .Include(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Origem)
                                 .Include(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Quantidade)
                                 .Include(i => i.Items).ThenInclude(i => i.Quantidade).AsQueryable();
@@ -47,6 +49,8 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
         {
             return await _context.ContratosEntidade
                                  .Include(i=> i.Projeto)
+                                 .Include(i=> i.Prefeitura)
+                                 .Include(i=> i.Empresa)
                                  .Include(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Quantidade)
                                  .Include(i=> i.Items).ThenInclude(i=> i.Quantidade)
                                  .FirstOrDefaultAsync(x => x.IdContrato == idContrato && x.DataDelecao == null, cancellationToken);

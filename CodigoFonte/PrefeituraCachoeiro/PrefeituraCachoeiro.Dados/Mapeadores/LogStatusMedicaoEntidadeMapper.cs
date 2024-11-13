@@ -16,6 +16,23 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.IdStatusMedicao).HasColumnName("idstatusmedicao");
             builder.Property(x => x.MotivoStatusMedicao).HasColumnName("motivostatusmedicao").IsRequired(false).HasColumnType("varchar(500)");
             builder.Property(x => x.DataDelecao).HasColumnName("datadelecao");
+            builder.Property(x => x.DataCriacao).HasColumnName("datacriacao").IsRequired();
+
+            builder.HasOne(x => x.MedicoesProjeto)
+                   .WithMany(x => x.LogStatusMedicao)
+                   .HasForeignKey(x => x.IdMedicoesProjeto)
+                   .HasConstraintName("fk_log_status_medicoesprojeto_medicoes_projeto");
+
+            builder.HasOne(x => x.StatusMedicao)
+                   .WithMany(x => x.LogStatusMedicao)
+                   .HasForeignKey(x => x.IdStatusMedicao)
+                   .HasConstraintName("fk_log_status_medicoesprojeto_status_medicao");
+
+            builder.HasOne(x => x.Usuario)
+                   .WithMany(x => x.LogStatusMedicao)
+                   .HasForeignKey(x => x.IdUsuario)
+                   .HasConstraintName("fk_log_status_medicoesprojeto_usuario");
+
         }
     }
 }

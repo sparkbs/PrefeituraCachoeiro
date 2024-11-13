@@ -119,7 +119,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 grupoFound.Delete();
                 await _gruposRepository.DeletarAsync(grupoFound, cancellationToken);
 
-                var result = new DeletarGrupoResponse { Mensagem = Compartilhado.Grupos.GrupoDeletado };
+                var result = new DeletarGrupoResponse(Compartilhado.Grupos.GrupoDeletado);
 
                 return Result<DeletarGrupoResponse>.Success(result);
             }

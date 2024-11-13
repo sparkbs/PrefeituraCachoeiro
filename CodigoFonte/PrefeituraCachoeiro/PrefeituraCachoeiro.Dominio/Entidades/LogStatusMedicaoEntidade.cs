@@ -11,5 +11,10 @@
         public int IdStatusMedicao { get; set; }
         public StatusMedicaoEntidade StatusMedicao { get; set; }
         public string? MotivoStatusMedicao { get; set; }
+
+        public LogStatusMedicaoEntidade(): base()
+        {
+            this.Create();
+        }
     }
 }

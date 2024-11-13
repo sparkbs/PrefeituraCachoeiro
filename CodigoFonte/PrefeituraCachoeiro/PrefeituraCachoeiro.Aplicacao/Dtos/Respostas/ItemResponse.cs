@@ -8,11 +8,11 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
         public int IdItem { get; set; }
         public string? Identificador { get; set; }
         public string? Codigo { get; set; }
-        public int IdOrigem { get; set; }
+        public int OrigemId { get; set; }
         public OrigemResponse Origem { get; set; }
         public string? Descricao { get; set; }
         public decimal? Unidade { get; set; }
-        public int? IdQuantidade { get; set; }
+        public int? QuantidadeId { get; set; }
         public QuantidadeResponse Quantidade { get; set; }
         public decimal? ValorSemBdi { get; set; }
         public decimal? ValorComBdi { get; set; }

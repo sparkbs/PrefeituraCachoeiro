@@ -42,8 +42,7 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
         public async Task<ProjetoEntidade?> BuscarPorIdAsync(int id, CancellationToken cancellationToken)
         {
             return await _context.ProjetoEntidade
-                .Include(i=> i.Contratos)
-                .FirstOrDefaultAsync(x => x.IdProjeto == id && x.DataDelecao == null, cancellationToken);
+                                 .FirstOrDefaultAsync(x => x.IdProjeto == id && x.DataDelecao == null, cancellationToken);
         }
 
         public async Task<ProjetoEntidade> InserirAsync(ProjetoEntidade projeto, CancellationToken cancellationToken)

@@ -8,5 +8,17 @@
         public int IdItemContrato { get; set; }
         public ItemsContratoEntidade ItemsContrato { get; set; }
         public decimal Unidade { get; set; }
+
+        public ItemsMedicoesProjetoEntidade() : base()
+        {
+
+            this.Create();
+        }
+
+        public ItemsMedicoesProjetoEntidade(int idItemContrato,decimal unidade): this()
+        {
+           this.IdItemContrato = idItemContrato;
+            this.Unidade = unidade;
+        }
     }
 }

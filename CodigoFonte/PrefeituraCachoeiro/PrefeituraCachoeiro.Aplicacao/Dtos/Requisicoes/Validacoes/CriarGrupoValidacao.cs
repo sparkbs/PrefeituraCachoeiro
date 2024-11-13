@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.Validacoes
 {
-
     [ExcludeFromCodeCoverage]
     public class CriarGrupoValidacao : AbstractValidator<CriarGrupoRequest>
     {

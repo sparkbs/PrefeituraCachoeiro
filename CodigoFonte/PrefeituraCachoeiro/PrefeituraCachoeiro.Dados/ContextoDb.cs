@@ -21,6 +21,11 @@ namespace PrefeituraCachoeiro.Dados
         public DbSet<TipoPermissoesEntidade> TipoPermissoesEntidade { get; set; }
         public DbSet<UsuariosEntidade> UsuariosEntidade { get; set; }
         public DbSet<UsuariosGruposEntidade> UsuariosGruposEntidade { get; set; }
+        public DbSet<PrefeituraEntidade> PrefeituraEntidade { get; set; }
+        public DbSet<EmpresaEntidade> EmpresaEntidade { get; set; }
+        public DbSet<DbSequenceResult> DbSequenceResult { get; set; }
+        public DbSet<ParametrosSistemaEntidade> ParametrosSistema { get; set; }
+        public DbSet<ArquivosMedicoesProjetoEntidade> ArquivosMedicoesProjeto { get; set; }
 
         public ContextoDb(DbContextOptions<ContextoDb> options) : base(options)
         {
@@ -30,6 +35,7 @@ namespace PrefeituraCachoeiro.Dados
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.Entity<DbSequenceResult>().HasNoKey();
         }
     }
 }

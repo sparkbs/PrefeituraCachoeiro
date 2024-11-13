@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Amazon.Extensions.NETCore.Setup;
+using Amazon.S3;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +31,16 @@ namespace PrefeituraCachoeiro.Ioc
                 return new RestClient(clientOptions);
             });
 
+            services.AddDefaultAWSOptions(new AWSOptions
+            {
+                Credentials = new Amazon.Runtime.BasicAWSCredentials(
+                    configuration["AWS:AccessKey"],
+                    configuration["AWS:SecretKey"]
+                ),
+                Region = Amazon.RegionEndpoint.GetBySystemName(configuration["AWS:Region"])
+            });
+
+            services.AddAWSService<IAmazonS3>();
             services.AddSingleton(configuration);
             services.AddScoped<IApplicationUser, ApplicationUser>();
             services.AddScoped<IProjetoService, ProjetoService>();
@@ -41,6 +53,8 @@ namespace PrefeituraCachoeiro.Ioc
             services.AddScoped<ITiposPermissoesService, TiposPermissoesService>();
             services.AddScoped<IContratosService, ContratosService>();
             services.AddScoped<IPermissoesService, PermissoesService>();
+            services.AddScoped<IMedicoesProjetoService, MedicoesProjetoService>();
+            services.AddScoped<IPrefeituraService, PrefeituraService>();
             services.AddDbContext<ContextoDb>(options => options.UseNpgsql(configuration["CONNECTION_STRING"]).EnableDetailedErrors());
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IProjetoRepository, ProjetoRepository>();
@@ -52,6 +66,19 @@ namespace PrefeituraCachoeiro.Ioc
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IContratosRepository, ContratosRepository>();
             services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<IMedicoesProjetoRepository, MedicoesProjetoRepository>();
+            services.AddScoped<ILogStatusMedicaoRepository, LogStatusMedicaoRepository>();
+            services.AddScoped<IItemsMedicoesProjetoRepository, ItemsMedicoesProjetoRepository>();
+            services.AddScoped<IItemsContratoRepository, ItemsContratoRepository>();
+            services.AddScoped<IPrefeituraRepository, PrefeituraRepository>();
+            services.AddScoped<IS3Service, S3Service>();
+            services.AddScoped<IEmpresaRepository, EmpresaRepository>();
+            services.AddScoped<IEmpresaService, EmpresaService>();
+            services.AddScoped<ISequenceService, SequenceService>();
+            services.AddScoped<IParametrosSistemaRepository, ParametrosSistemaRepository>();
+            services.AddScoped<IParametrosSistemaService, ParametrosSistemaService>();
+            services.AddScoped<IArquivosMedicoesProjetoRepository, ArquivosMedicoesProjetoRepository>();
+            services.AddScoped<IArquivosMedicoesProjetoService, ArquivosMedicoesProjetoService>();
         }
     }
 }

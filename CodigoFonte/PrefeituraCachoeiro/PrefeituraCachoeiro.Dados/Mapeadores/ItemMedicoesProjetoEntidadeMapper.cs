@@ -15,6 +15,16 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.Unidade).HasColumnName("unidade").IsRequired();
             builder.Property(x => x.DataCriacao).HasColumnName("datacriacao").IsRequired();
             builder.Property(x => x.DataDelecao).HasColumnName("datadelecao");
+
+            builder.HasOne(x => x.MedicoesProjeto)
+                   .WithMany(x => x.Items)
+                   .HasForeignKey(x => x.IdMedicoesProjeto)
+                   .HasConstraintName("fk_items_medicoesprojeto_medicoes_projeto");
+
+            builder.HasOne(x => x.ItemsContrato)
+                   .WithMany(x => x.ItemsMedicoesProjeto)
+                   .HasForeignKey(x => x.IdItemContrato)
+                   .HasConstraintName("fk_items_medicoesprojeto_item_contrato");
         }
     }
 }

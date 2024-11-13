@@ -29,6 +29,21 @@ namespace PrefeituraCachoeiro.Aplicacao.AutoMapper
             CreateMap<ItemEntidade, ItemResponse>();
             CreateMap<OrigemEntidade, OrigemResponse>();
             CreateMap<QuantidadeEntidade, QuantidadeResponse>();
+            CreateMap<MedicoesProjetoEntidade, CriarMedicoesProjetoResponse>();
+            CreateMap<MedicoesProjetoEntidade, AtualizarMedicoesProjetoResponse>();
+            CreateMap<MedicoesProjetoEntidade, MedicoesProjetoResponse>();
+            CreateMap<ItemsMedicoesProjetoEntidade, ItemsMedicoesProjetoResponse>();
+            CreateMap<StatusMedicaoEntidade, StatusMedicaoResponse>();
+            CreateMap<LogStatusMedicaoEntidade, LogStatusMedicaoResponse>();
+            CreateMap<PrefeituraEntidade, PrefeituraResponse>();
+            CreateMap<EmpresaEntidade, EmpresaResponse>();
+            CreateMap<EmpresaEntidade, CriarEmpresaResponse>();
+            CreateMap<EmpresaEntidade, AtualizarEmpresaResponse>();
+            CreateMap<PrefeituraEntidade, PrefeituraResponse>();
+            CreateMap<PrefeituraEntidade, CriarPrefeituraResponse>();
+            CreateMap<PrefeituraEntidade, AtualizarPrefeituraResponse>();
+            CreateMap<ParametrosSistemaEntidade, ParametrosSistemaResponse>();
+            CreateMap<ArquivosMedicoesProjetoEntidade, ArquivosMedicoesProjetoResponse>();
         }
     }
 }

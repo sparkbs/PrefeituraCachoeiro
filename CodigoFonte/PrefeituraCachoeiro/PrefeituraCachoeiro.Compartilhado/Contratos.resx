@@ -126,4 +126,7 @@
   <data name="ProjetoJaTemContratoCriado" xml:space="preserve">
     <value>O projeto informado já tem contrato criado</value>
   </data>
+  <data name="IdItemContratoNaoEncontrado" xml:space="preserve">
+    <value>Não foi encontrado nenhum item de contrato com o identificador informado</value>
+  </data>
 </root>

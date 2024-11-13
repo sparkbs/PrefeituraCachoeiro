@@ -10,6 +10,13 @@
         public string? Resumo { get; set; }
         public int IdStatusMedicao { get; set; }
         public StatusMedicaoEntidade StatusMedicao { get; set; }
-        public IEnumerable<ItemsMedicoesProjetoEntidade> Items { get; set; }
+        public List<ItemsMedicoesProjetoEntidade> Items { get; set; }
+        public List<LogStatusMedicaoEntidade> LogStatusMedicao { get; set; }
+        public List<ArquivosMedicoesProjetoEntidade> ArquivosMedicoesProjeto { get; set; }
+
+        public MedicoesProjetoEntidade(): base()
+        {
+            this.Create();
+        }
     }
 }

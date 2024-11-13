@@ -1,5 +1,8 @@
-﻿namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes
 {
+    [ExcludeFromCodeCoverage]
     public class CriarPermissoesRequest
     {
         public int TipoPermissaoId { get; set; }

@@ -12,6 +12,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Contratos.resx</DependentUpon>
     </Compile>
+    <Compile Update="Empresa.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Empresa.resx</DependentUpon>
+    </Compile>
     <Compile Update="Grupos.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -22,10 +27,25 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Login.resx</DependentUpon>
     </Compile>
+    <Compile Update="MedicoesProjeto.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MedicoesProjeto.resx</DependentUpon>
+    </Compile>
+    <Compile Update="ParametrosSistema.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ParametrosSistema.resx</DependentUpon>
+    </Compile>
     <Compile Update="Permissao.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Permissao.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Prefeitura.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Prefeitura.resx</DependentUpon>
     </Compile>
     <Compile Update="Projetos.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -49,6 +69,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Contratos.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Empresa.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Empresa.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Grupos.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Grupos.Designer.cs</LastGenOutput>
@@ -57,9 +81,21 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Login.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="MedicoesProjeto.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MedicoesProjeto.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ParametrosSistema.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ParametrosSistema.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Permissao.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Permissao.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Prefeitura.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Prefeitura.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Projetos.resx">
       <Generator>ResXFileCodeGenerator</Generator>

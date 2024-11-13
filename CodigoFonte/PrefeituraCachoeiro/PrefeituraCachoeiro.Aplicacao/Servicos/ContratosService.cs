@@ -12,9 +12,9 @@ using PrefeituraCachoeiro.TratadorControlador.ObjetosValor;
 
 namespace PrefeituraCachoeiro.Aplicacao.Servicos
 {
-    public class ContratosService: IContratosService
+    public class ContratosService : IContratosService
     {
-        private const string QUANTIDADE_M  = @"M";
+        private const string QUANTIDADE_M = @"M";
         private const string QUANTIDADE_M2 = @"M2";
         private const string QUANTIDADE_KM = @"KM";
 
@@ -23,16 +23,18 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
         private readonly IContratosRepository _contratosRepository;
         private readonly IItemRepository _itemRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ISequenceService _sequenceService;
 
-        public ContratosService(IMapper mapper, ILoggerFactory loggerFactory, 
-            IContratosRepository contratosRepository, IItemRepository itemRepository, 
-            IUnitOfWork unitOfWork)
+        public ContratosService(IMapper mapper, ILoggerFactory loggerFactory,
+            IContratosRepository contratosRepository, IItemRepository itemRepository,
+            IUnitOfWork unitOfWork, ISequenceService sequenceService)
         {
             _mapper = mapper;
-            _logger = loggerFactory.CreateLogger<GruposService>();
+            _logger = loggerFactory.CreateLogger<ContratosService>();
             _contratosRepository = contratosRepository;
             _itemRepository = itemRepository;
             _unitOfWork = unitOfWork;
+            _sequenceService = sequenceService;
         }
 
         public async Task<Result<ContratosDataResponse>> BuscarTodosAsync(ContratosFilter filter, CancellationToken cancellationToken)
@@ -57,7 +59,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             var projetoFound = await _contratosRepository.BuscarPorIdAsync(idContrato, cancellationToken);
 
             if (projetoFound is null)
-                return Result<ContratosResponse>.Failure(new NoRecordsError(Compartilhado.Grupos.GrupoIdNaoEncontrado));
+                return Result<ContratosResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.IdContratoNaoEncontrado));
 
             var result = _mapper.Map<ContratosResponse>(projetoFound);
             return Result<ContratosResponse>.Success(result);
@@ -72,8 +74,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 if (!validation.IsValid)
                     return Result<CriarContratoResponse>.Failure(new ValidationError(validation.Errors));
 
-                var _contratoProjeto = await this._contratosRepository.BuscarPorIdProjetoAsync(
-                    requisicao.IdProjeto, cancellationToken);
+                var _contratoProjeto = await this._contratosRepository.BuscarPorIdProjetoAsync(requisicao.IdProjeto, cancellationToken);
 
                 if (_contratoProjeto != null)
                     return Result<CriarContratoResponse>.Failure(new ProjetoJaTemContratoExistenteError(Compartilhado.Contratos.ProjetoJaTemContratoCriado));
@@ -117,7 +118,16 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 try
                 {
                     var _contrato = new ContratosEntidade(requisicao.IdProjeto, requisicao.DataContrato.ToUniversalTime(),
-                        "Contrato1", _totalPrevisto, _totalSolicitado, _totalMedido, _totalRestante);
+                        requisicao.NumeroContrato, _totalPrevisto, _totalSolicitado, _totalMedido, _totalRestante)
+                    {
+                        DataInicio = requisicao.DataInicio.ToUniversalTime(),
+                        DataTermino = requisicao.DataTermino.ToUniversalTime(),
+                        EmpresaId = requisicao.EmpresaId,
+                        Gerente = requisicao.Gerente,
+                        PrefeituraId = requisicao.PrefeituraId,
+                        TipoContratacao = requisicao.TipoContratacao,
+                        Valor = requisicao.Valor
+                    };
 
                     _contrato.Items = new List<ItemsContratoEntidade>();
 
@@ -127,8 +137,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
                         foreach (var _item in _itemProcessarContrato)
                         {
-                            var _itemContrato = new ItemsContratoEntidade( 
-                                _contrato.IdContrato, _item.IdItem, _item.QuantidadeIdQuantidade.Value,
+                            var _itemContrato = new ItemsContratoEntidade(
+                                _contrato.IdContrato, _item.IdItem, _item.QuantidadeId.Value,
                                 _item.Unidade.Value, _item.ValorSemBdi.Value, _item.ValorComBdi.Value,
                                 _item.ValorTotalComBdi.Value);
 
@@ -137,7 +147,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                     }
 
                     _contrato = await _contratosRepository.InserirAsync(_contrato, cancellationToken);
-
                     await _unitOfWork.Commit();
 
                     var result = _mapper.Map<CriarContratoResponse>(_contrato);
@@ -175,6 +184,14 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 contratoFound.DataContrato = requisicao.DataContrato.ToUniversalTime();
                 contratoFound.NumeroContrato = requisicao.NumeroContrato;
                 contratoFound.ValorSaldoRestante = requisicao.ValorSaldoRestante;
+                contratoFound.DataInicio = requisicao.DataInicio.ToUniversalTime();
+                contratoFound.Valor = requisicao.Valor;
+                contratoFound.DataTermino = requisicao.DataTermino.ToUniversalTime();
+                contratoFound.EmpresaId = requisicao.EmpresaId;
+                contratoFound.Gerente = requisicao.Gerente;
+                contratoFound.PrefeituraId = requisicao.PrefeituraId;
+                contratoFound.TipoContratacao = requisicao.TipoContratacao;
+                contratoFound.IdProjeto = requisicao.IdProjeto;
 
                 await _contratosRepository.AtualizarAsync(contratoFound, cancellationToken);
                 var result = _mapper.Map<AtualizarContratosResponse>(contratoFound);

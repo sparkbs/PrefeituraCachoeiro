@@ -6,5 +6,10 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
     public class DeletarGrupoResponse
     {
         public string Mensagem { get; set; } = null!;
+
+        public DeletarGrupoResponse(string mensagem)
+        {
+            this.Mensagem = mensagem;
+        }
     }
 }

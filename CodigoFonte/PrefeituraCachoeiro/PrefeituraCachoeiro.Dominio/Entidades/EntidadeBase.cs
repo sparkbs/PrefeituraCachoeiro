@@ -3,7 +3,7 @@
     public abstract class EntidadeBase
     {
         public DateTime DataCriacao { get; private set; }
-        public DateTime? DataDelecao { get; private set; }
+        public DateTime? DataDelecao { get; set; }
 
         public EntidadeBase()
         {
@@ -17,7 +17,7 @@
 
         public void Delete()
         {
-            DataDelecao = DateTime.UtcNow;
+            DataDelecao = DateTime.Now.ToUniversalTime();
         }
     }
 }
