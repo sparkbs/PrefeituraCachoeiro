@@ -20,6 +20,7 @@ import {MatCardModule} from '@angular/material/card';
 import { PerfilModule } from './main/perfil/perfil.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RelatorioProjetosPorMedicaoModule } from './main/relatorios/relatorioProjetosPorMedicao/relatorioProjetosPorMedicao.component.module';
+import { PrefeituraModule } from './main/prefeitura/prefeitura/prefeitura.module';
 
 @NgModule({
   declarations: [ AppComponent, MainComponent, SidebarComponent, NavbarComponent ],
@@ -40,7 +41,8 @@ import { RelatorioProjetosPorMedicaoModule } from './main/relatorios/relatorioPr
     ConfiguracoesModule,
     MatCardModule,
     PerfilModule,
-    RelatorioProjetosPorMedicaoModule
+    RelatorioProjetosPorMedicaoModule,
+    PrefeituraModule
     
   ],
   providers: [ AuthService ],

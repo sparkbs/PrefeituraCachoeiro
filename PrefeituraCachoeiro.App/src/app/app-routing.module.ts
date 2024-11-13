@@ -10,6 +10,7 @@ import { ConfiguracoesComponent } from './main/configuracoes/configuracoes.compo
 import { PerfilComponent } from './main/perfil/perfil.component';
 import { Editar_criar_contratosComponent } from './main/contratos/editar_criar_contratos/editar_criar_contratos.component';
 import { RelatorioProjetosPorMedicaoComponent } from './main/relatorios/relatorioProjetosPorMedicao/relatorioProjetosPorMedicao.component';
+import { PrefeituraComponent } from './main/prefeitura/prefeitura/prefeitura.component';
 
 const routes: Routes = [
 
@@ -24,7 +25,8 @@ const routes: Routes = [
       { path: 'configuracoes', component: ConfiguracoesComponent },
       { path: 'perfil', component: PerfilComponent},
       { path: 'editarCriarContratos', component: Editar_criar_contratosComponent},
-      { path: 'relatorioProjetosPorMedicao', component: RelatorioProjetosPorMedicaoComponent}
+      { path: 'relatorioProjetosPorMedicao', component: RelatorioProjetosPorMedicaoComponent},
+      { path: 'prefeitura', component: PrefeituraComponent}
     ]
   }
 ];
