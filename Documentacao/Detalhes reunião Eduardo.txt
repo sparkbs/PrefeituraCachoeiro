@@ -1,0 +1,3 @@
+4) No momento de aprovar uma medição deverá ser permitido anexar vários arquivos e estes arquivo serão colocados junto dos demais arquivos da medição e será enviado um e-mail para o financeiro. Deverá ser criado uma tabela de parâmetros no sistema e um dos parâmetros seja o e-mail do financeiro que recebe a aprovação de medições.
+
+O Eduardo irá verificar relativo ao item 11 como será feito a regra "sistema gera previsão de pagamento". Eduardo irá verificar se serão considerados 30 dias ou mais. Criar na tabela de parâmetros um parâmetro para o número de dias de previsão de pagamento. Por padrão criar nessa tabela com o valor de 30.
