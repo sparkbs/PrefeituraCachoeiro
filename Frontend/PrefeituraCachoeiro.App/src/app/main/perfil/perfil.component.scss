@@ -1,0 +1,74 @@
+.perfil-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  height: calc(100vh - 50px);
+}
+
+.card-content {
+  width: 90%;
+  height: 90%;
+  margin-top: 3%;
+  border-radius: 20px;
+}
+
+.card-content mat-card-header {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #000;
+  font-size: 21px !important;
+  color: #000 !important;
+}
+
+.card-content mat-card-header > span {
+  margin-bottom: 1%;
+}
+
+.card-content mat-card-content {
+  margin-top: 2%;
+  height: 100%;
+}
+
+.visiblePerfis{
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  gap: 12px;
+}
+
+.hiddenPerfis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.perfil-content {
+  width: 30%;
+  height: 80%;
+  border: 1px solid #000;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.perfil-content mat-icon {
+  height: 10%;
+}
+
+.perfil-content span {
+  margin-top: 3%;
+}
+
+.perfil-content button {
+  width: 80%;
+  margin-top: 3%;
+}
+
+.edit-perfis {
+  width: 100%;
+}

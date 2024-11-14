@@ -1,0 +1,81 @@
+.register-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100vh;
+  padding-right: 2%;
+  font-family: Arial, Helvetica, sans-serif;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    padding: 2%;
+  }
+
+  @media (max-width: 480px) {
+    justify-content: center;
+  }
+
+  background-image: url('/assets/images-auth/background_authentication.jpg');
+  background-size: cover;
+  background-position: center;
+
+  .card-register {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    padding: 2%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgb(35 92 146 / 37%);
+    background-color: #ffffff;
+
+    @media (max-width: 768px) {
+      width: 80%; // Ocupa mais espaço na tela
+      padding: 5%; // Padding maior para melhor espaçamento
+    }
+
+    @media (max-width: 480px) {
+      width: 90%; // Quase ocupa toda a tela em dispositivos muito pequenos
+    }
+  }
+
+  .form-register {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5%;
+  }
+
+  .logo-content {
+    max-width: 100%;
+    place-content: center;
+    align-items: center;
+    flex: 1 1 100%;
+    box-sizing: border-box;
+    flex-direction: row;
+    display: flex;
+
+    @media (max-width: 1200px) {
+      img {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      img {
+        max-width: 60%;
+      }
+    }
+  }
+
+  .btn-return {
+    margin-top: 3%;
+  }
+
+  p {
+    font-size: 14px;
+    text-align: center;
+
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
+  }
+}

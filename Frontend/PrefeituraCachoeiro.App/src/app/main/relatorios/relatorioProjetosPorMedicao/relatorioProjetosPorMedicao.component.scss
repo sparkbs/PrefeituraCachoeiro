@@ -1,0 +1,74 @@
+.contratos-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #667799;
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between; /* Alinha o texto à esquerda e o ícone à direita */
+    align-items: center; /* Alinha verticalmente os itens no centro */
+  }
+  
+  .texto {
+    margin-left: 43%;
+  }
+
+  .card-content {
+    width: 90%;
+    height: 90%;
+    margin-top: 3%;
+    border-radius: 20px;
+  }
+  
+  .card-content mat-card-header {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #000;
+    font-size: 21px !important;
+    color: #000 !important;
+  }
+  
+  .card-content mat-card-header > span {
+    margin-bottom: 1%;
+  }
+
+  .example-action-buttons {
+    padding-bottom: 20px;
+  }
+  
+  .example-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .example-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
+    margin-left: 8px;
+  }
+  
+  .list-container {
+    display: flex;
+    overflow: auto;
+    margin-bottom: 8px;
+  }
+  
+  .list-container > div {
+    flex: 0.3; /* opcional: para que as listas ocupem o mesmo espaço */
+  }
+  
+  .rounded-shadow-div {
+    border-radius: 15px;       /* Arredonda os cantos da div */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    padding: 1px;             /* Espaço interno */
+    text-align: center;        /* Centraliza o texto */
+    background-color: #f9f9f9; /* Cor de fundo (opcional) */
+    margin: 0 auto;            /* Centraliza horizontalmente */
+  }
+
+  .mat-icon{
+    margin-left: 0px;
+    margin-right: 0px;
+  }

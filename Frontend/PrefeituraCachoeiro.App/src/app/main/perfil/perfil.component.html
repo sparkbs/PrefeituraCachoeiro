@@ -1,0 +1,16 @@
+<div class="perfil-body">
+  <mat-card class="card-content">
+    <mat-card-header><span>Perfil</span></mat-card-header>
+    <mat-card-content [ngClass]="this.visiblePerfis ? 'visiblePerfis' : 'hiddenPerfis'">
+      <div class="perfil-content">
+        <mat-icon>person</mat-icon>
+        <span>Nome</span>
+        <span>Email</span>
+        <span>Grupos</span>
+        <button mat-raised-button color="primary" (click)="openPerfis()">Editar perfis</button>
+      </div>
+
+      <app-tabela-perfis *ngIf="this.visiblePerfis" class="edit-perfis"></app-tabela-perfis>
+    </mat-card-content>
+  </mat-card>
+</div>

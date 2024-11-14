@@ -1,0 +1,68 @@
+.incluir-body {
+  background-color: rgba(248, 249, 250, 0.8);
+  padding: 1%;
+}
+
+.incluir-body span {
+  font-size: 21px;
+}
+
+.form-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3%;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+}
+
+.form-body button {
+  color: #667799;
+  background-color: #f0f0f0;
+}
+
+.cards-medicao {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-height: 230px;
+  overflow-y: auto;
+  gap: 12px;
+  margin-top: 2%;
+  padding-bottom: 1%;
+}
+
+.card-medicao-content {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.card-medicao-content:hover {
+  background: rgba(00, 00, 00, 0.08);
+}
+
+mat-form-field {
+  border-color: #667799 !important;
+}
+
+.group-buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 2%;
+  gap: 10px;
+}
+
+.group-buttons button {
+  width: 10%;
+  color: #f0f0f0;
+}
