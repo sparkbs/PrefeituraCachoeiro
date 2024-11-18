@@ -7,14 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./perfil.component.scss']
 })
 export class PerfilComponent {
-  visiblePerfis: boolean = false;
 
-  constructor(public dialog: MatDialog){}
-
-  openDialog(): void {
-  }
-
-  openPerfis() {
-    this.visiblePerfis = !this.visiblePerfis;
-  }
+  constructor(){}
 }

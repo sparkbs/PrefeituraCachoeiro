@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { EditarCriarPerfisComponent } from '../editar-criar-perfis/editar-criar-perfis.component';
-import { MatDialog } from '@angular/material/dialog';
 
 export interface PeriodicElement {
   name: string;
