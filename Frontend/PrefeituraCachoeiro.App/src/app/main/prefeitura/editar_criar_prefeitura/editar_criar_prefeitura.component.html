@@ -1,0 +1,19 @@
+<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Cadastrar prefeitura</h1>
+<mat-dialog-content class="mat-typography">
+  <div style="margin-top: 20px;">
+    <div>
+      <mat-form-field>
+        <mat-label>Nome prefeitura</mat-label>
+        <input matInput  [(ngModel)]="prefeitura.nomePrefeitura" />
+      </mat-form-field>
+
+      <mat-form-field style="margin-left: 10px;">
+        <mat-label>Data Criação</mat-label>
+        <input matInput [(ngModel)]="prefeitura.criadoEm" />
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions >
+  <button mat-button mat-stroked-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -8px;" (click)="salvar()" cdkFocusInitial>Salvar</button>
+</mat-dialog-actions>

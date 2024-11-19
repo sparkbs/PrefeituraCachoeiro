@@ -7,16 +7,11 @@
           <span>Alterar base de dados</span>
         </button>
         <button>
-          <span (click)="openConfig(3)">Grupos e permissões</span>
-        </button>
-        <button>
-          <span (click)="openConfig(2)">Controle de perfis</span>
+          <span>Grupos e permissões</span>
         </button>
       </div>
       <div class="component">
-        <app-tabela-perfis *ngIf="this.showConfig == 2"></app-tabela-perfis>
-
-        <app-tabela-grupos-permissoes *ngIf="this.showConfig == 3"></app-tabela-grupos-permissoes>
+        Config
       </div>
     </mat-card-content>
   </mat-card>

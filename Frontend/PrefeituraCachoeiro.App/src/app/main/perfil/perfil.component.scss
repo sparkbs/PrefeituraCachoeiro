@@ -27,11 +27,21 @@
 }
 
 .card-content mat-card-content {
+  margin-top: 2%;
+  height: 100%;
+}
+
+.visiblePerfis{
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  gap: 12px;
+}
+
+.hiddenPerfis {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 2%;
-  height: 100%;
 }
 
 .perfil-content {

@@ -1,0 +1,60 @@
+<div class="contratos-body">
+  <mat-card class="card-content">
+      <mat-card-header><span>Prefeitura</span></mat-card-header>
+      <mat-card-content>
+        <div style="margin-top: 10px;">
+          <mat-form-field>
+            <mat-label>Filtro</mat-label>
+            <input matInput (keyup)="applyFilter($event)" #input>
+          </mat-form-field>
+
+          <button mat-button mat-stroked-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -8px;" (click)="openDialog()">
+            <span>Adicionar Prefeitura
+            </span>
+              <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource" matSort>
+        
+            <ng-container matColumnDef="nomePrefeitura">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Prefeitura </th>
+              <td mat-cell *matCellDef="let row"> {{row.nomePrefeitura}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="criadoEm">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Data de Criação </th>
+              <td mat-cell *matCellDef="let row"> {{row.criadoEm}} </td>
+            </ng-container>     
+
+            <ng-container matColumnDef="acoes">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let row">
+                  <button (click)="deletePrefeitura(row.id)">
+                  <span>
+                    <mat-icon>delete</mat-icon>
+                  </span>
+                </button>
+                <button style="margin-left: 5px;" (click)="editPrefeitura(row)">
+                  <span>
+                    <mat-icon>edit</mat-icon>
+                  </span>
+                </button>
+              </td>
+              
+          </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">Nenhum resultado encontrado para o filtro "{{input.value}}"</td>
+            </tr>
+          </table>
+        
+          <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+        </div>
+      </mat-card-content>
+  </mat-card>
+</div>
