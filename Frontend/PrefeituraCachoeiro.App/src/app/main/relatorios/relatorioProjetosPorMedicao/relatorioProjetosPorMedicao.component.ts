@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, inject, OnInit, ViewChild} from '@angular
 import { MatDialog } from '@angular/material/dialog';
 import {MatAccordion} from '@angular/material/expansion';
 import { CadastrarMedicaoComponent } from './cadastrarMedicao/cadastrarMedicao/cadastrarMedicao.component';
+import { ContratosService } from 'src/app/services/contratos.service';
+import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
 
 @Component({
   selector: 'app-relatorioProjetosPorMedicao',
@@ -17,9 +19,17 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   alterarMedicaoProjeto2 = false;
   alterarMedicaoProjeto3 = false;
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef, private readonly api: ContratosService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.buscarListaContratos();
+  }
+
+  async buscarListaContratos(){
+    await this.api.BuscarTodosContratos(new BuscarContratosRequest())
+    .then((result) => {
+      console.log(result);
+    });
   }
 
   buscar(){
