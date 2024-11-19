@@ -12,11 +12,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSelectModule} from '@angular/material/select';
-import { TabelaPerfisComponent } from './tabela-perfis/tabela-perfis.component';
-import { EditarCriarPerfisComponent } from './editar-criar-perfis/editar-criar-perfis.component';
 
 @NgModule({
-  declarations: [ PerfilComponent, TabelaPerfisComponent, EditarCriarPerfisComponent ],
+  declarations: [ PerfilComponent ],
   imports: [
     CommonModule,
     MatCardModule,
