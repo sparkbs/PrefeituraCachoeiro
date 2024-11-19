@@ -1,5 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import {MatAccordion} from '@angular/material/expansion';
+import { CadastrarMedicaoComponent } from './cadastrarMedicao/cadastrarMedicao/cadastrarMedicao.component';
 
 @Component({
   selector: 'app-relatorioProjetosPorMedicao',
@@ -7,6 +9,8 @@ import {MatAccordion} from '@angular/material/expansion';
   styleUrls: ['./relatorioProjetosPorMedicao.component.scss']
 })
 export class RelatorioProjetosPorMedicaoComponent implements OnInit {
+  readonly dialog = inject(MatDialog);
+
   @ViewChild(MatAccordion) accordion!: MatAccordion;
   exibir = false;
   alterarMedicaoProjeto1 = false;
@@ -38,5 +42,9 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
 
   editProjeto3(){
     this.alterarMedicaoProjeto3 = !this.alterarMedicaoProjeto3;
+  }
+  
+  openDialog() {
+    this.dialog.open(CadastrarMedicaoComponent);    
   }
 }
