@@ -39,7 +39,7 @@ export class ContratosComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private readonly api: ContratosService) {
-    this.dataSource = new MatTableDataSource(this.lista);    
+    this.dataSource = new MatTableDataSource(this.lista);
   }
 
   ngAfterViewInit() {
@@ -90,7 +90,7 @@ export class ContratosComponent implements AfterViewInit {
       this.lista.push(result);
       this.dataSource = new MatTableDataSource(this.lista);
       this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;    
+      this.dataSource.sort = this.sort;
     });
   }
 

@@ -1,0 +1,42 @@
+.editar-criar-grupos-permissoes-body {
+  padding: 1%;
+}
+
+.title-content {
+  width: 100%;
+  height: 10%;
+}
+
+.title-content span{
+  font-size: 21px;
+}
+
+.editar-criar-grupos-permissoes-body form {
+  width: 100%;
+}
+
+.nameGroupInput {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+}
+
+.group-buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 2%;
+  gap: 10px;
+}
+
+.module-section {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.module-section div {
+  padding: 8px;
+}

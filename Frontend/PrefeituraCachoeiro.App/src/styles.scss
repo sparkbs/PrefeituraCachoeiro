@@ -2,6 +2,10 @@
 
 @include mat.core();
 
+html, body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 $primary-color: mat.define-palette(mat.$grey-palette, 900);
 $accent-color: mat.define-palette(mat.$red-palette);
 $warn-color: mat.define-palette(mat.$red-palette);

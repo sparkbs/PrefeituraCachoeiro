@@ -1,0 +1,40 @@
+<div class="editar-criar-grupos-permissoes-body">
+  <div class="title-content">
+    <span *ngIf="data.edicao">Editar Grupo e Permissões</span>
+    <span *ngIf="!data.edicao">Adicionar Grupos e Permissões</span>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="nameGroupInput">
+      <mat-form-field  appearance="outline">
+        <mat-label>Nome do grupo</mat-label>
+        <input matInput formControlName="groupName">
+        <mat-error *ngIf="form.get('groupName').hasError('required')">Campo obrigatório!</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="module-section">
+      <div formArrayName="permissions">
+        <div *ngFor="let moduleGroup of form.get('permissions')['controls']; let i = index" [formGroupName]="i">
+          <mat-accordion>
+            <mat-expansion-panel [expanded]="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ modules[i].nameModule }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-checkbox formControlName="access">
+                Permitir Acesso
+              </mat-checkbox>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="group-buttons">
+    <button mat-button (click)="this.dialogRef.close()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="saveForm()">Salvar</button>
+  </div>
+</div>

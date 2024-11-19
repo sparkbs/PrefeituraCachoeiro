@@ -16,9 +16,12 @@ import { EditarCriarPerfisComponent } from './configuracoes-perfil/editar-criar-
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TabelaGruposPermissoesComponent } from './configuracoes-grupos-permissoes/tabela-grupos-permissoes/tabela-grupos-permissoes.component';
+import { EditarCriarGruposPermissoesComponent } from './configuracoes-grupos-permissoes/editar-criar-grupos-permissoes/editar-criar-grupos-permissoes.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
-  declarations: [ ConfiguracoesComponent, TabelaPerfisComponent, EditarCriarPerfisComponent, TabelaGruposPermissoesComponent ],
+  declarations: [ ConfiguracoesComponent, TabelaPerfisComponent, EditarCriarPerfisComponent, TabelaGruposPermissoesComponent, EditarCriarGruposPermissoesComponent ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -32,7 +35,9 @@ import { TabelaGruposPermissoesComponent } from './configuracoes-grupos-permisso
     MatPaginatorModule,
     MatSelectModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatCheckboxModule,
+    MatExpansionModule
   ]
 })
 export class ConfiguracoesModule { }
