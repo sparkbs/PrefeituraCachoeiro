@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
 import { AtualizarContratoRequest } from '../request/ContratoRequest/atualizarContratoRequest';
-import { AtualizarPrefeituraResponse, PrefeituraDataResponse, PrefeituraResponse } from '../response/prefeituraResponse/prefeituraResponse';
+import { AtualizarPrefeituraResponse, PrefeituraDataResponse, PrefeituraFilter, PrefeituraResponse } from '../response/prefeituraResponse/prefeituraResponse';
 import { AtualizarPrefeituraRequest } from '../request/PrefeituraRequest/AtualizarPrefeituraRequest';
 import { BasePrefeituraRequest } from '../request/PrefeituraRequest/BasePrefeituraRequest';
 
@@ -22,11 +22,11 @@ export class PrefeituraService {
     );
   }
 
-  public async BuscarTodasPrefeituras(nome: string): Promise<GenericResultResponse<PrefeituraDataResponse>> {
+  public async BuscarTodasPrefeituras(filter: PrefeituraFilter): Promise<GenericResultResponse<PrefeituraDataResponse>> {
     return await firstValueFrom(
       this.http.post<GenericResultResponse<PrefeituraDataResponse>>(
         `${Environments.APIUrl}/prefeitura/buscartodos`,
-        nome
+        filter
       )
     );
   }
