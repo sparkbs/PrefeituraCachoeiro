@@ -17,7 +17,7 @@ export class PrefeituraService {
   public async BuscarPrefeitura(id: number) : Promise<GenericResultResponse<PrefeituraResponse>>{
     return await firstValueFrom(
       this.http.get<GenericResultResponse<PrefeituraResponse>>(
-        `${Environments.APIUrl}prefeitura?id=${id}`
+        `${Environments.APIUrl}/prefeitura?id=${id}`
       )
     );
   }

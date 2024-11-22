@@ -1,3 +1,5 @@
+import { BaseFilter } from "../../request/baseFilter";
+
 export class PrefeituraResponse{
     idPrefeitura: number = 0;
     nome: string = '';
@@ -13,12 +15,6 @@ export class PrefeituraDataResponse
 export class AtualizarPrefeituraResponse
 {
     idPrefeitura: number = 0;
-}
-
-export class BaseFilter
-{
-    itemsPorPagina?: number = 0;
-    pagina: number = 0;
 }
 
 export class PrefeituraFilter extends BaseFilter
