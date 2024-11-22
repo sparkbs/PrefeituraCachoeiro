@@ -200,7 +200,6 @@ export class TabelaGruposPermissoesComponent {
   }
 
   removeGroupPermission(id: number) {
-    debugger
     this.listTableGroupPermission = this.listTableGroupPermission.filter(item => item.id !== id);
     this.groupPermission = this.groupPermission.filter(item => item.id !== id);
 

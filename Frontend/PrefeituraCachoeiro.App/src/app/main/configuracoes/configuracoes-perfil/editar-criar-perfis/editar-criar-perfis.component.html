@@ -17,7 +17,7 @@
       <mat-error *ngIf="form.get('email').hasError('required')">Campo obrigatório!</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" *ngIf="!this.data.edicao">
       <mat-label>Senha</mat-label>
       <input matInput formControlName="senha" type="password">
       <mat-error *ngIf="form.get('senha').hasError('required')">Campo obrigatório!</mat-error>
@@ -35,7 +35,7 @@
   </form>
 
   <div class="group-buttons">
-    <button mat-raised-button color="accent" (click)="this.dialogRef.close()">Cancelar</button>
+    <button mat-button (click)="this.dialogRef.close()">Cancelar</button>
     <button mat-raised-button color="primary" (click)="saveForm()">Salvar</button>
   </div>
 </div>

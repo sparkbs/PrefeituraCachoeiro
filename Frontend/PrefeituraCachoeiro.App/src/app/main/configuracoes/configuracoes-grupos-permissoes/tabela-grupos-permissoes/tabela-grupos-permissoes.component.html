@@ -86,17 +86,13 @@
       <ng-container matColumnDef="acoes">
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let element">
-          <button (click)="openEditarCriar(true, element.id)">
-            <span>
+            <span matTooltip="Editar" (click)="openEditarCriar(true, element.id)">
               <mat-icon>edit</mat-icon>
             </span>
-          </button>
 
-          <button (click)="removeGroupPermission(element.id)">
-            <span>
+            <span matTooltip="Remover" (click)="removeGroupPermission(element.id)">
               <mat-icon>delete</mat-icon>
             </span>
-          </button>
         </td>
       </ng-container>
 

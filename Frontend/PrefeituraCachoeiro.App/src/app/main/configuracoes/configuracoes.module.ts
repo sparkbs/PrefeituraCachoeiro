@@ -19,6 +19,7 @@ import { TabelaGruposPermissoesComponent } from './configuracoes-grupos-permisso
 import { EditarCriarGruposPermissoesComponent } from './configuracoes-grupos-permissoes/editar-criar-grupos-permissoes/editar-criar-grupos-permissoes.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [ ConfiguracoesComponent, TabelaPerfisComponent, EditarCriarPerfisComponent, TabelaGruposPermissoesComponent, EditarCriarGruposPermissoesComponent ],
@@ -37,7 +38,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTooltipModule
   ]
 })
 export class ConfiguracoesModule { }

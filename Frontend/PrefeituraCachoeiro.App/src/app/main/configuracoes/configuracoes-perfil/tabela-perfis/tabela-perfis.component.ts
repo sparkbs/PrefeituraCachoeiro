@@ -92,4 +92,10 @@ export class TabelaPerfisComponent {
       this.dataSource.sort = this.sort;
     });
   }
+
+  removePerfil(id: number) {
+    this.perfisData = this.perfisData.filter(res => res.id != id);
+
+    this.dataSource.data = this.perfisData;
+  }
 }

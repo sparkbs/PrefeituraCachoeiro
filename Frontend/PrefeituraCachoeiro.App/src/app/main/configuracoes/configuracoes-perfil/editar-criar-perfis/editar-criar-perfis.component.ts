@@ -12,6 +12,7 @@ export class EditarCriarPerfisComponent implements OnInit {
   grupos: string[] = [
     'gerente',
     'usuario',
+    'administrador'
   ];
   form: FormGroup;
 
@@ -28,7 +29,7 @@ export class EditarCriarPerfisComponent implements OnInit {
       senha: ['', [Validators.required]],
       grupo: ['', [Validators.required]]
     });
-    
+
     if (this.data.edicao) {
       this.form.get('name').setValue(this.data.perfilSend.name);
       this.form.get('email').setValue(this.data.perfilSend.email);
@@ -41,6 +42,7 @@ export class EditarCriarPerfisComponent implements OnInit {
   }
 
   saveForm() {
+    debugger
     if (this.form.invalid) {
       return;
     }
