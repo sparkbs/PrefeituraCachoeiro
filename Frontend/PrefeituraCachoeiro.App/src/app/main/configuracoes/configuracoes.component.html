@@ -7,10 +7,10 @@
           <span>Alterar base de dados</span>
         </button>
         <button>
-          <span (click)="openConfig(3)">Grupos e permissões</span>
+          <span [ngClass]="this.showConfig == 3 ? 'selectOption' : ''" (click)="openConfig(3)">Grupos e permissões</span>
         </button>
         <button>
-          <span (click)="openConfig(2)">Controle de perfis</span>
+          <span [ngClass]="this.showConfig == 2 ? 'selectOption' : ''" (click)="openConfig(2)">Controle de perfis</span>
         </button>
       </div>
       <div class="component">

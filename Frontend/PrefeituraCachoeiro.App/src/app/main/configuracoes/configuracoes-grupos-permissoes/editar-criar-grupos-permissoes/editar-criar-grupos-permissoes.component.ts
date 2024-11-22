@@ -54,7 +54,6 @@ export class EditarCriarGruposPermissoesComponent implements OnInit {
       nameModule: module.nameModule,
       access: module.access
     }));
-    debugger
 
     this.listGroupPermission.id = this.data.groupPermission.id;
     this.listGroupPermission.nameGroup = this.form.get('groupName').value;

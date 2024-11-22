@@ -143,7 +143,6 @@ export class TabelaGruposPermissoesComponent {
   }
 
   openEditarCriar(edicao: boolean = false, id?: number) {
-    debugger
     let groupPermission: GroupPermission = new GroupPermission();
 
     if (edicao) {
@@ -160,7 +159,6 @@ export class TabelaGruposPermissoesComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      debugger
       this.listTableGroupPermission = this.listTableGroupPermission.filter(item => item.id !== result.id);
       this.groupPermission = this.groupPermission.filter(item => item.id !== result.id);
       this.dataSource = new MatTableDataSource();
@@ -193,7 +191,6 @@ export class TabelaGruposPermissoesComponent {
 
       this.groupPermission.push(result);
       this.listTableGroupPermission.push(tableGrouPermission);
-      debugger
 
       this.dataSource = new MatTableDataSource();
       this.dataSource = new MatTableDataSource(this.listTableGroupPermission);

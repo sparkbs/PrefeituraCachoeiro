@@ -4,32 +4,38 @@
     <span *ngIf="!data.edicao">Adicionar Perfil</span>
   </div>
 
-  <form>
+  <form [formGroup]="form">
     <mat-form-field appearance="outline">
       <mat-label>Nome</mat-label>
-      <input matInput >
+      <input matInput formControlName="name">
+      <mat-error *ngIf="form.get('name').hasError('required')">Campo obrigatório!</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
-      <input matInput >
+      <input matInput formControlName="email">
+      <mat-error *ngIf="form.get('email').hasError('required')">Campo obrigatório!</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Senha</mat-label>
-      <input matInput>
+      <input matInput formControlName="senha" type="password">
+      <mat-error *ngIf="form.get('senha').hasError('required')">Campo obrigatório!</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Grupo</mat-label>
-      <mat-select>
-        <mat-option *ngFor="let grupo of grupos" [value]="grupo">{{grupo}}</mat-option>
+      <mat-select formControlName="grupo">
+        <mat-option *ngFor="let grupo of grupos" [value]="grupo">
+          {{grupo}}
+        </mat-option>
       </mat-select>
+      <mat-error *ngIf="form.get('grupo').hasError('required')">Campo obrigatório!</mat-error>
     </mat-form-field>
   </form>
 
   <div class="group-buttons">
-    <button mat-raised-button color="accent">Cancelar</button>
-    <button mat-raised-button color="primary">Salvar</button>
+    <button mat-raised-button color="accent" (click)="this.dialogRef.close()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="saveForm()">Salvar</button>
   </div>
 </div>
