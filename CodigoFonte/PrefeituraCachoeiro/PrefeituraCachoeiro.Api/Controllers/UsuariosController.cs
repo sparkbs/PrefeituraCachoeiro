@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Respostas;
 using PrefeituraCachoeiro.Aplicacao.Interfaces;
@@ -32,7 +33,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UsuariosResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> BuscarPorIdAsync(int id, CancellationToken cancellationToken)
         {
             var response = await _usuariosService.BuscarPorIdAsync(id, cancellationToken);
@@ -49,7 +50,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("buscartodos")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UsuariosDataResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> BuscarTodosAsync([FromBody] UsuariosFilter filtro, CancellationToken cancellationToken)
         {
             var response = await _usuariosService.BuscarTodosAsync(filtro, cancellationToken);
@@ -66,7 +67,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CriarUsuarioResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> InserirAsync([FromForm] CriarUsuarioRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _usuariosService.InserirAsync(requisicao, cancellationToken);
@@ -83,7 +84,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AtualizarUsuarioResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> AtualizarAsync([FromForm] AtualizarUsuarioRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _usuariosService.AtualizarAsync(requisicao, cancellationToken);
@@ -100,7 +101,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeletarUsuarioResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> DeletarAsync(int id, CancellationToken cancellationToken)
         {
             var response = await _usuariosService.DeletarAsync(id, cancellationToken);

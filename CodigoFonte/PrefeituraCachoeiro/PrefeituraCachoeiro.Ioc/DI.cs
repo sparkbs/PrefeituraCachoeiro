@@ -11,6 +11,7 @@ using PrefeituraCachoeiro.Aplicacao.Utils;
 using PrefeituraCachoeiro.Dados;
 using PrefeituraCachoeiro.Dados.Interfaces;
 using PrefeituraCachoeiro.Dados.Repositorios;
+using PrefeituraCachoeiro.Environment;
 using RestSharp;
 using System.Diagnostics.CodeAnalysis;
 
@@ -34,10 +35,10 @@ namespace PrefeituraCachoeiro.Ioc
             services.AddDefaultAWSOptions(new AWSOptions
             {
                 Credentials = new Amazon.Runtime.BasicAWSCredentials(
-                    configuration["AWS:AccessKey"],
-                    configuration["AWS:SecretKey"]
+                    EnvVariables.AwsAccessKey,
+                    EnvVariables.AwsSecretKey
                 ),
-                Region = Amazon.RegionEndpoint.GetBySystemName(configuration["AWS:Region"])
+                Region = Amazon.RegionEndpoint.GetBySystemName(EnvVariables.AwsRegion)
             });
 
             services.AddAWSService<IAmazonS3>();
@@ -48,14 +49,13 @@ namespace PrefeituraCachoeiro.Ioc
             services.AddScoped<ISegurancaService, SegurancaService>();
             services.AddScoped<IUsuariosService, UsuariosService>();
             services.AddScoped<ILoginService, LoginService>();
-            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUsuariosGruposService, UsuariosGruposService>();
             services.AddScoped<ITiposPermissoesService, TiposPermissoesService>();
             services.AddScoped<IContratosService, ContratosService>();
             services.AddScoped<IPermissoesService, PermissoesService>();
             services.AddScoped<IMedicoesProjetoService, MedicoesProjetoService>();
             services.AddScoped<IPrefeituraService, PrefeituraService>();
-            services.AddDbContext<ContextoDb>(options => options.UseNpgsql(configuration["CONNECTION_STRING"]).EnableDetailedErrors());
+            services.AddDbContext<ContextoDb>(options => options.UseNpgsql(EnvVariables.ConnectionString).EnableDetailedErrors());
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IProjetoRepository, ProjetoRepository>();
             services.AddScoped<IGruposRepository, GruposRepository>();

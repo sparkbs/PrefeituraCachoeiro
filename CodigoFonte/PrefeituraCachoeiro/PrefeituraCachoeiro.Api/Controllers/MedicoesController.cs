@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Respostas;
 using PrefeituraCachoeiro.Aplicacao.Interfaces;
@@ -35,7 +36,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MedicoesProjetoResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> BuscarPorIdAsync(int id, CancellationToken cancellationToken)
         {
             var response = await _medicoesProjetoService.BuscarPorIdAsync(id, cancellationToken);
@@ -52,7 +53,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("buscartodos")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MedicoesProjetoDataResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> BuscarTodosAsync([FromBody] MedicoesProjetoFilter filtro, CancellationToken cancellationToken)
         {
             var response = await _medicoesProjetoService.BuscarTodosAsync(filtro, cancellationToken);
@@ -69,7 +70,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("inserir")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CriarMedicoesProjetoResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> InserirAsync([FromBody] CriarMedicoesProjetoRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _medicoesProjetoService.InserirAsync(requisicao, cancellationToken);
@@ -86,7 +87,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("aprovar")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultadoRegistrarAprovacaoMedicaoResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> AprovarAsync([FromForm] RegistrarAprovacaoMedicaoRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _medicoesProjetoService.RegistrarAprovacao(requisicao, cancellationToken);
@@ -103,7 +104,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("buscararquivosmedicao")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ArquivosMedicoesProjetoDataResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> BuscarArquivosMedicao([FromForm] BuscarArquivosMedicoesProjetoFilter requisicao, CancellationToken cancellationToken)
         {
             var response = await _arquivosMedicoesProjetoService.BuscarTodosAsync(requisicao, cancellationToken);
@@ -120,7 +121,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("reprovar")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultadoRegistrarReprovacaoMedicaoResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> ReprovarAsync([FromForm] RegistrarReprovacaoMedicaoRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _medicoesProjetoService.RegistrarReprovacao(requisicao, cancellationToken);
@@ -137,7 +138,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPut("alterar")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AtualizarMedicoesProjetoResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> AtualizarAsync([FromBody] AtualizarMedicoesProjetoRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _medicoesProjetoService.AtualizarAsync(requisicao, cancellationToken);

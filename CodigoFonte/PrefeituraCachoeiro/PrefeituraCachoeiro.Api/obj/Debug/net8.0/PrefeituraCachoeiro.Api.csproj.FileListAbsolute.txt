@@ -394,3 +394,12 @@ C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFo
 C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Api\obj\Debug\net8.0\Prefeitu.E7D62674.Up2Date
 C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Api\obj\Debug\net8.0\PrefeituraCachoeiro.Api.genruntimeconfig.cache
 C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Api\obj\Debug\net8.0\ref\PrefeituraCachoeiro.Api.dll
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Api\bin\Debug\net8.0\PrefeituraCachoeiro.Api.staticwebassets.endpoints.json
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Api\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Api\obj\Debug\net8.0\staticwebassets\msbuild.PrefeituraCachoeiro.Api.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Api\bin\Debug\net8.0\PrefeituraCachoeiro.Environment.dll
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Api\bin\Debug\net8.0\PrefeituraCachoeiro.Environment.pdb
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src2\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

@@ -1,15 +1,28 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using PrefeituraCachoeiro.Api.Auth;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using PrefeituraCachoeiro.Api.Configurations;
 using PrefeituraCachoeiro.Aplicacao.Middlewares;
+using PrefeituraCachoeiro.Environment;
 using PrefeituraCachoeiro.Ioc;
+using System.Text;
 
 namespace PrefeituraCachoeiro.Api
 {
-    public static class Startup
+    public class Startup
     {
-        public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
         {
+            Configuration = configuration;
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddEndpointsApiExplorer();
+            services.AddHttpContextAccessor();
+            services.AddHttpClient();
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigins", builder => builder
@@ -19,22 +32,10 @@ namespace PrefeituraCachoeiro.Api
             });
 
             services.AddControllers();
-            services.AddServices(configuration);
+            services.AddServices(Configuration);
             services.AddControllers(options =>
             {
                 options.Filters.Add<ApplicationUserFilter>();
-            });
-
-
-            services.AddAuthentication("PrefeituraCachoeiroSso")
-               .AddScheme<PrefeituraCachoeiroSsoAuthenticationOptions, PrefeituraCachoeiroSsoAuthenticationHandler>("PrefeituraCachoeiroSso", opts => { });
-
-            services.AddAuthorization(options =>
-            {
-                options.DefaultPolicy = new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes("PrefeituraCachoeiroSso")
-                    .RequireAuthenticatedUser()
-                    .Build();
             });
 
             services.AddSwaggerConfiguration();
@@ -43,25 +44,57 @@ namespace PrefeituraCachoeiro.Api
                 options.LowercaseUrls = true;
             });
 
-            return services;
-        }
+            var appSettings = Configuration.GetSection("configuracoes").Get<AppSettings>();
+            services.AddSingleton(appSettings);
 
-        public static WebApplication Configure(this WebApplication app)
-        {
-            app.UseCors("AllowSpecificOrigins");
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
+            services.AddAuthentication(opt =>
             {
-                options.DocumentTitle = "Prefeitura de Cachoeiro - Gestor de Medições de Projetos";
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = appSettings.TokenConfiguration.Issuer,
+                    ValidAudience = appSettings.TokenConfiguration.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.TokenConfiguration.Secret))
+                };
             });
 
-            app.UseRouting();
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.MapControllers();
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy(JwtBearerDefaults.AuthenticationScheme, new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build());
+            });
+        }
 
-            return app;
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.DocumentTitle = "Prefeitura de Cachoeiro - Gestor de Medições de Projetos";
+                });
+            }
+
+            app.UseCors("AllowSpecificOrigins");
+            app.UseAuthentication();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseMiddleware(typeof(CustomSecurityHeader));
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

@@ -3,13 +3,13 @@ using Amazon.S3.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using PrefeituraCachoeiro.Aplicacao.Interfaces;
+using PrefeituraCachoeiro.Environment;
 
 namespace PrefeituraCachoeiro.Aplicacao.Servicos
 {
     public class S3Service: IS3Service
     {
         private readonly IAmazonS3 _s3Client;
-        private const string BUCKET_KEY = "bucketimageslogos";
         private readonly string _bucketName;
         private readonly IConfiguration _configuration;
 
@@ -17,7 +17,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
         {
             _s3Client = s3Client;
             _configuration = configuration;
-            _bucketName = _configuration[BUCKET_KEY];
+            _bucketName =  EnvVariables.BucketImagesLogos;
         }
 
         public async Task<string> UploadLogoAsync(IFormFile logo)

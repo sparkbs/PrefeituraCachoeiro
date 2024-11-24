@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Respostas;
 using PrefeituraCachoeiro.Aplicacao.Interfaces;
@@ -31,7 +32,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("BuscarPermissoesPorGrupoId")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<TiposPermissoesResponse>))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> BuscarPermissoesPorGrupoIdAsync([FromBody] CriarBuscarPermissoesPorGrupoIdRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _permissoesService.BuscarPermissoesPorGrupoIdAsync(requisicao, cancellationToken);
@@ -48,7 +49,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("inserir")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CriarPermissoesResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> InserirAsync([FromForm] CriarPermissoesRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _permissoesService.InserirAsync(requisicao, cancellationToken);
@@ -65,7 +66,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("deletar")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeletarPermissaoResponse))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> DeletarAsync([FromForm] DeletarPermissaoRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _permissoesService.DeletarAsync(requisicao, cancellationToken);
