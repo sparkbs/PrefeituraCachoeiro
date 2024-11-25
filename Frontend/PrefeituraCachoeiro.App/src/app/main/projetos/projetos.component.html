@@ -1,95 +1,68 @@
 <div class="projetos-body">
   <mat-card class="card-content">
     <mat-card-header><span>Projetos</span></mat-card-header>
-    <mat-card-content>
-      <div class="buttons-content">
-        <button mat-raised-button (click)="openDialog()">
-          <mat-icon>add</mat-icon>
-        </button>
-        <button mat-raised-button>
-          <mat-icon>search</mat-icon>
+    <div class="table-body">
+      <div>
+        <mat-form-field>
+          <mat-label>Filtro</mat-label>
+          <input matInput (keyup)="applyFilter($event)" #input>
+        </mat-form-field>
+
+        <button mat-button mat-stroked-button class="button-add" (click)="openEditarCriar()">
+          <span>Adicionar projeto</span>
+            <mat-icon>add</mat-icon>
         </button>
       </div>
 
-      <div class="grid-content">
-        <div class="group-cards">
-          <mat-card>
-            <mat-card-content>
-              <div>
-                <span>Nome Projeto</span>
-              </div>
-            </mat-card-content>
-          </mat-card>
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" class="table">
 
-          <mat-card>
-            <mat-card-content>
-              <div>
-                <span>Nome Projeto2</span>
-              </div>
-            </mat-card-content>
-          </mat-card>
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef> Nome </th>
+            <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
+          </ng-container>
 
-          <mat-card>
-            <mat-card-content>
-              <div>
-                <span>Nome Projeto3</span>
-              </div>
-            </mat-card-content>
-          </mat-card>
+          <ng-container matColumnDef="contrato">
+            <th mat-header-cell *matHeaderCellDef> Contrato </th>
+            <td mat-cell *matCellDef="let element"> {{element.contrato}} </td>
+          </ng-container>
 
-          <mat-card>
-            <mat-card-content>
-              <div>
-                <span>Nome Projeto4</span>
-              </div>
-            </mat-card-content>
-          </mat-card>
+          <ng-container matColumnDef="prefeitura">
+            <th mat-header-cell *matHeaderCellDef> Prefeitura </th>
+            <td mat-cell *matCellDef="let element"> {{element.prefeitura}} </td>
+          </ng-container>
 
-          <mat-card>
-            <mat-card-content>
-              <div>
-                <span>Nome Projeto5</span>
-              </div>
-            </mat-card-content>
-          </mat-card>
+          <ng-container matColumnDef="recursos">
+            <th mat-header-cell *matHeaderCellDef> Recursos </th>
+            <td mat-cell *matCellDef="let element">
+              <span matTooltip="Ver recursos">
+                <mat-icon>table_chart</mat-icon>
+              </span>
+            </td>
+          </ng-container>
 
-          <mat-card>
-            <mat-card-content>
-              <div>
-                <span>Nome Projeto6</span>
-              </div>
-            </mat-card-content>
-          </mat-card>
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element">
+              <span matTooltip="Editar" (click)="openEditarCriar(true)">
+                <mat-icon>edit</mat-icon>
+              </span>
 
-          <mat-card>
-            <mat-card-content>
-              <div>
-                <span>Nome Projeto7</span>
-              </div>
-            </mat-card-content>
-          </mat-card>
+              <span matTooltip="Remover">
+                <mat-icon>delete</mat-icon>
+              </span>
+            </td>
+          </ng-container>
 
-          <mat-card>
-            <mat-card-content>
-              <div>
-                <span>Nome Projeto8</span>
-              </div>
-            </mat-card-content>
-          </mat-card>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
 
-          <mat-card>
-            <mat-card-content>
-              <div>
-                <span>Nome Projeto9</span>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
-
-        <div class="projeto-content">
-          <app-incluir-editar-projeto></app-incluir-editar-projeto>
-        </div>
+        <mat-paginator [pageSizeOptions]="[5, 7]"
+                       showFirstLastButtons
+                       aria-label="Select page of periodic elements">
+        </mat-paginator>
       </div>
-    </mat-card-content>
+    </div>
   </mat-card>
 </div>

@@ -1,0 +1,39 @@
+<div class="editar-criar-body">
+  <div class="title-content">
+    <span *ngIf="data.edicao">Editar Projeto</span>
+    <span *ngIf="!data.edicao">Adicionar Projeto</span>
+  </div>
+
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Prefeitura</mat-label>
+      <mat-select formControlName="grupo">
+        <mat-option *ngFor="let prefeitura of prefeituras" [value]="prefeituras">
+          {{prefeitura}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('prefeitura').hasError('required')">Campo obrigatório!</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Contrato</mat-label>
+      <mat-select formControlName="grupo">
+        <mat-option *ngFor="let contrato of contratos" [value]="contratos">
+          {{contrato}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('prefeitura').hasError('required')">Campo obrigatório!</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="nome">
+      <mat-error *ngIf="form.get('nome').hasError('required')">Campo obrigatório!</mat-error>
+    </mat-form-field>
+  </form>
+
+  <div class="group-buttons">
+    <button mat-button (click)="this.dialogRef.close()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="saveForm()">Salvar</button>
+  </div>
+</div>
