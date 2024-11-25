@@ -17,6 +17,7 @@
           "PrefeituraCachoeiro.Compartilhado": "1.0.0",
           "PrefeituraCachoeiro.Dados": "1.0.0",
           "PrefeituraCachoeiro.Dominio": "1.0.0",
+          "PrefeituraCachoeiro.Environment": "1.0.0",
           "PrefeituraCachoeiro.TratadorControlador": "1.0.0",
           "System.IdentityModel.Tokens.Jwt": "8.1.1"
         },
@@ -867,6 +868,14 @@
           }
         }
       },
+      "PrefeituraCachoeiro.Environment/1.0.0": {
+        "runtime": {
+          "PrefeituraCachoeiro.Environment.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "PrefeituraCachoeiro.TratadorControlador/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
@@ -1473,6 +1482,11 @@
       "sha512": ""
     },
     "PrefeituraCachoeiro.Dominio/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PrefeituraCachoeiro.Environment/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -20,6 +20,7 @@
     <ProjectReference Include="..\PrefeituraCachoeiro.Compartilhado\PrefeituraCachoeiro.Compartilhado.csproj" />
     <ProjectReference Include="..\PrefeituraCachoeiro.Dados\PrefeituraCachoeiro.Dados.csproj" />
     <ProjectReference Include="..\PrefeituraCachoeiro.Dominio\PrefeituraCachoeiro.Dominio.csproj" />
+    <ProjectReference Include="..\PrefeituraCachoeiro.Environment\PrefeituraCachoeiro.Environment.csproj" />
     <ProjectReference Include="..\PrefeituraCachoeiro.TratadorControlador\PrefeituraCachoeiro.TratadorControlador.csproj" />
   </ItemGroup>
 

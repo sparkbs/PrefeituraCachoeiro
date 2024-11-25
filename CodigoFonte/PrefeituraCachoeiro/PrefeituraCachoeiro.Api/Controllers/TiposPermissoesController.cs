@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Respostas;
 using PrefeituraCachoeiro.Aplicacao.Interfaces;
 using PrefeituraCachoeiro.Dominio.Extensoes;
@@ -30,7 +31,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpGet("buscartodos")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<TiposPermissoesResponse>))]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> BuscarTodosAsync(CancellationToken cancellationToken)
         {
             var response = await _tiposPermissoesService.BuscarTodosAsync(cancellationToken);

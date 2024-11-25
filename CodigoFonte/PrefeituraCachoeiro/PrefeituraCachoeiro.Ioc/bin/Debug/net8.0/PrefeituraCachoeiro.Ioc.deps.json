@@ -14,6 +14,7 @@
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.1",
           "PrefeituraCachoeiro.Aplicacao": "1.0.0",
+          "PrefeituraCachoeiro.Environment": "1.0.0",
           "RestSharp": "112.1.0"
         },
         "runtime": {
@@ -859,6 +860,7 @@
           "PrefeituraCachoeiro.Compartilhado": "1.0.0",
           "PrefeituraCachoeiro.Dados": "1.0.0",
           "PrefeituraCachoeiro.Dominio": "1.0.0",
+          "PrefeituraCachoeiro.Environment": "1.0.0",
           "PrefeituraCachoeiro.TratadorControlador": "1.0.0",
           "System.IdentityModel.Tokens.Jwt": "8.1.1"
         },
@@ -901,6 +903,14 @@
         },
         "runtime": {
           "PrefeituraCachoeiro.Dominio.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "PrefeituraCachoeiro.Environment/1.0.0": {
+        "runtime": {
+          "PrefeituraCachoeiro.Environment.dll": {
             "assemblyVersion": "1.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -1531,6 +1541,11 @@
       "sha512": ""
     },
     "PrefeituraCachoeiro.Dominio/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PrefeituraCachoeiro.Environment/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

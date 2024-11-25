@@ -16,6 +16,46 @@
         "Name": "DataContrato",
         "Type": "System.DateTime",
         "IsRequired": false
+      },
+      {
+        "Name": "NumeroContrato",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "EmpresaId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Valor",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "TipoContratacao",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Gerente",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "DataInicio",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "DataTermino",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "PrefeituraId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -61,6 +101,41 @@
       {
         "Name": "ValorSaldoRestante",
         "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "EmpresaId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Valor",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "TipoContratacao",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Gerente",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "DataInicio",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "DataTermino",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "PrefeituraId",
+        "Type": "System.Int32",
         "IsRequired": false
       }
     ],
@@ -119,6 +194,151 @@
     "ReturnTypes": [
       {
         "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.GruposDataResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.EmpresaController",
+    "Method": "InserirAsync",
+    "RelativePath": "v1/empresa",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Nome",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Logo",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.CriarEmpresaResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.EmpresaController",
+    "Method": "AtualizarAsync",
+    "RelativePath": "v1/empresa",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "EmpresaId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Nome",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Logo",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.AtualizarEmpresaResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.EmpresaController",
+    "Method": "BuscarPorIdAsync",
+    "RelativePath": "v1/empresa/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.EmpresaResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.EmpresaController",
+    "Method": "DeletarAsync",
+    "RelativePath": "v1/empresa/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.DeletarEmpresaResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.EmpresaController",
+    "Method": "BuscarTodosAsync",
+    "RelativePath": "v1/empresa/buscartodos",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "filtro",
+        "Type": "PrefeituraCachoeiro.Dados.Filtros.EmpresaFilter",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.EmpresaDataResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -290,6 +510,223 @@
     ]
   },
   {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.MedicoesController",
+    "Method": "BuscarPorIdAsync",
+    "RelativePath": "v1/medicoes/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.MedicoesProjetoResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.MedicoesController",
+    "Method": "AtualizarAsync",
+    "RelativePath": "v1/medicoes/alterar",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requisicao",
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.AtualizarMedicoesProjetoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.AtualizarMedicoesProjetoResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.MedicoesController",
+    "Method": "AprovarAsync",
+    "RelativePath": "v1/medicoes/aprovar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Arquivos",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "IdMedicoesProjeto",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "DataRegistro",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "Resumo",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.ResultadoRegistrarAprovacaoMedicaoResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.MedicoesController",
+    "Method": "BuscarArquivosMedicao",
+    "RelativePath": "v1/medicoes/buscararquivosmedicao",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "IdMedicoesProjeto",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "ItemsPorPagina",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Pagina",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.ArquivosMedicoesProjetoDataResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.MedicoesController",
+    "Method": "BuscarTodosAsync",
+    "RelativePath": "v1/medicoes/buscartodos",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "filtro",
+        "Type": "PrefeituraCachoeiro.Dados.Filtros.MedicoesProjetoFilter",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.MedicoesProjetoDataResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.MedicoesController",
+    "Method": "InserirAsync",
+    "RelativePath": "v1/medicoes/inserir",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requisicao",
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.CriarMedicoesProjetoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.CriarMedicoesProjetoResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.MedicoesController",
+    "Method": "ReprovarAsync",
+    "RelativePath": "v1/medicoes/reprovar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "IdMedicoesProjeto",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "DataRegistro",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "Resumo",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.ResultadoRegistrarReprovacaoMedicaoResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "PrefeituraCachoeiro.Api.Controllers.PermissaoController",
     "Method": "BuscarPermissoesPorGrupoIdAsync",
     "RelativePath": "v1/permissoes/buscarpermissoesporgrupoid",
@@ -368,6 +805,151 @@
     "ReturnTypes": [
       {
         "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.CriarPermissoesResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.PrefeituraController",
+    "Method": "InserirAsync",
+    "RelativePath": "v1/prefeitura",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Nome",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Logo",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.CriarPrefeituraResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.PrefeituraController",
+    "Method": "AtualizarAsync",
+    "RelativePath": "v1/prefeitura",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "IdPrefeitura",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Nome",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Logo",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.AtualizarPrefeituraResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.PrefeituraController",
+    "Method": "BuscarPorIdAsync",
+    "RelativePath": "v1/prefeitura/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.PrefeituraResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.PrefeituraController",
+    "Method": "DeletarAsync",
+    "RelativePath": "v1/prefeitura/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.DeletarPrefeituraResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.PrefeituraController",
+    "Method": "BuscarTodosAsync",
+    "RelativePath": "v1/prefeitura/buscartodos",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "filtro",
+        "Type": "PrefeituraCachoeiro.Dados.Filtros.PrefeituraFilter",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.PrefeituraDataResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",

@@ -30,7 +30,6 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("verificarlogin")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VerificarLoginResponse))]
-        //[Authorize]
         public async Task<IActionResult> VerificarLoginAsync([FromBody] VerificarLoginRequest request, CancellationToken cancellationToken)
         {
             var response = await _loginService.VerificarLoginAsync(request, cancellationToken);

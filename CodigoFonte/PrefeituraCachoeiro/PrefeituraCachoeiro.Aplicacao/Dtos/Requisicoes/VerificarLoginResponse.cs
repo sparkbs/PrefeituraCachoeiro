@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using PrefeituraCachoeiro.Aplicacao.Dtos.Respostas;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes
 {
@@ -7,19 +8,14 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes
     {
         public string? Login { get; set; }
         public bool IsSucesso { get; set; }
-        public string? AccessToken { get; set; }
+        public AccessTokenResponse AccessToken { get; set; }
 
-        public VerificarLoginResponse(): this(string.Empty, false, string.Empty)
+        public VerificarLoginResponse()
         {
 
         }
 
-        public VerificarLoginResponse(string? login, bool isSucesso): this(login, isSucesso, string.Empty)
-        {
-
-        }
-
-        public VerificarLoginResponse(string? login, bool isSucesso, string? accessToken)
+        public VerificarLoginResponse(string? login, bool isSucesso, AccessTokenResponse accessToken)
         {
             Login = login;
             IsSucesso = isSucesso;

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PrefeituraCachoeiro.Aplicacao\PrefeituraCachoeiro.Aplicacao.csproj" />
+    <ProjectReference Include="..\PrefeituraCachoeiro.Environment\PrefeituraCachoeiro.Environment.csproj" />
   </ItemGroup>
 
 </Project>

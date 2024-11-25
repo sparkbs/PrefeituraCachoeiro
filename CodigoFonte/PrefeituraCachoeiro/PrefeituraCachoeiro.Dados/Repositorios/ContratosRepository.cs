@@ -5,7 +5,7 @@ using PrefeituraCachoeiro.Dominio.Entidades;
 
 namespace PrefeituraCachoeiro.Dados.Repositorios
 {
-    public class ContratosRepository: IContratosRepository
+    public class ContratosRepository : IContratosRepository
     {
         private readonly ContextoDb _context;
 
@@ -48,11 +48,11 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
         public async Task<ContratosEntidade?> BuscarPorIdAsync(int idContrato, CancellationToken cancellationToken)
         {
             return await _context.ContratosEntidade
-                                 .Include(i=> i.Projeto)
-                                 .Include(i=> i.Prefeitura)
-                                 .Include(i=> i.Empresa)
+                                 .Include(i => i.Projeto)
+                                 .Include(i => i.Prefeitura)
+                                 .Include(i => i.Empresa)
                                  .Include(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Quantidade)
-                                 .Include(i=> i.Items).ThenInclude(i=> i.Quantidade)
+                                 .Include(i => i.Items).ThenInclude(i => i.Quantidade)
                                  .FirstOrDefaultAsync(x => x.IdContrato == idContrato && x.DataDelecao == null, cancellationToken);
         }
 

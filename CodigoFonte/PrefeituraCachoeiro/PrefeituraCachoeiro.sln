@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrefeituraCachoeiro.Compart
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrefeituraCachoeiro.Dados", "PrefeituraCachoeiro.Dados\PrefeituraCachoeiro.Dados.csproj", "{571FB56D-D26A-4E12-8D28-562D456CFD42}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Environment", "Environment", "{5C5F7122-69FA-4C9D-9F66-FDAF57121E6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrefeituraCachoeiro.Environment", "PrefeituraCachoeiro.Environment\PrefeituraCachoeiro.Environment.csproj", "{8CF6A4AE-1D71-4B7C-8E41-3C3885DCC4C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,10 @@ Global
 		{571FB56D-D26A-4E12-8D28-562D456CFD42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{571FB56D-D26A-4E12-8D28-562D456CFD42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{571FB56D-D26A-4E12-8D28-562D456CFD42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CF6A4AE-1D71-4B7C-8E41-3C3885DCC4C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CF6A4AE-1D71-4B7C-8E41-3C3885DCC4C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CF6A4AE-1D71-4B7C-8E41-3C3885DCC4C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CF6A4AE-1D71-4B7C-8E41-3C3885DCC4C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +94,8 @@ Global
 		{498BBC0B-B68E-45FA-85BA-3563636359ED} = {A51A3D26-A560-4FB3-9F9E-9BA3DDF40BA8}
 		{D4308ADB-0B3F-4E8E-B136-D22F3B945464} = {B7CF2264-C7A0-46A4-AE05-84A98E823475}
 		{571FB56D-D26A-4E12-8D28-562D456CFD42} = {76870E69-CE2C-4881-9616-3B32E956C244}
+		{5C5F7122-69FA-4C9D-9F66-FDAF57121E6E} = {14BA4BB5-4295-4C23-B093-7D146A2966C1}
+		{8CF6A4AE-1D71-4B7C-8E41-3C3885DCC4C6} = {5C5F7122-69FA-4C9D-9F66-FDAF57121E6E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1C3056C-7898-4AB0-866F-C2C2AEB4F4E3}

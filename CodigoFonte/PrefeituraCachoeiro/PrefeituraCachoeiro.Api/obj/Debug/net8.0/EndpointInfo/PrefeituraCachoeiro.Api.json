@@ -1,0 +1,3680 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Api de gerenciamento de projetos",
+    "description": "API de gerenciamento de projetos",
+    "version": "v1"
+  },
+  "paths": {
+    "/v1/contratos/{id}": {
+      "get": {
+        "tags": [
+          "Contratos"
+        ],
+        "summary": "Retorna um contrato pelo identificador",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna um contrato pelo identificador",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContratosResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContratosResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContratosResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/contratos/buscartodos": {
+      "post": {
+        "tags": [
+          "Contratos"
+        ],
+        "summary": "Retorna todos os contratos de acordo com os parâmetros de pesquisa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContratosFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContratosFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContratosFilter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma lista de contratos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GruposDataResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GruposDataResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GruposDataResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/contratos": {
+      "post": {
+        "tags": [
+          "Contratos"
+        ],
+        "summary": "Cria um novo contrato",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "IdProjeto": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "DataContrato": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "NumeroContrato": {
+                    "type": "string"
+                  },
+                  "EmpresaId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Valor": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "TipoContratacao": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Gerente": {
+                    "type": "string"
+                  },
+                  "DataInicio": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "DataTermino": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "PrefeituraId": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "IdProjeto": {
+                  "style": "form"
+                },
+                "DataContrato": {
+                  "style": "form"
+                },
+                "NumeroContrato": {
+                  "style": "form"
+                },
+                "EmpresaId": {
+                  "style": "form"
+                },
+                "Valor": {
+                  "style": "form"
+                },
+                "TipoContratacao": {
+                  "style": "form"
+                },
+                "Gerente": {
+                  "style": "form"
+                },
+                "DataInicio": {
+                  "style": "form"
+                },
+                "DataTermino": {
+                  "style": "form"
+                },
+                "PrefeituraId": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id do contrato criado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarContratoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarContratoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarContratoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Contratos"
+        ],
+        "summary": "Atualiza um contrato.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "IdContrato": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "IdProjeto": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "DataContrato": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "NumeroContrato": {
+                    "type": "string"
+                  },
+                  "ValorSaldoRestante": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "EmpresaId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Valor": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "TipoContratacao": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Gerente": {
+                    "type": "string"
+                  },
+                  "DataInicio": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "DataTermino": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "PrefeituraId": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "IdContrato": {
+                  "style": "form"
+                },
+                "IdProjeto": {
+                  "style": "form"
+                },
+                "DataContrato": {
+                  "style": "form"
+                },
+                "NumeroContrato": {
+                  "style": "form"
+                },
+                "ValorSaldoRestante": {
+                  "style": "form"
+                },
+                "EmpresaId": {
+                  "style": "form"
+                },
+                "Valor": {
+                  "style": "form"
+                },
+                "TipoContratacao": {
+                  "style": "form"
+                },
+                "Gerente": {
+                  "style": "form"
+                },
+                "DataInicio": {
+                  "style": "form"
+                },
+                "DataTermino": {
+                  "style": "form"
+                },
+                "PrefeituraId": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id do contrato atualizado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarContratosResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarContratosResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarContratosResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/empresa/{id}": {
+      "get": {
+        "tags": [
+          "Empresa"
+        ],
+        "summary": "Retorna uma empresa pelo identificador",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna uma empresa pelo identificador",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmpresaResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmpresaResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmpresaResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Empresa"
+        ],
+        "summary": "Deleta uma empresa",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna uma mensagem da ação executada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarEmpresaResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarEmpresaResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarEmpresaResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/empresa/buscartodos": {
+      "post": {
+        "tags": [
+          "Empresa"
+        ],
+        "summary": "Retorna todas as empresas de acordo com os parâmetros de pesquisa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmpresaFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmpresaFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmpresaFilter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma lista de empresas",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmpresaDataResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmpresaDataResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmpresaDataResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/empresa": {
+      "post": {
+        "tags": [
+          "Empresa"
+        ],
+        "summary": "Cria uma nova empresa",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Nome": {
+                    "type": "string"
+                  },
+                  "Logo": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "Nome": {
+                  "style": "form"
+                },
+                "Logo": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id da empresa criada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarEmpresaResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarEmpresaResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarEmpresaResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Empresa"
+        ],
+        "summary": "Atualiza uma empresa",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "EmpresaId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Nome": {
+                    "type": "string"
+                  },
+                  "Logo": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "EmpresaId": {
+                  "style": "form"
+                },
+                "Nome": {
+                  "style": "form"
+                },
+                "Logo": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id da empresa atualizada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarEmpresaResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarEmpresaResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarEmpresaResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/grupos/{id}": {
+      "get": {
+        "tags": [
+          "Grupos"
+        ],
+        "summary": "Retorna um grupo pelo identificador",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna um grupo pelo identificador",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GruposResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GruposResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GruposResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Grupos"
+        ],
+        "summary": "Deleta um grupo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna id do grupo deletado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarGrupoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarGrupoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarGrupoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/grupos/buscartodos": {
+      "post": {
+        "tags": [
+          "Grupos"
+        ],
+        "summary": "Retorna todos os grupos de acordo com os parâmetros de pesquisa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GruposFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GruposFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GruposFilter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma lista de grupos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GruposDataResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GruposDataResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GruposDataResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/grupos": {
+      "post": {
+        "tags": [
+          "Grupos"
+        ],
+        "summary": "Cria um novo grupo",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Nome": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "Nome": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id do grupo criado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarGrupoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarGrupoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarGrupoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Grupos"
+        ],
+        "summary": "Atualiza um grupo.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Nome": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "Id": {
+                  "style": "form"
+                },
+                "Nome": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id do grupo atualizado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarGrupoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarGrupoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarGrupoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/login/verificarlogin": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Verificar se o login e senha informados são válidos",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificarLoginRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificarLoginRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificarLoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna um token de acesso",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificarLoginResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificarLoginResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificarLoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/medicoes/{id}": {
+      "get": {
+        "tags": [
+          "Medicoes"
+        ],
+        "summary": "Retorna uma medição pelo identificador",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna uma medição pelo identificador",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MedicoesProjetoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MedicoesProjetoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MedicoesProjetoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/medicoes/buscartodos": {
+      "post": {
+        "tags": [
+          "Medicoes"
+        ],
+        "summary": "Retorna todas as medições de acordo com os parâmetros de pesquisa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MedicoesProjetoFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MedicoesProjetoFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MedicoesProjetoFilter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma lista de medições",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MedicoesProjetoDataResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MedicoesProjetoDataResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MedicoesProjetoDataResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/medicoes/inserir": {
+      "post": {
+        "tags": [
+          "Medicoes"
+        ],
+        "summary": "Cria uma nova medição",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarMedicoesProjetoRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarMedicoesProjetoRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarMedicoesProjetoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id da medição criado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarMedicoesProjetoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarMedicoesProjetoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarMedicoesProjetoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/medicoes/aprovar": {
+      "post": {
+        "tags": [
+          "Medicoes"
+        ],
+        "summary": "Aprovar uma medição específica",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Arquivos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "IdMedicoesProjeto": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "DataRegistro": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "Resumo": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "Arquivos": {
+                  "style": "form"
+                },
+                "IdMedicoesProjeto": {
+                  "style": "form"
+                },
+                "DataRegistro": {
+                  "style": "form"
+                },
+                "Resumo": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna sucesso ou a mensagem de erro",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultadoRegistrarAprovacaoMedicaoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultadoRegistrarAprovacaoMedicaoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultadoRegistrarAprovacaoMedicaoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/medicoes/buscararquivosmedicao": {
+      "post": {
+        "tags": [
+          "Medicoes"
+        ],
+        "summary": "Buscar os arquivos que foram aprovados junto com a medição",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "IdMedicoesProjeto": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "ItemsPorPagina": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Pagina": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "IdMedicoesProjeto": {
+                  "style": "form"
+                },
+                "ItemsPorPagina": {
+                  "style": "form"
+                },
+                "Pagina": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma lista de arquivos associados a medição",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArquivosMedicoesProjetoDataResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArquivosMedicoesProjetoDataResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArquivosMedicoesProjetoDataResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/medicoes/reprovar": {
+      "post": {
+        "tags": [
+          "Medicoes"
+        ],
+        "summary": "Reprovar uma medição específica",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "IdMedicoesProjeto": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "DataRegistro": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "Resumo": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "IdMedicoesProjeto": {
+                  "style": "form"
+                },
+                "DataRegistro": {
+                  "style": "form"
+                },
+                "Resumo": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna sucesso ou a mensagem de erro",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultadoRegistrarReprovacaoMedicaoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultadoRegistrarReprovacaoMedicaoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultadoRegistrarReprovacaoMedicaoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/medicoes/alterar": {
+      "put": {
+        "tags": [
+          "Medicoes"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarMedicoesProjetoRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarMedicoesProjetoRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarMedicoesProjetoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarMedicoesProjetoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarMedicoesProjetoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarMedicoesProjetoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/permissoes/buscarpermissoesporgrupoid": {
+      "post": {
+        "tags": [
+          "Permissao"
+        ],
+        "summary": "Retorna todas as permissões associadas ao grupo informado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarBuscarPermissoesPorGrupoIdRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarBuscarPermissoesPorGrupoIdRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarBuscarPermissoesPorGrupoIdRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma lista de tipos de permissões",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TiposPermissoesResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TiposPermissoesResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TiposPermissoesResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/permissoes/inserir": {
+      "post": {
+        "tags": [
+          "Permissao"
+        ],
+        "summary": "Associar a permissão ao grupo informado",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "TipoPermissaoId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "GrupoId": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "TipoPermissaoId": {
+                  "style": "form"
+                },
+                "GrupoId": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id da permissão criada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarPermissoesResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarPermissoesResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarPermissoesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/permissoes/deletar": {
+      "post": {
+        "tags": [
+          "Permissao"
+        ],
+        "summary": "Deleta uma permissão de um determinado grupo",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "TipoPermissaoId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "GrupoId": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "TipoPermissaoId": {
+                  "style": "form"
+                },
+                "GrupoId": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma mensagem de erro",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarPermissaoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarPermissaoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarPermissaoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/prefeitura/{id}": {
+      "get": {
+        "tags": [
+          "Prefeitura"
+        ],
+        "summary": "Retorna uma prefeitura pelo identificador",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna uma prefeitura pelo identificador",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrefeituraResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrefeituraResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrefeituraResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Prefeitura"
+        ],
+        "summary": "Deleta uma prefeitura",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna uma mensagem da ação executada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarPrefeituraResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarPrefeituraResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarPrefeituraResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/prefeitura/buscartodos": {
+      "post": {
+        "tags": [
+          "Prefeitura"
+        ],
+        "summary": "Retorna todas as prefeituras de acordo com os parâmetros de pesquisa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrefeituraFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrefeituraFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrefeituraFilter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma lista de prefeituas",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrefeituraDataResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrefeituraDataResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrefeituraDataResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/prefeitura": {
+      "post": {
+        "tags": [
+          "Prefeitura"
+        ],
+        "summary": "Cria uma nova prefeitura",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Nome": {
+                    "type": "string"
+                  },
+                  "Logo": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "Nome": {
+                  "style": "form"
+                },
+                "Logo": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id da prefeitura criada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarPrefeituraResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarPrefeituraResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarPrefeituraResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Prefeitura"
+        ],
+        "summary": "Atualiza uma prefeitura",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "IdPrefeitura": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Nome": {
+                    "type": "string"
+                  },
+                  "Logo": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "IdPrefeitura": {
+                  "style": "form"
+                },
+                "Nome": {
+                  "style": "form"
+                },
+                "Logo": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id da prefeitura atualizada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarPrefeituraResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarPrefeituraResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarPrefeituraResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/projetos/{id}": {
+      "get": {
+        "tags": [
+          "Projeto"
+        ],
+        "summary": "Retorna um projeto pelo identificador",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna um projeto pelo identificador",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Projeto"
+        ],
+        "summary": "Deleta um projeto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna id do projeto deletado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarProjetoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarProjetoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarProjetoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/projetos/buscartodos": {
+      "post": {
+        "tags": [
+          "Projeto"
+        ],
+        "summary": "Retorna todos os projetos de acordo com os parâmetros de pesquisa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjetosFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjetosFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjetosFilter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma lista de projeto",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetoDataResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetoDataResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetoDataResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/projetos": {
+      "post": {
+        "tags": [
+          "Projeto"
+        ],
+        "summary": "Cria um novo projeto",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Nome": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "Nome": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id do projeto criado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarProjetoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarProjetoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarProjetoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Projeto"
+        ],
+        "summary": "Atualiza um projeto.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Nome": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "Id": {
+                  "style": "form"
+                },
+                "Nome": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id do projeto atualizado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarProjetoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarProjetoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarProjetoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/tipospermissoes/buscartodos": {
+      "get": {
+        "tags": [
+          "TiposPermissoes"
+        ],
+        "summary": "Retorna todos os tipos de permissões existentes no sistema",
+        "responses": {
+          "200": {
+            "description": "Retorna uma lista dos tipos de permissões",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TiposPermissoesResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TiposPermissoesResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TiposPermissoesResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/usuarios/{id}": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Retorna um usuário pelo identificador",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna um usuário pelo identificador",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuariosResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuariosResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuariosResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Deleta um usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna id do usuário deletado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarUsuarioResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarUsuarioResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarUsuarioResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/usuarios/buscartodos": {
+      "post": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Retorna todos os usuários de acordo com os parâmetros de pesquisa",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsuariosFilter"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsuariosFilter"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsuariosFilter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma lista de usuarios",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuariosDataResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuariosDataResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuariosDataResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/usuarios": {
+      "post": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Cria um novo usuário",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Login": {
+                    "type": "string"
+                  },
+                  "Nome": {
+                    "type": "string"
+                  },
+                  "Senha": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "Login": {
+                  "style": "form"
+                },
+                "Nome": {
+                  "style": "form"
+                },
+                "Senha": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id do usuário criado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarUsuarioResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarUsuarioResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarUsuarioResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Atualiza um usuário.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "Login": {
+                    "type": "string"
+                  },
+                  "Nome": {
+                    "type": "string"
+                  },
+                  "Senha": {
+                    "type": "string"
+                  }
+                }
+              },
+              "encoding": {
+                "Id": {
+                  "style": "form"
+                },
+                "Login": {
+                  "style": "form"
+                },
+                "Nome": {
+                  "style": "form"
+                },
+                "Senha": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id do usuário atualizado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarUsuarioResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarUsuarioResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AtualizarUsuarioResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/usuariosgrupos/buscargruposporusuarioidasync": {
+      "post": {
+        "tags": [
+          "UsuariosGrupos"
+        ],
+        "summary": "Retorna todos os grupos associados ao usuário informado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuscarGruposPorUsuarioIdRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuscarGruposPorUsuarioIdRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuscarGruposPorUsuarioIdRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma lista de grupos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GruposResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GruposResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GruposResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/usuariosgrupos/buscargruposdisponiveisporusuarioidasync": {
+      "post": {
+        "tags": [
+          "UsuariosGrupos"
+        ],
+        "summary": "Retorna todos os grupos disponíveis para associar ao usuário informado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuscarGruposDisponiveisPorUsuarioIdRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuscarGruposDisponiveisPorUsuarioIdRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuscarGruposDisponiveisPorUsuarioIdRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma lista de grupos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GruposResponse"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GruposResponse"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GruposResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/usuariosgrupos/inserir": {
+      "post": {
+        "tags": [
+          "UsuariosGrupos"
+        ],
+        "summary": "Associar o usuário ao grupo informado",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "UsuarioId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "GrupoId": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "UsuarioId": {
+                  "style": "form"
+                },
+                "GrupoId": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna id do usuário grupo criado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarUsuariosGruposResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarUsuariosGruposResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CriarUsuariosGruposResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/usuariosgrupos/deletar": {
+      "post": {
+        "tags": [
+          "UsuariosGrupos"
+        ],
+        "summary": "Deleta um usuário de um determinado grupo",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "UsuarioId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "GrupoId": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "UsuarioId": {
+                  "style": "form"
+                },
+                "GrupoId": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma mensagem de erro",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarUsuarioGrupoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarUsuarioGrupoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarUsuarioGrupoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccessTokenResponse": {
+        "type": "object",
+        "properties": {
+          "authenticated": {
+            "type": "boolean"
+          },
+          "created": {
+            "type": "string",
+            "nullable": true
+          },
+          "expiration": {
+            "type": "string",
+            "nullable": true
+          },
+          "accessToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "refreshToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "idUsuario": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          },
+          "login": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ArquivosMedicoesProjetoDataResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArquivosMedicoesProjetoResponse"
+            },
+            "nullable": true
+          },
+          "totalRegisters": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ArquivosMedicoesProjetoResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "arquivoMedicao": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AtualizarContratosResponse": {
+        "type": "object",
+        "properties": {
+          "idContrato": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AtualizarEmpresaResponse": {
+        "type": "object",
+        "properties": {
+          "empresaId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AtualizarGrupoResponse": {
+        "type": "object",
+        "properties": {
+          "idGrupo": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AtualizarMedicoesProjetoRequest": {
+        "type": "object",
+        "properties": {
+          "numeroMedicao": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idContrato": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataMedicao": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "resumo": {
+            "type": "string",
+            "nullable": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemMedicoesProjetoRequest"
+            },
+            "nullable": true
+          },
+          "idMedicoesProjeto": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AtualizarMedicoesProjetoResponse": {
+        "type": "object",
+        "properties": {
+          "idMedicoesProjeto": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AtualizarPrefeituraResponse": {
+        "type": "object",
+        "properties": {
+          "idPrefeitura": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AtualizarProjetoResponse": {
+        "type": "object",
+        "properties": {
+          "idProjeto": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AtualizarUsuarioResponse": {
+        "type": "object",
+        "properties": {
+          "idUsuario": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarGruposDisponiveisPorUsuarioIdRequest": {
+        "type": "object",
+        "properties": {
+          "usuarioId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BuscarGruposPorUsuarioIdRequest": {
+        "type": "object",
+        "properties": {
+          "usuarioId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContratosFilter": {
+        "type": "object",
+        "properties": {
+          "itemsPorPagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idProjeto": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContratosResponse": {
+        "type": "object",
+        "properties": {
+          "idContrato": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idProjeto": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "projeto": {
+            "$ref": "#/components/schemas/ProjetoResponse"
+          },
+          "dataContrato": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numeroContrato": {
+            "type": "string",
+            "nullable": true
+          },
+          "valorTotalPrevisto": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "valorTotalSolicitado": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "valorTotalMedido": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "valorSaldoRestante": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemsContratoResponse"
+            },
+            "nullable": true
+          },
+          "empresaId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/EmpresaResponse"
+          },
+          "valor": {
+            "type": "number",
+            "format": "double"
+          },
+          "tipoContratacao": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "gerente": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataTermino": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "dataInicio": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "prefeituraId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "prefeitura": {
+            "$ref": "#/components/schemas/PrefeituraResponse"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarBuscarPermissoesPorGrupoIdRequest": {
+        "type": "object",
+        "properties": {
+          "grupoId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarContratoResponse": {
+        "type": "object",
+        "properties": {
+          "idContrato": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarEmpresaResponse": {
+        "type": "object",
+        "properties": {
+          "empresaId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarGrupoResponse": {
+        "type": "object",
+        "properties": {
+          "idGrupo": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarMedicoesProjetoRequest": {
+        "type": "object",
+        "properties": {
+          "numeroMedicao": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idContrato": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataMedicao": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "resumo": {
+            "type": "string",
+            "nullable": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemMedicoesProjetoRequest"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarMedicoesProjetoResponse": {
+        "type": "object",
+        "properties": {
+          "idMedicoesProjeto": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarPermissoesResponse": {
+        "type": "object",
+        "properties": {
+          "idPermissao": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarPrefeituraResponse": {
+        "type": "object",
+        "properties": {
+          "idPrefeitura": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarProjetoResponse": {
+        "type": "object",
+        "properties": {
+          "idProjeto": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarUsuarioResponse": {
+        "type": "object",
+        "properties": {
+          "idUsuario": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarUsuariosGruposResponse": {
+        "type": "object",
+        "properties": {
+          "idUsuarioGrupo": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeletarEmpresaResponse": {
+        "type": "object",
+        "properties": {
+          "mensagem": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeletarGrupoResponse": {
+        "type": "object",
+        "properties": {
+          "mensagem": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeletarPermissaoResponse": {
+        "type": "object",
+        "properties": {
+          "mensagem": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeletarPrefeituraResponse": {
+        "type": "object",
+        "properties": {
+          "mensagem": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeletarProjetoResponse": {
+        "type": "object",
+        "properties": {
+          "mensagem": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeletarUsuarioGrupoResponse": {
+        "type": "object",
+        "properties": {
+          "mensagem": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeletarUsuarioResponse": {
+        "type": "object",
+        "properties": {
+          "mensagem": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmpresaDataResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmpresaResponse"
+            },
+            "nullable": true
+          },
+          "totalRegisters": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmpresaFilter": {
+        "type": "object",
+        "properties": {
+          "itemsPorPagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EmpresaResponse": {
+        "type": "object",
+        "properties": {
+          "empresaId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          },
+          "logo": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GruposDataResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GruposResponse"
+            },
+            "nullable": true
+          },
+          "totalRegisters": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GruposFilter": {
+        "type": "object",
+        "properties": {
+          "itemsPorPagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GruposResponse": {
+        "type": "object",
+        "properties": {
+          "idGrupo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ItemMedicoesProjetoRequest": {
+        "type": "object",
+        "properties": {
+          "idItemContrato": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unidade": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ItemResponse": {
+        "type": "object",
+        "properties": {
+          "idItem": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "identificador": {
+            "type": "string",
+            "nullable": true
+          },
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "origemId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "origem": {
+            "$ref": "#/components/schemas/OrigemResponse"
+          },
+          "descricao": {
+            "type": "string",
+            "nullable": true
+          },
+          "unidade": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "quantidadeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "quantidade": {
+            "$ref": "#/components/schemas/QuantidadeResponse"
+          },
+          "valorSemBdi": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "valorComBdi": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "valorTotalComBdi": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "idItemPai": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ordem": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ItemsContratoResponse": {
+        "type": "object",
+        "properties": {
+          "idItemContrato": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idContrato": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "itemId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "item": {
+            "$ref": "#/components/schemas/ItemResponse"
+          },
+          "quantidadeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "quantidade": {
+            "$ref": "#/components/schemas/QuantidadeResponse"
+          },
+          "unidade": {
+            "type": "number",
+            "format": "double"
+          },
+          "valorSemBdi": {
+            "type": "number",
+            "format": "double"
+          },
+          "valorComBdi": {
+            "type": "number",
+            "format": "double"
+          },
+          "valorTotalComBdi": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ItemsMedicoesProjetoResponse": {
+        "type": "object",
+        "properties": {
+          "idItemMedicoesProjeto": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idItemContrato": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "itemsContrato": {
+            "$ref": "#/components/schemas/ItemsContratoResponse"
+          },
+          "unidade": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MedicoesProjetoDataResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MedicoesProjetoResponse"
+            },
+            "nullable": true
+          },
+          "totalRegisters": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MedicoesProjetoFilter": {
+        "type": "object",
+        "properties": {
+          "itemsPorPagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idContrato": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "statusMedicao": {
+            "$ref": "#/components/schemas/StatusMedicao"
+          },
+          "idMedicaoAtual": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MedicoesProjetoResponse": {
+        "type": "object",
+        "properties": {
+          "idMedicoesProjeto": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numeroMedicao": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idContrato": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "contratos": {
+            "$ref": "#/components/schemas/ContratosResponse"
+          },
+          "dataMedicao": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "resumo": {
+            "type": "string",
+            "nullable": true
+          },
+          "idStatusMedicao": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "statusMedicao": {
+            "$ref": "#/components/schemas/StatusMedicaoResponse"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemsMedicoesProjetoResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrigemResponse": {
+        "type": "object",
+        "properties": {
+          "idOrigem": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrefeituraDataResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PrefeituraResponse"
+            },
+            "nullable": true
+          },
+          "totalRegisters": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrefeituraFilter": {
+        "type": "object",
+        "properties": {
+          "itemsPorPagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrefeituraResponse": {
+        "type": "object",
+        "properties": {
+          "idPrefeitura": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          },
+          "logo": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProjetoDataResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjetoResponse"
+            },
+            "nullable": true
+          },
+          "totalRegisters": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProjetoResponse": {
+        "type": "object",
+        "properties": {
+          "idProjeto": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nomeProjeto": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProjetosFilter": {
+        "type": "object",
+        "properties": {
+          "itemsPorPagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuantidadeResponse": {
+        "type": "object",
+        "properties": {
+          "idQuantidade": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResultadoRegistrarAprovacaoMedicaoResponse": {
+        "type": "object",
+        "properties": {
+          "isSucesso": {
+            "type": "boolean"
+          },
+          "mensagemErro": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResultadoRegistrarReprovacaoMedicaoResponse": {
+        "type": "object",
+        "properties": {
+          "isSucesso": {
+            "type": "boolean"
+          },
+          "mensagemErro": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StatusMedicao": {
+        "enum": [
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "StatusMedicaoResponse": {
+        "type": "object",
+        "properties": {
+          "idStatusMedicao": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TiposPermissoesResponse": {
+        "type": "object",
+        "properties": {
+          "idTipoPermissao": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UsuariosDataResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UsuariosResponse"
+            },
+            "nullable": true
+          },
+          "totalRegisters": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UsuariosFilter": {
+        "type": "object",
+        "properties": {
+          "itemsPorPagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pagina": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UsuariosResponse": {
+        "type": "object",
+        "properties": {
+          "idUsuario": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "login": {
+            "type": "string",
+            "nullable": true
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VerificarLoginRequest": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string",
+            "nullable": true
+          },
+          "senha": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VerificarLoginResponse": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string",
+            "nullable": true
+          },
+          "isSucesso": {
+            "type": "boolean"
+          },
+          "accessToken": {
+            "$ref": "#/components/schemas/AccessTokenResponse"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "Insira o token JWT com o prefixo 'Bearer ' (ex: Bearer seu-token-aqui)",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
+}

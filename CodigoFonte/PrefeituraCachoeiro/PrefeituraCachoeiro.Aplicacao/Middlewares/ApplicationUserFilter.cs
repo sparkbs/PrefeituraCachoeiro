@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 using PrefeituraCachoeiro.Aplicacao.Interfaces;
+using PrefeituraCachoeiro.Dados.Interfaces;
 using System.Diagnostics.CodeAnalysis;
 
 namespace PrefeituraCachoeiro.Aplicacao.Middlewares
@@ -8,17 +10,28 @@ namespace PrefeituraCachoeiro.Aplicacao.Middlewares
     public sealed class ApplicationUserFilter : IAsyncActionFilter
     {
         private readonly IApplicationUser _applicationUser;
-
-        public ApplicationUserFilter(IApplicationUser applicationUser)
+        private readonly IHttpContextAccessor _httpContext;
+        private readonly IUsuariosRepository _usuariosRepository;
+        
+        public ApplicationUserFilter(IApplicationUser applicationUser, IHttpContextAccessor httpContext, IUsuariosRepository usuariosRepository)
         {
             _applicationUser = applicationUser;
+            _httpContext = httpContext;
+            _usuariosRepository = usuariosRepository;
         }
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var userId = Convert.ToInt32(context.HttpContext?.User?.FindFirst("idUsuario")?.Value);
+            var _email = _httpContext.HttpContext.User.Identity.Name;
 
-            _applicationUser.UserId = userId;
+            if (_email != null)
+            {
+                var _cancellationToken = new CancellationToken();
+                var _usuario = await this._usuariosRepository.BuscarPorLogingAsync(_email, _cancellationToken);
+
+                this._applicationUser.UserId = _usuario.IdUsuario;
+                this._applicationUser.Email = _email;
+            }
 
             await next();
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using PrefeituraCachoeiro.Environment;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -10,54 +11,45 @@ namespace PrefeituraCachoeiro.Api.Configurations
     {
         public static void AddSwaggerConfiguration(this IServiceCollection services)
         {
-            if (services == null) throw new ArgumentNullException(nameof(services));
-
-            services.AddSwaggerGen(settings =>
+            services.AddSwaggerGen(options =>
             {
-                settings.SwaggerDoc("v1", new OpenApiInfo
+                options.SwaggerDoc(InfoApiConstant.Versao1, new Microsoft.OpenApi.Models.OpenApiInfo
                 {
-                    Title = "Gerenciador de Medições de Projetos - API",
-                    Version = "v1",
-                    Description = "Esta API contem serviços para realizações medições de projetos"
+                    Version = InfoApiConstant.Versao1,
+                    Title = InfoApiConstant.ApiTitulo,
+                    Description = InfoApiConstant.ApiDescricao
+                });
+
+                // Definir o esquema de segurança para autenticação JWT
+                options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Description = "Insira o token JWT com o prefixo 'Bearer ' (ex: Bearer seu-token-aqui)"
+                });
+
+                options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+                {
+                    {
+                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                        {
+                            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                            {
+                                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
                 });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-
-                settings.IncludeXmlComments(xmlPath);
-                ConfigureSecurityDefinition(settings);
-                ConfigureSecurityRequirement(settings);
+                options.IncludeXmlComments(xmlPath);
             });
-        }
-
-        private static void ConfigureSecurityDefinition(SwaggerGenOptions settings)
-        {
-            var openApiBearerScheme = new OpenApiSecurityScheme
-            {
-                Description = "Bearer JWT",
-                Type = SecuritySchemeType.Http,
-                Name = "authorization",
-                In = ParameterLocation.Header,
-                Scheme = "bearer"
-            };
-
-            settings.AddSecurityDefinition("Bearer", openApiBearerScheme);
-        }
-
-        private static void ConfigureSecurityRequirement(SwaggerGenOptions settings)
-        {
-            var bearerReference = new OpenApiSecurityScheme()
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            };
-
-            var bearerRequirement = new OpenApiSecurityRequirement { { bearerReference, new List<string>() } };
-
-            settings.AddSecurityRequirement(bearerRequirement);
         }
     }
 }
