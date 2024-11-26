@@ -3,14 +3,21 @@
       <mat-card-header><span>Medições</span></mat-card-header>
       <mat-card-content>  
         <div >
-          <h3>Informe um contrato para exibir as medições</h3>          
-            <mat-form-field >
-              <mat-label>Selecione o contrato</mat-label>
-              <mat-select disableRipple>
-                <mat-option value="1">Contrato 1</mat-option>
-                <mat-option value="2">Contrato 2</mat-option>
-              </mat-select>
-            </mat-form-field>
+          <h3>Informe um contrato para exibir as medições</h3>    
+          <mat-form-field >
+            <mat-label>Selecione a prefeitura</mat-label>
+            <mat-select disableRipple (selectionChange)="onSelectionChange()">
+              <mat-option value="1">Prefeitura 1</mat-option>
+              <mat-option value="2">Prefeitura 2</mat-option>
+            </mat-select>
+          </mat-form-field>      
+          <mat-form-field style="margin-left: 5px;" [style.display]="exibirContrato ? '' : 'none'">
+            <mat-label>Selecione o contrato</mat-label>
+            <mat-select disableRipple>
+              <mat-option value="1">Contrato 1</mat-option>
+              <mat-option value="2">Contrato 2</mat-option>
+            </mat-select>
+          </mat-form-field>
             <button mat-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -10px; "  (click)="buscar()">Buscar</button>
             <button mat-button style="background-color:white; color: black; margin-left: 10px;margin-top: -10px; "  (click)="limpar()">Limpar</button>
         </div>    
