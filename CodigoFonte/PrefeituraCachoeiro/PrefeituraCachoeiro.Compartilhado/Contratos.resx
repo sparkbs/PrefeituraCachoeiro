@@ -129,4 +129,7 @@
   <data name="IdItemContratoNaoEncontrado" xml:space="preserve">
     <value>Não foi encontrado nenhum item de contrato com o identificador informado</value>
   </data>
+  <data name="ContratoDeletado" xml:space="preserve">
+    <value>O contrato foi deletado</value>
+  </data>
 </root>

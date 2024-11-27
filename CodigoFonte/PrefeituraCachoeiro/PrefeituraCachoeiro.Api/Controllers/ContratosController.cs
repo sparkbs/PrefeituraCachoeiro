@@ -93,5 +93,22 @@ namespace PrefeituraCachoeiro.Api.Controllers
               onSuccess: Ok,
               onFailure: error => error.ToHttpResponseError());
         }
+
+        /// <summary>
+        /// Deleta um contrato
+        /// </summary>
+        /// <response code="200">Retorna uma mensagem de confirmação</response>
+        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeletarContratoResponse))]
+        [Authorize]
+        public async Task<IActionResult> DeletarAsync(int id, CancellationToken cancellationToken)
+        {
+            var response = await _contratosService.DeletarAsync(id, cancellationToken);
+
+            return response.Match(
+              onSuccess: Ok,
+              onFailure: error => error.ToHttpResponseError());
+        }
     }
 }
