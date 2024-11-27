@@ -2,35 +2,52 @@
 <mat-dialog-content class="mat-typography">
   <div style="margin-top: 20px;">
     <div>
+
       <mat-form-field>
-        <mat-label>Nome prefeitura</mat-label>
-        <input matInput  [(ngModel)]="contratos.nomePrefeitura" />
+        <mat-label>Selecione a prefeitura</mat-label>
+        <mat-select disableRipple [(ngModel)]="criarContrato.PrefeituraId">
+          <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura" >{{prefeitura.nome}}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field style="margin-left: 10px;">
-        <mat-label>Data Inicio e Fim</mat-label>
-        <input matInput [(ngModel)]="contratos.dataInicioEFim" />
+        <mat-label>Data Contrato</mat-label>
+        <input matInput type="date" [(ngModel)]="criarContrato.DataContrato" />
       </mat-form-field>
 
       <mat-form-field style="margin-left: 10px;">
-        <mat-label>Consórcio</mat-label>
-        <input matInput [(ngModel)]="contratos.consorcio" />
+        <mat-label>Numero Contrato</mat-label>
+        <input matInput [(ngModel)]="criarContrato.NumeroContrato"/>
       </mat-form-field>
+
+      <mat-form-field style="margin-left: 10px;">
+        <mat-label>Tipo Contratação</mat-label>
+        <mat-select [(ngModel)]="criarContrato.TipoContratacao" disableRipple>
+          <mat-option [value]="1">Adesão</mat-option>
+          <mat-option [value]="2">Licitação</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
     </div>
     <div>
       <mat-form-field>
+        <mat-label>Data Inicio</mat-label>
+        <input matInput type="date" [(ngModel)]="criarContrato.DataInicio" />
+      </mat-form-field>
+
+      <mat-form-field style="margin-left: 10px;">
+        <mat-label>Data Termino</mat-label>
+        <input matInput type="date" [(ngModel)]="criarContrato.DataTermino"/>
+      </mat-form-field>
+
+      <mat-form-field style="margin-left: 10px;">
         <mat-label>Gerente</mat-label>
-        <input matInput [(ngModel)]="contratos.gerente" />
+        <input matInput [(ngModel)]="criarContrato.Gerente" />
       </mat-form-field>
 
       <mat-form-field style="margin-left: 10px;">
         <mat-label>Valor Contrato</mat-label>
-        <input matInput [(ngModel)]="contratos.valorContrato" />
-      </mat-form-field>
-
-      <mat-form-field style="margin-left: 10px;">
-        <mat-label>Tipo Contratacão</mat-label>
-        <input matInput [(ngModel)]="contratos.tipoContratacao" />
+        <input matInput type="number" [(ngModel)]="criarContrato.Valor" />
       </mat-form-field>
     </div>
     <div>

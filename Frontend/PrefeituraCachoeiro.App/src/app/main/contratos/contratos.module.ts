@@ -15,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { Editar_criar_contratosComponent } from './editar_criar_contratos/editar_criar_contratos.component';
 import { FormsModule } from '@angular/forms';
 import { AditivosContratosComponent } from './aditivos-contratos/aditivos-contratos.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [ ContratosComponent, Editar_criar_contratosComponent, AditivosContratosComponent ],
@@ -31,7 +32,8 @@ import { AditivosContratosComponent } from './aditivos-contratos/aditivos-contra
     MatPaginatorModule,
     MatButtonModule,
     MatDialogModule,
-    FormsModule 
+    FormsModule ,
+    MatSelectModule
   ]
 })
 export class ContratosModule { }

@@ -4,9 +4,10 @@ import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
 import { TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
-import { DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
+import { CriarContratoResponse, DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
 import { AtualizarContratoRequest } from '../request/ContratoRequest/atualizarContratoRequest';
 import { BuscarContratosRequest } from '../request/ContratoRequest/buscarContratosRequest';
+import { CriarContratoRequest } from '../request/ContratoRequest/criarContratoRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -31,14 +32,16 @@ export class ContratosService {
     );
   }
 
-  public async CriarContrato(id: number, dataContrato: string): Promise<GenericResultResponse<number>> {
+  public async CriarContrato(request: CriarContratoRequest): Promise<GenericResultResponse<CriarContratoResponse>> {
+    const formData = new FormData();
+    Object.keys(request).forEach(key => {
+      formData.append(key, request[key]);
+    });
+
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<number>>(
+      this.http.post<GenericResultResponse<CriarContratoResponse>>(
         `${Environments.APIUrl}/contratos`,
-        {
-          IdProjeto: id,
-          DataContrato: dataContrato
-        }
+        formData
       )
     );
   }

@@ -55,3 +55,8 @@ export class DadosContratoResponse {
     valorSaldoRestante: number = 0;
     items: Items[] = [];
 }
+
+export class CriarContratoResponse
+{
+    IdContrato: number = 0;
+}
