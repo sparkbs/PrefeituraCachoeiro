@@ -205,5 +205,29 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 return Result<AtualizarContratosResponse>.Failure(new UnknownError(ex.Message));
             }
         }
+
+        public async Task<Result<DeletarContratoResponse>> DeletarAsync(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var contratoFound = await _contratosRepository.BuscarPorIdAsync(id, cancellationToken);
+
+                if (contratoFound is null)
+                    return Result<DeletarContratoResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.IdContratoNaoEncontrado));
+
+                contratoFound.Delete();
+                await _contratosRepository.DeletarAsync(contratoFound, cancellationToken);
+
+                var result = new DeletarContratoResponse { Mensagem = Compartilhado.Contratos.ContratoDeletado };
+
+                return Result<DeletarContratoResponse>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+                return Result<DeletarContratoResponse>.Failure(new UnknownError(ex.Message));
+            }
+        }
     }
 }

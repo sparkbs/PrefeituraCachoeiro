@@ -8,7 +8,7 @@ import { ProjetosComponent } from './main/projetos/projetos.component';
 import { ContratosComponent } from './main/contratos/contratos.component';
 import { ConfiguracoesComponent } from './main/configuracoes/configuracoes.component';
 import { PerfilComponent } from './main/perfil/perfil.component';
-import { Editar_criar_contratosComponent } from './main/contratos/editar_criar_contratos/editar_criar_contratos.component';
+import { Editar_criar_contratosComponent } from './main/contratos/criar_contratos/editar_criar_contratos.component';
 import { RelatorioProjetosPorMedicaoComponent } from './main/relatorios/relatorioProjetosPorMedicao/relatorioProjetosPorMedicao.component';
 import { PrefeituraComponent } from './main/prefeitura/prefeitura/prefeitura.component';
 

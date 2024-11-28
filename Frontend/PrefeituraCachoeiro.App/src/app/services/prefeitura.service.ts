@@ -22,9 +22,9 @@ export class PrefeituraService {
     );
   }
 
-  public async BuscarTodasPrefeituras(filter: PrefeituraFilter): Promise<GenericResultResponse<PrefeituraDataResponse>> {
+  public async BuscarTodasPrefeituras(filter: PrefeituraFilter): Promise<PrefeituraDataResponse> {
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<PrefeituraDataResponse>>(
+      this.http.post<PrefeituraDataResponse>(
         `${Environments.APIUrl}/prefeitura/buscartodos`,
         filter
       )
@@ -32,19 +32,34 @@ export class PrefeituraService {
   }
 
   public async CriarPrefeitura(request: BasePrefeituraRequest): Promise<GenericResultResponse<AtualizarPrefeituraResponse>> {
+    const formData = new FormData();
+    formData.append('Nome', request.Nome);  
+  
+    if (request.Logo) {
+      formData.append('Logo', request.Logo);  
+    }
+
     return await firstValueFrom(
       this.http.post<GenericResultResponse<AtualizarPrefeituraResponse>>(
         `${Environments.APIUrl}/prefeitura`,
-        request
+        formData
       )
     );
   }
 
   public async AtualizarPrefeitura(request: AtualizarPrefeituraRequest): Promise<GenericResultResponse<AtualizarPrefeituraResponse>> {
+    const formData = new FormData();
+    formData.append('Nome', request.Nome);  
+    formData.append('IdPrefeitura', request.IdPrefeitura.toString());  
+
+    if (request.Logo) {
+      formData.append('Logo', request.Logo);  
+    }
+
     return await firstValueFrom(
       this.http.put<GenericResultResponse<AtualizarPrefeituraResponse>>(
         `${Environments.APIUrl}/prefeitura`,
-        request
+        formData
       )
     );
   }
@@ -52,7 +67,7 @@ export class PrefeituraService {
   public async DeletarPrefeitura(id: number): Promise<GenericResultResponse<string>> {
     return await firstValueFrom(
       this.http.delete<GenericResultResponse<string>>(
-        `${Environments.APIUrl}/prefeitura?id=${id}`
+        `${Environments.APIUrl}/prefeitura/${id}`
       )
     );
   }

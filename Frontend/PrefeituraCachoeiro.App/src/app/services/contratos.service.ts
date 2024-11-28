@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
-import { TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
-import { DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
+import { ContratosResponse, TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
+import { CriarContratoResponse, DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
 import { AtualizarContratoRequest } from '../request/ContratoRequest/atualizarContratoRequest';
 import { BuscarContratosRequest } from '../request/ContratoRequest/buscarContratosRequest';
+import { CriarContratoRequest } from '../request/ContratoRequest/criarContratoRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +15,9 @@ import { BuscarContratosRequest } from '../request/ContratoRequest/buscarContrat
 export class ContratosService {
   constructor(private readonly http: HttpClient) { }
 
-  public async BuscarTodosContratos(request: BuscarContratosRequest): Promise<GenericResultResponse<TodosContratosResponse>> {
+  public async BuscarTodosContratos(request: BuscarContratosRequest): Promise<GenericResultResponse<ContratosResponse[]>> {
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<TodosContratosResponse>>(
+      this.http.post<GenericResultResponse<ContratosResponse[]>>(
         `${Environments.APIUrl}/contratos/buscartodos`,
         request
       )
@@ -31,23 +32,38 @@ export class ContratosService {
     );
   }
 
-  public async CriarContrato(id: number, dataContrato: string): Promise<GenericResultResponse<number>> {
+  public async CriarContrato(request: CriarContratoRequest): Promise<GenericResultResponse<CriarContratoResponse>> {
+    const formData = new FormData();
+    Object.keys(request).forEach(key => {
+      formData.append(key, request[key]);
+    });
+
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<number>>(
+      this.http.post<GenericResultResponse<CriarContratoResponse>>(
         `${Environments.APIUrl}/contratos`,
-        {
-          IdProjeto: id,
-          DataContrato: dataContrato
-        }
+        formData
       )
     );
   }
 
   public async AtualizarContrato(request: AtualizarContratoRequest): Promise<GenericResultResponse<number>> {
+    const formData = new FormData();
+    Object.keys(request).forEach(key => {
+      formData.append(key, request[key]);
+    });
+
     return await firstValueFrom(
       this.http.put<GenericResultResponse<number>>(
         `${Environments.APIUrl}/contratos`,
-        request
+        formData
+      )
+    );
+  }
+
+  public async DeletarContrato(id: number): Promise<GenericResultResponse<string>> {
+    return await firstValueFrom(
+      this.http.delete<GenericResultResponse<string>>(
+        `${Environments.APIUrl}/contratos/${id}`
       )
     );
   }

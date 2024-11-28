@@ -1,9 +1,11 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Editar_criar_prefeituraComponent } from '../editar_criar_prefeitura/editar_criar_prefeitura.component';
+import { PrefeituraService } from 'src/app/services/prefeitura.service';
+import { PrefeituraDataResponse, PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 
 export interface ItemPrefeitura {
   id: number;
@@ -20,22 +22,35 @@ export interface ItemPrefeitura {
 export class PrefeituraComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
-  lista: ItemPrefeitura[] = [
-    { id: 1,nomePrefeitura: 'Cachoeiro', criadoEm: '25/03/2020 ',acoes: ''},
-    { id:2, nomePrefeitura: 'BH',  criadoEm: '25/08/2022',acoes: '' },
-    { id: 3,nomePrefeitura: 'Teste',  criadoEm: '25/03/2021',acoes: '' }
-  ]
-  displayedColumns: string[] = ['nomePrefeitura', 'criadoEm','acoes'];
+  lista: PrefeituraResponse[] = [];
+  displayedColumns: string[] = ['idPrefeitura', 'nome', 'logo','acoes'];
   
-  dataSource: MatTableDataSource<ItemPrefeitura>;
+  dataSource: MatTableDataSource<PrefeituraResponse>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor() { 
+  constructor(private readonly api: PrefeituraService
+  ) { 
     this.dataSource = new MatTableDataSource(this.lista);    
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.buscarListaPrefeituras();
+  }
+
+  async buscarListaPrefeituras(){
+    var prefeituraFilter : PrefeituraFilter = new PrefeituraFilter();
+    prefeituraFilter.nome = "";
+    prefeituraFilter.itemsPorPagina = 10;
+    prefeituraFilter.pagina = 1;
+    await this.api.BuscarTodasPrefeituras(prefeituraFilter)
+    .then((result) => {
+      this.lista = result.data;
+      this.dataSource.data = (this.lista); 
+        
+      console.log(result.data);
+      console.log(this.dataSource)
+    });
   }
 
   ngAfterViewInit() {
@@ -52,37 +67,32 @@ export class PrefeituraComponent implements OnInit {
     }
   }
 
-  deletePrefeitura(id: number){
-    this.lista = this.lista.filter(item => item.id !== id);
-    this.dataSource.data = this.lista;
+  async deletePrefeitura(id: number){
+    await this.api.DeletarPrefeitura(id)
+    .then((result) => {
+      var index = this.lista.findIndex(item => item.idPrefeitura == id);
+      this.lista.splice(index, 1);
+  
+      this.dataSource.data = this.lista;
+    });
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(Editar_criar_prefeituraComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
-      result.id = this.lista.length + 1;
-      this.lista.push(result);
-      this.dataSource = new MatTableDataSource();
-      this.dataSource = new MatTableDataSource(this.lista);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+    dialogRef.afterClosed().subscribe(async result => {
+      await this.buscarListaPrefeituras();
     });
 
   }
 
-  async editPrefeitura(row: ItemPrefeitura){
+  async editPrefeitura(row: PrefeituraResponse){
     const dialogRef = this.dialog.open(Editar_criar_prefeituraComponent,{
       data: row
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.lista = this.lista.filter(item => item.id !== result.id);
-      this.dataSource = new MatTableDataSource();
-      this.lista.push(result);
-      this.dataSource = new MatTableDataSource(this.lista);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;    
+    dialogRef.afterClosed().subscribe(async result => {
+      await this.buscarListaPrefeituras();
     });
   }
 

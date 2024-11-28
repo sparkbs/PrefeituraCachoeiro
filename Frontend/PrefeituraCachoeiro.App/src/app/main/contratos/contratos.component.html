@@ -18,34 +18,39 @@
           <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>
           
+              <ng-container matColumnDef="numeroContrato">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Contrato </th>
+                <td mat-cell *matCellDef="let row"> {{row.numeroContrato}} </td>
+              </ng-container>
+          
               <ng-container matColumnDef="nomePrefeitura">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Prefeitura </th>
-                <td mat-cell *matCellDef="let row"> {{row.nomePrefeitura}} </td>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> prefeitura </th>
+                <td mat-cell *matCellDef="let row"> {{row.prefeitura.nome}} </td>
               </ng-container>
           
-              <ng-container matColumnDef="dataInicioEFim">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Data de inicio/término </th>
-                <td mat-cell *matCellDef="let row"> {{row.dataInicioEFim}} </td>
+              <ng-container matColumnDef="dataInicio">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Início </th>
+                <td mat-cell *matCellDef="let row"> {{row.dataInicio}} </td>
               </ng-container>
           
-              <ng-container matColumnDef="consorcio">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Consórcio </th>
-                <td mat-cell *matCellDef="let row"> {{row.consorcio}} </td>
-              </ng-container>
-          
-              <ng-container matColumnDef="gerente">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Gerente </th>
-                <td mat-cell *matCellDef="let row"> {{row.gerente}} </td>
+              <ng-container matColumnDef="dataTermino">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Termino</th>
+                <td mat-cell *matCellDef="let row"> {{row.dataTermino}} </td>
               </ng-container>
 
-              <ng-container matColumnDef="valorContrato">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor do contrato </th>
-                <td mat-cell *matCellDef="let row"> R$ {{row.valorContrato}} </td>
+              <ng-container matColumnDef="gerente">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Gerente </th>
+                <td mat-cell *matCellDef="let row"> R$ {{row.gerente}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="valor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor </th>
+                <td mat-cell *matCellDef="let row"> {{row.valor}} </td>
               </ng-container>
 
               <ng-container matColumnDef="tipoContratacao">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo contrato </th>
-                <td mat-cell *matCellDef="let row"> {{row.tipoContratacao}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.tipoContratacao == 1 ? "Adesão":"Licitação"}} </td>
               </ng-container>
 
               <ng-container matColumnDef="acoes">

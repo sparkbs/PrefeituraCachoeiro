@@ -1,12 +1,14 @@
-import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Editar_criar_contratosComponent } from './editar_criar_contratos/editar_criar_contratos.component';
+import { Editar_criar_contratosComponent } from './criar_contratos/editar_criar_contratos.component';
 import { AditivosContratosComponent } from './aditivos-contratos/aditivos-contratos.component';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
+import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { Editar_contratosComponent } from './editar_contratos/editar_contratos/editar_contratos.component';
 
 export interface Item {
   id:number;
@@ -24,22 +26,41 @@ export interface Item {
   templateUrl: './contratos.component.html',
   styleUrls: ['./contratos.component.scss']
 })
-export class ContratosComponent implements AfterViewInit {
+export class ContratosComponent implements AfterViewInit, OnInit {
   readonly dialog = inject(MatDialog);
 
-  lista: Item[] = [
+  /*lista: Item[] = [
     { id: 1,nomePrefeitura: 'Cachoeiro', dataInicioEFim: '25/03/2020 até 25/03/2022', consorcio: 'teste 1', gerente: 'João', valorContrato:20.000, tipoContratacao:'Adesão' ,acoes: ''},
     { id:2, nomePrefeitura: 'BH',  dataInicioEFim: '22/08/2020 até 25/08/2022', consorcio: 'teste 2', gerente: 'Maria', valorContrato:100.000, tipoContratacao:'Licitação',acoes: '' },
     { id: 3,nomePrefeitura: 'Teste',  dataInicioEFim: '25/03/2019 até 25/03/2021', consorcio: 'teste 3', gerente: 'Pedro', valorContrato:200.000, tipoContratacao:'Adesão',acoes: '' }
-  ]
-  displayedColumns: string[] = ['nomePrefeitura', 'dataInicioEFim', 'consorcio', 'gerente','valorContrato','tipoContratacao','acoes'];
-  dataSource: MatTableDataSource<Item>;
+  ]*/
+  lista: ContratosResponse[] = [];
+  displayedColumns: string[] = ['numeroContrato','nomePrefeitura', 'dataInicio', 'dataTermino', 'gerente','valor','tipoContratacao','acoes'];
+  dataSource: MatTableDataSource<ContratosResponse>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private readonly api: ContratosService) {
-    this.dataSource = new MatTableDataSource(this.lista);
+    this.dataSource = new MatTableDataSource(this.lista);    
+  }
+
+  async ngOnInit() {
+    await this.buscarListaContratos();
+  }
+
+  async buscarListaContratos(){
+    var contratosFilter : BuscarContratosRequest = new BuscarContratosRequest();
+    contratosFilter.itemsPorPagina = 10;
+    contratosFilter.pagina = 1;
+    await this.api.BuscarTodosContratos(contratosFilter)
+    .then((result) => {
+      this.lista = result.data;
+      this.dataSource.data = (this.lista); 
+        
+      console.log(result.data);
+      console.log(this.dataSource)
+    });
   }
 
   ngAfterViewInit() {
@@ -56,41 +77,32 @@ export class ContratosComponent implements AfterViewInit {
     }
   }
 
-  deleteContrato(id: number){
-    this.lista = this.lista.filter(item => item.id !== id);
-    this.dataSource.data = this.lista;
+  async deleteContrato(id: number){
+    await this.api.DeletarContrato(id)  
+    .then((result) => {
+      var index = this.lista.findIndex(item => item.idContrato == id);
+      this.lista.splice(index, 1);
+  
+      this.dataSource.data = this.lista;
+    });
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(Editar_criar_contratosComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
-      result.id = this.lista.length + 1;
-      this.lista.push(result);
-      this.dataSource = new MatTableDataSource();
-      this.dataSource = new MatTableDataSource(this.lista);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+    dialogRef.afterClosed().subscribe(async result => {
+      await this.buscarListaContratos();
     });
 
   }
 
   async editContrato(row: Item){
-    await this.api.BuscarTodosContratos(new BuscarContratosRequest())
-    .then((result) => {
-      console.log(result);
-    });
-    const dialogRef = this.dialog.open(Editar_criar_contratosComponent,{
+    const dialogRef = this.dialog.open(Editar_contratosComponent,{
       data: row
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.lista = this.lista.filter(item => item.id !== result.id);
-      this.dataSource = new MatTableDataSource();
-      this.lista.push(result);
-      this.dataSource = new MatTableDataSource(this.lista);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+    dialogRef.afterClosed().subscribe(async result => {
+      await this.buscarListaContratos();
     });
   }
 

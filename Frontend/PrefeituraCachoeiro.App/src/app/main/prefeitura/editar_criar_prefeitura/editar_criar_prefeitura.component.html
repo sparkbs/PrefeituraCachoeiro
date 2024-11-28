@@ -1,19 +1,44 @@
-<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Cadastrar prefeitura</h1>
+<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;" >{{this.data ? "Editar Prefeitura" : "Cadastrar prefeitura"}}</h1>
 <mat-dialog-content class="mat-typography">
   <div style="margin-top: 20px;">
-    <div>
-      <mat-form-field>
+    <div style="display: flex; gap: 16px;" *ngIf="!this.data">
+      <!-- Campo Nome Prefeitura -->
+      <mat-form-field style="flex: 1;">
         <mat-label>Nome prefeitura</mat-label>
-        <input matInput  [(ngModel)]="prefeitura.nomePrefeitura" />
+        <input matInput [(ngModel)]="criarPrefeitura.Nome" />
       </mat-form-field>
 
-      <mat-form-field style="margin-left: 10px;">
-        <mat-label>Data Criação</mat-label>
-        <input matInput [(ngModel)]="prefeitura.criadoEm" />
+      <!-- Campo Logo -->
+      <div style="flex: 1;">
+        <label for="logo-upload" style="display: block;">Logo:</label>
+        <input type="file" id="logo-upload" (change)="onFileChange($event)" />
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 16px;" *ngIf="this.data">
+      <!-- Campo Nome Prefeitura -->
+      <mat-form-field style="flex: 1; height: 100%;">
+        <mat-label>Nome prefeitura</mat-label>
+        <input matInput [(ngModel)]="data.nome" />
       </mat-form-field>
+
+      <!-- Campo Logo -->
+      <div style="flex: 1;">
+        <label for="logo-upload" style="display: block;">Logo:</label>
+        <input type="file" id="logo-upload" (change)="onFileChangeUpdate($event)" />
+      </div>
+      
+      <div>
+        <mat-label >Logo Atual:</mat-label>
+        <br>
+        <img src="{{data.logo}}" width="150"/>
+      </div>
+
     </div>
   </div>
 </mat-dialog-content>
-<mat-dialog-actions >
-  <button mat-button mat-stroked-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -8px;" (click)="salvar()" cdkFocusInitial>Salvar</button>
+
+<mat-dialog-actions>
+  <button mat-button mat-stroked-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -8px;" *ngIf="!this.data" (click)="cadastrar()" cdkFocusInitial>Cadastrar</button>
+  <button mat-button mat-stroked-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -8px;" *ngIf="this.data" (click)="salvar()" cdkFocusInitial>Salvar</button>
 </mat-dialog-actions>

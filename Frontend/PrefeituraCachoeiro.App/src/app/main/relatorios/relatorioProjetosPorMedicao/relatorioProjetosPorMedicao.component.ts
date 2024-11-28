@@ -18,11 +18,16 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   alterarMedicaoProjeto1 = false;
   alterarMedicaoProjeto2 = false;
   alterarMedicaoProjeto3 = false;
+  exibirContrato = false;
 
   constructor(private cdr: ChangeDetectorRef, private readonly api: ContratosService) { }
 
   async ngOnInit() {
     await this.buscarListaContratos();
+  }
+
+  onSelectionChange(){
+    this.exibirContrato = true;
   }
 
   async buscarListaContratos(){
