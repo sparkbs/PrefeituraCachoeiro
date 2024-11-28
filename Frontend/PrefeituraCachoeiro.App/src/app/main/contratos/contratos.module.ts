@@ -12,13 +12,14 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule} from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
-import { Editar_criar_contratosComponent } from './editar_criar_contratos/editar_criar_contratos.component';
+import { Editar_criar_contratosComponent } from './criar_contratos/editar_criar_contratos.component';
 import { FormsModule } from '@angular/forms';
 import { AditivosContratosComponent } from './aditivos-contratos/aditivos-contratos.component';
 import { MatSelectModule } from '@angular/material/select';
+import { Editar_contratosComponent } from './editar_contratos/editar_contratos/editar_contratos.component';
 
 @NgModule({
-  declarations: [ ContratosComponent, Editar_criar_contratosComponent, AditivosContratosComponent ],
+  declarations: [ ContratosComponent, Editar_criar_contratosComponent, AditivosContratosComponent, Editar_contratosComponent ],
   imports: [
     CommonModule,
     MatCardModule,

@@ -1,0 +1,59 @@
+<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Editar contrato</h1>
+<mat-dialog-content class="mat-typography">
+  <div style="margin-top: 20px;">
+    <div>
+
+      <mat-form-field>
+        <mat-label>Selecione a prefeitura</mat-label>
+        <mat-select disableRipple [(ngModel)]="data.prefeituraId">
+          <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura" >{{prefeitura.nome}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field style="margin-left: 10px;">
+        <mat-label>Data Contrato</mat-label>
+        <input matInput type="date" [(ngModel)]="data.dataContrato" />
+      </mat-form-field>
+
+      <mat-form-field style="margin-left: 10px;">
+        <mat-label>Numero Contrato</mat-label>
+        <input matInput [(ngModel)]="data.numeroContrato"/>
+      </mat-form-field>
+
+      <mat-form-field style="margin-left: 10px;">
+        <mat-label>Tipo Contratação</mat-label>
+        <mat-select [(ngModel)]="data.tipoContratacao" disableRipple>
+          <mat-option [value]="1">Adesão</mat-option>
+          <mat-option [value]="2">Licitação</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Data Inicio</mat-label>
+        <input matInput type="date" [(ngModel)]="data.dataInicio" />
+      </mat-form-field>
+
+      <mat-form-field style="margin-left: 10px;">
+        <mat-label>Data Termino</mat-label>
+        <input matInput type="date" [(ngModel)]="data.dataTermino"/>
+      </mat-form-field>
+
+      <mat-form-field style="margin-left: 10px;">
+        <mat-label>Gerente</mat-label>
+        <input matInput [(ngModel)]="data.gerente"/>
+      </mat-form-field>
+
+      <mat-form-field style="margin-left: 10px;">
+        <mat-label>Valor Contrato</mat-label>
+        <input matInput type="number" [(ngModel)]="data.valor" />
+      </mat-form-field>
+    </div>
+        
+    
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions >
+  <button mat-button (click)="salvar()" cdkFocusInitial>Salvar</button>
+</mat-dialog-actions>
