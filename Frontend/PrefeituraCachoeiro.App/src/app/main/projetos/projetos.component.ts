@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { EditarCriarProjetosComponent } from './editar-criar-projetos/editar-criar-projetos.component';
+import { TabelaRecursosProjetoComponent } from './tabela-recursos-projeto/tabela-recursos-projeto.component';
 
 export interface tableProject {
   id?: number;
@@ -56,6 +57,13 @@ export class ProjetosComponent {
     const dialogRef = this.dialog.open(EditarCriarProjetosComponent, {
       width: window.innerWidth >= 1450 ? '50%' : '50%',
       data: { edicao }
+    });
+  }
+
+  openTableResources() {
+    const dialogRef = this.dialog.open(TabelaRecursosProjetoComponent, {
+      width: window.innerWidth >= 1450 ? '50%' : '50%',
+      data: {  }
     });
   }
 }
