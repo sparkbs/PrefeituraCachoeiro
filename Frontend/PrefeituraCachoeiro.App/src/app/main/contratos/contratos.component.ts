@@ -52,14 +52,12 @@ export class ContratosComponent implements AfterViewInit, OnInit {
   async buscarListaContratos(){
     var contratosFilter : BuscarContratosRequest = new BuscarContratosRequest();
     contratosFilter.itemsPorPagina = 10;
+    contratosFilter.IdProjeto = null;
     contratosFilter.pagina = 1;
     await this.api.BuscarTodosContratos(contratosFilter)
     .then((result) => {
       this.lista = result.data;
-      this.dataSource.data = (this.lista); 
-        
-      console.log(result.data);
-      console.log(this.dataSource)
+      this.dataSource.data = (this.lista);         
     });
   }
 
@@ -110,7 +108,6 @@ export class ContratosComponent implements AfterViewInit, OnInit {
     const dialogRef = this.dialog.open(AditivosContratosComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
     });
   }
 }

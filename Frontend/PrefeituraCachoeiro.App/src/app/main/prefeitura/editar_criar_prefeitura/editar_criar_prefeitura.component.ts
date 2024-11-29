@@ -11,7 +11,7 @@ import { AtualizarPrefeituraRequest, DadosEnviadosAtualizarPrefeitura } from 'sr
   templateUrl: './editar_criar_prefeitura.component.html',
   styleUrls: ['./editar_criar_prefeitura.component.scss']
 })
-export class Editar_criar_prefeituraComponent implements OnInit {
+export class Editar_criar_prefeituraComponent {
   criarPrefeitura: BasePrefeituraRequest = new BasePrefeituraRequest();
   atualizarPrefeitura: AtualizarPrefeituraRequest = new AtualizarPrefeituraRequest();
 
@@ -21,13 +21,7 @@ export class Editar_criar_prefeituraComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-
-    console.log(this.data);
-  }
-
   async cadastrar(){
-    console.log(this.criarPrefeitura);
     await this.api.CriarPrefeitura(this.criarPrefeitura)
     .then((result) => {
       this.dialogRef.close(result);
@@ -52,7 +46,6 @@ export class Editar_criar_prefeituraComponent implements OnInit {
     this.atualizarPrefeitura.IdPrefeitura = this.data.idPrefeitura;
     this.atualizarPrefeitura.Nome = this.data.nome;
 
-    console.log(this.atualizarPrefeitura);
     await this.api.AtualizarPrefeitura(this.atualizarPrefeitura)
     .then((result) => {
       this.dialogRef.close(result);

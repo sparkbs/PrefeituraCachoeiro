@@ -20,12 +20,6 @@ export class Editar_criar_contratosComponent implements OnInit {
   private readonly apiPrefeitura: PrefeituraService,
   private readonly api: ContratosService
 ) { 
-    /*console.log(this.data);
-    if (data) {
-      this.contratos = { ...data }; // Faz uma cópia do objeto data
-    } else {
-      this.contratos = { id:0,nomePrefeitura: "", dataInicioEFim:"",consorcio:"",gerente:"",valorContrato:0,tipoContratacao:"", acoes:""}; // Inicializa com valores padrão
-    }*/
   }
 
   async ngOnInit() {
@@ -45,7 +39,7 @@ export class Editar_criar_contratosComponent implements OnInit {
 
   async salvar(){
     this.criarContrato.EmpresaId = 1;
-    this.criarContrato.IdProjeto = 1;
+    this.criarContrato.IdProjeto = 4;
 
     await this.api.CriarContrato(this.criarContrato)
     .then((result) => {

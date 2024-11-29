@@ -18,9 +18,11 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { ConfiguracoesModule } from './main/configuracoes/configuracoes.module';
 import {MatCardModule} from '@angular/material/card';
 import { PerfilModule } from './main/perfil/perfil.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RelatorioProjetosPorMedicaoModule } from './main/relatorios/relatorioProjetosPorMedicao/relatorioProjetosPorMedicao.component.module';
 import { PrefeituraModule } from './main/prefeitura/prefeitura/prefeitura.module';
+import { HttpBaseInterceptor } from './services/AuthService/http-base-interceptor/httpBase.interceptor';
+import { AESEncryptDecriptService } from './shared/aesEncryptDecript.service';
 
 @NgModule({
   declarations: [ AppComponent, MainComponent, SidebarComponent, NavbarComponent ],
@@ -45,7 +47,15 @@ import { PrefeituraModule } from './main/prefeitura/prefeitura/prefeitura.module
     PrefeituraModule
     
   ],
-  providers: [ AuthService ],
+  providers: [ 
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpBaseInterceptor,
+      multi: true
+    },
+    AESEncryptDecriptService
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

@@ -1,5 +1,18 @@
 export class AuthResponse {
-    login: string = '';
-    isSucesso: boolean = false;
+    Login: string = '';
+    IsSucesso: boolean = false;
+    accessToken: AccessTokenResponse;
+}
+
+
+export class AccessTokenResponse
+{
+    Authenticated: boolean = false;
+    Created: string = '';
+    expiration: string = '';
     accessToken: string = '';
+    RefreshToken: string = '';
+    idUsuario: number = 0;
+    nome : string = '';
+    Login : string = '';
 }

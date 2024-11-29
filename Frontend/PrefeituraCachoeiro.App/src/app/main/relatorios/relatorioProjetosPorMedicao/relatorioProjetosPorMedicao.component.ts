@@ -33,7 +33,6 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   async buscarListaContratos(){
     await this.api.BuscarTodosContratos(new BuscarContratosRequest())
     .then((result) => {
-      console.log(result);
     });
   }
 

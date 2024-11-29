@@ -7,11 +7,11 @@
     <form class="form-login" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline">
         <mat-label>E-mail</mat-label>
-        <input matInput>
+        <input matInput [(ngModel)]="login.Login" name="email" required>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Senha</mat-label>
-        <input matInput>
+        <input matInput [(ngModel)]="login.Senha" name="senha" type="password" required>
       </mat-form-field>
       <button mat-raised-button color="primary" class="btn-entrar">Entrar</button>
       <button mat-raised-button color="accent" class="btn-cadastrar" type="button" (click)="onRegister()">Alterar Senha</button>

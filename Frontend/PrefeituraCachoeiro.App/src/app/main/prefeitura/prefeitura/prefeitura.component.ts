@@ -47,9 +47,6 @@ export class PrefeituraComponent implements OnInit {
     .then((result) => {
       this.lista = result.data;
       this.dataSource.data = (this.lista); 
-        
-      console.log(result.data);
-      console.log(this.dataSource)
     });
   }
 

@@ -40,12 +40,12 @@
 
               <ng-container matColumnDef="gerente">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Gerente </th>
-                <td mat-cell *matCellDef="let row"> R$ {{row.gerente}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.gerente}} </td>
               </ng-container>
 
               <ng-container matColumnDef="valor">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor </th>
-                <td mat-cell *matCellDef="let row"> {{row.valor}} </td>
+                <td mat-cell *matCellDef="let row"> R$ {{row.valor}} </td>
               </ng-container>
 
               <ng-container matColumnDef="tipoContratacao">
