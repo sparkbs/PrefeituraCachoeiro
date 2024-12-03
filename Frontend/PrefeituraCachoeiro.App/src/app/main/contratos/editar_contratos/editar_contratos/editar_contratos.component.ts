@@ -22,6 +22,7 @@ export class Editar_contratosComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.data.dataInicio = new Date('2024-01-01'); // Converte para o formato correto
     await this.buscarListaPrefeituras();
   }
 

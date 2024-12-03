@@ -12,6 +12,10 @@ import { CadastrarMedicaoComponent } from './cadastrarMedicao/cadastrarMedicao/c
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [ RelatorioProjetosPorMedicaoComponent, CadastrarMedicaoComponent ],
@@ -26,7 +30,11 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     MatDialogModule,
     MatInputModule,
-    MatGridListModule
+    MatGridListModule,
+    FormsModule,
+    CommonModule,
+    BrowserAnimationsModule,
+    BrowserModule
   ]
 })
 export class RelatorioProjetosPorMedicaoModule { }
