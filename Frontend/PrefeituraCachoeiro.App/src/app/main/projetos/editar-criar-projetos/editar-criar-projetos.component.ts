@@ -40,8 +40,8 @@ export class EditarCriarProjetosComponent implements OnInit, AfterViewInit {
   ];
 
   recursos: string[] = [
-    'Projetista Sênior',
-    'Desenhista Técnico',
+    'Projetista Junior',
+    'Técnico Senior',
     'Projeto Elétrico'
   ];
 

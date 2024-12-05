@@ -20,9 +20,11 @@ import { EditarCriarGruposPermissoesComponent } from './configuracoes-grupos-per
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TabelaBaseDadosComponent } from './configuracoes-base-dados/tabela-base-dados/tabela-base-dados.component';
+import { EditarCriarBaseDadosComponent } from './configuracoes-base-dados/editar-criar-base-dados/editar-criar-base-dados.component';
 
 @NgModule({
-  declarations: [ ConfiguracoesComponent, TabelaPerfisComponent, EditarCriarPerfisComponent, TabelaGruposPermissoesComponent, EditarCriarGruposPermissoesComponent ],
+  declarations: [ ConfiguracoesComponent, TabelaPerfisComponent, EditarCriarPerfisComponent, TabelaGruposPermissoesComponent, EditarCriarGruposPermissoesComponent, TabelaBaseDadosComponent, EditarCriarBaseDadosComponent ],
   imports: [
     CommonModule,
     MatCardModule,

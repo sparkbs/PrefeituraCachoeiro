@@ -1,0 +1,20 @@
+.table-body {
+  width: 100%;
+  max-height: 50%;
+}
+
+.table-body span {
+  font-size: 12px;
+}
+
+.table td > span {
+  margin-left: 3%;
+  cursor: pointer;
+}
+
+.button-add {
+  background-color:royalblue;
+  color: white !important;
+  margin-left: 10px;
+  margin-top: -8px;
+}
