@@ -97,11 +97,47 @@ namespace PrefeituraCachoeiro.Compartilhado {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O projeto foi adicionado ao contrato.
+        /// </summary>
+        public static string ProjetoAdicionadoContrato {
+            get {
+                return ResourceManager.GetString("ProjetoAdicionadoContrato", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O projeto informado já está associado ao contrato informado.
+        /// </summary>
+        public static string ProjetoJaAssociadoContrato {
+            get {
+                return ResourceManager.GetString("ProjetoJaAssociadoContrato", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O projeto informado já tem contrato criado.
         /// </summary>
         public static string ProjetoJaTemContratoCriado {
             get {
                 return ResourceManager.GetString("ProjetoJaTemContratoCriado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O projeto informado não está associado ao contrato informado.
+        /// </summary>
+        public static string ProjetoNaoAssociadoContrato {
+            get {
+                return ResourceManager.GetString("ProjetoNaoAssociadoContrato", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O projeto foi removido do contrato.
+        /// </summary>
+        public static string ProjetoRemovidoContrato {
+            get {
+                return ResourceManager.GetString("ProjetoRemovidoContrato", resourceCulture);
             }
         }
     }

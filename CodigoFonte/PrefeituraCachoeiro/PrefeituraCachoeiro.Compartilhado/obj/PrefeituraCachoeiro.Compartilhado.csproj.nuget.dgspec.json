@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src5\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Compartilhado\\PrefeituraCachoeiro.Compartilhado.csproj": {}
+    "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Compartilhado\\PrefeituraCachoeiro.Compartilhado.csproj": {}
   },
   "projects": {
-    "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src5\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Compartilhado\\PrefeituraCachoeiro.Compartilhado.csproj": {
+    "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Compartilhado\\PrefeituraCachoeiro.Compartilhado.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src5\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Compartilhado\\PrefeituraCachoeiro.Compartilhado.csproj",
+        "projectUniqueName": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Compartilhado\\PrefeituraCachoeiro.Compartilhado.csproj",
         "projectName": "PrefeituraCachoeiro.Compartilhado",
-        "projectPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src5\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Compartilhado\\PrefeituraCachoeiro.Compartilhado.csproj",
+        "projectPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Compartilhado\\PrefeituraCachoeiro.Compartilhado.csproj",
         "packagesPath": "C:\\Users\\André\\.nuget\\packages\\",
-        "outputPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src5\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Compartilhado\\obj\\",
+        "outputPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Compartilhado\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

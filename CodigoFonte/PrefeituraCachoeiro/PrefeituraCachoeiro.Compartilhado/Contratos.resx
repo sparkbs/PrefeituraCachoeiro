@@ -132,4 +132,16 @@
   <data name="ContratoDeletado" xml:space="preserve">
     <value>O contrato foi deletado</value>
   </data>
+  <data name="ProjetoJaAssociadoContrato" xml:space="preserve">
+    <value>O projeto informado já está associado ao contrato informado</value>
+  </data>
+  <data name="ProjetoAdicionadoContrato" xml:space="preserve">
+    <value>O projeto foi adicionado ao contrato</value>
+  </data>
+  <data name="ProjetoRemovidoContrato" xml:space="preserve">
+    <value>O projeto foi removido do contrato</value>
+  </data>
+  <data name="ProjetoNaoAssociadoContrato" xml:space="preserve">
+    <value>O projeto informado não está associado ao contrato informado</value>
+  </data>
 </root>

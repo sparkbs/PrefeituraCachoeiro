@@ -21,7 +21,12 @@ namespace PrefeituraCachoeiro.Aplicacao.AutoMapper
             CreateMap<UsuariosGruposEntidade, CriarUsuariosGruposResponse>();
             CreateMap<TipoPermissoesEntidade, TiposPermissoesResponse>();
             CreateMap<PermissoesEntidade, CriarPermissoesResponse>();
-            CreateMap<ContratosEntidade, ContratosResponse>();
+            CreateMap<ContratosEntidade, ContratosResponse>()
+                .ForMember(dest => dest.Projetos, opt => opt.MapFrom(src => src.Projetos.Select(cp => new ProjetoResponse
+                {
+                    IdProjeto = cp.Projetos.IdProjeto,
+                    NomeProjeto = cp.Projetos.NomeProjeto
+                })));
             CreateMap<ContratosEntidade, CriarContratoResponse>();
             CreateMap<ContratosEntidade, AtualizarContratosResponse>();
             CreateMap<ProjetoEntidade, ProjetoResponse>();

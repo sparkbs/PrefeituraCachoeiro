@@ -12,5 +12,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Interfaces
         Task<Result<CriarContratoResponse>> InserirAsync(CriarContratoRequest requisicao, CancellationToken cancellationToken);
         Task<Result<AtualizarContratosResponse>> AtualizarAsync(AtualizarContratosRequest requisicao, CancellationToken cancellationToken);
         Task<Result<DeletarContratoResponse>> DeletarAsync(int id, CancellationToken cancellationToken);
+        Task<Result<AdicionarProjetoContratoResponse>> AdicionarProjetoContratoAsync(AdicionarProjetoContratoRequest request, CancellationToken cancellationToken);
+        Task<Result<RemoverProjetoContratoResponse>> RemoverProjetoContratoAsync(RemoverProjetoContratoRequest request, CancellationToken cancellationToken);
     }
 }

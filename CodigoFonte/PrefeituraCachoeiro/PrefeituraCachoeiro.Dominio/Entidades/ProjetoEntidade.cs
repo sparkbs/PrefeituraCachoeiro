@@ -4,7 +4,7 @@
     {
         public int IdProjeto { get; set; }
         public string? NomeProjeto { get; set; }
-        public List<ContratosEntidade> Contratos { get; set; }
+        public List<ContratosProjetosEntidade> Contratos { get; set; }
 
         public ProjetoEntidade(): base()
         {

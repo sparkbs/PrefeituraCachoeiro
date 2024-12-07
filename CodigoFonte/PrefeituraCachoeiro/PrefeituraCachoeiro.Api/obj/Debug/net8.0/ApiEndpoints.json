@@ -8,11 +8,6 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "IdProjeto",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
         "Name": "DataContrato",
         "Type": "System.DateTime",
         "IsRequired": false
@@ -80,11 +75,6 @@
     "Parameters": [
       {
         "Name": "IdContrato",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "IdProjeto",
         "Type": "System.Int32",
         "IsRequired": false
       },
@@ -179,6 +169,58 @@
   },
   {
     "ContainingType": "PrefeituraCachoeiro.Api.Controllers.ContratosController",
+    "Method": "DeletarAsync",
+    "RelativePath": "v1/contratos/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.DeletarContratoResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.ContratosController",
+    "Method": "AdicionarProjetoContratoAsync",
+    "RelativePath": "v1/contratos/adicionarprojetocontrato",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.AdicionarProjetoContratoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.AdicionarProjetoContratoResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.ContratosController",
     "Method": "BuscarTodosAsync",
     "RelativePath": "v1/contratos/buscartodos",
     "HttpMethod": "POST",
@@ -193,7 +235,33 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.GruposDataResponse",
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.ContratosDataResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PrefeituraCachoeiro.Api.Controllers.ContratosController",
+    "Method": "RemoverProjetoContratoAsync",
+    "RelativePath": "v1/contratos/removerprojetocontrato",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.RemoverProjetoContratoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "PrefeituraCachoeiro.Aplicacao.Dtos.Respostas.RemoverProjetoContratoResponse",
         "MediaTypes": [
           "text/plain",
           "application/json",

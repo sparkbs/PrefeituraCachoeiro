@@ -33,7 +33,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ContratosResponse))]
-        [Authorize]
+        //remvover [Authorize]
         public async Task<IActionResult> BuscarPorIdAsync(int id, CancellationToken cancellationToken)
         {
             var response = await _contratosService.BuscarPorIdAsync(id, cancellationToken);
@@ -49,8 +49,8 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="200">Retorna uma lista de contratos</response>
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("buscartodos")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GruposDataResponse))]
-        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ContratosDataResponse))]
+        //remvover [Authorize]
         public async Task<IActionResult> BuscarTodosAsync([FromBody] ContratosFilter filtro, CancellationToken cancellationToken)
         {
             var response = await _contratosService.BuscarTodosAsync(filtro, cancellationToken);
@@ -67,7 +67,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CriarContratoResponse))]
-        [Authorize]
+        //remvover [Authorize]
         public async Task<IActionResult> InserirAsync([FromForm] CriarContratoRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _contratosService.InserirAsync(requisicao, cancellationToken);
@@ -84,7 +84,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AtualizarContratosResponse))]
-        [Authorize]
+        //remvover [Authorize]
         public async Task<IActionResult> AtualizarAsync([FromForm] AtualizarContratosRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _contratosService.AtualizarAsync(requisicao, cancellationToken);
@@ -101,10 +101,44 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeletarContratoResponse))]
-        [Authorize]
+        //remvover [Authorize]
         public async Task<IActionResult> DeletarAsync(int id, CancellationToken cancellationToken)
         {
             var response = await _contratosService.DeletarAsync(id, cancellationToken);
+
+            return response.Match(
+              onSuccess: Ok,
+              onFailure: error => error.ToHttpResponseError());
+        }
+
+        /// <summary>
+        /// Deleta um determinado projeto de determinado contrato
+        /// </summary>
+        /// <response code="200">Retorna uma mensagem de confirmação</response>
+        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        [HttpDelete("removerprojetocontrato")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoverProjetoContratoResponse))]
+        //remover [Authorize]
+        public async Task<IActionResult> RemoverProjetoContratoAsync([FromBody] RemoverProjetoContratoRequest request, CancellationToken cancellationToken)
+        {
+            var response = await _contratosService.RemoverProjetoContratoAsync(request, cancellationToken);
+
+            return response.Match(
+              onSuccess: Ok,
+              onFailure: error => error.ToHttpResponseError());
+        }
+
+        /// <summary>
+        /// Adicionar um determinado projeto a determinado contrato
+        /// </summary>
+        /// <response code="200">Retorna uma mensagem de confirmação</response>
+        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        [HttpPost("adicionarprojetocontrato")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AdicionarProjetoContratoResponse))]
+        //remover [Authorize]
+        public async Task<IActionResult> AdicionarProjetoContratoAsync([FromBody] AdicionarProjetoContratoRequest request, CancellationToken cancellationToken)
+        {
+            var response = await _contratosService.AdicionarProjetoContratoAsync(request, cancellationToken);
 
             return response.Match(
               onSuccess: Ok,

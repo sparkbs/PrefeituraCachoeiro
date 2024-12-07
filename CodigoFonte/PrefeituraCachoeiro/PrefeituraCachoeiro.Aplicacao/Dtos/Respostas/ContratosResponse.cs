@@ -6,8 +6,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
     public class ContratosResponse
     {
         public int IdContrato { get; set; }
-        public int IdProjeto { get; set; }
-        public ProjetoResponse Projeto { get; set; }
+        public List<ProjetoResponse> Projetos { get; set; }
         public DateTime DataContrato { get; set; }
         public string? NumeroContrato { get; set; }
         public decimal? ValorTotalPrevisto { get; set; }

@@ -74,11 +74,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 if (!validation.IsValid)
                     return Result<CriarContratoResponse>.Failure(new ValidationError(validation.Errors));
 
-                var _contratoProjeto = await this._contratosRepository.BuscarPorIdProjetoAsync(requisicao.IdProjeto, cancellationToken);
-
-                if (_contratoProjeto != null)
-                    return Result<CriarContratoResponse>.Failure(new ProjetoJaTemContratoExistenteError(Compartilhado.Contratos.ProjetoJaTemContratoCriado));
-
                 var _items = await this._itemRepository.BuscarTodosAsync(cancellationToken);
 
                 _items = _items.Where(i => i.IdItemPai.HasValue).ToList();
@@ -117,7 +112,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
                 try
                 {
-                    var _contrato = new ContratosEntidade(requisicao.IdProjeto, requisicao.DataContrato.ToUniversalTime(),
+                    var _contrato = new ContratosEntidade(requisicao.DataContrato.ToUniversalTime(),
                         requisicao.NumeroContrato, _totalPrevisto, _totalSolicitado, _totalMedido, _totalRestante)
                     {
                         DataInicio = requisicao.DataInicio.ToUniversalTime(),
@@ -191,7 +186,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 contratoFound.Gerente = requisicao.Gerente;
                 contratoFound.PrefeituraId = requisicao.PrefeituraId;
                 contratoFound.TipoContratacao = requisicao.TipoContratacao;
-                contratoFound.IdProjeto = requisicao.IdProjeto;
 
                 await _contratosRepository.AtualizarAsync(contratoFound, cancellationToken);
                 var result = _mapper.Map<AtualizarContratosResponse>(contratoFound);
@@ -227,6 +221,75 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 _logger.LogError(ex.Message);
 
                 return Result<DeletarContratoResponse>.Failure(new UnknownError(ex.Message));
+            }
+        }
+
+        public async Task<Result<RemoverProjetoContratoResponse>> RemoverProjetoContratoAsync(RemoverProjetoContratoRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                //Busca no banco de dados o objeto de contrato/projeto
+                var _contratoProjeto = await this._contratosRepository.BuscarProjetoInContratoAsync(request.IdContrato, request.IdProjeto, cancellationToken); ;
+
+                //Verifica se existe o projeto associado ao contrato
+                if (_contratoProjeto != null)
+                {
+                    //Remover do banco de dados
+                    await this._contratosRepository.RemoverProjetoContratoAsync(_contratoProjeto, cancellationToken);
+
+                    return (Result<RemoverProjetoContratoResponse>.Success(
+                        new RemoverProjetoContratoResponse()
+                        {
+                            IsSucesso = true,
+                            Mensagem = Compartilhado.Contratos.ProjetoRemovidoContrato
+                        }));
+                }
+
+                return (Result<RemoverProjetoContratoResponse>.Success(
+                    new RemoverProjetoContratoResponse()
+                    {
+                        IsSucesso = false,
+                        Mensagem = Compartilhado.Contratos.ProjetoNaoAssociadoContrato
+                    }));
+            }
+            catch (Exception Ex)
+            {
+                _logger.LogError(Ex.Message);
+
+                return Result<RemoverProjetoContratoResponse>.Failure(new UnknownError(Ex.Message));
+            }
+        }
+
+        public async Task<Result<AdicionarProjetoContratoResponse>> AdicionarProjetoContratoAsync(AdicionarProjetoContratoRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                //Verificar se esse projeto já está associado a esse contrato
+                if (await this._contratosRepository.VerificarProjetoAssociadoContratoAsync(request.IdContrato, request.IdProjeto, cancellationToken))
+                    return Result<AdicionarProjetoContratoResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.ProjetoJaAssociadoContrato));
+
+                //Criar o objeto para gravar no banco de dados
+                var _contratoprojeto = new ContratosProjetosEntidade()
+                {
+                    IdContrato = request.IdContrato,
+                    IdProjeto = request.IdProjeto
+                };
+
+                //Salvar no banco de dados
+                await this._contratosRepository.AdicionarProjetoContratoAsync(_contratoprojeto, cancellationToken);
+
+                return (Result<AdicionarProjetoContratoResponse>.Success(
+                    new AdicionarProjetoContratoResponse()
+                    {
+                        IsSucesso = true,
+                        Mensagem = Compartilhado.Contratos.ProjetoAdicionadoContrato
+                    }));
+            }
+            catch (Exception Ex)
+            {
+                _logger.LogError(Ex.Message);
+
+                return Result<AdicionarProjetoContratoResponse>.Failure(new UnknownError(Ex.Message));
             }
         }
     }

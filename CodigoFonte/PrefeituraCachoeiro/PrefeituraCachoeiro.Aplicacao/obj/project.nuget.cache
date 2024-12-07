@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gEcDlh9G/dE=",
+  "dgSpecHash": "8FFMPlx1g5o=",
   "success": true,
-  "projectFilePath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src5\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Aplicacao\\PrefeituraCachoeiro.Aplicacao.csproj",
+  "projectFilePath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Aplicacao\\PrefeituraCachoeiro.Aplicacao.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\André\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\André\\.nuget\\packages\\awssdk.core\\3.7.400.50\\awssdk.core.3.7.400.50.nupkg.sha512",

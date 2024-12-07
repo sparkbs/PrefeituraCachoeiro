@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UAmZz5nFxyI=",
+  "dgSpecHash": "a/ps2o0rPsI=",
   "success": true,
-  "projectFilePath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src5\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\PrefeituraCachoeiro.Dominio.csproj",
+  "projectFilePath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\PrefeituraCachoeiro.Dominio.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\André\\.nuget\\packages\\fluentvalidation\\11.10.0\\fluentvalidation.11.10.0.nupkg.sha512",
     "C:\\Users\\André\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

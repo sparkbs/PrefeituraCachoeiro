@@ -3,8 +3,6 @@
     public class ContratosEntidade : EntidadeBase
     {
         public int IdContrato { get; set; }
-        public int IdProjeto { get; set; }
-        public ProjetoEntidade Projeto { get; set; }
         public DateTime DataContrato { get; set; }
         public string? NumeroContrato { get; set; }
         public decimal? ValorTotalPrevisto { get; set; }
@@ -22,17 +20,17 @@
         public DateTime? DataInicio { get; set; }
         public int? PrefeituraId { get; set; }
         public PrefeituraEntidade Prefeitura { get; set; }
+        public List<ContratosProjetosEntidade> Projetos { get; set; }
 
         public ContratosEntidade(): base()
         {
 
         }
 
-        public ContratosEntidade(int idProjeto, DateTime dataContrato, string numeroContrato,
+        public ContratosEntidade(DateTime dataContrato, string numeroContrato,
             decimal valorTotalPrevisto, decimal valorTotalSolicitado,
             decimal valorTotalMedido, decimal valorSaldoRestante): base()
         {
-            this.IdProjeto = idProjeto;
             this.DataContrato = dataContrato;
             this.NumeroContrato = numeroContrato;
             this.ValorTotalPrevisto = valorTotalPrevisto;

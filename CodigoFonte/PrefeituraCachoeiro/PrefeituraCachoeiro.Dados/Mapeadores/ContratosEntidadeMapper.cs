@@ -9,7 +9,6 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
         public void Configure(EntityTypeBuilder<ContratosEntidade> builder)
         {
             builder.ToTable("tb_contratos").HasKey(i=> i.IdContrato);
-            builder.Property(x => x.IdProjeto).HasColumnName("idprojeto").IsRequired();
             builder.Property(x => x.DataContrato).HasColumnName("datacontrato").IsRequired();
             builder.Property(x => x.NumeroContrato).HasColumnName("numerocontrato").IsRequired().HasColumnType("varchar(50)");
             builder.Property(x => x.ValorTotalPrevisto).HasColumnName("valortotalprevisto");
@@ -31,11 +30,6 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
                    .ValueGeneratedOnAdd()
                    .IsRequired();
 
-            builder.HasOne(x => x.Projeto)
-                   .WithMany(x => x.Contratos)
-                   .HasForeignKey(x => x.IdProjeto)
-                   .HasConstraintName("fk_contratos_projetos");
-
             builder.HasMany(x => x.Items)
                    .WithOne(x => x.Contrato)
                    .HasForeignKey(x => x.ContratosId)
@@ -55,6 +49,12 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
                    .WithMany(x => x.Contratos)
                    .HasForeignKey(x => x.PrefeituraId)
                    .HasConstraintName("fk_contratos_prefeituras");
+
+            builder.HasMany(x => x.Projetos)
+                   .WithOne(x => x.Contratos)
+                   .HasForeignKey(x => x.IdContrato)
+                   .HasConstraintName("fk_contratos_projetos");
+
         }
     }
 }

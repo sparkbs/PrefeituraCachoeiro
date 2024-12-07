@@ -26,7 +26,7 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
         public async Task<PaginatedEntity<MedicoesProjetoEntidade>> BuscarTodosAsync(MedicoesProjetoFilter filter, CancellationToken cancellationToken)
         {
             var query = _context.MedicoesProjetoEntidade
-                                .Include(i => i.Contratos).ThenInclude(i => i.Projeto)
+                                .Include(i => i.Contratos).ThenInclude(i => i.Projetos).ThenInclude(i=> i.Projetos)
                                 .Include(i => i.Contratos).ThenInclude(i => i.Items).ThenInclude(i=> i.Quantidade)
                                 .Include(i => i.Contratos).ThenInclude(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Quantidade)
                                 .Include(i => i.Contratos).ThenInclude(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Origem)
@@ -62,7 +62,7 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
         public async Task<MedicoesProjetoEntidade?> BuscarPorIdAsync(int idMedicoesProjeto, CancellationToken cancellationToken)
         {
             return await _context.MedicoesProjetoEntidade
-                                .Include(i => i.Contratos).ThenInclude(i=> i.Projeto)
+                                .Include(i => i.Contratos).ThenInclude(i=> i.Projetos).ThenInclude(i=> i.Projetos)
                                 .Include(i => i.Contratos).ThenInclude(i => i.Items).ThenInclude(i=> i.Quantidade)
                                 .Include(i => i.Items).ThenInclude(i => i.ItemsContrato).ThenInclude(i => i.Item).ThenInclude(i => i.Quantidade)
                                 .Include(i => i.Items).ThenInclude(i => i.ItemsContrato).ThenInclude(i => i.Item).ThenInclude(i => i.Origem)

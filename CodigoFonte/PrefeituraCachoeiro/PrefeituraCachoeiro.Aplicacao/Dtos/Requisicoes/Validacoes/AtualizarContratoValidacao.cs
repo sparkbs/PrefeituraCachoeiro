@@ -8,11 +8,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.Validacoes
     {
         public AtualizarContratoValidacao()
         {
-
-            RuleFor(x => x.IdProjeto)
-                .NotEmpty()
-                .WithMessage("O identificador do projeto não pode ser vazio");
-
             RuleFor(x => x.DataContrato)
                 .NotEmpty()
                 .WithMessage("A data do contrato não pode ser vazia");

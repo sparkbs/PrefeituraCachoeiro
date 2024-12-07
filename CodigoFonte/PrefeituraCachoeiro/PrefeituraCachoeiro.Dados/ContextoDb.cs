@@ -26,6 +26,7 @@ namespace PrefeituraCachoeiro.Dados
         public DbSet<DbSequenceResult> DbSequenceResult { get; set; }
         public DbSet<ParametrosSistemaEntidade> ParametrosSistema { get; set; }
         public DbSet<ArquivosMedicoesProjetoEntidade> ArquivosMedicoesProjeto { get; set; }
+        public DbSet<ContratosProjetosEntidade> ContratosProjetos { get; set; }
 
         public ContextoDb(DbContextOptions<ContextoDb> options) : base(options)
         {

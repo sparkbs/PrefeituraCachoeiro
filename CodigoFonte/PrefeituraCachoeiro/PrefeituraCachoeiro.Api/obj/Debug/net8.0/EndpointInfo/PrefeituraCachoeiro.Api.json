@@ -48,6 +48,48 @@
             "description": "O usuário não possui acesso autorizado pelo token informado."
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Contratos"
+        ],
+        "summary": "Deleta um contrato",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna uma mensagem de confirmação",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarContratoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarContratoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletarContratoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
       }
     },
     "/v1/contratos/buscartodos": {
@@ -81,17 +123,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/GruposDataResponse"
+                  "$ref": "#/components/schemas/ContratosDataResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GruposDataResponse"
+                  "$ref": "#/components/schemas/ContratosDataResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GruposDataResponse"
+                  "$ref": "#/components/schemas/ContratosDataResponse"
                 }
               }
             }
@@ -114,10 +156,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "IdProjeto": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
                   "DataContrato": {
                     "type": "string",
                     "format": "date-time"
@@ -155,9 +193,6 @@
                 }
               },
               "encoding": {
-                "IdProjeto": {
-                  "style": "form"
-                },
                 "DataContrato": {
                   "style": "form"
                 },
@@ -230,10 +265,6 @@
                     "type": "integer",
                     "format": "int32"
                   },
-                  "IdProjeto": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
                   "DataContrato": {
                     "type": "string",
                     "format": "date-time"
@@ -276,9 +307,6 @@
               },
               "encoding": {
                 "IdContrato": {
-                  "style": "form"
-                },
-                "IdProjeto": {
                   "style": "form"
                 },
                 "DataContrato": {
@@ -332,6 +360,110 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AtualizarContratosResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/contratos/removerprojetocontrato": {
+      "delete": {
+        "tags": [
+          "Contratos"
+        ],
+        "summary": "Deleta um determinado projeto de determinado contrato",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoverProjetoContratoRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoverProjetoContratoRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoverProjetoContratoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma mensagem de confirmação",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoverProjetoContratoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoverProjetoContratoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoverProjetoContratoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "O usuário não possui acesso autorizado pelo token informado."
+          }
+        }
+      }
+    },
+    "/v1/contratos/adicionarprojetocontrato": {
+      "post": {
+        "tags": [
+          "Contratos"
+        ],
+        "summary": "Adicionar um determinado projeto a determinado contrato",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdicionarProjetoContratoRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdicionarProjetoContratoRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdicionarProjetoContratoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna uma mensagem de confirmação",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdicionarProjetoContratoResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdicionarProjetoContratoResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdicionarProjetoContratoResponse"
                 }
               }
             }
@@ -2591,6 +2723,33 @@
         },
         "additionalProperties": false
       },
+      "AdicionarProjetoContratoRequest": {
+        "type": "object",
+        "properties": {
+          "idContrato": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idProjeto": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdicionarProjetoContratoResponse": {
+        "type": "object",
+        "properties": {
+          "isSucesso": {
+            "type": "boolean"
+          },
+          "mensagem": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ArquivosMedicoesProjetoDataResponse": {
         "type": "object",
         "properties": {
@@ -2745,6 +2904,23 @@
         },
         "additionalProperties": false
       },
+      "ContratosDataResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContratosResponse"
+            },
+            "nullable": true
+          },
+          "totalRegisters": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "ContratosFilter": {
         "type": "object",
         "properties": {
@@ -2771,12 +2947,12 @@
             "type": "integer",
             "format": "int32"
           },
-          "idProjeto": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "projeto": {
-            "$ref": "#/components/schemas/ProjetoResponse"
+          "projetos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjetoResponse"
+            },
+            "nullable": true
           },
           "dataContrato": {
             "type": "string",
@@ -2979,6 +3155,16 @@
           "idUsuarioGrupo": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeletarContratoResponse": {
+        "type": "object",
+        "properties": {
+          "mensagem": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3510,6 +3696,33 @@
             "format": "int32"
           },
           "nome": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemoverProjetoContratoRequest": {
+        "type": "object",
+        "properties": {
+          "idProjeto": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idContrato": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RemoverProjetoContratoResponse": {
+        "type": "object",
+        "properties": {
+          "isSucesso": {
+            "type": "boolean"
+          },
+          "mensagem": {
             "type": "string",
             "nullable": true
           }
