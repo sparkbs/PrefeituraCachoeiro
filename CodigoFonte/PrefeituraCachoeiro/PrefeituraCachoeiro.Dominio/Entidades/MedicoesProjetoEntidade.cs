@@ -13,6 +13,7 @@
         public List<ItemsMedicoesProjetoEntidade> Items { get; set; }
         public List<LogStatusMedicaoEntidade> LogStatusMedicao { get; set; }
         public List<ArquivosMedicoesProjetoEntidade> ArquivosMedicoesProjeto { get; set; }
+        public int? IdProjeto { get; set; }
 
         public MedicoesProjetoEntidade(): base()
         {

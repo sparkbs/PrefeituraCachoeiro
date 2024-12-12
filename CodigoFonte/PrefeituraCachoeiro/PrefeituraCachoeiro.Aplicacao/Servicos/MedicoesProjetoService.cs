@@ -35,7 +35,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             IMedicoesProjetoRepository medicoesProjetoRepository,
             IUnitOfWork unitOfWork, ILogStatusMedicaoRepository logStatusMedicaoRepository,
             IContratosRepository contratosRepository, IApplicationUser applicationUser,
-            IItemsMedicoesProjetoRepository itemsMedicoesProjetoRepository, IS3Service s3Service, 
+            IItemsMedicoesProjetoRepository itemsMedicoesProjetoRepository, IS3Service s3Service,
             IArquivosMedicoesProjetoRepository arquivosMedicoesProjetoRepository)
         {
             _mapper = mapper;
@@ -463,7 +463,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 IdStatusMedicao = (int)status,
                 NumeroMedicao = request.NumeroMedicao,
                 Resumo = request.Resumo,
-                Items = new List<ItemsMedicoesProjetoEntidade>()
+                Items = new List<ItemsMedicoesProjetoEntidade>(),
+                IdProjeto = request.IdProjeto
             };
 
             return (_medicoesProjeto);
@@ -478,6 +479,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             medicoesProjeto.NumeroMedicao = request.NumeroMedicao;
             medicoesProjeto.Resumo = request.Resumo;
             medicoesProjeto.Items = new List<ItemsMedicoesProjetoEntidade>();
+            medicoesProjeto.IdProjeto = request.IdProjeto;
 
             return (medicoesProjeto);
         }

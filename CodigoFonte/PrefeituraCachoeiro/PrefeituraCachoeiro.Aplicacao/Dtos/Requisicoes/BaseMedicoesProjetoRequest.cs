@@ -10,5 +10,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes
         public DateTime DataMedicao { get; set; }
         public string? Resumo { get; set; }
         public List<ItemMedicoesProjetoRequest> Items { get; set; }
+        public int? IdProjeto { get; set; }
     }
 }

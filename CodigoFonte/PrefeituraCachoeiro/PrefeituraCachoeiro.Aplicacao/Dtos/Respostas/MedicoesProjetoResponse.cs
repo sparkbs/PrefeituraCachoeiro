@@ -14,5 +14,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
         public int IdStatusMedicao { get; set; }
         public StatusMedicaoResponse StatusMedicao { get; set; }
         public IEnumerable<ItemsMedicoesProjetoResponse> Items { get; set; }
+        public int? IdProjeto { get; set; }
     }
 }
