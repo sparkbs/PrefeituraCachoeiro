@@ -1,0 +1,88 @@
+---
+- name: Deploy Spring Boot application using Terraform
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+
+  vars_files:
+    - aws_secrets.yml
+
+  tasks:
+    - name: Ensure pip is installed
+      ansible.builtin.apt:
+        name: python3-pip
+        state: present
+      become: yes
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Ensure AWS CLI is installed
+      ansible.builtin.pip:
+        name: awscli
+        state: present
+        extra_args: --user
+      become: no
+
+    - name: Configure AWS credentials
+      ansible.builtin.shell: |
+        aws configure set aws_access_key_id "{{ aws_access_key_id }}"
+        aws configure set aws_secret_access_key "{{ aws_secret_access_key }}"
+        aws configure set region "{{ aws_region }}"
+      no_log: true
+
+    - name: Ensure Docker is installed
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+      become: yes
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Ensure Terraform is installed
+      ansible.builtin.command: terraform --version
+      register: terraform_version
+      ignore_errors: true
+
+    - name: Download Terraform if not present
+      ansible.builtin.get_url:
+        url: "https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_linux_amd64.zip"
+        dest: "/tmp/terraform.zip"
+      when: terraform_version.rc != 0
+
+    - name: Create Terraform directory
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/bin"
+        state: directory
+      when: terraform_version.rc != 0
+
+    - name: Unzip Terraform
+      ansible.builtin.unarchive:
+        src: "/tmp/terraform.zip"
+        dest: "{{ ansible_env.HOME }}/bin"
+        remote_src: yes
+      when: terraform_version.rc != 0
+
+    - name: Add Terraform to PATH
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.bashrc"
+        line: 'export PATH=$PATH:{{ ansible_env.HOME }}/bin'
+        state: present
+      when: terraform_version.rc != 0
+
+    - name: Initialize Terraform
+      ansible.builtin.command: terraform init
+      args:
+        chdir: ../terraform
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ aws_access_key_id }}"
+        AWS_SECRET_ACCESS_KEY: "{{ aws_secret_access_key }}"
+        AWS_DEFAULT_REGION: "{{ aws_region }}"
+        PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/bin"
+
+    - name: Apply Terraform changes
+      ansible.builtin.command: terraform apply -auto-approve
+      args:
+        chdir: ../terraform
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ aws_access_key_id }}"
+        AWS_SECRET_ACCESS_KEY: "{{ aws_secret_access_key }}"
+        AWS_DEFAULT_REGION: "{{ aws_region }}"
+        PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/bin"

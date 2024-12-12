@@ -1,0 +1,18 @@
+version: '3.8'
+name: aplications
+
+networks: 
+  host-api:
+    driver: bridge
+
+services:
+  prefeitura-service:
+    build:
+      dockerfile: Dockerfile
+    image: prefeitura-image
+    container_name: prefeitura-container
+    ports:
+      - "8080:8080"
+    networks:
+      - host-api
+    tty: true  # Permite interação via terminal

@@ -1,0 +1,93 @@
+---
+- name: Deploy Spring Boot application using Terraform
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+
+  vars_files:
+    - aws_secrets.yml
+
+  tasks:
+    - name: Ensure pip is installed
+      ansible.builtin.apt:
+        name: python3-pip
+        state: present
+      become: yes
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Ensure AWS CLI is installed
+      ansible.builtin.pip:
+        name: awscli
+        state: present
+        extra_args: --user
+      become: no
+
+    - name: Configure AWS credentials
+      ansible.builtin.shell: |
+        aws configure set aws_access_key_id "{{ aws_access_key_id }}"
+        aws configure set aws_secret_access_key "{{ aws_secret_access_key }}"
+        aws configure set region "{{ aws_region }}"
+      no_log: true
+
+    - name: Get ECR repository URL
+      ansible.builtin.command: terraform output -raw ecr_repository_url
+      args:
+        chdir: ../terraform
+      register: ecr_repository_url
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ aws_access_key_id }}"
+        AWS_SECRET_ACCESS_KEY: "{{ aws_secret_access_key }}"
+        AWS_DEFAULT_REGION: "{{ aws_region }}"
+        PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/bin"
+
+    - name: Build Docker image
+      ansible.builtin.shell: docker build -t {{ ecr_repository_url.stdout }}:latest .
+      args:
+        chdir: ../
+
+    - name: Login to ECR
+      ansible.builtin.shell: |
+        aws ecr get-login-password --region {{ aws_region }} | docker login --username AWS --password-stdin {{ ecr_repository_url.stdout }}
+      args:
+        executable: /bin/bash
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ aws_access_key_id }}"
+        AWS_SECRET_ACCESS_KEY: "{{ aws_secret_access_key }}"
+        AWS_DEFAULT_REGION: "{{ aws_region }}"
+
+    - name: Push Docker image to ECR
+      ansible.builtin.shell: docker push {{ ecr_repository_url.stdout }}:latest
+
+    - name: Get ALB DNS name
+      ansible.builtin.command: terraform output -raw alb_dns_name
+      args:
+        chdir: ../terraform
+      register: alb_dns_name
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ aws_access_key_id }}"
+        AWS_SECRET_ACCESS_KEY: "{{ aws_secret_access_key }}"
+        AWS_DEFAULT_REGION: "{{ aws_region }}"
+        PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/bin"
+
+
+    - name: Update ECS Service
+      ansible.builtin.command: |
+        aws ecs update-service --cluster prefeitura-cachoeiro-cluster --service prefeitura-cachoeiro-bff-service --force-new-deployment
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ aws_access_key_id }}"
+        AWS_SECRET_ACCESS_KEY: "{{ aws_secret_access_key }}"
+        AWS_DEFAULT_REGION: "{{ aws_region }}"
+
+    - name: Display ALB DNS name
+      ansible.builtin.debug:
+        msg: "ALB DNS name is {{ alb_dns_name.stdout }}"
+
+    - name: Wait for application to be ready
+      ansible.builtin.uri:
+        url: "https://{{ alb_dns_name.stdout }}/actuator/health"
+        method: GET
+        validate_certs: yes
+      register: result
+      until: result.status == 200
+      retries: 60
+      delay: 5
