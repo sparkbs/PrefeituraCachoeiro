@@ -16,5 +16,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes
         public DateTime DataInicio { get; set; }
         public DateTime DataTermino { get; set; }
         public int PrefeituraId { get; set; }
+        public int? Aditivo { get; set; }
     }
 }

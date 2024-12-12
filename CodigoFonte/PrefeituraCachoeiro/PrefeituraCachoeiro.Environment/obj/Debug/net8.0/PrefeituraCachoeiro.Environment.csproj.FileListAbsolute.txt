@@ -34,3 +34,15 @@ C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src6\PrefeituraCachoeiro\CodigoFo
 C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src6\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\obj\Debug\net8.0\refint\PrefeituraCachoeiro.Environment.dll
 C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src6\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\obj\Debug\net8.0\PrefeituraCachoeiro.Environment.pdb
 C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src6\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\obj\Debug\net8.0\ref\PrefeituraCachoeiro.Environment.dll
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src8\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\bin\Debug\net8.0\PrefeituraCachoeiro.Environment.deps.json
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src8\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\bin\Debug\net8.0\PrefeituraCachoeiro.Environment.dll
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src8\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\bin\Debug\net8.0\PrefeituraCachoeiro.Environment.pdb
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src8\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\obj\Debug\net8.0\PrefeituraCachoeiro.Environment.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src8\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\obj\Debug\net8.0\PrefeituraCachoeiro.Environment.AssemblyInfoInputs.cache
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src8\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\obj\Debug\net8.0\PrefeituraCachoeiro.Environment.AssemblyInfo.cs
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src8\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\obj\Debug\net8.0\PrefeituraCachoeiro.Environment.csproj.CoreCompileInputs.cache
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src8\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\obj\Debug\net8.0\PrefeituraCachoeiro.Environment.sourcelink.json
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src8\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\obj\Debug\net8.0\PrefeituraCachoeiro.Environment.dll
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src8\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\obj\Debug\net8.0\refint\PrefeituraCachoeiro.Environment.dll
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src8\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\obj\Debug\net8.0\PrefeituraCachoeiro.Environment.pdb
+C:\Projetos\Eduardo\ProjetoPrefeituraCachoeiro\Src8\PrefeituraCachoeiro\CodigoFonte\PrefeituraCachoeiro\PrefeituraCachoeiro.Environment\obj\Debug\net8.0\ref\PrefeituraCachoeiro.Environment.dll

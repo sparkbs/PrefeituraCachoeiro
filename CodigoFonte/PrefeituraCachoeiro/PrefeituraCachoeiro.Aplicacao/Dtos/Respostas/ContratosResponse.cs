@@ -23,5 +23,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
         public DateTime? DataInicio { get; set; }
         public int? PrefeituraId { get; set; }
         public PrefeituraResponse Prefeitura { get; set; }
+        public int? Aditivo { get; set; }
     }
 }

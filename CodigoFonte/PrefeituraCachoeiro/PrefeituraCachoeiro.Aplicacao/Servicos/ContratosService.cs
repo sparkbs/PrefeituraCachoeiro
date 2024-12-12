@@ -121,7 +121,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                         Gerente = requisicao.Gerente,
                         PrefeituraId = requisicao.PrefeituraId,
                         TipoContratacao = requisicao.TipoContratacao,
-                        Valor = requisicao.Valor
+                        Valor = requisicao.Valor,
+                        Aditivo = requisicao.Aditivo
                     };
 
                     _contrato.Items = new List<ItemsContratoEntidade>();
@@ -186,6 +187,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 contratoFound.Gerente = requisicao.Gerente;
                 contratoFound.PrefeituraId = requisicao.PrefeituraId;
                 contratoFound.TipoContratacao = requisicao.TipoContratacao;
+                contratoFound.Aditivo = requisicao.Aditivo;
 
                 await _contratosRepository.AtualizarAsync(contratoFound, cancellationToken);
                 var result = _mapper.Map<AtualizarContratosResponse>(contratoFound);

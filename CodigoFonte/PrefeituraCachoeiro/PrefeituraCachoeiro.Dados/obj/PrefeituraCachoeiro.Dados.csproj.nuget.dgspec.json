@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dados\\PrefeituraCachoeiro.Dados.csproj": {}
+    "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dados\\PrefeituraCachoeiro.Dados.csproj": {}
   },
   "projects": {
-    "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dados\\PrefeituraCachoeiro.Dados.csproj": {
+    "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dados\\PrefeituraCachoeiro.Dados.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dados\\PrefeituraCachoeiro.Dados.csproj",
+        "projectUniqueName": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dados\\PrefeituraCachoeiro.Dados.csproj",
         "projectName": "PrefeituraCachoeiro.Dados",
-        "projectPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dados\\PrefeituraCachoeiro.Dados.csproj",
+        "projectPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dados\\PrefeituraCachoeiro.Dados.csproj",
         "packagesPath": "C:\\Users\\André\\.nuget\\packages\\",
-        "outputPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dados\\obj\\",
+        "outputPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dados\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\PrefeituraCachoeiro.Dominio.csproj": {
-                "projectPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\PrefeituraCachoeiro.Dominio.csproj"
+              "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\PrefeituraCachoeiro.Dominio.csproj": {
+                "projectPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\PrefeituraCachoeiro.Dominio.csproj"
               }
             }
           }
@@ -108,14 +108,14 @@
         }
       }
     },
-    "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\PrefeituraCachoeiro.Dominio.csproj": {
+    "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\PrefeituraCachoeiro.Dominio.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\PrefeituraCachoeiro.Dominio.csproj",
+        "projectUniqueName": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\PrefeituraCachoeiro.Dominio.csproj",
         "projectName": "PrefeituraCachoeiro.Dominio",
-        "projectPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\PrefeituraCachoeiro.Dominio.csproj",
+        "projectPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\PrefeituraCachoeiro.Dominio.csproj",
         "packagesPath": "C:\\Users\\André\\.nuget\\packages\\",
-        "outputPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\obj\\",
+        "outputPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.Dominio\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -137,8 +137,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.TratadorControlador\\PrefeituraCachoeiro.TratadorControlador.csproj": {
-                "projectPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.TratadorControlador\\PrefeituraCachoeiro.TratadorControlador.csproj"
+              "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.TratadorControlador\\PrefeituraCachoeiro.TratadorControlador.csproj": {
+                "projectPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.TratadorControlador\\PrefeituraCachoeiro.TratadorControlador.csproj"
               }
             }
           }
@@ -188,14 +188,14 @@
         }
       }
     },
-    "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.TratadorControlador\\PrefeituraCachoeiro.TratadorControlador.csproj": {
+    "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.TratadorControlador\\PrefeituraCachoeiro.TratadorControlador.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.TratadorControlador\\PrefeituraCachoeiro.TratadorControlador.csproj",
+        "projectUniqueName": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.TratadorControlador\\PrefeituraCachoeiro.TratadorControlador.csproj",
         "projectName": "PrefeituraCachoeiro.TratadorControlador",
-        "projectPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.TratadorControlador\\PrefeituraCachoeiro.TratadorControlador.csproj",
+        "projectPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.TratadorControlador\\PrefeituraCachoeiro.TratadorControlador.csproj",
         "packagesPath": "C:\\Users\\André\\.nuget\\packages\\",
-        "outputPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src6\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.TratadorControlador\\obj\\",
+        "outputPath": "C:\\Projetos\\Eduardo\\ProjetoPrefeituraCachoeiro\\Src8\\PrefeituraCachoeiro\\CodigoFonte\\PrefeituraCachoeiro\\PrefeituraCachoeiro.TratadorControlador\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

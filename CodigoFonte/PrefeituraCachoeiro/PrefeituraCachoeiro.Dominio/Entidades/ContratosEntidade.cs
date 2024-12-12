@@ -21,6 +21,7 @@
         public int? PrefeituraId { get; set; }
         public PrefeituraEntidade Prefeitura { get; set; }
         public List<ContratosProjetosEntidade> Projetos { get; set; }
+        public int? Aditivo { get; set; }
 
         public ContratosEntidade(): base()
         {

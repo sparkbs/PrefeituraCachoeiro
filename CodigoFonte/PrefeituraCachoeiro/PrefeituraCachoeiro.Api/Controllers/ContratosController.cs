@@ -33,7 +33,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ContratosResponse))]
-        //remvover [Authorize]
+        [Authorize]
         public async Task<IActionResult> BuscarPorIdAsync(int id, CancellationToken cancellationToken)
         {
             var response = await _contratosService.BuscarPorIdAsync(id, cancellationToken);
@@ -50,7 +50,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("buscartodos")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ContratosDataResponse))]
-        //remvover [Authorize]
+        [Authorize]
         public async Task<IActionResult> BuscarTodosAsync([FromBody] ContratosFilter filtro, CancellationToken cancellationToken)
         {
             var response = await _contratosService.BuscarTodosAsync(filtro, cancellationToken);
@@ -67,7 +67,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CriarContratoResponse))]
-        //remvover [Authorize]
+        [Authorize]
         public async Task<IActionResult> InserirAsync([FromForm] CriarContratoRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _contratosService.InserirAsync(requisicao, cancellationToken);
@@ -84,7 +84,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AtualizarContratosResponse))]
-        //remvover [Authorize]
+        [Authorize]
         public async Task<IActionResult> AtualizarAsync([FromForm] AtualizarContratosRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _contratosService.AtualizarAsync(requisicao, cancellationToken);
@@ -101,7 +101,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeletarContratoResponse))]
-        //remvover [Authorize]
+        [Authorize]
         public async Task<IActionResult> DeletarAsync(int id, CancellationToken cancellationToken)
         {
             var response = await _contratosService.DeletarAsync(id, cancellationToken);
@@ -118,7 +118,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpDelete("removerprojetocontrato")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RemoverProjetoContratoResponse))]
-        //remover [Authorize]
+        [Authorize]
         public async Task<IActionResult> RemoverProjetoContratoAsync([FromBody] RemoverProjetoContratoRequest request, CancellationToken cancellationToken)
         {
             var response = await _contratosService.RemoverProjetoContratoAsync(request, cancellationToken);
@@ -135,7 +135,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost("adicionarprojetocontrato")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AdicionarProjetoContratoResponse))]
-        //remover [Authorize]
+        [Authorize]
         public async Task<IActionResult> AdicionarProjetoContratoAsync([FromBody] AdicionarProjetoContratoRequest request, CancellationToken cancellationToken)
         {
             var response = await _contratosService.AdicionarProjetoContratoAsync(request, cancellationToken);
