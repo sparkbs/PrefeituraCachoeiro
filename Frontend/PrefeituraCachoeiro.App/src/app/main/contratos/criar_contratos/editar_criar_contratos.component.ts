@@ -39,7 +39,6 @@ export class Editar_criar_contratosComponent implements OnInit {
 
   async salvar(){
     this.criarContrato.EmpresaId = 1;
-    this.criarContrato.IdProjeto = 4;
 
     await this.api.CriarContrato(this.criarContrato)
     .then((result) => {

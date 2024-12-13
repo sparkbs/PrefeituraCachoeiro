@@ -75,7 +75,8 @@ export class ContratosComponent implements AfterViewInit, OnInit {
     }
   }
 
-  async deleteContrato(id: number){
+  async deleteContrato(id: any){
+    console.log(id)
     await this.api.DeletarContrato(id)  
     .then((result) => {
       var index = this.lista.findIndex(item => item.idContrato == id);

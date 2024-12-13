@@ -3,8 +3,8 @@ import { BaseFilter } from "src/app/request/baseFilter";
 export class MedicoesRequest extends BaseFilter
 {
     idContrato: number;
-    statusMedicao: number;
-    idMedicaoAtual: number;
+    statusMedicao?: number;
+    idMedicaoAtual?: number;
 }
 
 export class InserirMedicao {

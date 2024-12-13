@@ -1,5 +1,4 @@
 export class CriarContratoRequest {
-    IdProjeto: number;
     DataContrato: Date;
     NumeroContrato: string = "";
     EmpresaId: number;

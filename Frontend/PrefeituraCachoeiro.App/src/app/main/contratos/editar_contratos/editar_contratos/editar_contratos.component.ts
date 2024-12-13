@@ -44,7 +44,6 @@ export class Editar_contratosComponent implements OnInit {
     this.atualizarContrato.EmpresaId = this.data.empresaId;
     this.atualizarContrato.Gerente = this.data.gerente;
     this.atualizarContrato.IdContrato = this.data.idContrato;
-    this.atualizarContrato.IdProjeto = this.data.idProjeto;
     this.atualizarContrato.NumeroContrato = this.data.numeroContrato;
     this.atualizarContrato.PrefeituraId = this.data.prefeituraId;
     this.atualizarContrato.TipoContratacao = this.data.tipoContratacao;
