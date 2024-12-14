@@ -51,7 +51,7 @@ export class ContratosComponent implements AfterViewInit, OnInit {
 
   async buscarListaContratos(){
     var contratosFilter : BuscarContratosRequest = new BuscarContratosRequest();
-    contratosFilter.itemsPorPagina = 10;
+    contratosFilter.itemsPorPagina = 1000000;
     contratosFilter.IdProjeto = null;
     contratosFilter.pagina = 1;
     await this.api.BuscarTodosContratos(contratosFilter)
@@ -76,7 +76,6 @@ export class ContratosComponent implements AfterViewInit, OnInit {
   }
 
   async deleteContrato(id: any){
-    console.log(id)
     await this.api.DeletarContrato(id)  
     .then((result) => {
       var index = this.lista.findIndex(item => item.idContrato == id);

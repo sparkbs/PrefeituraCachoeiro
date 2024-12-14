@@ -13,7 +13,7 @@ export class MedicoesResponse {
   export class Contrato {
     idContrato: number;
     idProjeto: number;
-    projeto: Projeto;
+    projetos: Projeto;
     dataContrato: string;
     numeroContrato: string;
     valorTotalPrevisto: number;
@@ -112,4 +112,9 @@ export class MedicoesResponse {
   export class RetornoReprovacaoAprovacaoResponse{
     isSucesso: boolean;
     mensagemErro: string;
+  }
+
+  export class MedicoesModel {
+    numeroMedicao: number = 0;
+    data: MedicoesResponse[] = [];
   }

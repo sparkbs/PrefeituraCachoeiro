@@ -28,7 +28,6 @@ export class SidebarComponent {
       }
     });
 
-    console.log(this.currentRoute);
   }
 
   toggleSidenav(opened: boolean) {

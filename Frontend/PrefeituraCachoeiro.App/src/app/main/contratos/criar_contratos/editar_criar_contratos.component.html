@@ -41,8 +41,10 @@
       </mat-form-field>
 
       <mat-form-field style="margin-left: 10px;">
-        <mat-label>Gerente</mat-label>
-        <input matInput [(ngModel)]="criarContrato.Gerente" />
+        <mat-label>Selecione o Gerente</mat-label>
+        <mat-select disableRipple [(ngModel)]="criarContrato.Gerente">
+          <mat-option *ngFor="let gerente of listaGerentes" [value]="gerente.login" >{{gerente.login}}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field style="margin-left: 10px;">
@@ -50,15 +52,32 @@
         <input matInput type="number" [(ngModel)]="criarContrato.Valor" />
       </mat-form-field>
     </div>
-    <div>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
       <div>
         Documentos:
       </div>
       <div>
-        <input type="file" style="width:100%"/>
+        <input #documentoInput type="file" style="width: 100%" />
+      </div>
+      <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;" (click)="adicionarDocumento()">
+        <mat-icon>playlist_add</mat-icon>
+      </span>
+      <div style="margin-left: 30px;">
+        Base de dados:
+      </div>
+      <div>
+        <input type="file" style="width: 100%" />
       </div>
     </div>
-    
+    <div *ngFor="let item of listaDocumentoContrato">
+      <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
+        {{item.nome}}
+        <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarDocumentos(item)">
+          <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
+        </span>
+      </div>
+    </div>
+  
     
   </div>
 </mat-dialog-content>

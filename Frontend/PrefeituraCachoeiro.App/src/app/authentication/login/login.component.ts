@@ -16,12 +16,12 @@ export class LoginComponent {
 
   }
   async onSubmit(): Promise<void> {
-    console.log('Formulário de login enviado');
 
     await this.api.Login(this.login)
     .then((result) => {  
       this.cookie.setToken(result.accessToken.accessToken);
-      this.cookie.setCookie("_login",result.accessToken.nome);
+      this.cookie.setCookie("_login",this.login.Login.charAt(0).toUpperCase() + this.login.Login.slice(1));
+      this.cookie.setCookie("_nome",result.accessToken.nome);
       this.cookie.setCookie("_idUsuario",result.accessToken.idUsuario.toString());
       this.cookie.setCookie("_expiration",result.accessToken.expiration.toString());
 

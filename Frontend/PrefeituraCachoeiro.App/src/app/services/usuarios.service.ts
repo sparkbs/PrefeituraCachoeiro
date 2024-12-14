@@ -31,9 +31,9 @@ export class UsuariosService {
     );
   }
 
-  public async BuscarTodosUsuarios(filter: UsuariosRequest): Promise<GenericResultResponse<ListaUsuariosResponse>> {
+  public async BuscarTodosUsuarios(filter: UsuariosRequest): Promise<ListaUsuariosResponse> {
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<ListaUsuariosResponse>>(
+      this.http.post<ListaUsuariosResponse>(
         `${Environments.APIUrl}/usuarios/buscartodos`,
         filter
       )

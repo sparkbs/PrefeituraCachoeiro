@@ -41,7 +41,7 @@ export class PrefeituraComponent implements OnInit {
   async buscarListaPrefeituras(){
     var prefeituraFilter : PrefeituraFilter = new PrefeituraFilter();
     prefeituraFilter.nome = "";
-    prefeituraFilter.itemsPorPagina = 10;
+    prefeituraFilter.itemsPorPagina = 1000000;
     prefeituraFilter.pagina = 1;
     await this.api.BuscarTodasPrefeituras(prefeituraFilter)
     .then((result) => {

@@ -20,9 +20,9 @@ export class MedicoesService {
     );
   }
 
-  public async BuscarTodasMedicoes(filter: MedicoesRequest): Promise<GenericResultResponse<TodasMedicaoProjetoResponse>> {
+  public async BuscarTodasMedicoes(filter: MedicoesRequest): Promise<TodasMedicaoProjetoResponse> {
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<TodasMedicaoProjetoResponse>>(
+      this.http.post<TodasMedicaoProjetoResponse>(
         `${Environments.APIUrl}/medicoes/buscartodos`,
         filter
       )
