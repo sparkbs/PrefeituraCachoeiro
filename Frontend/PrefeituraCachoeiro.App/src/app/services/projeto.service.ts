@@ -30,9 +30,9 @@ export class ProjetoService {
     );
   }
 
-  public async BuscarTodosProjetos(filter: ProjetoRequest): Promise<GenericResultResponse<ProjetosResponse>> {
+  public async BuscarTodosProjetos(filter: ProjetoRequest): Promise<ProjetosResponse> {
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<ProjetosResponse>>(
+      this.http.post<ProjetosResponse>(
         `${Environments.APIUrl}/projetos/buscartodos`,
         filter
       )

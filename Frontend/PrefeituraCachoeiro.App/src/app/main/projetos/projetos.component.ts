@@ -1,37 +1,35 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { EditarCriarProjetosComponent } from './editar-criar-projetos/editar-criar-projetos.component';
 import { TabelaRecursosProjetoComponent } from './tabela-recursos-projeto/tabela-recursos-projeto.component';
-
-export interface tableProject {
-  id?: number;
-  nome: string;
-  contrato: string;
-  prefeitura: string;
-  recursos: string;
-  acoes?: string;
-}
-
-const ELEMENT_DATA: tableProject[] = [
-  {id: 1, nome: 'Projeto1', contrato: 'Contrato1', prefeitura: 'Prefeitura1', recursos: ''},
-  {id: 2, nome: 'Projeto2', contrato: 'Contrato2', prefeitura: 'Prefeitura2', recursos: ''},
-  {id: 3, nome: 'Projeto3', contrato: 'Contrato3', prefeitura: 'Prefeitura3', recursos: ''},
-];
+import { ProjetoService } from 'src/app/services/projeto.service';
+import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
+import { ProjetoResponse, ProjetosResponse } from 'src/app/response/projetoResponse/projetoResponse';
+import { GenericResultResponse } from 'src/app/response/genericResultResponse';
 
 @Component({
   selector: 'app-projetos',
   templateUrl: './projetos.component.html',
   styleUrls: ['./projetos.component.scss']
 })
-export class ProjetosComponent {
-  displayedColumns: string[] = ['nome', 'contrato', 'prefeitura', 'recursos', 'acoes'];
-  dataSource = new MatTableDataSource<tableProject>(ELEMENT_DATA);
+export class ProjetosComponent implements OnInit {
+  displayedColumns: string[] = ['nomePrefeitura','nomeContrato', 'nomeProjeto', 'recursos', 'acoes'];
+  listaProjetos: ProjetoResponse[] = [];
+  dataSource = new MatTableDataSource<ProjetoResponse>(this.listaProjetos);
+  projetos: ProjetosResponse;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(public dialog: MatDialog){}
+  constructor(
+    public dialog: MatDialog,
+    public _projetoControllerService: ProjetoService
+  ){}
+
+  ngOnInit(): void {
+    this.getAllProjects();
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -65,5 +63,22 @@ export class ProjetosComponent {
       width: window.innerWidth >= 1450 ? '50%' : '50%',
       data: {  }
     });
+  }
+
+  public async getAllProjects() {
+    const projetoRequest: ProjetoRequest = {
+      nome: ''
+    };
+
+    try {
+      await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
+      .then((res) => {
+        this.listaProjetos = (res.data);
+        this.dataSource.data = this.listaProjetos;
+      });
+
+    } catch (error) {
+      console.error('Erro ao buscar projetos:', error);
+    }
   }
 }

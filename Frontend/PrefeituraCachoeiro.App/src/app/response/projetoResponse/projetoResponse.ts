@@ -1,6 +1,10 @@
 export class ProjetoResponse{
     idProjeto: number = 0;
     nomeProjeto: string = '';
+    nomeContrato: string;
+    nomePrefeitura: string;
+    recursos?: string;
+    acoes?: string;
 }
 
 export class MensagemProjetoResponse{
