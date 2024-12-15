@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Item } from '../contratos.component';
 import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
@@ -76,10 +76,33 @@ export class Editar_criar_contratosComponent implements OnInit {
 
   async salvar(){
     this.criarContrato.EmpresaId = 1;
-
+    this.criarContrato.Valor = this.criarContrato.Valor.replaceAll(".","").replaceAll("R$","").replaceAll(",",".");
     await this.api.CriarContrato(this.criarContrato)
     .then((result) => {
       this.dialogRef.close(result);
     });
+  }
+
+  handleKeyDown(event: KeyboardEvent): void {
+    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+    
+    if (!allowedKeys.includes(event.key) && (event.key < '0' || event.key > '9')) {
+      event.preventDefault(); // Impede a entrada de letras
+    }
+  }
+  
+  formatCurrency(event: any): void { 
+    let value = event.target.value.toString();
+    value = value.replace(/\D/g, ''); 
+    if (value === '') {
+      this.criarContrato.Valor = ''; // Ou você pode definir um valor padrão
+      return;
+    }
+    value = (parseInt(value) || 0).toString(); 
+    value = value.padStart(3, '0'); 
+    value = value.slice(0, -2) + ',' + value.slice(-2); 
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
+    value = 'R$ ' + value; 
+    this.criarContrato.Valor = value; 
   }
 }

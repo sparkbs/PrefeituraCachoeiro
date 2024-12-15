@@ -14,9 +14,9 @@ import { AtualizarProjetoRequest, ProjetoRequest } from '../request/ProjetoReque
 export class ProjetoService {
   constructor(private readonly http: HttpClient) { }
 
-  public async BuscarProjeto(id: number) : Promise<GenericResultResponse<ProjetoResponse>>{
+  public async BuscarProjeto(id: number) : Promise<ProjetoResponse>{
     return await firstValueFrom(
-      this.http.get<GenericResultResponse<ProjetoResponse>>(
+      this.http.get<ProjetoResponse>(
         `${Environments.APIUrl}/projetos?id=${id}`
       )
     );

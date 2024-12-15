@@ -110,4 +110,19 @@ export class ContratosComponent implements AfterViewInit, OnInit {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
+
+  formatToCurrency(valor: number): string {
+    console.log(valor)
+    // Formatar o valor como string com 2 casas decimais
+    let valorFormatado = valor.toFixed(2);  // 2 casas decimais
+
+    // Substituir o ponto (.) por vírgula para separar os decimais
+    valorFormatado = valorFormatado.replace('.', ',');
+
+    // Adicionar o separador de milhar (ponto) para valores maiores que 1.000
+    valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    // Adicionar o prefixo 'R$'
+    return 'R$ ' + valorFormatado;
+  }
 }

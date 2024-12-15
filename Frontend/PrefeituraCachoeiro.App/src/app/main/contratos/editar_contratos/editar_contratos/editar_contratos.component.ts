@@ -99,46 +99,70 @@ formatDateToString(date: Date): string {
 }
 
 
-  async salvar(){
-    this.atualizarContrato.DataContrato = (this.dataContratoString);
-    this.atualizarContrato.DataInicio = (this.dataInicioString);
-    this.atualizarContrato.DataTermino = (this.dataTerminoString);
-    this.atualizarContrato.EmpresaId = this.data.empresaId;
-    this.atualizarContrato.Gerente = this.data.gerente;
-    this.atualizarContrato.IdContrato = this.data.idContrato;
-    this.atualizarContrato.NumeroContrato = this.data.numeroContrato;
-    this.atualizarContrato.PrefeituraId = this.data.prefeituraId;
-    this.atualizarContrato.TipoContratacao = this.data.tipoContratacao;
-    this.atualizarContrato.Valor = this.data.valor;
-    
-    await this.api.AtualizarContrato(this.atualizarContrato)
-    .then((result) => {
-      this.dialogRef.close(result);
-    });
-  }
-
-  formatStringToDate(data: string) {
-    let dataConvertidaDate: string;
-    if (data) {
-      const [year, month, day] = data.split('-').map(Number);
-      dataConvertidaDate = `${year}-${month}-${day}`;
-    }
-    return dataConvertidaDate;
-  }
-
-  adicionarDocumento(){
-      if(this.documentoInput.nativeElement.files[0] != undefined){
-        const documentoFile = this.documentoInput.nativeElement.files[0] as File;
-        this.listaDocumentoContrato.push({
-          nome: documentoFile.name,
-          file: documentoFile
-        });   
-        this.documentoInput.nativeElement.value = '';
-      }
-    }
+async salvar(){
+  this.atualizarContrato.DataContrato = (this.dataContratoString);
+  this.atualizarContrato.DataInicio = (this.dataInicioString);
+  this.atualizarContrato.DataTermino = (this.dataTerminoString);
+  this.atualizarContrato.EmpresaId = this.data.empresaId;
+  this.atualizarContrato.Gerente = this.data.gerente;
+  this.atualizarContrato.IdContrato = this.data.idContrato;
+  this.atualizarContrato.NumeroContrato = this.data.numeroContrato;
+  this.atualizarContrato.PrefeituraId = this.data.prefeituraId;
+  this.atualizarContrato.TipoContratacao = this.data.tipoContratacao;
+  this.atualizarContrato.Valor = this.data.valor.replaceAll(".","").replaceAll("R$","").replaceAll(",",".");;
   
-    deletarDocumentos(deletarDocumento: ListaDocumentosContrato): void {
-      // Filtra os documentos, removendo o que for igual ao item a ser deletado
-      this.listaDocumentoContrato = this.listaDocumentoContrato.filter(item => item !== deletarDocumento);
+  await this.api.AtualizarContrato(this.atualizarContrato)
+  .then((result) => {
+    this.dialogRef.close(result);
+  });
+}
+
+formatStringToDate(data: string) {
+  let dataConvertidaDate: string;
+  if (data) {
+    const [year, month, day] = data.split('-').map(Number);
+    dataConvertidaDate = `${year}-${month}-${day}`;
+  }
+  return dataConvertidaDate;
+}
+
+adicionarDocumento(){
+    if(this.documentoInput.nativeElement.files[0] != undefined){
+      const documentoFile = this.documentoInput.nativeElement.files[0] as File;
+      this.listaDocumentoContrato.push({
+        nome: documentoFile.name,
+        file: documentoFile
+      });   
+      this.documentoInput.nativeElement.value = '';
     }
+  }
+
+  deletarDocumentos(deletarDocumento: ListaDocumentosContrato): void {
+    // Filtra os documentos, removendo o que for igual ao item a ser deletado
+    this.listaDocumentoContrato = this.listaDocumentoContrato.filter(item => item !== deletarDocumento);
+  }
+
+  handleKeyDown(event: KeyboardEvent): void {
+    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+    
+    if (!allowedKeys.includes(event.key) && (event.key < '0' || event.key > '9')) {
+      event.preventDefault(); // Impede a entrada de letras
+    }
+  }
+  
+  formatCurrency(event: any): void { 
+    let value = event.target.value.toString();
+    value = value.replace(/\D/g, ''); 
+    if (value === '') {
+      this.data.valor = ''; // Ou você pode definir um valor padrão
+      return;
+    }
+    value = (parseInt(value) || 0).toString(); 
+    value = value.padStart(3, '0'); 
+    value = value.slice(0, -2) + ',' + value.slice(-2); 
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
+    value = 'R$ ' + value; 
+    this.data.valor = value; 
+  }
+
 }

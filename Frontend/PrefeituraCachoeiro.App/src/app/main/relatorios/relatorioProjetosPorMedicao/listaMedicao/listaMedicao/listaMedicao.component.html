@@ -1,0 +1,87 @@
+<div>
+  <div class="container rounded-shadow-div" style="margin-top: 10px;">
+    <!-- <h3 class="texto"> Pegar nome projeto</h3> -->
+    <h3 class="texto"> Projeto {{medicoes.idMedicoesProjeto }}</h3>
+    <button mat-button mat-stroked-button style="margin-right: 16px; padding-right: 0px;" >
+      <mat-icon class="mat-icon">edit</mat-icon>
+    </button>
+  </div>
+
+  <div class="list-container">
+    <!-- Títulos exibidos uma única vez -->
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="margin-top: 8px;">
+      <!-- Coluna para 'Item' -->
+      <ng-container matColumnDef="item">
+        <th mat-header-cell *matHeaderCellDef> Item </th>
+        <td mat-cell *matCellDef="let item">{{ item.itemsContrato.item.identificador }}</td>
+      </ng-container>
+  
+      <!-- Coluna para 'Código' -->
+      <ng-container matColumnDef="codigo">
+        <th mat-header-cell *matHeaderCellDef> Código </th>
+        <td mat-cell *matCellDef="let item">{{ item.itemsContrato.item.codigo }}</td>
+      </ng-container>
+  
+      <!-- Coluna para 'Origem' -->
+      <ng-container matColumnDef="origem">
+        <th mat-header-cell *matHeaderCellDef> Origem </th>
+        <td mat-cell *matCellDef="let item">{{ item.itemsContrato.item.origem.nome }}</td>
+      </ng-container>
+
+      <!-- Coluna para 'Origem' -->
+      <ng-container matColumnDef="item/qtd">
+        <th mat-header-cell *matHeaderCellDef> Descrição / Quantidade </th>
+        <td mat-cell *matCellDef="let item">
+          <span>{{ item.itemsContrato.item.descricao }}</span><br/>
+          <!--<input matInput style="margin-top: 5px;" [value]=2 >-->
+          <span style="font-size: 13px; color: gray;">{{ item.itemsContrato.item.unidade }} - {{ item.itemsContrato.item.quantidade.nome }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="valor(s)cBdi">
+        <th mat-header-cell *matHeaderCellDef> Valor c(s) BDI</th>
+        <td mat-cell *matCellDef="let item">
+          <span>{{ formatToCurrency(item.itemsContrato.item.valorComBdi) }}</span><br/>
+          <span style="font-size: 13px; color: gray;">{{ formatToCurrency(item.itemsContrato.item.valorSemBdi) }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="valorTotal/bdi">
+        <th mat-header-cell *matHeaderCellDef> Valor Total BDI</th>
+        <td mat-cell *matCellDef="let item">
+          <span>{{ formatToCurrency(item.itemsContrato.item.valorTotalComBdi) }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="qtdMedicaoItem">
+        <th mat-header-cell *matHeaderCellDef> Quantidade Medida </th>
+        <td mat-cell *matCellDef="let item">
+          <span></span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="valorTotalMedidaBdi">
+        <th mat-header-cell *matHeaderCellDef> Valor Total BDI Medido </th>
+        <td mat-cell *matCellDef="let item">
+          <span></span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <div style="font-weight: bold; font-size: 17px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 12px;">
+      <span>Valor Total: R$ {{ formatToCurrency(somarValorTotal())}}</span>
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select>
+          <mat-option value="Medido">Medição Aprovada</mat-option>
+          <mat-option value="Solicitado">Aprovação Solicitada</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-button [style.display]="alterarMedicaoProjeto1 ? 'block' : 'none'" style="background-color: royalblue; color: white;">Salvar</button>
+    </div>
+  </div>
+</div>
