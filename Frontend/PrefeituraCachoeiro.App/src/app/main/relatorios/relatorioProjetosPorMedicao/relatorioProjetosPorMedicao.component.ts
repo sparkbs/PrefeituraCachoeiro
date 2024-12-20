@@ -128,7 +128,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   }
   
   openDialog() {
-    this.dialog.open(CadastrarMedicaoComponent);    
+    this.dialog.open(CadastrarMedicaoComponent,{data:this.todasMedicaoProjetoResponse});    
   }
 
   openDialogConsolidado(medicao: MedicoesResponse){

@@ -1,5 +1,15 @@
 export class PermissoesRequest 
 {
-    tipoPermissaoId: number = 0;
-    grupoId: number = 0;
+    numeroMedicao: number = 0;
+    idContrato: number = 0;
+    dataMedicao: Date;
+    resumo: string = "";
+    idProjeto: number = 0;
+    items: PermissoesItemsRequest[] = [];
+}
+
+export class PermissoesItemsRequest 
+{
+    idItemContrato: number = 0;
+    unidade: number = 0;
 }

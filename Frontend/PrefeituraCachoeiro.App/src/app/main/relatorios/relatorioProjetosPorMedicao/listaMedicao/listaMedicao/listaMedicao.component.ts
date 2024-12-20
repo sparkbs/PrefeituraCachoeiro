@@ -12,11 +12,9 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
   @Input() medicoes: MedicoesResponse = new MedicoesResponse();
   
   dataSource: MatTableDataSource<ItemMedicao>;
-  displayedColumns: string[] = ['item', 'codigo', 'origem', 'item/qtd', 'valor(s)cBdi' , 'valorTotal/bdi', 'qtdMedicaoItem', 'valorTotalMedidaBdi'];
+  displayedColumns: string[] = ['item', 'item/qtd', 'valor(s)cBdi' , 'valorTotal/bdi', 'qtdMedicaoItem', 'valorTotalMedidaBdi'];
 
-  alterarMedicaoProjeto1 = false;
-  alterarMedicaoProjeto2 = false;
-  alterarMedicaoProjeto3 = false;
+  alterarMedicaoProjeto = false;
   constructor(private readonly api: ProjetoService) {
     this.dataSource = new MatTableDataSource(this.medicoes.items);    
    }
@@ -30,6 +28,10 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
     if (changes['medicoes']) {
       this.dataSource.data = this.medicoes.items || [];
     }
+  }
+
+  enableEditInput(){
+    this.alterarMedicaoProjeto = true;
   }
 
   formatToCurrency(valor: number): string {
@@ -54,5 +56,10 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
     })
 
     return valorSomado
+  }
+
+  salvar(){
+    //this.quantidadeMedida = 1;
+    this.alterarMedicaoProjeto = false;
   }
 }
