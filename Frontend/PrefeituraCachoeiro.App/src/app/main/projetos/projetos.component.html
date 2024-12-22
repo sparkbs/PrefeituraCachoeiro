@@ -20,7 +20,7 @@
             <th mat-header-cell *matHeaderCellDef> Prefeitura </th>
             <td mat-cell *matCellDef="let element"> {{element.nomePrefeitura}} </td>
           </ng-container>
-          
+
           <ng-container matColumnDef="nomeContrato">
             <th mat-header-cell *matHeaderCellDef> Contrato </th>
             <td mat-cell *matCellDef="let element"> {{element.nomeContrato}} </td>
@@ -29,15 +29,6 @@
           <ng-container matColumnDef="nomeProjeto">
             <th mat-header-cell *matHeaderCellDef> Nome </th>
             <td mat-cell *matCellDef="let element"> {{element.nomeProjeto}} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="recursos">
-            <th mat-header-cell *matHeaderCellDef> Recursos </th>
-            <td mat-cell *matCellDef="let element">
-              <span matTooltip="Ver recursos" (click)="openTableResources()">
-                <mat-icon>table_chart</mat-icon>
-              </span>
-            </td>
           </ng-container>
 
           <ng-container matColumnDef="acoes">

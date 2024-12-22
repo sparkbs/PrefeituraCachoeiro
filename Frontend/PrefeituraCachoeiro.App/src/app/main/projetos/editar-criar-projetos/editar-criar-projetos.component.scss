@@ -5,14 +5,8 @@
 .editar-criar-body form {
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin-top: 2%;
-}
-
-.editar-criar-body form > div {
-  display: flex;
-  padding-top: 1%;
-  padding-bottom: 1%;
-  gap: 12px;
 }
 
 .table {

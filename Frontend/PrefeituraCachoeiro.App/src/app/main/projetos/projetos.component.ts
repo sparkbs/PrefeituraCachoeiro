@@ -3,11 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { EditarCriarProjetosComponent } from './editar-criar-projetos/editar-criar-projetos.component';
-import { TabelaRecursosProjetoComponent } from './tabela-recursos-projeto/tabela-recursos-projeto.component';
 import { ProjetoService } from 'src/app/services/projeto.service';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ProjetoResponse, ProjetosResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { GenericResultResponse } from 'src/app/response/genericResultResponse';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-projetos',
@@ -15,7 +15,7 @@ import { GenericResultResponse } from 'src/app/response/genericResultResponse';
   styleUrls: ['./projetos.component.scss']
 })
 export class ProjetosComponent implements OnInit {
-  displayedColumns: string[] = ['nomePrefeitura','nomeContrato', 'nomeProjeto', 'recursos', 'acoes'];
+  displayedColumns: string[] = ['nomePrefeitura','nomeContrato', 'nomeProjeto', 'acoes'];
   listaProjetos: ProjetoResponse[] = [];
   dataSource = new MatTableDataSource<ProjetoResponse>(this.listaProjetos);
   projetos: ProjetosResponse;
@@ -24,7 +24,8 @@ export class ProjetosComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    public _projetoControllerService: ProjetoService
+    public _projetoControllerService: ProjetoService,
+    private _toastService: ToastService
   ){}
 
   ngOnInit(): void {
@@ -55,14 +56,12 @@ export class ProjetosComponent implements OnInit {
     const dialogRef = this.dialog.open(EditarCriarProjetosComponent, {
       width: window.innerWidth >= 1450 ? '50%' : '50%',
       data: { edicao }
-    });
-  }
-
-  openTableResources() {
-    const dialogRef = this.dialog.open(TabelaRecursosProjetoComponent, {
-      width: window.innerWidth >= 1450 ? '50%' : '50%',
-      data: {  }
-    });
+    }).afterClosed().subscribe(
+      (res) => {
+        if (res) {
+          this.getAllProjects();
+        }
+    });;
   }
 
   public async getAllProjects() {

@@ -3,7 +3,6 @@ export class ProjetoResponse{
     nomeProjeto: string = '';
     nomeContrato: string;
     nomePrefeitura: string;
-    recursos?: string;
     acoes?: string;
 }
 

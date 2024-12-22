@@ -3,19 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-
-export interface tableRecursos {
-  nome: string;
-  quantidade: number;
-  valor: number;
-  acoes?: string;
-}
-
-const recursoData: tableRecursos[] = [
-  {nome: 'Projeto de GLP', quantidade: 5, valor: 23, acoes: ''},
-  {nome: 'Projeto Elétrico', quantidade: 10, valor: 34, acoes: ''},
-  {nome: 'Chapa de metal', quantidade: 7, valor: 15, acoes: ''},
-];
+import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
+import { ProjetoService } from 'src/app/services/projeto.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-editar-criar-projetos',
@@ -23,8 +13,6 @@ const recursoData: tableRecursos[] = [
   styleUrls: ['./editar-criar-projetos.component.scss']
 })
 export class EditarCriarProjetosComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['nome', 'quantidade', 'valor', 'acoes'];
-  dataSource = new MatTableDataSource<tableRecursos>(recursoData);
   form: FormGroup;
 
   prefeituras: string[] = [
@@ -39,36 +27,38 @@ export class EditarCriarProjetosComponent implements OnInit, AfterViewInit {
     'Contrato 3',
   ];
 
-  recursos: string[] = [
-    'Projetista Junior',
-    'Técnico Senior',
-    'Projeto Elétrico'
-  ];
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
   constructor(
     public dialogRef: MatDialogRef<EditarCriarProjetosComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { edicao: boolean },
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public _projetoControllerService: ProjetoService,
+    private _toastService: ToastService,
   ) {}
+
+  ngAfterViewInit(): void {
+    throw new Error('Method not implemented.');
+  }
 
   ngOnInit(): void {
     this.form = this.fb.group({
       nome: ['', [Validators.required]],
       contrato: ['', [Validators.required]],
-      prefeitura: ['', [Validators.required]],
-      recurso: ['', [Validators.required]],
-      quantidade: [0, [Validators.required]],
-      valor: [0, [Validators.required]]
+      prefeitura: ['', [Validators.required]]
     });
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
   saveForm() {
+    const projetoRequest: ProjetoRequest = {
+      nome: this.form.get('nome').value
+    };
 
+    this._projetoControllerService.CriarProjeto(projetoRequest)
+    .then((res) => {
+      this._toastService.mensagemSuccess('Projeto salvo com sucesso!');
+      this.dialogRef.close(true);
+    })
+    .catch((erro) => {
+      this._toastService.mensagemError('Erro ao salvar o projeto');
+    })
   }
 }

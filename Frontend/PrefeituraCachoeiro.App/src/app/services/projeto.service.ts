@@ -39,11 +39,14 @@ export class ProjetoService {
     );
   }
 
-  public async CriarProjeto(nome: string): Promise<GenericResultResponse<RetornaProjetoIdResponse>> {
+  public async CriarProjeto(projetoRequest: ProjetoRequest): Promise<GenericResultResponse<RetornaProjetoIdResponse>> {
+    const formData = new FormData();
+    formData.append('Nome', projetoRequest.nome);
+
     return await firstValueFrom(
       this.http.post<GenericResultResponse<RetornaProjetoIdResponse>>(
         `${Environments.APIUrl}/projetos`,
-        nome
+        formData
       )
     );
   }
