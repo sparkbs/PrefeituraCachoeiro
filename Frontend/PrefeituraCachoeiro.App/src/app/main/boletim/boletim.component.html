@@ -1,0 +1,33 @@
+<div class="tipos-boletins">
+  <mat-grid-list cols="3" rowHeight="2:1">
+    <mat-grid-tile>
+      <mat-card [routerLink]="['/main/boletimMedicao']">
+        <mat-card-header>
+          <mat-icon>note_add</mat-icon>
+        </mat-card-header>
+        <mat-card-title>Boletim Medição</mat-card-title>
+        <mat-card-content></mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card [routerLink]="['/main/boletimPorProjeto']">
+        <mat-card-header>
+          <mat-icon>note_add</mat-icon>
+        </mat-card-header>
+        <mat-card-title>Boletim Por Projeto</mat-card-title>
+        <mat-card-content></mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-card [routerLink]="['/main/boletimDetalhado']">
+        <mat-card-header>
+          <mat-icon>assignment</mat-icon>
+        </mat-card-header>
+        <mat-card-title>Boletim Detalhado</mat-card-title>
+        <mat-card-content></mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

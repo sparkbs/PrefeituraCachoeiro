@@ -1,0 +1,458 @@
+{
+    "boletinsMedicao": {
+        "boletimMedicaoCabecalho": {
+            "nomePrefeitura": "PREFEITURA MUNICIPAL DE CACHOEIRO DE ITAPEMIRIM",
+            "nomeUnidade": "SECRETARIA MUNICIPAL DE OBRAS - SEMO",
+            "tipoBoletimEmissao": "BOLETIM DE MEDIÇÃO EMITIDO NO MÊS DE AGOSTO/2023",
+            "resumoBoletim": "Medição de Equipe técnica de Julho de 2023...",
+            "descontoFiscalizacao": "DESCONTO FISCALIZAÇÃO E CONSULTORIA",
+            "bdi01": 28.79,
+            "bdi02": "(PROJETOS)",
+            "dataMedicao": "2024-11-26",
+            "numeroMedicao": 1,
+            "contrato": "CONTRATO",
+            "nomeProjeto": "PROJETO 01",
+            "nomeBoletim": "MEDIÇÃO 01",
+            "bdi": 12.5,
+            "logoTipoImg": "assets/images/logos/logo-prefeitura-cachoeiro.png"
+        },
+        "valorTotalMedicao": 993.04,
+        "subBoletins": [
+            {
+                "numero": "1.0",
+                "codigoATA": "0",
+                "descricao": "ENGENHEIRO/ARQUITETO PARA ELABORACAO DE PROJETOS/GERENCIAMENTO/FISCALIZAÇÃO/APOIO TÉCNICO/CONSULTORIA",
+                "quantidade": 0,
+                "unidade": "H",
+                "precoSemBDI": null,
+                "bdi": null,
+                "precoComBDI": null,
+                "valorTotal": null,
+                "subitens": [
+                    {
+                        "numero": "1.0.4",
+                        "codigoATA": "61.11.04",
+                        "descricao": "Engenheiro/Arquiteto Sênior",
+                        "quantidade": 3,
+                        "unidade": "H",
+                        "precoSemBDI": 107.96,
+                        "bdi": 0.2572,
+                        "precoComBDI": 135.73,
+                        "valorTotal": 407.19
+                    },
+                    {
+                        "numero": "1.0.5",
+                        "codigoATA": "61.11.06",
+                        "descricao": "Engenheiro/Arquiteto Júnior",
+                        "quantidade": 5,
+                        "unidade": "H",
+                        "precoSemBDI": 83.1,
+                        "bdi": 0.2573,
+                        "precoComBDI": 104.43,
+                        "valorTotal": 522.15
+                    }
+                ]
+            },
+            {
+                "numero": "2.0",
+                "codigoATA": "61.14.01",
+                "descricao": "TÉCNICO PARA ELABORACAO DE PROJETOS/GERENCIAMENTO/FISCALIZAÇÃO/APOIO TÉCNICO/CONSULTORIA",
+                "quantidade": 0,
+                "unidade": "H",
+                "precoSemBDI": null,
+                "bdi": null,
+                "precoComBDI": null,
+                "valorTotal": null,
+                "subitens": [
+                    {
+                        "numero": "2.0.1",
+                        "codigoATA": "61.14.01",
+                        "descricao": "Técnico Sênior",
+                        "quantidade": 2,
+                        "unidade": "H",
+                        "precoSemBDI": 25.33,
+                        "bdi": 0.2574,
+                        "precoComBDI": 31.85,
+                        "valorTotal": 63.7
+                    }
+                ]
+            }
+        ]
+    },
+    "buscarProjetos": [
+        {
+            "id": 1,
+            "name": "Projeto 01"
+        },
+        {
+            "id": 2,
+            "name": "Projeto Teste"
+        },
+        {
+            "id": 3,
+            "name": "Projeto DataTest"
+        }
+    ],
+    "boletinsPorProjetoId": [
+        {
+            "id": 1,
+            "boletimProjetoCabecalho": {
+                "nomePrefeitura": "PREFEITURA MUNICIPAL DE CACHOEIRO DE ITAPEMIRIM",
+                "nomeUnidade": "SECRETARIA MUNICIPAL DE OBRAS - SEMO",
+                "tipoBoletimEmissao": "BOLETIM POR PROJETO EMITIDO NO MÊS DE AGOSTO/2023",
+                "resumoBoletim": "Medição do Projeto 01 referente a Julho de 2023...",
+                "descontoFiscalizacao": "DESCONTO FISCALIZAÇÃO E CONSULTORIA",
+                "bdi01": 28.79,
+                "bdi02": "(PROJETOS)",
+                "dataMedicao": "2024-11-26",
+                "numeroMedicao": 1,
+                "contrato": "CONTRATO 001",
+                "nomeProjeto": "Projeto 01",
+                "nomeBoletim": "BOLETIM POR PROJETO 01",
+                "bdi": 12.5,
+                "logoTipoImg": "assets/images/logos/logo-prefeitura-cachoeiro.png"
+            },
+            "valorTotalMedicao": 950.50,
+            "subBoletins": [
+                {
+                    "numero": "1.0",
+                    "codigoATA": "61.11.01",
+                    "descricao": "Engenharia para Projeto Estrutural",
+                    "quantidade": 0,
+                    "unidade": "H",
+                    "precoSemBDI": null,
+                    "bdi": null,
+                    "precoComBDI": null,
+                    "valorTotal": null,
+                    "subitens": [
+                        {
+                            "numero": "1.0.4",
+                            "codigoATA": "61.11.04",
+                            "descricao": "Engenheiro/Arquiteto Sênior",
+                            "quantidade": 3,
+                            "unidade": "H",
+                            "precoSemBDI": 107.96,
+                            "bdi": 0.2572,
+                            "precoComBDI": 135.73,
+                            "valorTotal": 407.19
+                        },
+                        {
+                            "numero": "1.0.5",
+                            "codigoATA": "61.11.06",
+                            "descricao": "Engenheiro/Arquiteto Júnior",
+                            "quantidade": 5,
+                            "unidade": "H",
+                            "precoSemBDI": 83.1,
+                            "bdi": 0.2573,
+                            "precoComBDI": 104.43,
+                            "valorTotal": 522.15
+                        }
+                    ]
+                },
+                {
+                    "numero": "1.1",
+                    "codigoATA": "61.12.03",
+                    "descricao": "Consultoria Técnica",
+                    "quantidade": 0,
+                    "unidade": "H",
+                    "precoSemBDI": null,
+                    "bdi": null,
+                    "precoComBDI": null,
+                    "valorTotal": null,
+                    "subitens": [
+                        {
+                            "numero": "2.0.1",
+                            "codigoATA": "61.14.01",
+                            "descricao": "Técnico Sênior",
+                            "quantidade": 2,
+                            "unidade": "H",
+                            "precoSemBDI": 25.33,
+                            "bdi": 0.2574,
+                            "precoComBDI": 31.85,
+                            "valorTotal": 63.7
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "boletimProjetoCabecalho": {
+                "nomePrefeitura": "PREFEITURA MUNICIPAL DE CACHOEIRO DE ITAPEMIRIM",
+                "nomeUnidade": "SECRETARIA MUNICIPAL DE OBRAS - SEMO",
+                "tipoBoletimEmissao": "BOLETIM POR PROJETO EMITIDO NO MÊS DE SETEMBRO/2023",
+                "resumoBoletim": "Medição do Projeto Teste referente a Agosto de 2023...",
+                "descontoFiscalizacao": "DESCONTO FISCALIZAÇÃO E CONSULTORIA",
+                "bdi01": 30.00,
+                "bdi02": "(PROJETOS)",
+                "dataMedicao": "2024-12-10",
+                "numeroMedicao": 2,
+                "contrato": "CONTRATO 002",
+                "nomeProjeto": "Projeto Teste",
+                "nomeBoletim": "BOLETIM POR PROJETO 02",
+                "bdi": 15.0,
+                "logoTipoImg": "assets/images/logos/logo-prefeitura-cachoeiro.png"
+            },
+            "valorTotalMedicao": 750.00,
+            "subBoletins": [
+                {
+                    "numero": "2.0",
+                    "codigoATA": "61.13.02",
+                    "descricao": "Fiscalização de Obras",
+                    "quantidade": 0,
+                    "unidade": "H",
+                    "precoSemBDI": null,
+                    "bdi": null,
+                    "precoComBDI": null,
+                    "valorTotal": null,
+                    "subitens": [
+                        {
+                            "numero": "1.0.4",
+                            "codigoATA": "61.11.04",
+                            "descricao": "Engenheiro/Arquiteto Sênior",
+                            "quantidade": 3,
+                            "unidade": "H",
+                            "precoSemBDI": 107.96,
+                            "bdi": 0.2572,
+                            "precoComBDI": 135.73,
+                            "valorTotal": 407.19
+                        },
+                        {
+                            "numero": "1.0.5",
+                            "codigoATA": "61.11.06",
+                            "descricao": "Engenheiro/Arquiteto Júnior",
+                            "quantidade": 5,
+                            "unidade": "H",
+                            "precoSemBDI": 83.1,
+                            "bdi": 0.2573,
+                            "precoComBDI": 104.43,
+                            "valorTotal": 522.15
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "boletimProjetoCabecalho": {
+                "nomePrefeitura": "PREFEITURA MUNICIPAL DE CACHOEIRO DE ITAPEMIRIM",
+                "nomeUnidade": "SECRETARIA MUNICIPAL DE OBRAS - SEMO",
+                "tipoBoletimEmissao": "BOLETIM POR PROJETO EMITIDO NO MÊS DE SETEMBRO/2023",
+                "resumoBoletim": "Medição do Projeto Teste referente a Agosto de 2023...",
+                "descontoFiscalizacao": "DESCONTO FISCALIZAÇÃO E CONSULTORIA",
+                "bdi01": 30.00,
+                "bdi02": "(PROJETOS)",
+                "dataMedicao": "2024-12-10",
+                "numeroMedicao": 2,
+                "contrato": "CONTRATO 002",
+                "nomeProjeto": "Projeto DataTest",
+                "nomeBoletim": "BOLETIM POR PROJETO DATATEST",
+                "bdi": 15.0,
+                "logoTipoImg": "assets/images/logos/logo-prefeitura-cachoeiro.png"
+            },
+            "valorTotalMedicao": 750.00,
+            "subBoletins": [
+                {
+                    "numero": "2.0",
+                    "codigoATA": "61.13.02",
+                    "descricao": "Fiscalização de Obras",
+                    "quantidade": 0,
+                    "unidade": "H",
+                    "precoSemBDI": null,
+                    "bdi": null,
+                    "precoComBDI": null,
+                    "valorTotal": null,
+                    "subitens": [
+                        {
+                            "numero": "2.0.1",
+                            "codigoATA": "61.14.01",
+                            "descricao": "Técnico Sênior",
+                            "quantidade": 2,
+                            "unidade": "H",
+                            "precoSemBDI": 25.33,
+                            "bdi": 0.2574,
+                            "precoComBDI": 31.85,
+                            "valorTotal": 63.7
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "boletinsDetalhados": {
+        "boletimDetalhadoCabecalho": {
+            "nomePrefeitura": "PREFEITURA MUNICIPAL DE CACHOEIRO DE ITAPEMIRIM",
+            "nomeUnidade": "SECRETARIA MUNICIPAL DE OBRAS - SEMO",
+            "tipoBoletimEmissao": "BOLETIM DETALHADO EMITIDO NO MÊS DE AGOSTO/2023",
+            "resumoBoletim": "Consolidado de medições para diversos projetos.",
+            "descontoFiscalizacao": "DESCONTO FISCALIZAÇÃO E CONSULTORIA",
+            "bdi01": 28.79,
+            "bdi02": "(PROJETOS)",
+            "dataMedicao": "2024-11-26",
+            "numeroMedicao": 1,
+            "contrato": "CONTRATO GERAL",
+            "nomeProjeto": "PROJETOS CONSOLIDADOS",
+            "nomeBoletim": "BOLETIM DETALHADO",
+            "bdi": 12.5,
+            "logoTipoImg": "assets/images/logos/logo-prefeitura-cachoeiro.png"
+        },
+        "valorTotalMedicao": 1800.00,
+        "boletins": [
+            {
+                "numero": "1",
+                "codigoATA": null,
+                "descricao": "PROJETO MODELO",
+                "quantidade": null,
+                "unidade": null,
+                "precoSemBDI": "PROJETO MODELO",
+                "bdi": null,
+                "precoComBDI": null,
+                "valorTotal": null,
+                "subBoletins": [
+                    {
+                        "numero": "1.0",
+                        "codigoATA": "0",
+                        "descricao": "ENGENHEIRO/ARQUITETO PARA ELABORACAO DE PROJETOS/GERENCIAMENTO/FISCALIZAÇÃO/APOIO TÉCNICO/CONSULTORIA",
+                        "quantidade": 0,
+                        "unidade": "H",
+                        "precoSemBDI": null,
+                        "bdi": null,
+                        "precoComBDI": null,
+                        "valorTotal": null,
+                        "subitens": [
+                            {
+                                "numero": "1.0.4",
+                                "codigoATA": "61.11.04",
+                                "descricao": "Engenheiro/Arquiteto Sênior",
+                                "quantidade": 3,
+                                "unidade": "H",
+                                "precoSemBDI": 107.96,
+                                "bdi": 0.2572,
+                                "precoComBDI": 135.73,
+                                "valorTotal": 407.19
+                            },
+                            {
+                                "numero": "1.0.5",
+                                "codigoATA": "61.11.06",
+                                "descricao": "Engenheiro/Arquiteto Júnior",
+                                "quantidade": 5,
+                                "unidade": "H",
+                                "precoSemBDI": 83.1,
+                                "bdi": 0.2573,
+                                "precoComBDI": 104.43,
+                                "valorTotal": 522.15
+                            }
+                        ]
+                    },
+                    {
+                        "numero": "2.0",
+                        "codigoATA": "61.14.01",
+                        "descricao": "TÉCNICO PARA ELABORACAO DE PROJETOS/GERENCIAMENTO/FISCALIZAÇÃO/APOIO TÉCNICO/CONSULTORIA",
+                        "quantidade": 0,
+                        "unidade": "H",
+                        "precoSemBDI": null,
+                        "bdi": null,
+                        "precoComBDI": null,
+                        "valorTotal": null,
+                        "subitens": [
+                            {
+                                "numero": "2.0.1",
+                                "codigoATA": "61.14.01",
+                                "descricao": "Técnico Sênior",
+                                "quantidade": 2,
+                                "unidade": "H",
+                                "precoSemBDI": 25.33,
+                                "bdi": 0.2574,
+                                "precoComBDI": 31.85,
+                                "valorTotal": 63.7
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "numero": "2",
+                "codigoATA": null,
+                "descricao": "ENGENHEIRO/ARQUITETO PARA ELABORACAO DE PROJETOS/GERENCIAMENTO/FISCALIZAÇÃO/APOIO TÉCNICO/CONSULTORIA",
+                "quantidade": null,
+                "unidade": null,
+                "precoSemBDI": "ENGENHEIRO/ARQUITETO PARA ELABORACAO DE PROJETOS/GERENCIAMENTO/FISCALIZAÇÃO/APOIO TÉCNICO/CONSULTORIA",
+                "bdi": null,
+                "precoComBDI": null,
+                "valorTotal": null,
+                "subBoletins": [
+                    {
+                        "numero": "1.0",
+                        "codigoATA": "0",
+                        "descricao": "ENGENHEIRO/ARQUITETO PARA ELABORACAO DE PROJETOS/GERENCIAMENTO/FISCALIZAÇÃO/APOIO TÉCNICO/CONSULTORIA",
+                        "quantidade": 0,
+                        "unidade": "H",
+                        "precoSemBDI": null,
+                        "bdi": null,
+                        "precoComBDI": null,
+                        "valorTotal": null,
+                        "subitens": [
+                            {
+                                "numero": "1.0.4",
+                                "codigoATA": "61.11.04",
+                                "descricao": "Engenheiro Consultor Especial",
+                                "quantidade": 3,
+                                "unidade": "H",
+                                "precoSemBDI": 107.96,
+                                "bdi": 0.2572,
+                                "precoComBDI": 135.73,
+                                "valorTotal": 407.19
+                            },
+                            {
+                                "numero": "1.0.5",
+                                "codigoATA": "61.11.06",
+                                "descricao": "Engenheiro/Arquiteto Consultor",
+                                "quantidade": 5,
+                                "unidade": "H",
+                                "precoSemBDI": 83.1,
+                                "bdi": 0.2573,
+                                "precoComBDI": 104.43,
+                                "valorTotal": 522.15
+                            }
+                        ]
+                    },
+                    {
+                        "numero": "2.0",
+                        "codigoATA": "61.14.01",
+                        "descricao": "TÉCNICO PARA ELABORACAO DE PROJETOS/GERENCIAMENTO/FISCALIZAÇÃO/APOIO TÉCNICO/CONSULTORIA",
+                        "quantidade": 0,
+                        "unidade": "H",
+                        "precoSemBDI": null,
+                        "bdi": null,
+                        "precoComBDI": null,
+                        "valorTotal": null,
+                        "subitens": [
+                            {
+                                "numero": "2.0.1",
+                                "codigoATA": "61.14.01",
+                                "descricao": "Técnico Sênior",
+                                "quantidade": 2,
+                                "unidade": "H",
+                                "precoSemBDI": 25.33,
+                                "bdi": 0.2574,
+                                "precoComBDI": 31.85,
+                                "valorTotal": 63.7
+                            },
+                            {
+                                "numero": "2.0.5",
+                                "codigoATA": "61.14.03",
+                                "descricao": "Técnico Junior",
+                                "quantidade": 2,
+                                "unidade": "H",
+                                "precoSemBDI": 25.33,
+                                "bdi": 0.2574,
+                                "precoComBDI": 31.85,
+                                "valorTotal": 63.7
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

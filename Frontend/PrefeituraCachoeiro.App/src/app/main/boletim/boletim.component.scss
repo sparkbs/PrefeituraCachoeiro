@@ -1,0 +1,37 @@
+.tipos-boletins {
+    width: 80%;
+    padding: 45px 50px;
+    margin: 50px auto;
+    border-radius: 40px;
+    gap: 25px;
+
+    mat-grid-list {
+        border: 3px solid #E0E0E0;
+        box-shadow: 0 4px 8px #00000026;
+        border-radius: 30px;
+        background-color: #c2c2c2;
+    }
+
+    mat-card > mat-card-title {
+        font-size: 19px;
+    }
+
+    mat-card {
+        border-radius: 10px;
+        padding: 30px;
+        display: flex;
+        align-items: center;
+        width: 70%;
+        height: 80%;
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        background-color: #f7f7f7; /* Branco fosco */
+        color: #333;
+        box-shadow: 0 4px 10px #0000001a !important; /* Sombra suave */
+    }
+
+    mat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+}

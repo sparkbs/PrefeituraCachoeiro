@@ -24,6 +24,7 @@ import { PrefeituraModule } from './main/prefeitura/prefeitura/prefeitura.module
 import { HttpBaseInterceptor } from './services/AuthService/http-base-interceptor/httpBase.interceptor';
 import { AESEncryptDecriptService } from './shared/aesEncryptDecript.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BoletimModule } from './main/boletim/boletim.module';
 
 @NgModule({
   declarations: [ AppComponent, MainComponent, SidebarComponent, NavbarComponent ],
@@ -46,7 +47,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     PerfilModule,
     RelatorioProjetosPorMedicaoModule,
     PrefeituraModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    BoletimModule
   ],
   providers: [
     AuthService,
