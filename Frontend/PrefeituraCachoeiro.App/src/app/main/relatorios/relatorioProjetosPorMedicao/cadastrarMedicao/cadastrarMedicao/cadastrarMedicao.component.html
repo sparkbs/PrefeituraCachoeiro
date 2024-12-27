@@ -1,38 +1,22 @@
 <h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Nova Medição</h1>
 <mat-dialog-content class="mat-typography">
   <div style="margin-top: 20px;">
-    <div class="cards-group" style="width: 600px;" [style.display]="!isInserirNovoProjeto && !isNovaMedicao ? 'block' : 'none'">
-    <mat-grid-list cols="1" rowHeight="4:1">
-      <mat-grid-tile>
-        <mat-card style="width: 55%;" (click)="novaMedicao()">
-          <mat-card-header>
-            <mat-icon>description</mat-icon>
-          </mat-card-header>
-          <mat-card-content>Criar Medição</mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-    </mat-grid-list>
-    </div>
-    <div class="cadastrarMedicao" [style.display]="isNovaMedicao ? 'block' : 'none'">
+    <div class="cadastrarMedicao">
       <mat-form-field>
         <mat-label>Numero Medição</mat-label>
-        <input [(ngModel)]="nomeMedicao" type="number" matInput/>
+        <input [(ngModel)]="nomeMedicao" type="number" [disabled]="disabledNomeMedicao" matInput/>
       </mat-form-field>
 
-      <mat-form-field style="margin-left: 5px;">
-       <!-- <mat-label>Numero projeto</mat-label>
-        <input [(ngModel)]="projetoSelecionado" type="number" matInput/>-->
-
+      <mat-form-field style="margin-left: 8px;">
         <mat-label>Selecione o projeto</mat-label>
-          <mat-select disableRipple [(ngModel)]="projetoSelecionado">
-            <mat-option value=1>Projeto 1</mat-option>
-            <mat-option value=2>Projeto 2</mat-option>
-          </mat-select>
+        <mat-select disableRipple [(ngModel)]="projetoSelecionado">
+          <mat-option *ngFor="let projeto of listaProjetos" [value]="projeto.idProjeto" >{{projeto.nomeProjeto}}</mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions >
-  <button mat-button cdkFocusInitial style="border: solid 1px; border-color: black;"  [style.display]="isInserirNovoProjeto || isNovaMedicao ? 'block' : 'none'" (click)="voltarTelaCriarMedicaoOuProjeto()">Voltar</button>
-  <button mat-button cdkFocusInitial style="border: solid 1px; border-color: black;" [style.display]="isInserirNovoProjeto || isNovaMedicao ? 'block' : 'none'" (click)="criarNovaMedicao()">Salvar</button>
+  <button mat-button cdkFocusInitial style="border: solid 1px; border-color: black;"  (click)="voltarTelaCriarMedicaoOuProjeto()">Voltar</button>
+  <button mat-button cdkFocusInitial style="border: solid 1px; border-color: black;"  (click)="criarNovaMedicao()">Salvar</button>
 </mat-dialog-actions>

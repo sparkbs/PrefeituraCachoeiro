@@ -16,7 +16,8 @@
   .texto {
     margin: 0;                  /* Remove qualquer margem */
     padding: 0;                 /* Remove qualquer padding */
-    text-align: center;         /* Centraliza o texto */
+    margin-left: 46%;
+    //text-align: center;         /* Centraliza o texto */
     flex: 1;                    /* Garante que o h3 ocupe o espaço disponível */
   }
 

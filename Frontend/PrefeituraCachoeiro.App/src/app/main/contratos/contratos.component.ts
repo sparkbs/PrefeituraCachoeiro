@@ -112,7 +112,6 @@ export class ContratosComponent implements AfterViewInit, OnInit {
   }
 
   formatToCurrency(valor: number): string {
-    console.log(valor)
     // Formatar o valor como string com 2 casas decimais
     let valorFormatado = valor.toFixed(2);  // 2 casas decimais
 

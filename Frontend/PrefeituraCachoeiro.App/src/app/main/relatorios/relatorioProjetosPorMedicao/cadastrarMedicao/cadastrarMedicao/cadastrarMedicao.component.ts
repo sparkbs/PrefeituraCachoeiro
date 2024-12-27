@@ -1,8 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { InserirMedicao } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { PermissoesRequest } from 'src/app/request/PermissoesRequest/permissoesRequest';
-import { TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
+import { Contrato, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
+import { MedicoesService } from 'src/app/services/medicoes.service';
 import { PermissaoService } from 'src/app/services/permissao.service';
+import { ProjetoService } from 'src/app/services/projeto.service';
 
 @Component({
   selector: 'app-cadastrarMedicao',
@@ -10,51 +15,67 @@ import { PermissaoService } from 'src/app/services/permissao.service';
   styleUrls: ['./cadastrarMedicao.component.scss']
 })
 export class CadastrarMedicaoComponent implements OnInit {
-  isNovaMedicao = false;
-  isInserirNovoProjeto = false;
   projetoSelecionado = 0;
   nomeMedicao = 0;
+  listaProjetos: ProjetoResponse[] = [];
+  disabledNomeMedicao = false;
 
-  constructor(private readonly api: PermissaoService,@Inject(MAT_DIALOG_DATA) public data: TodasMedicaoProjetoResponse) { }
-
-  ngOnInit() {
+  constructor(private readonly api: MedicoesService,
+    @Inject(MAT_DIALOG_DATA) public data: {medicoes: Contrato, numeroMedicao?: 
+      number },
+     public _projetoControllerService: ProjetoService,
+     public dialogRef: MatDialogRef<CadastrarMedicaoComponent> // Referência ao diálogo
+    ) 
+  { 
+    if(data.numeroMedicao != null || data.numeroMedicao != undefined){
+      this.nomeMedicao = data.numeroMedicao;
+      this.disabledNomeMedicao = true;
+    }
   }
 
-  novaMedicao(){
-    this.isNovaMedicao = true;
-  }
-
-  inserirProjetoEmMedicao(){
-    this.isInserirNovoProjeto = true;
+  async ngOnInit() {
+    await this.getAllProjects()
   }
 
   voltarTelaCriarMedicaoOuProjeto(){
-    if(this.isInserirNovoProjeto){
-      this.isInserirNovoProjeto = false;
-    }
-    if(this.isNovaMedicao){
-      this.isNovaMedicao = false;
-    }
+    this.dialogRef.close();
   }
 
   async criarNovaMedicao(){
-    let permissoesRequest = new PermissoesRequest();
-    this.data.data[0].contratos.items.forEach(x => {
-      x.idContrato = this.data.data[0].idContrato;
+    let medicaoRequest = new InserirMedicao();
+    console.log(this.data);
+    console.log( this.data.medicoes.items);
+    this.data.medicoes.items.forEach(x => {
+      x.idContrato = this.data.medicoes.idContrato;
     });
     
-    permissoesRequest.dataMedicao = new Date();
-    permissoesRequest.idContrato = this.data.data[0].idContrato;
-    permissoesRequest.idProjeto = this.projetoSelecionado;
-    permissoesRequest.items = this.data.data[0].contratos.items.map(item => ({
+    medicaoRequest.dataMedicao = new Date();
+    medicaoRequest.idContrato = this.data.medicoes.idContrato;
+    medicaoRequest.idProjeto = this.projetoSelecionado;
+    medicaoRequest.items = this.data.medicoes.items.map(item => ({
       idItemContrato: item.idItemContrato,
-      unidade: item.unidade
+      unidade: 0
     }));    
-    permissoesRequest.numeroMedicao = this.nomeMedicao;    
+    medicaoRequest.numeroMedicao = this.nomeMedicao;    
 
-    await this.api.CriarPermissoes(permissoesRequest)
+    await this.api.CriarMedicoes(medicaoRequest)
     .then((result) => {     
-      console.log(result);   
     });
+  }
+
+  async getAllProjects() {
+    const projetoRequest: ProjetoRequest = {
+      nome: ''
+    };
+
+    try {
+      await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
+      .then((res) => {
+        this.listaProjetos = (res.data);
+      });
+
+    } catch (error) {
+      console.error('Erro ao buscar projetos:', error);
+    }
   }
 }
