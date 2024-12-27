@@ -42,7 +42,6 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   async ngOnInit() {
     //this.todasMedicaoProjetoResponse.data = this.generateMockMedicoes();
     await this.buscarListaPrefeituras();
-    console.log(this.medicaoProjetos)
   }
 
   async buscarMedicoes(){
@@ -59,7 +58,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   }
 
   popularTesteMedicao(result: TodasMedicaoProjetoResponse){
-    result.data.forEach(valor => {
+    result?.data?.forEach(valor => {
       let existeMedicao = this.medicaoProjetos.find(x => x.numeroMedicao == valor.numeroMedicao);
       if(existeMedicao){
         existeMedicao.data.push(valor);
@@ -128,7 +127,26 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   }
   
   openDialog() {
-    this.dialog.open(CadastrarMedicaoComponent,{data:this.todasMedicaoProjetoResponse});    
+    if(this.todasMedicaoProjetoResponse?.data == undefined){
+      var contrato = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
+      console.log(contrato)
+      this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: contrato}});    
+    }
+    else{
+      this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos}});    
+    }
+  }
+
+  openDialogAssociate(numeroMedicao: number) {
+    console.log(this.todasMedicaoProjetoResponse);
+    let contrato = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
+    let medicoes = new TodasMedicaoProjetoResponse();
+    medicoes.data = [{
+      numeroMedicao: numeroMedicao,
+      idContrato: this.contratoSelecionado,
+      items: [],
+  }] as MedicoesResponse[]; 
+      this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao}});    
   }
 
   openDialogConsolidado(medicao: MedicoesResponse){
@@ -144,7 +162,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   openAllAccordions() {
     this.accordions.toArray().forEach(acc => acc.openAll());
   }
-  
+
   generateMockMedicoes(): MedicoesResponse[] {
     return [
       {

@@ -32,7 +32,7 @@ export class MedicoesService {
   public async CriarMedicoes(filter: InserirMedicao): Promise<GenericResultResponse<RetornoIdMedicao>> {
     return await firstValueFrom(
       this.http.post<GenericResultResponse<RetornoIdMedicao>>(
-        `${Environments.APIUrl}/medicoes/inserir`,
+        `${Environments.APIUrl}medicoes/inserir`,
         filter
       )
     );
@@ -50,7 +50,7 @@ export class MedicoesService {
   public async ReprovarMedicoes(filter: DadosMedicoesRequest): Promise<GenericResultResponse<RetornoReprovacaoAprovacaoResponse>> {
     return await firstValueFrom(
       this.http.post<GenericResultResponse<RetornoReprovacaoAprovacaoResponse>>(
-        `${Environments.APIUrl}/medicoes/reprovar`,
+        `${Environments.APIUrl}medicoes/reprovar`,
         filter
       )
     );

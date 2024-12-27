@@ -1,4 +1,5 @@
 import { BaseFilter } from "src/app/request/baseFilter";
+import { PermissoesItemsRequest } from "../PermissoesRequest/permissoesRequest";
 
 export class MedicoesRequest extends BaseFilter
 {
@@ -8,11 +9,12 @@ export class MedicoesRequest extends BaseFilter
 }
 
 export class InserirMedicao {
-    numeroMedicao: number;
-    idContrato: number;
-    dataMedicao: string; // ou Date, se preferir
-    resumo: string;
-    items: ItemMedicao[];
+    numeroMedicao: number = 0;
+    idContrato: number = 0;
+    dataMedicao: Date;
+    resumo: string = "";
+    idProjeto: number = 0;
+    items: PermissoesItemsRequest[] = [];
   }
   
   export class ItemMedicao {
