@@ -2,6 +2,8 @@ export class UsuariosResponse {
   idUsuario: number;
   login: string;
   nome: string;
+  grupo: string;
+  acoes?: string;
 }
 
 export class UsuariosMensagemResponse {

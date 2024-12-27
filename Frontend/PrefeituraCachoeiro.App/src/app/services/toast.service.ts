@@ -40,7 +40,7 @@ export class ToastService {
   mensagemError(
     msg: string,
     duration: number = this._defaultDuration,
-    btn: string = 'OK',
+    btn: string = '',
     horizontalPosition: MatSnackBarHorizontalPosition = this._defaultHorizPosition,
     verticalPosition: MatSnackBarVerticalPosition = this._defaultVertPosition
 ): void {

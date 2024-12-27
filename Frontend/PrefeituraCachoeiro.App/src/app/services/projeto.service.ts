@@ -6,7 +6,7 @@ import { GenericResultResponse } from '../response/genericResultResponse';
 import { TodosGruposResponse } from '../response/grupoResponse/todosGruposResponse';
 import { AtualizaGruposRequest, GruposRequest } from '../request/GruposRequest/gruposRequest';
 import { MensagemProjetoResponse, ProjetoResponse, ProjetosResponse, RetornaProjetoIdResponse } from '../response/projetoResponse/projetoResponse';
-import { AtualizarProjetoRequest, ProjetoRequest } from '../request/ProjetoRequest/projetoRequest';
+import { AtualizarProjetoRequest, CriarProjetoRequest, ProjetoRequest } from '../request/ProjetoRequest/projetoRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,7 @@ export class ProjetoService {
     );
   }
 
-  public async CriarProjeto(projetoRequest: ProjetoRequest): Promise<GenericResultResponse<RetornaProjetoIdResponse>> {
+  public async CriarProjeto(projetoRequest: CriarProjetoRequest): Promise<GenericResultResponse<RetornaProjetoIdResponse>> {
     const formData = new FormData();
     formData.append('Nome', projetoRequest.nome);
 

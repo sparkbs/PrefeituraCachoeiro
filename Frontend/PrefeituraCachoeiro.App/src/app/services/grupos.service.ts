@@ -29,7 +29,7 @@ export class GruposService {
     );
   }
 
-  public async BuscarTodaosGrupos(filter: GruposRequest): Promise<GenericResultResponse<TodosGruposResponse>> {
+  public async BuscarTodosGrupos(filter: GruposRequest): Promise<GenericResultResponse<TodosGruposResponse>> {
     return await firstValueFrom(
       this.http.post<GenericResultResponse<TodosGruposResponse>>(
         `${Environments.APIUrl}/grupos/buscartodos`,

@@ -7,7 +7,7 @@
   <form [formGroup]="form">
       <mat-form-field>
         <mat-label>Prefeitura</mat-label>
-        <mat-select formControlName="grupo">
+        <mat-select formControlName="prefeitura">
           <mat-option *ngFor="let prefeitura of prefeituras" [value]="prefeituras">
             {{prefeitura}}
           </mat-option>
@@ -17,7 +17,7 @@
 
       <mat-form-field>
         <mat-label>Contrato</mat-label>
-        <mat-select formControlName="grupo">
+        <mat-select formControlName="contrato">
           <mat-option *ngFor="let contrato of contratos" [value]="contratos">
             {{contrato}}
           </mat-option>

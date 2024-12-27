@@ -45,39 +45,42 @@ export class ProjetosComponent implements OnInit {
     }
   }
 
-  openDialog(): void {
-    /*const dialogRef = this.dialog.open(IncluirEditarProjetoComponent, {
-      width: window.innerWidth >= 1450 ? '50%' : '50%',
-      data: { }
-    });*/
-  }
-
-  openEditarCriar(edicao: boolean = false) {
+  openEditarCriar(edicao: boolean = false, id?: number) {
     const dialogRef = this.dialog.open(EditarCriarProjetosComponent, {
       width: window.innerWidth >= 1450 ? '50%' : '50%',
-      data: { edicao }
+      data: { edicao, id }
     }).afterClosed().subscribe(
       (res) => {
         if (res) {
           this.getAllProjects();
         }
-    });;
+    });
   }
 
   public async getAllProjects() {
     const projetoRequest: ProjetoRequest = {
-      nome: ''
+      nome: '',
+      pagina: 1,
+      itemsPorPagina: 10000
     };
 
-    try {
-      await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
-      .then((res) => {
-        this.listaProjetos = (res.data);
-        this.dataSource.data = this.listaProjetos;
-      });
+    await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
+    .then((res) => {
+      this.listaProjetos = (res.data);
+      this.dataSource.data = this.listaProjetos;
+    })
+    .catch((erro) => {
+      this._toastService.mensagemError('Erro ao buscar projetos!');
+    });
+  }
 
-    } catch (error) {
-      console.error('Erro ao buscar projetos:', error);
-    }
+  deleteProject(id: number) {
+    this._projetoControllerService.DeletarProjeto(id)
+    .then((res) => {
+      this._toastService.mensagemSuccess("Sucesso ao deletar projeto!");
+    })
+    .catch((erro) => {
+      this._toastService.mensagemError('Erro ao deletar projeto!');
+    });
   }
 }
