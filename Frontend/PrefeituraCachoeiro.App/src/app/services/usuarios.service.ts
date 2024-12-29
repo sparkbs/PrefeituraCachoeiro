@@ -41,10 +41,15 @@ export class UsuariosService {
   }
 
   public async CriarUsuarios(usuarios: CriarUsuariosRequest): Promise<GenericResultResponse<CriarUsuariosResponse>> {
+    const formData = new FormData();
+    formData.append('Nome', usuarios.nome);
+    formData.append('Login', usuarios.login);
+    formData.append('Senha', usuarios.senha);
+
     return await firstValueFrom(
       this.http.post<GenericResultResponse<CriarUsuariosResponse>>(
         `${Environments.APIUrl}/usuarios`,
-        usuarios
+        formData
       )
     );
   }

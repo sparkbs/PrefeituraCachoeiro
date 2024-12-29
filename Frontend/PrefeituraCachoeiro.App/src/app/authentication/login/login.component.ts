@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { LoginRequest } from 'src/app/request/AuthRequest/loginRequest';
 import { AuthService } from 'src/app/services/auth.service';
 import { CookieProjetaService } from 'src/app/services/AuthService/cookie-projeta.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,11 @@ import { CookieProjetaService } from 'src/app/services/AuthService/cookie-projet
 export class LoginComponent {
   login: LoginRequest = new LoginRequest();
 
-  constructor(private _router: Router, private readonly api: AuthService, private readonly cookie: CookieProjetaService) {
+  constructor(
+    private _router: Router, 
+    private readonly api: AuthService, 
+    private readonly cookie: CookieProjetaService,
+    private _toastService: ToastService) {
 
   }
   async onSubmit(): Promise<void> {
@@ -26,6 +31,10 @@ export class LoginComponent {
       this.cookie.setCookie("_expiration",result.accessToken.expiration.toString());
 
       this._router.navigate(['/main/home']);
+      this._toastService.mensagemSuccess("Logado com sucesso!");
+    })
+    .catch((erro) => {
+      this._toastService.mensagemError("Erro ao logar!");
     });
   }
 

@@ -2,7 +2,7 @@ import { BaseFilter } from "src/app/request/baseFilter";
 
 export class UsuariosRequest extends BaseFilter
 {
-    nome: string = '';
+    nome?: string = '';
 }
 
 export class CriarUsuariosRequest

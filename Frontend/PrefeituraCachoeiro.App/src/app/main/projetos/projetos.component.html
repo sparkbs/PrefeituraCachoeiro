@@ -34,11 +34,11 @@
           <ng-container matColumnDef="acoes">
             <th mat-header-cell *matHeaderCellDef> </th>
             <td mat-cell *matCellDef="let element">
-              <span matTooltip="Editar" (click)="openEditarCriar(true)">
+              <span matTooltip="Editar" (click)="openEditarCriar(true, element.idProjeto)">
                 <mat-icon>edit</mat-icon>
               </span>
 
-              <span matTooltip="Remover">
+              <span matTooltip="Remover" (click)="deleteProject(element.idProjeto)">
                 <mat-icon>delete</mat-icon>
               </span>
             </td>
