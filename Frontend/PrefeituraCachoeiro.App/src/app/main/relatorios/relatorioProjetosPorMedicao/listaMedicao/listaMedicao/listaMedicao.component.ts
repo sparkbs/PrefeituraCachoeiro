@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
 import { AlterarMedicaoProjetoRequest, DadosMedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { MedicoesService } from 'src/app/services/medicoes.service';
@@ -14,14 +15,18 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
   @Input() medicoes: MedicoesResponse = new MedicoesResponse();
   
   dataSource: MatTableDataSource<ItemMedicao>;
-  displayedColumns: string[] = ['item', 'item/qtd', 'valor(s)cBdi' , 'valorTotal/bdi', 'qtdMedicaoItem', 'valorTotalMedidaBdi'];
+  displayedColumns: string[] = ['item', 'item/qtd', 'valor(s)cBdi' , 'valorTotal/bdi','qtdRestante', 'qtdMedicaoItem', 'valorTotalMedidaBdi', 'valorSaldoRestante'];
 
   alterarMedicaoProjeto = false;
-  constructor(private readonly apiMedicao: MedicoesService, private readonly api: ProjetoService) {
+  constructor(private readonly apiMedicao: MedicoesService, private readonly api: ProjetoService,private globalService: GlobalServicesService) {
     this.dataSource = new MatTableDataSource(this.medicoes.items);    
    }
 
-  ngOnInit() {
+  ngOnInit() {    
+    this.medicoes.items.forEach(item =>{
+      item.unidadeSalvaMedida = item.unidade;
+      this.globalService.addItem(item.itemsContrato.item.descricao, item.itemsContrato.unidade, item.idItemContrato, item.unidade)
+    })
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -31,8 +36,22 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
   }
 
   aprovarMedicao(){
-
+    
   }
+
+  onChange(item: ItemMedicao){
+    console.log(item.unidade);
+    console.log('quantidade inicio '+item.unidadeSalvaMedida);
+    let quantidade = item.unidade - item.unidadeSalvaMedida;
+    console.log(quantidade);
+    this.globalService.addItem("",0, item.idItemContrato,quantidade)
+    item.unidadeSalvaMedida = item.unidade;
+  }
+
+  buscarItemMedicao(idItemContrato: number){
+    return this.globalService.getItems(idItemContrato).quantidades;
+  }
+
 
   async reprovarMedicao(idMedicao: number){
     let request = new DadosMedicoesRequest()
@@ -65,6 +84,15 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
     })
 
     return valorSomado
+  }
+
+  somarValorSaldoTotal(){
+    let valorSaldoSomado = 0;
+    this.medicoes.items.forEach( x => {
+      valorSaldoSomado += this.buscarItemMedicao(x.idItemContrato) * x.itemsContrato.item.valorComBdi
+    })
+    
+    return valorSaldoSomado
   }
 
   async salvar(){

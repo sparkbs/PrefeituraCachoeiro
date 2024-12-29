@@ -11,6 +11,7 @@ import { MedicoesService } from 'src/app/services/medicoes.service';
 import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesModel, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ResumoMedicaoComponent } from './resumoMedicao/resumoMedicao/resumoMedicao.component';
+import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
 
 @Component({
   selector: 'app-relatorioProjetosPorMedicao',
@@ -36,7 +37,8 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef, 
     private readonly apiPrefeitura: PrefeituraService,
     private readonly api: ContratosService,
-    private readonly apiMedicoes: MedicoesService) {
+    private readonly apiMedicoes: MedicoesService,
+  private globalService: GlobalServicesService) {
      }
 
   async ngOnInit() {
@@ -103,6 +105,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   async buscar(){
     await this.buscarMedicoes();
     this.exibir = true;
+    this.globalService.resetItems();
     this.cdr.detectChanges();
   }
 

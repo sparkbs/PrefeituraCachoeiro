@@ -87,6 +87,7 @@ export class MedicoesResponse {
     idItemContrato: number;
     itemsContrato: ItemContrato;
     unidade: number;
+    unidadeSalvaMedida?: number;
   }
   
   export class Empresa {
