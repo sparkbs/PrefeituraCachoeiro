@@ -65,7 +65,9 @@ export class CadastrarMedicaoComponent implements OnInit {
 
   async getAllProjects() {
     const projetoRequest: ProjetoRequest = {
-      nome: ''
+      nome: '',
+      itemsPorPagina: 1000000,
+      pagina: 1
     };
 
     try {
