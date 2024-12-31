@@ -4,7 +4,7 @@
     <div>
 
       <mat-form-field>
-        <mat-label>Selecione a prefeitura</mat-label>
+        <mat-label>Selecione o Cliente</mat-label>
         <mat-select disableRipple [(ngModel)]="criarContrato.PrefeituraId">
           <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura" >{{prefeitura.nome}}</mat-option>
         </mat-select>

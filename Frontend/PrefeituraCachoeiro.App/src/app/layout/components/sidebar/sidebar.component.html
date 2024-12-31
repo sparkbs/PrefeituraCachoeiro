@@ -19,7 +19,7 @@
       <button [routerLink]="['/main/prefeitura']">
         <span>
           <mat-icon>account_balance</mat-icon>
-          <span>Prefeitura</span>
+          <span>Cliente</span>
         </span>
       </button>
 
@@ -37,10 +37,10 @@
         </span>
       </button>
 
-      <button [routerLink]="['/main/boletim']">
+      <button [routerLink]="['/main/relatorioProjetosPorMedicao']">
         <span>
           <mat-icon>assignment</mat-icon>
-          <span>Boletins</span>
+          <span>Medições</span>
         </span>
       </button>
       
@@ -60,7 +60,7 @@
 
 
       <div *ngIf="relatoriosExpanded" class="submenu">
-        <button [routerLink]="['/main/relatorioProjetosPorMedicao']">Medições</button>
+        <button [routerLink]="['/main/boletim']">Boletins</button>
       </div>
     </nav>
   </aside>

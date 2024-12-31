@@ -17,7 +17,7 @@ export class EditarCriarGruposPermissoesComponent implements OnInit {
     { nameModule: 'Perfil', access: false },
     { nameModule: 'Projeto', access: false },
     { nameModule: 'Contrato', access: false },
-    { nameModule: 'Prefeitura', access: false },
+    { nameModule: 'Cliente', access: false },
     { nameModule: 'Medição', access: false }
   ];
 
