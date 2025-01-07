@@ -3,6 +3,7 @@ import { BaseFilter } from "../baseFilter";
 export class ProjetoRequest extends BaseFilter
 {
     nome: string;
+    idContrato?: number;
 }
 
 export class CriarProjetoRequest 

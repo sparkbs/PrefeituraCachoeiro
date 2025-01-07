@@ -8,4 +8,10 @@ export class CriarContratoRequest {
     DataInicio: Date;
     DataTermino: Date;
     PrefeituraId: number;
+    Aditivo?: number;
+    TipoAditivo?: number;
+    DataAssinaturaAditivo?: Date;
+    DataValidadeAditivo?: Date;
+    Arquivos: File[] = [];
+    ArquivoTemplate: File;
 }

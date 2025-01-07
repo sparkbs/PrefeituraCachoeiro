@@ -1,10 +1,13 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
 import { AlterarMedicaoProjetoRequest, DadosMedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { MedicoesService } from 'src/app/services/medicoes.service';
 import { ProjetoService } from 'src/app/services/projeto.service';
+import { ToastService } from 'src/app/services/toast.service';
+import { AprovarMedicaoComponent } from '../../aprovarMedicao/aprovarMedicao/aprovarMedicao.component';
 
 @Component({
   selector: 'app-listaMedicao',
@@ -12,20 +15,24 @@ import { ProjetoService } from 'src/app/services/projeto.service';
   styleUrls: ['./listaMedicao.component.scss']
 })
 export class ListaMedicaoComponent implements OnInit, OnChanges {
+  readonly dialog = inject(MatDialog);
   @Input() medicoes: MedicoesResponse = new MedicoesResponse();
   
   dataSource: MatTableDataSource<ItemMedicao>;
   displayedColumns: string[] = ['item', 'item/qtd', 'valor(s)cBdi' , 'valorTotal/bdi','qtdRestante', 'qtdMedicaoItem', 'valorTotalMedidaBdi', 'valorSaldoRestante'];
 
   alterarMedicaoProjeto = false;
-  constructor(private readonly apiMedicao: MedicoesService, private readonly api: ProjetoService,private globalService: GlobalServicesService) {
+  constructor(private readonly apiMedicao: MedicoesService, private readonly api: ProjetoService,private globalService: GlobalServicesService,private _toastService: ToastService) {
     this.dataSource = new MatTableDataSource(this.medicoes.items);    
    }
 
-  ngOnInit() {    
+  ngOnInit() {   
+    console.log(this.medicoes);
     this.medicoes.items.forEach(item =>{
       item.unidadeSalvaMedida = item.unidade;
-      this.globalService.addItem(item.itemsContrato.item.descricao, item.itemsContrato.unidade, item.idItemContrato, item.unidade)
+      if(item?.itemsContrato != null){
+        this.globalService.addItem(item.itemsContrato.item.descricao, item.itemsContrato.unidade, item.idItemContrato, item.unidade)
+      }
     })
   }
 
@@ -35,17 +42,28 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
     }
   }
 
-  aprovarMedicao(){
-    
+  aprovarMedicao(idMedicao: number){
+    this.dialog.open(AprovarMedicaoComponent,{data:{idMedicoesProj: idMedicao}});
   }
 
   onChange(item: ItemMedicao){
-    console.log(item.unidade);
-    console.log('quantidade inicio '+item.unidadeSalvaMedida);
-    let quantidade = item.unidade - item.unidadeSalvaMedida;
-    console.log(quantidade);
-    this.globalService.addItem("",0, item.idItemContrato,quantidade)
-    item.unidadeSalvaMedida = item.unidade;
+    if(item.unidade < 0){
+      this._toastService.mensagemError("Não é permitido uma quantidade negativa!");
+      item.unidade = item.unidadeSalvaMedida;
+      item.itemInvalido = true;
+    }
+    else{
+      let quantidade = item.unidade - item.unidadeSalvaMedida;
+      this.globalService.addItem("",0, item.idItemContrato,quantidade)
+      if(this.globalService.itemInvalido){
+        item.unidade = item.unidadeSalvaMedida;
+        item.itemInvalido = false;
+      }
+      else{
+        item.unidadeSalvaMedida = item.unidade;
+        item.itemInvalido = false;
+      }
+    }
   }
 
   buscarItemMedicao(idItemContrato: number){
@@ -80,7 +98,8 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
   somarValorTotal(){
     let valorSomado = 0;
     this.medicoes.items.forEach( x => {
-      valorSomado += x.unidade * x.itemsContrato.item.valorComBdi
+      if(x)
+      valorSomado += x?.unidade * x?.itemsContrato?.item?.valorComBdi
     })
 
     return valorSomado
@@ -89,7 +108,9 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
   somarValorSaldoTotal(){
     let valorSaldoSomado = 0;
     this.medicoes.items.forEach( x => {
-      valorSaldoSomado += this.buscarItemMedicao(x.idItemContrato) * x.itemsContrato.item.valorComBdi
+      if(x?.idItemContrato != null){
+        valorSaldoSomado += this.buscarItemMedicao(x.idItemContrato) * x?.itemsContrato?.item?.valorComBdi;
+      }
     })
     
     return valorSaldoSomado
@@ -97,22 +118,28 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
 
   async salvar(){
     //this.quantidadeMedida = 1;    
-    let alterarMedicaoRequest = new AlterarMedicaoProjetoRequest();
-    alterarMedicaoRequest.dataMedicao = this.medicoes.dataMedicao;
-    alterarMedicaoRequest.idContrato = this.medicoes.idContrato;
-    alterarMedicaoRequest.idMedicoesProjeto = this.medicoes.idMedicoesProjeto;
-    const novaLista = this.medicoes.items.map(item => ({
-      idItemContrato: item.idItemContrato,
-      unidade: item.unidade || 0
-    }));
-    alterarMedicaoRequest.items = novaLista;
-    alterarMedicaoRequest.numeroMedicao = this.medicoes.numeroMedicao;
-    alterarMedicaoRequest.resumo = this.medicoes.resumo;
-
-    await this.apiMedicao.AlterarMedicoes(alterarMedicaoRequest)
-    .then((result) => {     
-    });
-
-    this.alterarMedicaoProjeto = false;
+    let itemInvalido = this.medicoes.items.some(x => x.itemInvalido)
+    if(!itemInvalido){
+      let alterarMedicaoRequest = new AlterarMedicaoProjetoRequest();
+      alterarMedicaoRequest.dataMedicao = this.medicoes.dataMedicao;
+      alterarMedicaoRequest.idContrato = this.medicoes.idContrato;
+      alterarMedicaoRequest.idMedicoesProjeto = this.medicoes.idMedicoesProjeto;
+      const novaLista = this.medicoes.items.map(item => ({
+        idItemContrato: item.idItemContrato,
+        unidade: item.unidade || 0
+      }));
+      alterarMedicaoRequest.items = novaLista;
+      alterarMedicaoRequest.numeroMedicao = this.medicoes.numeroMedicao;
+      alterarMedicaoRequest.resumo = this.medicoes.resumo;
+  
+      await this.apiMedicao.AlterarMedicoes(alterarMedicaoRequest)
+      .then((result) => {     
+      });
+  
+      this.alterarMedicaoProjeto = false;
+    }
+    else{
+      this._toastService.mensagemError("Verifique os itens medidos para garantir que não haja quantidades restantes menores que 0.");
+    }
   }
 }

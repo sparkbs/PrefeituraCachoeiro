@@ -1,27 +1,42 @@
 import { Injectable } from '@angular/core';
+import { ToastService } from '../services/toast.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalServicesService {
   public itensMedidos: ItensMedidos[] = [];
+  public itemInvalido: boolean = false;
 
-  constructor() { }
+  constructor(private _toastService: ToastService) { }
 
   addItem(nome: string, quantidade: number, idItemContrato:number, quantidadeMedida:number) {
     let itemExiste = this.itensMedidos.findIndex(x => x.idItemContrato == idItemContrato);
     if(itemExiste == -1){
       var restante = quantidade - quantidadeMedida;
-      let item : ItensMedidos = new ItensMedidos();
-      item.nomes = nome;
-      item.quantidades = restante;
-      item.idItemContrato = idItemContrato;
-      this.itensMedidos.push(item);
+      if(restante < 0){
+        this.itemInvalido = true;
+        this._toastService.mensagemError("Não é permitido a quantidade restante de cada item ser menor que 0!");
+      }
+      else{
+        let item : ItensMedidos = new ItensMedidos();
+        item.nomes = nome;
+        item.quantidades = restante;
+        item.idItemContrato = idItemContrato;
+        this.itensMedidos.push(item);
+        this.itemInvalido = false;
+      }
     }
     else{
       var restante = this.itensMedidos[itemExiste].quantidades - quantidadeMedida;
-
-      this.itensMedidos[itemExiste].quantidades = restante;
+      if(restante < 0){
+        this.itemInvalido = true;
+        this._toastService.mensagemError("Não é permitido a quantidade restante de cada item ser menor que 0!");
+      }
+      else{
+        this.itensMedidos[itemExiste].quantidades = restante;
+        this.itemInvalido = false;
+      }
     }
 
   }

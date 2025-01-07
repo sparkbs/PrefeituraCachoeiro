@@ -23,7 +23,7 @@ export class InserirMedicao {
   }
 
 export class AprovarMedicoesRequest{
-    arquivos: string[];
+    arquivos: File[];
     idMedicoesProjeto: number;
     dataRegistro: string;
     resumo: string;

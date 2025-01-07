@@ -55,11 +55,11 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     await this.apiMedicoes.BuscarTodasMedicoes(medicoesRequest)
     .then((result) => {      
       this.todasMedicaoProjetoResponse = result;
-      this.popularTesteMedicao(result);
+      this.popularMedicao(result);
     });
   }
 
-  popularTesteMedicao(result: TodasMedicaoProjetoResponse){
+  popularMedicao(result: TodasMedicaoProjetoResponse){
     result?.data?.forEach(valor => {
       let existeMedicao = this.medicaoProjetos.find(x => x.numeroMedicao == valor.numeroMedicao);
       if(existeMedicao){
@@ -117,39 +117,64 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  editProjeto1(){
-    this.alterarMedicaoProjeto1 = !this.alterarMedicaoProjeto1;
-  }
-
-  editProjeto2(){
-    this.alterarMedicaoProjeto2 = !this.alterarMedicaoProjeto2;
-  }
-
-  editProjeto3(){
-    this.alterarMedicaoProjeto3 = !this.alterarMedicaoProjeto3;
-  }
-  
   openDialog() {
     if(this.todasMedicaoProjetoResponse?.data == undefined){
       var contrato = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
-      console.log(contrato)
-      this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: contrato}});    
+      const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: contrato}});
+
+      dialogRef.afterClosed().subscribe(async result => {
+        if(result){
+          await this.apiMedicoes.BuscarMedicoes(result)
+          .then((response) => {      
+            let novoMedicao = new MedicoesModel();
+            novoMedicao.numeroMedicao = response.numeroMedicao;
+            novoMedicao.data.push(response);
+    
+            this.medicaoProjetos.push(novoMedicao);   
+          });          
+        }
+      });
     }
     else{
-      this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos}});    
+      const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos}});
+
+      dialogRef.afterClosed().subscribe(async result => {
+        if(result){
+          await this.apiMedicoes.BuscarMedicoes(result)
+          .then((response) => {      
+            let novoMedicao = new MedicoesModel();
+            novoMedicao.numeroMedicao = response.numeroMedicao;
+            novoMedicao.data.push(response);
+    
+            this.medicaoProjetos.push(novoMedicao);   
+          });          
+        }
+      });
     }
   }
 
   openDialogAssociate(numeroMedicao: number) {
     console.log(this.todasMedicaoProjetoResponse);
-    let contrato = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
+    //let contrato = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
     let medicoes = new TodasMedicaoProjetoResponse();
     medicoes.data = [{
       numeroMedicao: numeroMedicao,
       idContrato: this.contratoSelecionado,
       items: [],
   }] as MedicoesResponse[]; 
-      this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao}});    
+      const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao}});    
+      dialogRef.afterClosed().subscribe(async result => {
+        if(result){
+          await this.apiMedicoes.BuscarMedicoes(result)
+          .then((response) => {      
+            let novoMedicao = new MedicoesModel();
+            novoMedicao.numeroMedicao = response.numeroMedicao;
+            novoMedicao.data.push(response);
+    
+            this.medicaoProjetos.push(novoMedicao);   
+          });          
+        }
+      });
   }
 
   openDialogConsolidado(medicao: MedicoesResponse){
@@ -164,143 +189,5 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
 
   openAllAccordions() {
     this.accordions.toArray().forEach(acc => acc.openAll());
-  }
-
-  generateMockMedicoes(): MedicoesResponse[] {
-    return [
-      {
-        idMedicoesProjeto: 1,
-        numeroMedicao: 1,
-        idContrato: 1001,
-        contratos: this.generateMockContrato(),
-        dataMedicao: '2024-12-10',
-        resumo: 'Resumo da medição do projeto.',
-        idStatusMedicao: 1,
-        statusMedicao: this.generateMockStatusMedicao(),
-        items: this.generateMockItemsMedicao()
-      }
-    ]
-  }
-
-  generateMockContrato(): Contrato {
-    return {
-      idContrato: 1001,
-      idProjeto: 2001,
-      projetos: this.generateMockProjeto(),
-      dataContrato: '2023-01-15',
-      numeroContrato: 'C12345',
-      valorTotalPrevisto: 500000.00,
-      valorTotalSolicitado: 450000.00,
-      valorTotalMedido: 400000.00,
-      valorSaldoRestante: 100000.00,
-      items: [this.generateMockItemContrato()],
-      empresaId: 3001,
-      empresa: this.generateMockEmpresa(),
-      valor: 450000.00,
-      tipoContratacao: 1,
-      gerente: 'Carlos Silva',
-      dataTermino: '2025-12-31',
-      dataInicio: '2023-02-01',
-      prefeituraId: 4001,
-      prefeitura: this.generateMockPrefeitura()
-    };
-  }
-
-  // Mock de Projeto
-  generateMockProjeto(): Projeto {
-    return {
-      idProjeto: 2001,
-      nomeProjeto: 'Projeto XYZ'
-    };
-  }
-
-  // Mock de ItemContrato
-  generateMockItemContrato(): ItemContrato {
-    return {
-      idItemContrato: 101,
-      idContrato: 1001,
-      itemId: 202,
-      item: this.generateMockItem(),
-      quantidadeId: 301,
-      quantidade: this.generateMockQuantidade(),
-      unidade: 1,
-      valorSemBdi: 100000.00,
-      valorComBdi: 120000.00,
-      valorTotalComBdi: 120000.00
-    };
-  }
-
-  // Mock de Item
-  generateMockItem(): Item {
-    return {
-      idItem: 202,
-      identificador: 'ABC123',
-      codigo: 'XYZ001',
-      origemId: 1,
-      origem: this.generateMockOrigem(),
-      descricao: 'Item exemplo para medição',
-      unidade: 10,
-      quantidadeId: 301,
-      quantidade: this.generateMockQuantidade(),
-      valorSemBdi: 100000.00,
-      valorComBdi: 120000.00,
-      valorTotalComBdi: 120000.00,
-      idItemPai: 0,
-      ordem: 1
-    };
-  }
-
-  // Mock de Origem
-  generateMockOrigem(): Origem {
-    return {
-      idOrigem: 1,
-      nome: 'Local A'
-    };
-  }
-
-  // Mock de Quantidade
-  generateMockQuantidade(): Quantidade {
-    return {
-      idQuantidade: 301,
-      nome: 'Unidade'
-    };
-  }
-
-  // Mock de StatusMedicao
-  generateMockStatusMedicao(): StatusMedicao {
-    return {
-      idStatusMedicao: 1,
-      nome: 'Em andamento'
-    };
-  }
-
-  // Mock de ItemMedicao
-  generateMockItemsMedicao(): ItemMedicao[] {
-    return [
-      {
-        idItemMedicoesProjeto: 1,
-        idItemContrato: 101,
-        itemsContrato: this.generateMockItemContrato(),
-        unidade: 10
-      }
-    ];
-  }
-
-  // Mock de Empresa
-  generateMockEmpresa(): Empresa {
-    return {
-      empresaId: 3001,
-      nome: 'Construtora Exemplo Ltda',
-      logo: 'logo-empresa.png'
-    };
-  }
-
-  // Mock de Prefeitura
-  generateMockPrefeitura(): Prefeitura {
-    return {
-      idPrefeitura: 4001,
-      nome: 'Prefeitura Municipal Exemplo',
-      logo: 'logo-prefeitura.png'
-    };
   }
 }

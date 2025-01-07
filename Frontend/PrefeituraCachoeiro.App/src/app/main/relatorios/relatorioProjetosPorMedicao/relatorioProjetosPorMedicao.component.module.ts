@@ -20,9 +20,10 @@ import { ListaMedicaoComponent } from './listaMedicao/listaMedicao/listaMedicao.
 import { MatTableModule } from '@angular/material/table';
 import { ResumoMedicaoComponent } from './resumoMedicao/resumoMedicao/resumoMedicao.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AprovarMedicaoComponent } from './aprovarMedicao/aprovarMedicao/aprovarMedicao.component';
 
 @NgModule({
-  declarations: [ RelatorioProjetosPorMedicaoComponent, CadastrarMedicaoComponent, ListaMedicaoComponent, ResumoMedicaoComponent],
+  declarations: [ RelatorioProjetosPorMedicaoComponent, CadastrarMedicaoComponent, ListaMedicaoComponent, ResumoMedicaoComponent, AprovarMedicaoComponent],
   imports: [
     MatButtonModule,
     MatExpansionModule,

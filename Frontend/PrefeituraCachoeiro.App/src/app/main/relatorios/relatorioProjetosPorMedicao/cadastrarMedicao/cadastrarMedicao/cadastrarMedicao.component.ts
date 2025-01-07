@@ -8,6 +8,7 @@ import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoRespons
 import { MedicoesService } from 'src/app/services/medicoes.service';
 import { PermissaoService } from 'src/app/services/permissao.service';
 import { ProjetoService } from 'src/app/services/projeto.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-cadastrarMedicao',
@@ -24,6 +25,7 @@ export class CadastrarMedicaoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: {medicoes: Contrato, numeroMedicao?: 
       number },
      public _projetoControllerService: ProjetoService,
+     private _toastService: ToastService,
      public dialogRef: MatDialogRef<CadastrarMedicaoComponent> // Referência ao diálogo
     ) 
   { 
@@ -60,6 +62,12 @@ export class CadastrarMedicaoComponent implements OnInit {
 
     await this.api.CriarMedicoes(medicaoRequest)
     .then((result) => {     
+      this._toastService.mensagemSuccess("Medição criada com sucesso.");
+      this.dialogRef.close(result.data.idMedicoesProjeto);
+    })
+    .catch(() =>
+    {
+      //this._toastService.mensagemError("Erro ao criar uma medição.");
     });
   }
 
@@ -67,7 +75,8 @@ export class CadastrarMedicaoComponent implements OnInit {
     const projetoRequest: ProjetoRequest = {
       nome: '',
       itemsPorPagina: 1000000,
-      pagina: 1
+      pagina: 1,
+      idContrato: this.data.medicoes.idContrato
     };
 
     try {

@@ -9,6 +9,7 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 import { UsuariosRequest } from 'src/app/request/UsuariosRequest/usuariosRequest';
 import { UsuariosResponse } from 'src/app/response/usuariosResponse/usuariosResponse';
 import { ListaDocumentosContrato } from 'src/app/response/contratosResponse/dadosContratoResponse';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-editar_criar_contratos',
@@ -17,6 +18,7 @@ import { ListaDocumentosContrato } from 'src/app/response/contratosResponse/dado
 })
 export class Editar_criar_contratosComponent implements OnInit {
   @ViewChild('documentoInput') documentoInput: any;
+  @ViewChild('baseDadosInput') baseDadosInput: any;
 
   listaPrefeitura: PrefeituraResponse[] = [];
   listaGerentes: UsuariosResponse[] = [];
@@ -27,7 +29,8 @@ export class Editar_criar_contratosComponent implements OnInit {
   private dialogRef: MatDialogRef<Editar_criar_contratosComponent>,
   private readonly apiPrefeitura: PrefeituraService,
   private readonly api: ContratosService,
-  private readonly apiUsuarios: UsuariosService
+  private readonly apiUsuarios: UsuariosService,
+  private _toastService: ToastService
 ) { 
   }
 
@@ -77,9 +80,20 @@ export class Editar_criar_contratosComponent implements OnInit {
   async salvar(){
     this.criarContrato.EmpresaId = 1;
     this.criarContrato.Valor = this.criarContrato.Valor.replaceAll(".","").replaceAll("R$","").replaceAll(",",".");
+    this.criarContrato.ArquivoTemplate = this.adicionarBaseDados();
+
+    let documentoContrato: File[] = [];
+    this.listaDocumentoContrato.forEach(x => documentoContrato.push(x.file));
+
+    this.criarContrato.Arquivos = documentoContrato;
+    this._toastService.mensagemSuccess("Iniciando processo de criar o contrato");
     await this.api.CriarContrato(this.criarContrato)
     .then((result) => {
+      this._toastService.mensagemSuccess("Contrato criado com sucesso");
       this.dialogRef.close(result);
+    })
+    .catch(() => {
+      this._toastService.mensagemError("Erro ao cadastrar contrato");
     });
   }
 
@@ -104,5 +118,15 @@ export class Editar_criar_contratosComponent implements OnInit {
     value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
     value = 'R$ ' + value; 
     this.criarContrato.Valor = value; 
+  }
+
+  adicionarBaseDados(){
+    if(this.baseDadosInput.nativeElement.files[0] != undefined){
+      const documentoFile = this.baseDadosInput.nativeElement.files[0] as File;
+      return documentoFile;
+    }
+    else{
+      return null;
+    }
   }
 }

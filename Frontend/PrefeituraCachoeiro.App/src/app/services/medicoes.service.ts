@@ -12,9 +12,9 @@ import { AlterarMedicaoProjetoRequest, AprovarMedicoesRequest, DadosMedicoesRequ
 export class MedicoesService {
   constructor(private readonly http: HttpClient) { }
 
-  public async BuscarMedicoes(id: number) : Promise<GenericResultResponse<MedicoesResponse>>{
+  public async BuscarMedicoes(id: number) : Promise<MedicoesResponse>{
     return await firstValueFrom(
-      this.http.get<GenericResultResponse<MedicoesResponse>>(
+      this.http.get<MedicoesResponse>(
         `${Environments.APIUrl}/medicoes?id=${id}`
       )
     );
@@ -38,11 +38,16 @@ export class MedicoesService {
     );
   }
 
-  public async AprovarMedicoes(filter: AprovarMedicoesRequest): Promise<GenericResultResponse<RetornoReprovacaoAprovacaoResponse>> {
+  public async AprovarMedicoes(filter: AprovarMedicoesRequest): Promise<RetornoReprovacaoAprovacaoResponse> {
+    const formData = new FormData();
+    Object.keys(filter).forEach(key => {
+      formData.append(key, filter[key]);
+    });
+    
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<RetornoReprovacaoAprovacaoResponse>>(
+      this.http.post<RetornoReprovacaoAprovacaoResponse>(
         `${Environments.APIUrl}/medicoes/aprovar`,
-        filter
+        formData
       )
     );
   }
