@@ -25,6 +25,7 @@ import { HttpBaseInterceptor } from './services/AuthService/http-base-intercepto
 import { AESEncryptDecriptService } from './shared/aesEncryptDecript.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BoletimModule } from './main/boletim/boletim.module';
+import { ModalLevantamentoModule } from './main/relatorios/modalLevantamento/modalLevantamento.module';
 
 @NgModule({
   declarations: [ AppComponent, MainComponent, SidebarComponent, NavbarComponent ],
@@ -35,6 +36,7 @@ import { BoletimModule } from './main/boletim/boletim.module';
     HttpClientModule,
 
     // Autenticação
+    ModalLevantamentoModule,
     LoginModule,
     RegistrarModule,
     HomeModule,

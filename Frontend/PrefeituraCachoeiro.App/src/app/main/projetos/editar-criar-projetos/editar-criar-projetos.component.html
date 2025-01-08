@@ -7,9 +7,9 @@
   <form [formGroup]="form">
       <mat-form-field>
         <mat-label>Cliente</mat-label>
-        <mat-select formControlName="prefeitura">
-          <mat-option *ngFor="let prefeitura of prefeituras" [value]="prefeituras">
-            {{prefeitura}}
+        <mat-select formControlName="prefeitura" (selectionChange)="onSelectionChange($event.value)">
+          <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura">
+            {{prefeitura.nome}}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="form.get('prefeitura').hasError('required')">Campo obrigatório!</mat-error>
@@ -17,9 +17,9 @@
 
       <mat-form-field>
         <mat-label>Contrato</mat-label>
-        <mat-select formControlName="contrato">
-          <mat-option *ngFor="let contrato of contratos" [value]="contratos">
-            {{contrato}}
+        <mat-select formControlName="contrato" (selectionChange)="onSelectionChangeContrato()">
+          <mat-option *ngFor="let contrato of listaContratos" [value]="contrato.idContrato">
+            {{contrato.numeroContrato}}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="form.get('prefeitura').hasError('required')">Campo obrigatório!</mat-error>

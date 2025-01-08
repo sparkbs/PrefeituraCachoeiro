@@ -8,6 +8,7 @@ import { CriarContratoResponse, DadosContratoResponse } from '../response/contra
 import { AtualizarContratoRequest } from '../request/ContratoRequest/atualizarContratoRequest';
 import { BuscarContratosRequest } from '../request/ContratoRequest/buscarContratosRequest';
 import { CriarContratoRequest } from '../request/ContratoRequest/criarContratoRequest';
+import { VinculoProjetoContratoRequest } from '../request/ContratoRequest/vincularProjetoContrato';
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,15 @@ export class ContratosService {
     return await firstValueFrom(
       this.http.delete<GenericResultResponse<string>>(
         `${Environments.APIUrl}/contratos/${id}`
+      )
+    );
+  }
+
+  public async AdicionarProjetoContrato(vinculoProjContrato: VinculoProjetoContratoRequest): Promise<GenericResultResponse<string>> {
+    return await firstValueFrom(
+      this.http.post<GenericResultResponse<string>>(
+        `${Environments.APIUrl}/contratos/adicionarprojetocontrato`,
+        vinculoProjContrato
       )
     );
   }

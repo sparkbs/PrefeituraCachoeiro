@@ -17,7 +17,7 @@ export class ProjetoService {
   public async BuscarProjeto(id: number) : Promise<ProjetoResponse>{
     return await firstValueFrom(
       this.http.get<ProjetoResponse>(
-        `${Environments.APIUrl}/projetos?id=${id}`
+        `${Environments.APIUrl}/projetos/${id}`
       )
     );
   }
@@ -25,7 +25,7 @@ export class ProjetoService {
   public async DeletarProjeto(id: number): Promise<GenericResultResponse<MensagemProjetoResponse>> {
     return await firstValueFrom(
       this.http.delete<GenericResultResponse<MensagemProjetoResponse>>(
-        `${Environments.APIUrl}/projetos?id=${id}`
+        `${Environments.APIUrl}/projetos/${id}`
       )
     );
   }
@@ -39,12 +39,12 @@ export class ProjetoService {
     );
   }
 
-  public async CriarProjeto(projetoRequest: CriarProjetoRequest): Promise<GenericResultResponse<RetornaProjetoIdResponse>> {
+  public async CriarProjeto(projetoRequest: CriarProjetoRequest): Promise<RetornaProjetoIdResponse> {
     const formData = new FormData();
     formData.append('Nome', projetoRequest.nome);
 
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<RetornaProjetoIdResponse>>(
+      this.http.post<RetornaProjetoIdResponse>(
         `${Environments.APIUrl}/projetos`,
         formData
       )

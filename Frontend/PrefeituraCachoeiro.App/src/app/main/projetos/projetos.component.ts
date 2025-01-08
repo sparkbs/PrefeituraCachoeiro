@@ -66,10 +66,24 @@ export class ProjetosComponent implements OnInit {
 
     await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
     .then((res) => {
-      this.listaProjetos = (res.data);
+      let projetoModel: ProjetoResponse[] = [];
+
+      res.data.forEach((res) => {
+        const projeto: ProjetoResponse = {
+          idProjeto: res.idProjeto,
+          nomeProjeto: res.nomeProjeto,
+          nomePrefeitura: res.contratos.length != 0 ? res.contratos[0].prefeitura.nome : '',
+          nomeContrato: res.contratos.length != 0 ? res.contratos[0].numeroContrato : '',
+          contratos: res.contratos
+        };
+
+        projetoModel.push(projeto);
+      });
+      this.listaProjetos = projetoModel;
       this.dataSource.data = this.listaProjetos;
     })
     .catch((erro) => {
+      console.error(erro);
       this._toastService.mensagemError('Erro ao buscar projetos!');
     });
   }
@@ -77,6 +91,7 @@ export class ProjetosComponent implements OnInit {
   deleteProject(id: number) {
     this._projetoControllerService.DeletarProjeto(id)
     .then((res) => {
+      this.getAllProjects();
       this._toastService.mensagemSuccess("Sucesso ao deletar projeto!");
     })
     .catch((erro) => {
