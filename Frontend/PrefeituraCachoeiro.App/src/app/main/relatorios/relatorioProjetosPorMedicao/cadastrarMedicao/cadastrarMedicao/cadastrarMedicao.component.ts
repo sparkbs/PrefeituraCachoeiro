@@ -45,8 +45,6 @@ export class CadastrarMedicaoComponent implements OnInit {
 
   async criarNovaMedicao(){
     let medicaoRequest = new InserirMedicao();
-    console.log(this.data);
-    console.log( this.data.medicoes.items);
     this.data.medicoes.items.forEach(x => {
       x.idContrato = this.data.medicoes.idContrato;
     });
@@ -62,8 +60,9 @@ export class CadastrarMedicaoComponent implements OnInit {
 
     await this.api.CriarMedicoes(medicaoRequest)
     .then((result) => {     
+      console.log(result);  // Verifique se result.data.idMedicoesProjeto está correto
       this._toastService.mensagemSuccess("Medição criada com sucesso.");
-      this.dialogRef.close(result.data.idMedicoesProjeto);
+      this.dialogRef.close(result.idMedicoesProjeto);
     })
     .catch(() =>
     {

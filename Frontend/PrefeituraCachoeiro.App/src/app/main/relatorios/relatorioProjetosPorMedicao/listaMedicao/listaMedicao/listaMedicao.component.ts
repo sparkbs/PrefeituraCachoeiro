@@ -27,7 +27,6 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
    }
 
   ngOnInit() {   
-    console.log(this.medicoes);
     this.medicoes.items.forEach(item =>{
       item.unidadeSalvaMedida = item.unidade;
       if(item?.itemsContrato != null){

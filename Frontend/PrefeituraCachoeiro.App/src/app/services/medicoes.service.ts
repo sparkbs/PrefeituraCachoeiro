@@ -15,7 +15,7 @@ export class MedicoesService {
   public async BuscarMedicoes(id: number) : Promise<MedicoesResponse>{
     return await firstValueFrom(
       this.http.get<MedicoesResponse>(
-        `${Environments.APIUrl}/medicoes?id=${id}`
+        `${Environments.APIUrl}/medicoes/${id}`
       )
     );
   }
@@ -29,9 +29,9 @@ export class MedicoesService {
     );
   }
 
-  public async CriarMedicoes(filter: InserirMedicao): Promise<GenericResultResponse<RetornoIdMedicao>> {
+  public async CriarMedicoes(filter: InserirMedicao): Promise<RetornoIdMedicao> {
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<RetornoIdMedicao>>(
+      this.http.post<RetornoIdMedicao>(
         `${Environments.APIUrl}medicoes/inserir`,
         filter
       )
