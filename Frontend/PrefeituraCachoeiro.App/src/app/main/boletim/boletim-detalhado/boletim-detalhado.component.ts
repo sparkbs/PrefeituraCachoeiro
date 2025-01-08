@@ -51,7 +51,6 @@ export class BoletimDetalhadoComponent implements OnInit {
           this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
           this.dataSource = dados.boletins || [];
           this.valorTotalMedicao = dados.valorTotalMedicao || 0;
-          console.log('Dados Carregados:', dados);
         }
         this.isLoading = false;
       },
