@@ -52,10 +52,13 @@ export class ProjetoService {
   }
 
   public async AtualizarProjeto(request: AtualizarProjetoRequest): Promise<GenericResultResponse<RetornaProjetoIdResponse>> {
+    const formData = new FormData();
+    formData.append('id', request.id.toString());
+    formData.append('nome', request.nome);
     return await firstValueFrom(
       this.http.put<GenericResultResponse<RetornaProjetoIdResponse>>(
         `${Environments.APIUrl}/projetos`,
-        request
+        formData
       )
     );
   }

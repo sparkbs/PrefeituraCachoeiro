@@ -8,6 +8,10 @@ import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ProjetoResponse, ProjetosResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { GenericResultResponse } from 'src/app/response/genericResultResponse';
 import { ToastService } from 'src/app/services/toast.service';
+import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
+import { PrefeituraService } from 'src/app/services/prefeitura.service';
+import { ContratosService } from 'src/app/services/contratos.service';
+import { VinculoProjetoContratoRequest } from 'src/app/request/ContratoRequest/vincularProjetoContrato';
 
 @Component({
   selector: 'app-projetos',
@@ -25,7 +29,9 @@ export class ProjetosComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     public _projetoControllerService: ProjetoService,
-    private _toastService: ToastService
+    private _toastService: ToastService,
+    public _prefeituraControllerService: PrefeituraService,
+    public _contratoControllerService: ContratosService,
   ){}
 
   ngOnInit(): void {
@@ -65,15 +71,19 @@ export class ProjetosComponent implements OnInit {
     };
 
     await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
-    .then((res) => {
+    .then(async (res) => {
       let projetoModel: ProjetoResponse[] = [];
+      let listaPrefeituras: PrefeituraResponse[] = await this.buscarPrefeituras();
 
       res.data.forEach((res) => {
+        let prefeitura = res.contratos.length == 0 ? null : 
+        listaPrefeituras.find(resPf => resPf.idPrefeitura == res.contratos[0].contratos.prefeituraId);
+
         const projeto: ProjetoResponse = {
           idProjeto: res.idProjeto,
           nomeProjeto: res.nomeProjeto,
-          nomePrefeitura: res.contratos.length != 0 ? res.contratos[0].prefeitura.nome : '',
-          nomeContrato: res.contratos.length != 0 ? res.contratos[0].numeroContrato : '',
+          nomePrefeitura: prefeitura ? prefeitura.nome : '',
+          nomeContrato: res.contratos.length != 0 ? res.contratos[0].contratos.numeroContrato : '',
           contratos: res.contratos
         };
 
@@ -88,14 +98,55 @@ export class ProjetosComponent implements OnInit {
     });
   }
 
-  deleteProject(id: number) {
-    this._projetoControllerService.DeletarProjeto(id)
-    .then((res) => {
-      this.getAllProjects();
-      this._toastService.mensagemSuccess("Sucesso ao deletar projeto!");
-    })
-    .catch((erro) => {
-      this._toastService.mensagemError('Erro ao deletar projeto!');
-    });
+  async buscarPrefeituras(): Promise<PrefeituraResponse[]> {
+      var prefeituraFilter : PrefeituraFilter = new PrefeituraFilter();
+      prefeituraFilter.nome = "";
+      prefeituraFilter.itemsPorPagina = 1000000;
+      prefeituraFilter.pagina = 1;
+
+      try {
+        const result = await this._prefeituraControllerService.BuscarTodasPrefeituras(prefeituraFilter);
+        return result.data;
+      } catch (error) {
+        console.error('Erro ao buscar prefeituras:', error);
+        return [];
+      }
+  }
+
+  async deleteProject(id: number) {
+    let projeto = this.listaProjetos.find(res => res.idProjeto == id);
+
+    if (projeto.contratos.length == 0) {
+      this._projetoControllerService.DeletarProjeto(id)
+      .then((res) => {
+        this.getAllProjects();
+        this._toastService.mensagemSuccess("Sucesso ao deletar projeto!");
+      })
+      .catch((erro) => {
+        this._toastService.mensagemError('Erro ao deletar projeto!');
+      });
+    }
+    else {
+      let vinculoProjetoContrato: VinculoProjetoContratoRequest = {
+        idProjeto: id,
+        idContrato: projeto.contratos[0].idContrato
+      };
+      await this._contratoControllerService.removerProjetoContrato(vinculoProjetoContrato)
+      .then((res) => {
+        this._projetoControllerService.DeletarProjeto(id)
+        .then((res) => {
+          this.getAllProjects();
+          this._toastService.mensagemSuccess("Sucesso ao deletar projeto!");
+        })
+        .catch((erro) => {
+          this._toastService.mensagemError('Erro ao deletar projeto!');
+        });
+      })
+      .catch((res) => {
+        this._toastService.mensagemError('Erro ao deletar vinculo projeto!');
+        console.error(res);
+      });
+    }
+    
   }
 }

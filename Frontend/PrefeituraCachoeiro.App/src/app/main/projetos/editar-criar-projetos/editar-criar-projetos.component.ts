@@ -5,8 +5,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
 import { VinculoProjetoContratoRequest } from 'src/app/request/ContratoRequest/vincularProjetoContrato';
-import { CriarProjetoRequest, ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
-import { ContratosResponse, PrefeituraResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { AtualizarProjetoRequest, CriarProjetoRequest, ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
+import { ContratoModel, ContratosResponse, PrefeituraResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { PrefeituraFilter } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
@@ -56,7 +56,7 @@ export class EditarCriarProjetosComponent implements OnInit {
     await this._projetoControllerService.BuscarProjeto(id)
     .then(async (res) => {
       this.projetoEdit = res;
-      await this.buscarListaContratos(this.projetoEdit.contratos[0].prefeitura.idPrefeitura);
+      await this.buscarListaContratos(this.projetoEdit.contratos[0].contratos.prefeituraId);
       this.completeForm();
     })
     .catch((erro) => {
@@ -68,8 +68,8 @@ export class EditarCriarProjetosComponent implements OnInit {
     this.form.get('prefeitura').disable();
     this.form.get('nome').enable();
     this.form.get('nome').setValue(this.projetoEdit.nomeProjeto);
-    this.form.get('contrato').setValue(this.projetoEdit.contratos[0].idContrato);
-    this.form.get('prefeitura').setValue(this.projetoEdit.contratos[0].prefeitura.idPrefeitura);
+    this.form.get('contrato').setValue(this.projetoEdit.contratos[0].contratos.idContrato);
+    this.form.get('prefeitura').setValue(this.projetoEdit.contratos[0].contratos.prefeituraId);
   }
 
   saveForm() {
@@ -77,26 +77,42 @@ export class EditarCriarProjetosComponent implements OnInit {
       nome: this.form.get('nome').value
     };
 
-    this._projetoControllerService.CriarProjeto(projetoRequest)
-    .then((res) => {
-      const vinculoProjContrato: VinculoProjetoContratoRequest = {
-        idContrato: this.form.get('contrato').value,
-        idProjeto: res.idProjeto
-      };
-
-      this._contratoControllerService.AdicionarProjetoContrato(vinculoProjContrato)
+    if (this.data.edicao && this.data.id) {
+      let projetoUpdate: AtualizarProjetoRequest = {
+        id: this.data.id,
+        nome: this.form.get('nome').value
+      }
+      this._projetoControllerService.AtualizarProjeto(projetoUpdate)
       .then((res) => {
-        this._toastService.mensagemSuccess('Projeto salvo com sucesso!');
+        this._toastService.mensagemSuccess('Projeto atualizado com sucesso!');
         this.dialogRef.close(true);
       })
-      .catch((erro) => {
-        this._projetoControllerService.DeletarProjeto(res.idProjeto);
-        this._toastService.mensagemError('Erro ao vincular o projeto no contrato');
+      .catch((res) => {
+        this._toastService.mensagemError('Erro ao atualizar o projeto!');
       });
-    })
-    .catch((erro) => {
-      this._toastService.mensagemError('Erro ao salvar o projeto');
-    })
+    }
+    else {
+      this._projetoControllerService.CriarProjeto(projetoRequest)
+      .then((res) => {
+        const vinculoProjContrato: VinculoProjetoContratoRequest = {
+          idContrato: this.form.get('contrato').value,
+          idProjeto: res.idProjeto
+        };
+
+        this._contratoControllerService.AdicionarProjetoContrato(vinculoProjContrato)
+        .then((res) => {
+          this._toastService.mensagemSuccess('Projeto salvo com sucesso!');
+          this.dialogRef.close(true);
+        })
+        .catch((erro) => {
+          this._projetoControllerService.DeletarProjeto(res.idProjeto);
+          this._toastService.mensagemError('Erro ao vincular o projeto no contrato');
+        });
+      })
+      .catch((erro) => {
+        this._toastService.mensagemError('Erro ao salvar o projeto');
+      })
+    }
   }
 
   async buscarListaPrefeituras(){

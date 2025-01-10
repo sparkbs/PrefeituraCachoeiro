@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
-import { ContratosResponse, TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
+import { ContratoModel, ContratosResponse, TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
 import { CriarContratoResponse, DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
 import { AtualizarContratoRequest } from '../request/ContratoRequest/atualizarContratoRequest';
 import { BuscarContratosRequest } from '../request/ContratoRequest/buscarContratosRequest';
@@ -19,6 +19,15 @@ export class ContratosService {
   public async BuscarTodosContratos(request: BuscarContratosRequest): Promise<GenericResultResponse<ContratosResponse[]>> {
     return await firstValueFrom(
       this.http.post<GenericResultResponse<ContratosResponse[]>>(
+        `${Environments.APIUrl}/contratos/buscartodos`,
+        request
+      )
+    );
+  }
+  // Novo recebimento de contrato
+  public async BuscarTodosContratosNew(request: BuscarContratosRequest): Promise<GenericResultResponse<ContratoModel[]>> {
+    return await firstValueFrom(
+      this.http.post<GenericResultResponse<ContratoModel[]>>(
         `${Environments.APIUrl}/contratos/buscartodos`,
         request
       )
@@ -74,6 +83,17 @@ export class ContratosService {
       this.http.post<GenericResultResponse<string>>(
         `${Environments.APIUrl}/contratos/adicionarprojetocontrato`,
         vinculoProjContrato
+      )
+    );
+  }
+
+  public async removerProjetoContrato(vinculoProjContrato: VinculoProjetoContratoRequest): Promise<GenericResultResponse<string>> {
+    return await firstValueFrom(
+      this.http.delete<GenericResultResponse<string>>(
+        `${Environments.APIUrl}/contratos/removerprojetocontrato`,
+        {
+          body: vinculoProjContrato,
+        }
       )
     );
   }

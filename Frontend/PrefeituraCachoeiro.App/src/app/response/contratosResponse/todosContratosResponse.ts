@@ -85,4 +85,11 @@ export interface ContratosResponse {
     nome: string;
     logo: string;
   }
+
+  export class ContratoModel {
+    contratos: ContratosResponse;
+    idContrato: number;
+    idContratoProjeto: number;
+    idProjeto: number;
+  }
   
