@@ -8,6 +8,7 @@ export class MedicoesResponse {
     idStatusMedicao: number;
     statusMedicao: StatusMedicao;
     items: ItemMedicao[];
+    idProjeto: number;
   }
   
   export class Contrato {

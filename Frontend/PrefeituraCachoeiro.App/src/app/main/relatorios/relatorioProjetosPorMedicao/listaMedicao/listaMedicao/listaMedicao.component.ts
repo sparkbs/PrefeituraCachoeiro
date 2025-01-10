@@ -141,4 +141,14 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
       this._toastService.mensagemError("Verifique os itens medidos para garantir que não haja quantidades restantes menores que 0.");
     }
   }
+
+  async BuscarProjeto(id: number){
+    var nome = "";
+    await this.api.BuscarProjeto(id)
+    .then((result) => {
+      console.log(result);
+      nome = result.nomeProjeto
+    });
+    return nome;
+  }
 }

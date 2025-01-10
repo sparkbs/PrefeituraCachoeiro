@@ -20,6 +20,7 @@ export class CadastrarMedicaoComponent implements OnInit {
   nomeMedicao = 0;
   listaProjetos: ProjetoResponse[] = [];
   disabledNomeMedicao = false;
+  isLoading = false;
 
   constructor(private readonly api: MedicoesService,
     @Inject(MAT_DIALOG_DATA) public data: {medicoes: Contrato, numeroMedicao?: 
@@ -36,6 +37,7 @@ export class CadastrarMedicaoComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.isLoading = true;
     await this.getAllProjects()
   }
 
@@ -44,6 +46,8 @@ export class CadastrarMedicaoComponent implements OnInit {
   }
 
   async criarNovaMedicao(){
+    this.isLoading = true;
+
     let medicaoRequest = new InserirMedicao();
     this.data.medicoes.items.forEach(x => {
       x.idContrato = this.data.medicoes.idContrato;
@@ -67,6 +71,9 @@ export class CadastrarMedicaoComponent implements OnInit {
     .catch(() =>
     {
       //this._toastService.mensagemError("Erro ao criar uma medição.");
+    })
+    .finally(() => {
+      this.isLoading = false;
     });
   }
 
@@ -86,6 +93,9 @@ export class CadastrarMedicaoComponent implements OnInit {
 
     } catch (error) {
       console.error('Erro ao buscar projetos:', error);
+    }
+    finally{
+      this.isLoading = false;
     }
   }
 }

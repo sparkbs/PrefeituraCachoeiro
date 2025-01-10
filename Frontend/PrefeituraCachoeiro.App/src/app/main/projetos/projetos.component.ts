@@ -35,7 +35,7 @@ export class ProjetosComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-    this.getAllProjects();
+    this.getAllProject();
   }
 
   ngAfterViewInit() {
@@ -58,9 +58,46 @@ export class ProjetosComponent implements OnInit {
     }).afterClosed().subscribe(
       (res) => {
         if (res) {
-          this.getAllProjects();
+          this.getAllProject();
         }
     });
+  }
+
+  async getAllProject() {
+    const projetoRequest: ProjetoRequest = {
+      nome: '',
+      itemsPorPagina: 1000000,
+      pagina: 1
+    };
+
+    try {
+      await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
+      .then((res) => {
+        let projetoModel: ProjetoResponse[] = [];
+
+        res.data.forEach((res) => {
+          const projeto: ProjetoResponse = {
+            idProjeto: res.idProjeto,
+            nomeProjeto: res.nomeProjeto,
+            //nomePrefeitura: res.contratos.length != 0 ? res.contratos[0].prefeitura.nome : '',
+            //nomeContrato: res.contratos.length != 0 ? res.contratos[0].numeroContrato : '',
+            contratos: res.contratos
+          };
+  
+          projetoModel.push(projeto);
+        });
+        this.listaProjetos = projetoModel;
+        this.dataSource.data = this.listaProjetos;
+      })
+      
+    .catch((erro) => {
+      console.error(erro);
+      this._toastService.mensagemError('Erro ao buscar projetos!');
+    });;
+
+    } catch (error) {
+      console.error('Erro ao buscar projetos:', error);
+    }
   }
 
   public async getAllProjects() {

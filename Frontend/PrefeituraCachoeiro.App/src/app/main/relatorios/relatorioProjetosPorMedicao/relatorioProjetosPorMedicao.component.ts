@@ -12,6 +12,7 @@ import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest
 import { Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesModel, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ResumoMedicaoComponent } from './resumoMedicao/resumoMedicao/resumoMedicao.component';
 import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-relatorioProjetosPorMedicao',
@@ -33,16 +34,19 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   todasMedicaoProjetoResponse = new TodasMedicaoProjetoResponse();
   selectedPrefeitura: number | null = null; // Valor selecionado
   medicaoProjetos : MedicoesModel[] = [];
+  isLoading = false;
 
   constructor(private cdr: ChangeDetectorRef, 
     private readonly apiPrefeitura: PrefeituraService,
     private readonly api: ContratosService,
     private readonly apiMedicoes: MedicoesService,
-  private globalService: GlobalServicesService) {
+    private globalService: GlobalServicesService,
+    private _toastService: ToastService) {
      }
 
   async ngOnInit() {
     //this.todasMedicaoProjetoResponse.data = this.generateMockMedicoes();
+    this.isLoading = true;
     await this.buscarListaPrefeituras();
   }
 
@@ -56,7 +60,12 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     .then((result) => {      
       this.todasMedicaoProjetoResponse = result;
       this.popularMedicao(result);
-    });
+    }).catch(() => {
+      this._toastService.mensagemError("Erro ao buscar medições!");
+    })
+    .finally(() =>{
+      this.isLoading = false;
+    });;
   }
 
   popularMedicao(result: TodasMedicaoProjetoResponse){
@@ -83,11 +92,18 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     await this.apiPrefeitura.BuscarTodasPrefeituras(prefeituraFilter)
     .then((result) => {
       this.listaPrefeitura = result.data;
+    })
+    .catch(() => {
+      this._toastService.mensagemError("Erro ao buscar prefeitura!");
+    })
+    .finally(() =>{
+      this.isLoading = false;
     });
   }
 
   async onSelectionChange(prefeituraId: number){
     this.exibirContrato = true;
+    this.isLoading = true;
     await this.buscarListaContratos(prefeituraId);
   }
 
@@ -99,10 +115,17 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     await this.api.BuscarTodosContratos(contratosFilter)
     .then((result) => {
       this.listaContratos = result.data.filter(x => x.prefeituraId == prefeituraId);
-    });
+    })
+    .catch(() => {
+      this._toastService.mensagemError("Erro ao buscar contratos!");
+    })
+    .finally(() =>{
+      this.isLoading = false;
+    });;
   }
 
   async buscar(){
+    this.isLoading = true;
     await this.buscarMedicoes();
     this.exibir = true;
     this.globalService.resetItems();

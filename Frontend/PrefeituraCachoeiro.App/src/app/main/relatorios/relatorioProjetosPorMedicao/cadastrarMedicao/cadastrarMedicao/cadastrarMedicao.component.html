@@ -20,3 +20,5 @@
   <button mat-button style="border: solid 1px; border-color: black;"  (click)="voltarTelaCriarMedicaoOuProjeto()">Voltar</button>
   <button mat-button style="border: solid 1px; border-color: black;"  (click)="criarNovaMedicao()">Salvar</button>
 </mat-dialog-actions>
+
+<app-loading *ngIf="this.isLoading"></app-loading>

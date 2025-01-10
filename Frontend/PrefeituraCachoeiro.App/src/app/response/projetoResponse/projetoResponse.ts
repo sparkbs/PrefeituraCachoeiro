@@ -3,8 +3,8 @@ import { ContratoModel, ContratosResponse } from "../contratosResponse/todosCont
 export class ProjetoResponse{
     idProjeto: number = 0;
     nomeProjeto: string = '';
-    nomeContrato: string;
-    nomePrefeitura: string;
+    nomeContrato?: string;
+    nomePrefeitura?: string;
     contratos: ContratoModel[];
     acoes?: string;
 }

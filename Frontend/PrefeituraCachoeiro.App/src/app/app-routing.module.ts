@@ -15,6 +15,7 @@ import { BoletimComponent } from './main/boletim/boletim.component';
 import { BoletimMedicaoComponent } from './main/boletim/boletim-medicao/boletim-medicao.component';
 import { BoletimProjetoComponent } from './main/boletim/boletim-projeto/boletim-projeto.component';
 import { BoletimDetalhadoComponent } from './main/boletim/boletim-detalhado/boletim-detalhado.component';
+import { AprovacaoBoletimComponent } from './main/aprovacaoBoletim/aprovacaoBoletim.component';
 
 const routes: Routes = [
 
@@ -35,9 +36,8 @@ const routes: Routes = [
       { path: 'boletim', component: BoletimComponent},
       { path: 'boletimMedicao', component: BoletimMedicaoComponent },
       { path: 'boletimPorProjeto', component: BoletimProjetoComponent },
-      { path: 'boletimDetalhado', component: BoletimDetalhadoComponent }
-
-
+      { path: 'boletimDetalhado', component: BoletimDetalhadoComponent },
+      { path: 'aprovacaoBoletim', component: AprovacaoBoletimComponent }
     ]
   }
 ];
