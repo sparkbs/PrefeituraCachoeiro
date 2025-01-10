@@ -13,14 +13,6 @@
     align-items: center; /* Alinha verticalmente os itens no centro */
   }
   
-  .texto {
-    margin: 0;                  /* Remove qualquer margem */
-    padding: 0;                 /* Remove qualquer padding */
-    margin-left: 46%;
-    //text-align: center;         /* Centraliza o texto */
-    flex: 1;                    /* Garante que o h3 ocupe o espaço disponível */
-  }
-
   .card-content {
     width: 90%;
     height: 90%;
@@ -72,7 +64,12 @@
     justify-content: space-between; /* Coloca o conteúdo nas extremidades */
     align-items: center;        /* Centraliza verticalmente */
   }
-
+  
+  .texto {
+    flex-grow: 1; /* Faz com que o texto ocupe todo o espaço disponível */
+    text-align: center; /* Alinha o texto ao centro */
+    margin: 0; /* Remove a margem para garantir que o texto fique centralizado */
+  }
   .mat-icon{
     margin-left: 0px;
     margin-right: 0px;
