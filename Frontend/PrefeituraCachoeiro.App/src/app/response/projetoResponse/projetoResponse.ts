@@ -3,8 +3,8 @@ import { ContratosResponse } from "../contratosResponse/todosContratosResponse";
 export class ProjetoResponse{
     idProjeto: number = 0;
     nomeProjeto: string = '';
-    nomeContrato: string;
-    nomePrefeitura: string;
+    nomeContrato?: string;
+    nomePrefeitura?: string;
     contratos: ContratosResponse[];
     acoes?: string;
 }
