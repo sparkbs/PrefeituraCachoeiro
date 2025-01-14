@@ -14,7 +14,7 @@ export class MedicoesResponse {
   export class Contrato {
     idContrato: number;
     idProjeto: number;
-    projetos: Projeto;
+    projetos: Projeto[];
     dataContrato: string;
     numeroContrato: string;
     valorTotalPrevisto: number;

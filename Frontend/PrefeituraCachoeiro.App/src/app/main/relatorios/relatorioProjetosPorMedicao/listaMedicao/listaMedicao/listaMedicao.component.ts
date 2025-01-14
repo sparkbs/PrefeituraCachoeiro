@@ -8,6 +8,7 @@ import { MedicoesService } from 'src/app/services/medicoes.service';
 import { ProjetoService } from 'src/app/services/projeto.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { AprovarMedicaoComponent } from '../../aprovarMedicao/aprovarMedicao/aprovarMedicao.component';
+import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
 
 @Component({
   selector: 'app-listaMedicao',
@@ -17,7 +18,8 @@ import { AprovarMedicaoComponent } from '../../aprovarMedicao/aprovarMedicao/apr
 export class ListaMedicaoComponent implements OnInit, OnChanges {
   readonly dialog = inject(MatDialog);
   @Input() medicoes: MedicoesResponse = new MedicoesResponse();
-  
+  StatusEnum = StatusMedicaoEnum;  // Expondo o enum no componente
+
   dataSource: MatTableDataSource<ItemMedicao>;
   displayedColumns: string[] = ['item', 'item/qtd', 'valor(s)cBdi' , 'valorTotal/bdi','qtdRestante', 'qtdMedicaoItem', 'valorTotalMedidaBdi', 'valorSaldoRestante'];
 
@@ -33,6 +35,10 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
         this.globalService.addItem(item.itemsContrato.item.descricao, item.itemsContrato.unidade, item.idItemContrato, item.unidade)
       }
     })
+  }
+
+  buscarProjetos(idProjeto: number){
+    return this.medicoes.contratos.projetos.find(x => x.idProjeto == idProjeto).nomeProjeto;
   }
 
   ngOnChanges(changes: SimpleChanges) {

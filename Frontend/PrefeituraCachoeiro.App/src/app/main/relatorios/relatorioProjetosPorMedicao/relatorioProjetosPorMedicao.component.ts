@@ -143,7 +143,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   openDialog() {
     if(this.todasMedicaoProjetoResponse?.data == undefined){
       var contrato = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
-      const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: contrato}});
+      const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: contrato, numeroMedicao :1}});
 
       dialogRef.afterClosed().subscribe(async result => {
         if(result){
@@ -159,7 +159,16 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       });
     }
     else{
-      const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos}});
+      console.log(this.todasMedicaoProjetoResponse)
+      var numeroMedicao = this.todasMedicaoProjetoResponse.data.sort((a, b) => {
+        return b.numeroMedicao - a.numeroMedicao;  // Ordem decrescente
+      });
+      
+      const maiorNumero = numeroMedicao[0].numeroMedicao + 1;
+
+      console.log(maiorNumero);
+
+      const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos , numeroMedicao :maiorNumero }});
 
       dialogRef.afterClosed().subscribe(async result => {
         if(result){
@@ -168,7 +177,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
             let novoMedicao = new MedicoesModel();
             novoMedicao.numeroMedicao = response.numeroMedicao;
             novoMedicao.data.push(response);
-    
+            this.todasMedicaoProjetoResponse.data.push(response);
             this.medicaoProjetos.push(novoMedicao);   
           });          
         }
