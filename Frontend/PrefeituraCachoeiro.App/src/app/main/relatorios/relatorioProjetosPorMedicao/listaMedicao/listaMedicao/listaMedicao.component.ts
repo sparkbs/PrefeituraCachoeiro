@@ -100,6 +100,10 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
     return 'R$ ' + valorFormatado;
   }
 
+  nomeProjeto(id:number){
+    return this.medicoes.contratos.projetos.find(x => x.idProjeto == id ).nomeProjeto;
+  }
+
   somarValorTotal(){
     let valorSomado = 0;
     this.medicoes.items.forEach( x => {

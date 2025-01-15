@@ -55,7 +55,7 @@ export class CadastrarMedicaoComponent implements OnInit {
     
     medicaoRequest.dataMedicao = new Date();
     medicaoRequest.idContrato = this.data.medicoes.idContrato;
-    medicaoRequest.idProjeto = this.projetoSelecionado;
+    medicaoRequest.IdProjeto = this.projetoSelecionado;
     medicaoRequest.items = this.data.medicoes.items.map(item => ({
       idItemContrato: item.idItemContrato,
       unidade: 0

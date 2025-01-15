@@ -48,6 +48,16 @@
                 <td mat-cell *matCellDef="let row"> R$ {{ row.valor}} </td>
               </ng-container>
 
+              <ng-container matColumnDef="valorTotalMedido">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor Medido</th>
+                <td mat-cell *matCellDef="let row"> R$ {{ row.valorTotalMedido}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="valorSaldoRestante">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor Saldo</th>
+                <td mat-cell *matCellDef="let row"> R$ {{ (row.valor - row.valorTotalMedido).toFixed(2)}} </td>
+              </ng-container>
+
               <ng-container matColumnDef="tipoContratacao">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo contrato </th>
                 <td mat-cell *matCellDef="let row"> {{row.tipoContratacao == 1 ? "Adesão":"Licitação"}} </td>

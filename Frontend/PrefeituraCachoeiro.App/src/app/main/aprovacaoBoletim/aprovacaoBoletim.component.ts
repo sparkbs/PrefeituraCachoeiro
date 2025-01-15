@@ -3,7 +3,7 @@ import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarCo
 import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
-import { MedicoesModel, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { MedicoesModel, Projeto, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { MedicoesService } from 'src/app/services/medicoes.service';
@@ -44,6 +44,10 @@ export class AprovacaoBoletimComponent implements OnInit {
     })
     .finally(() =>{
     });;
+  }
+
+  nomeProjeto(id:number, projetos: Projeto[]){
+    return projetos.find(x => x.idProjeto == id ).nomeProjeto;
   }
 
   popularMedicao(result: TodasMedicaoProjetoResponse){

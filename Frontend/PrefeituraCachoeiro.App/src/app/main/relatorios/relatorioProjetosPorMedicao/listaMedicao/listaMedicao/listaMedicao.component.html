@@ -1,7 +1,7 @@
 <div style="margin-bottom: 35px;">
   <div class="container rounded-shadow-div" style="margin-top: 10px;">
     <!-- <h3 class="texto"> Pegar nome projeto</h3> -->
-    <h3 class="texto"> {{medicoes?.contratos?.projetos[0].nomeProjeto }}</h3>
+    <h3 class="texto"> {{ medicoes?.idProjeto != null ? nomeProjeto(medicoes?.idProjeto) : ''}}</h3>
 
     <!--<span matTooltip="Aprovar Medição" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="aprovarMedicao(medicoes.idMedicoesProjeto)">
       <mat-icon>done_outline</mat-icon>
