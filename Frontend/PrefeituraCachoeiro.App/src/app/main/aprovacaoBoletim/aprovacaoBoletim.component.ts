@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
-import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
+import { DadosMedicoesRequest, MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { MedicoesModel, Projeto, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
@@ -8,6 +8,9 @@ import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoRespons
 import { ContratosService } from 'src/app/services/contratos.service';
 import { MedicoesService } from 'src/app/services/medicoes.service';
 import { ProjetoService } from 'src/app/services/projeto.service';
+import { AprovarMedicaoComponent } from './aprovarMedicao/aprovarMedicao.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-aprovacaoBoletim',
@@ -15,15 +18,17 @@ import { ProjetoService } from 'src/app/services/projeto.service';
   styleUrls: ['./aprovacaoBoletim.component.scss']
 })
 export class AprovacaoBoletimComponent implements OnInit {
+  readonly dialog = inject(MatDialog);
+  isLoading = false;
   contratoSelecionado = 0;
   listaContratos: ContratosResponse[] = [];
   listaProjetos: ProjetoResponse[] = [];
   medicaoProjetos : MedicoesModel[] = [];
   showProjetos: boolean = false;
-  constructor(private readonly api: ContratosService,public _projetoControllerService: ProjetoService,private readonly apiMedicoes: MedicoesService) { }
+  constructor(private readonly api: ContratosService,public _projetoControllerService: ProjetoService,private readonly apiMedicoes: MedicoesService,private _toastService: ToastService) { }
 
   async ngOnInit() {
-    await this.buscarListaContratos(1);
+    await this.buscarListaContratos(21);
   }
 
   async buscar(contratoId: number){
@@ -46,8 +51,31 @@ export class AprovacaoBoletimComponent implements OnInit {
     });;
   }
 
+  async reprovarMedicao(idMedicao: number){
+    let request = new DadosMedicoesRequest()
+    request.DataRegistro = new Date().toISOString().split('T')[0]; 
+    request.Resumo = "";
+    request.IdMedicoesProjeto = idMedicao;
+    await this.apiMedicoes.ReprovarMedicoes(request)
+    .then((result) => {     
+      if(result.isSucesso){
+        this._toastService.mensagemSuccess("Sucesso ao reprovar medição.");
+      }
+      else{
+        this._toastService.mensagemError(result.mensagemErro);
+      }
+    })
+    .catch((ex) => {
+      this._toastService.mensagemError(ex?.error?.message);
+    });
+  }
+  
+  aprovarMedicao(idMedicao: number){
+    this.dialog.open(AprovarMedicaoComponent,{data:{idMedicoesProj: idMedicao}});
+  }
+
   nomeProjeto(id:number, projetos: Projeto[]){
-    return projetos.find(x => x.idProjeto == id ).nomeProjeto;
+    return id == null ? "": projetos.find(x => x.idProjeto == id ).nomeProjeto;
   }
 
   popularMedicao(result: TodasMedicaoProjetoResponse){

@@ -23,16 +23,16 @@ export class InserirMedicao {
   }
 
 export class AprovarMedicoesRequest{
-    arquivos: File[];
-    idMedicoesProjeto: number;
-    dataRegistro: string;
-    resumo: string;
+  Arquivos: File[] = [];
+  IdMedicoesProjeto: number;
+  DataRegistro: string;
+  Resumo: string;
 }
 
 export class DadosMedicoesRequest{
-    idMedicoesProjeto: number;
-    dataRegistro: string;
-    resumo: string;
+    IdMedicoesProjeto: number;
+    DataRegistro: string;
+    Resumo: string;
 }
 
 

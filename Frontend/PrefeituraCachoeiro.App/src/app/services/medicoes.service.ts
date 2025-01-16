@@ -46,17 +46,22 @@ export class MedicoesService {
     
     return await firstValueFrom(
       this.http.post<RetornoReprovacaoAprovacaoResponse>(
-        `${Environments.APIUrl}/medicoes/aprovar`,
+        `${Environments.APIUrl}medicoes/aprovar`,
         formData
       )
     );
   }
 
-  public async ReprovarMedicoes(filter: DadosMedicoesRequest): Promise<GenericResultResponse<RetornoReprovacaoAprovacaoResponse>> {
+  public async ReprovarMedicoes(filter: DadosMedicoesRequest): Promise<RetornoReprovacaoAprovacaoResponse> {
+    const formData = new FormData();
+    Object.keys(filter).forEach(key => {
+      formData.append(key, filter[key]);
+    });
+
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<RetornoReprovacaoAprovacaoResponse>>(
+      this.http.post<RetornoReprovacaoAprovacaoResponse>(
         `${Environments.APIUrl}medicoes/reprovar`,
-        filter
+        formData
       )
     );
   }

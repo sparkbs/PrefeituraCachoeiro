@@ -13,9 +13,9 @@ import { ToastService } from 'src/app/services/toast.service';
 export class AprovarMedicaoComponent implements OnInit {
   listaDocumentoContrato: ListaDocumentosContrato[] = [];
   @ViewChild('documentoInput') documentoInput: any;
-  aprovarMedicoes: AprovarMedicoesRequest;
+  aprovarMedicoes: AprovarMedicoesRequest = new AprovarMedicoesRequest();
 
-  constructor(@Inject(MAT_DIALOG_DATA) public idMedicoesProj: number, 
+  constructor(@Inject(MAT_DIALOG_DATA) public IdMedicoesProj: any, 
   private _toastService: ToastService, 
   private readonly api: MedicoesService,
   private dialogRef: MatDialogRef<AprovarMedicaoComponent>,
@@ -36,9 +36,10 @@ export class AprovarMedicaoComponent implements OnInit {
   }
 
     async criarAprovacao(){
-      this.aprovarMedicoes.idMedicoesProjeto = this.idMedicoesProj;
-      this.listaDocumentoContrato.forEach(x => this.aprovarMedicoes.arquivos.push(x.file));
+      this.aprovarMedicoes.IdMedicoesProjeto = this.IdMedicoesProj.idMedicoesProj;
+      this.listaDocumentoContrato.forEach(x => this.aprovarMedicoes.Arquivos.push(x.file));
        
+      console.log(this.aprovarMedicoes)
       await this.api.AprovarMedicoes(this.aprovarMedicoes)
       .then((result) => {     
         if(result.isSucesso){

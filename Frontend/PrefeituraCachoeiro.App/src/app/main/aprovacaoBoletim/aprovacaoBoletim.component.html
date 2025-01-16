@@ -28,13 +28,13 @@
       
       <ul>
         <li *ngFor="let projeto of medicaoProjeto.data">
-          <span>{{ projeto.contratos.projetos[0].nomeProjeto }}</span>
-<!--          <span>{{ nomeProjeto(projeto.idProjeto,projeto.contratos.projetos) }}</span>-->
+          <!--<span>{{ projeto.contratos.projetos[0].nomeProjeto }}</span>-->
+          <span>{{ nomeProjeto(projeto?.idProjeto,projeto?.contratos?.projetos) }}</span>
 
-          <span matTooltip="Aprovar Medição" style="cursor: pointer; margin-left: 10px;">
+          <span matTooltip="Aprovar Medição" style="cursor: pointer; margin-left: 10px;" (click)="aprovarMedicao(projeto.idMedicoesProjeto)">
             <mat-icon style="font-size: 15px;height: auto; width: auto;">done_outline</mat-icon>
           </span>
-          <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;">
+          <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;" (click)="reprovarMedicao(projeto.idMedicoesProjeto)">
             <mat-icon style="font-size: 15px;height: auto; width: auto;">highlight_off</mat-icon>
           </span>
           <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;">

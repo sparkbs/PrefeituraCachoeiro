@@ -159,14 +159,11 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       });
     }
     else{
-      console.log(this.todasMedicaoProjetoResponse)
       var numeroMedicao = this.todasMedicaoProjetoResponse.data.sort((a, b) => {
         return b.numeroMedicao - a.numeroMedicao;  // Ordem decrescente
       });
       
       const maiorNumero = numeroMedicao[0].numeroMedicao + 1;
-
-      console.log(maiorNumero);
 
       const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos , numeroMedicao :maiorNumero }});
 
@@ -186,7 +183,6 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   }
 
   openDialogAssociate(numeroMedicao: number) {
-    console.log(this.todasMedicaoProjetoResponse);
     //let contrato = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
     let medicoes = new TodasMedicaoProjetoResponse();
     medicoes.data = [{

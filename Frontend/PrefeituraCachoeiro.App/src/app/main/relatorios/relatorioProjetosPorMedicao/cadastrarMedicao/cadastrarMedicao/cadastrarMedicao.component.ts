@@ -64,7 +64,6 @@ export class CadastrarMedicaoComponent implements OnInit {
 
     await this.api.CriarMedicoes(medicaoRequest)
     .then((result) => {     
-      console.log(result);  // Verifique se result.data.idMedicoesProjeto está correto
       this._toastService.mensagemSuccess("Medição criada com sucesso.");
       this.dialogRef.close(result.idMedicoesProjeto);
     })

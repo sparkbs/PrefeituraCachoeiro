@@ -7,7 +7,7 @@ import { Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesResponse, O
 import { MedicoesService } from 'src/app/services/medicoes.service';
 import { ProjetoService } from 'src/app/services/projeto.service';
 import { ToastService } from 'src/app/services/toast.service';
-import { AprovarMedicaoComponent } from '../../aprovarMedicao/aprovarMedicao/aprovarMedicao.component';
+import { AprovarMedicaoComponent } from '../../../../aprovacaoBoletim/aprovarMedicao/aprovarMedicao.component';
 import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
 
 @Component({
@@ -19,6 +19,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
   readonly dialog = inject(MatDialog);
   @Input() medicoes: MedicoesResponse = new MedicoesResponse();
   StatusEnum = StatusMedicaoEnum;  // Expondo o enum no componente
+  isLoading = false;
 
   dataSource: MatTableDataSource<ItemMedicao>;
   displayedColumns: string[] = ['item', 'item/qtd', 'valor(s)cBdi' , 'valorTotal/bdi','qtdRestante', 'qtdMedicaoItem', 'valorTotalMedidaBdi', 'valorSaldoRestante'];
@@ -78,11 +79,15 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
 
   async reprovarMedicao(idMedicao: number){
     let request = new DadosMedicoesRequest()
-    request.dataRegistro = new Date().toString();
-    request.resumo = "";
-    request.idMedicoesProjeto = idMedicao;
+    request.DataRegistro = new Date().toString();
+    request.Resumo = "";
+    request.IdMedicoesProjeto = idMedicao;
     await this.apiMedicao.ReprovarMedicoes(request)
     .then((result) => {     
+      this._toastService.mensagemSuccess("Medição reprovada com sucesso.");
+    })
+    .catch(() => {
+      this._toastService.mensagemSuccess("Erro ao reprovar medição.");
     });
   }
 
@@ -127,6 +132,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
 
   async salvar(){
     //this.quantidadeMedida = 1;    
+    this.isLoading = true;
     let itemInvalido = this.medicoes.items.some(x => x.itemInvalido)
     if(!itemInvalido){
       let alterarMedicaoRequest = new AlterarMedicaoProjetoRequest();
@@ -143,6 +149,9 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
   
       await this.apiMedicao.AlterarMedicoes(alterarMedicaoRequest)
       .then((result) => {     
+      })
+      .finally(()=>{
+        this.isLoading = false;
       });
   
       this.alterarMedicaoProjeto = false;
@@ -156,7 +165,6 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
     var nome = "";
     await this.api.BuscarProjeto(id)
     .then((result) => {
-      console.log(result);
       nome = result.nomeProjeto
     });
     return nome;
