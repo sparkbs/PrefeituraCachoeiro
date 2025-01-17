@@ -102,7 +102,7 @@ export class BoletimProjetoComponent implements OnInit {
 
       if (this.listaMedicoes.length == 0) {
         this.form.get('medicaoId').disable();
-        this._toastService.messageWarning('Lista de medições vazia!');
+        this._toastService.mensagemError('Lista de medições vazia!');
       }
     })
     .catch((erro) => {
@@ -170,7 +170,7 @@ export class BoletimProjetoComponent implements OnInit {
         this.valorTotalMedicao = dados.valorTotalMedicao || 0;
       }
       else {
-        this._toastService.messageWarning('Sem medição para apresentar!');
+        this._toastService.mensagemError('Sem medição para apresentar!');
       }
     })
     .catch((erro) => {
