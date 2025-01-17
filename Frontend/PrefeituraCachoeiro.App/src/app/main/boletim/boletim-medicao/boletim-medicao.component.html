@@ -109,7 +109,7 @@
           <td>{{ item.quantidade }}</td>
           <td>{{ item.unidade }}</td>
           <td>{{ item.precoSemBdi ? ('R$ ' + item.precoSemBdi.toFixed(2)) : '' }}</td>
-          <td>{{ item.bdi ? (item.bdi * 100).toFixed(2) + '%' : '' }}</td>
+          <td>{{ item.bdi ? item.bdi + '%' : '' }}</td>
           <td>{{ item.precoComBdi ? ('R$ ' + item.precoComBdi.toFixed(2)) : '' }}</td>
           <td>{{ item.valorTotal ? ('R$ ' + item.valorTotal.toFixed(2)) : '' }}</td>
         </tr>

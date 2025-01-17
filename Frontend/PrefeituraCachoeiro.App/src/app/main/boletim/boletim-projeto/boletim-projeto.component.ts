@@ -170,7 +170,7 @@ export class BoletimProjetoComponent implements OnInit {
         this.valorTotalMedicao = dados.valorTotalMedicao || 0;
       }
       else {
-        this._toastService.mensagemError('Sem medição para apresentar!');
+        this._toastService.messageWarning('Sem medição para apresentar!');
       }
     })
     .catch((erro) => {

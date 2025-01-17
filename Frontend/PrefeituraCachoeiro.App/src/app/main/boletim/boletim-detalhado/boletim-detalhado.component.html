@@ -1,4 +1,27 @@
 <div class="boletim-detalhado" id="content" #content>
+  <div class="form-boletim">
+    <h2>Boletim Detalhado</h2>
+
+    <!-- Container para os campos de seleção -->
+    <form [formGroup]="form" class="select-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Selecione o Contrato:</mat-label>
+        <mat-select formControlName="contratoId" (selectionChange)="onSelectionChange($event.value)">
+          <mat-option *ngFor="let contrato of listaContratos" [value]="contrato.idContrato">
+            {{ contrato.numeroContrato }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Selecione a Medição:</mat-label>
+        <mat-select formControlName="medicaoId" (selectionChange)="onSelectionChangeMedicao($event.value)">
+          <mat-option *ngFor="let medicao of listaMedicoes" [value]="medicao.idMedicoesProjeto">
+            {{ medicao.numeroMedicao }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
   <!-- Tabela para exibir dados -->
   <table class="styled-table">
     <thead *ngIf="boletimCabecalho">
@@ -87,19 +110,19 @@
         <!-- Itera sobre os itens principais -->
         <tr class="item-principal">
           <td>{{ boletim.numero }}</td>
-          <td>{{ boletim.codigoATA }}</td>
+          <td>{{ boletim.codigoAta }}</td>
           <td colspan="17">{{ boletim.descricao }}</td>
           <td>{{ boletim.quantidade }}</td>
           <td>{{ boletim.unidade }}</td>
-          <td>{{ boletim.precoSemBDI ? ('R$ ' + boletim.precoSemBDI) : '' }}</td>
-          <td>{{ boletim.bdi ? (boletim.bdi * 100).toFixed(2) + '%' : '' }}</td>
-          <td>{{ boletim.precoComBDI ? ('R$ ' + boletim.precoComBDI.toFixed(2)) : '' }}</td>
+          <td>{{ boletim.precoSemBdi ? ('R$ ' + boletim.precoSemBdi) : '' }}</td>
+          <td>{{ boletim.bdi ? boletim.bdi + '%' : '' }}</td>
+          <td>{{ boletim.precoComBdi ? ('R$ ' + boletim.precoComBdi.toFixed(2)) : '' }}</td>
           <td>{{ boletim.valorTotal ? ('R$ ' + boletim.valorTotal.toFixed(2)) : '' }}</td>
         </tr>
 
         <!-- Nível 2: SubBoletins -->
-        <ng-container *ngFor="let subBoletim of boletim.subBoletins">
-          <tr class="sub-boletim">
+        <!-- <ng-container *ngFor="let subBoletim of boletim.subBoletins"> -->
+          <!-- <tr class="sub-boletim">
             <td>{{ subBoletim.numero }}</td>
             <td>{{ subBoletim.codigoATA }}</td>
             <td colspan="17">{{ subBoletim.descricao }}</td>
@@ -109,10 +132,10 @@
             <td>{{ subBoletim.bdi ? (subBoletim.bdi * 100).toFixed(2) + '%' : '' }}</td>
             <td>{{ subBoletim.precoComBDI ? ('R$ ' + subBoletim.precoComBDI.toFixed(2)) : '' }}</td>
             <td>{{ subBoletim.valorTotal ? ('R$ ' + subBoletim.valorTotal.toFixed(2)) : '' }}</td>
-          </tr>
+          </tr> -->
 
           <!-- Nível 3: Subitens -->
-          <ng-container *ngFor="let subItem of subBoletim.subitens">
+          <!-- <ng-container *ngFor="let subItem of subBoletim.subitens">
             <tr class="subitem">
               <td>{{ subItem.numero }}</td>
               <td>{{ subItem.codigoATA }}</td>
@@ -124,9 +147,9 @@
               <td>{{ subItem.precoComBDI ? ('R$ ' + subItem.precoComBDI.toFixed(2)) : '' }}</td>
               <td>{{ subItem.valorTotal ? ('R$ ' + subItem.valorTotal.toFixed(2)) : '' }}</td>
             </tr>
-          </ng-container>
+          </ng-container> -->
         </ng-container>
-      </ng-container>
+      <!-- </ng-container> -->
 
       <tr>
         <td style="background-color: #ffffff;" colspan="23" class="highlight">VALOR TOTAL DA MEDIÇÃO:</td>
