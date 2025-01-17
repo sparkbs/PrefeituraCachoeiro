@@ -1,6 +1,30 @@
 <div class="boletim-medicao" id="content" #content>
+  <div class="form-boletim">
+    <h2>Boletim por Medição</h2>
+
+    <!-- Container para os campos de seleção -->
+    <form [formGroup]="form" class="select-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Selecione o Contrato:</mat-label>
+        <mat-select formControlName="contratoId" (selectionChange)="onSelectionChange($event.value)">
+          <mat-option *ngFor="let contrato of listaContratos" [value]="contrato.idContrato">
+            {{ contrato.numeroContrato }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Selecione a Medição:</mat-label>
+        <mat-select formControlName="medicaoId" (selectionChange)="onSelectionChangeMedicao($event.value)">
+          <mat-option *ngFor="let medicao of listaMedicoes" [value]="medicao.idMedicoesProjeto">
+            {{ medicao.numeroMedicao }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+
   <!-- Tabela para exibir dados -->
-  <table class="styled-table">
+  <table class="styled-table" *ngIf="this.boletim">
     <thead *ngIf="boletimCabecalho">
       <!-- Linha do logotipo e título -->
       <tr>
@@ -80,29 +104,15 @@
         <!-- Itera sobre os itens principais -->
         <tr class="item-principal">
           <td>{{ item.numero }}</td>
-          <td>{{ item.codigoATA }}</td>
+          <td>{{ item.codigoAta }}</td>
           <td colspan="17">{{ item.descricao }}</td>
           <td>{{ item.quantidade }}</td>
           <td>{{ item.unidade }}</td>
-          <td>{{ item.precoSemBDI ? ('R$ ' + item.precoSemBDI.toFixed(2)) : '' }}</td>
+          <td>{{ item.precoSemBdi ? ('R$ ' + item.precoSemBdi.toFixed(2)) : '' }}</td>
           <td>{{ item.bdi ? (item.bdi * 100).toFixed(2) + '%' : '' }}</td>
-          <td>{{ item.precoComBDI ? ('R$ ' + item.precoComBDI.toFixed(2)) : '' }}</td>
+          <td>{{ item.precoComBdi ? ('R$ ' + item.precoComBdi.toFixed(2)) : '' }}</td>
           <td>{{ item.valorTotal ? ('R$ ' + item.valorTotal.toFixed(2)) : '' }}</td>
         </tr>
-
-        <ng-container *ngIf="item.subitens">
-          <tr *ngFor="let sub of item.subitens" class="subgrupo">
-            <td>{{ sub.numero }}</td>
-            <td>{{ sub.codigoATA }}</td>
-            <td colspan="17">{{ sub.descricao }}</td>
-            <td>{{ sub.quantidade }}</td>
-            <td>{{ sub.unidade }}</td>
-            <td>{{ sub.precoSemBDI ? ('R$ ' + sub.precoSemBDI.toFixed(2)) : '' }}</td>
-            <td>{{ sub.bdi ? (sub.bdi * 100).toFixed(2) + '%' : '' }}</td>
-            <td>{{ sub.precoComBDI ? ('R$ ' + sub.precoComBDI.toFixed(2)) : '' }}</td>
-            <td>{{ sub.valorTotal ? ('R$ ' + sub.valorTotal.toFixed(2)) : '' }}</td>
-          </tr>
-        </ng-container>
       </ng-container>
 
       <tr>
@@ -111,7 +121,7 @@
       </tr>
     </tbody>
   </table>
-  <tfoot class="signature-section">
+  <tfoot class="signature-section" *ngIf="this.boletim">
 
     <div class="signature-contratante">
       <p>_______________________________________</p>
@@ -126,4 +136,4 @@
   </tfoot>
 </div>
 <!-- Botão para gerar PDF -->
-<button (click)="generatePDF()">Gerar PDF</button>
+<button (click)="generatePDF()" *ngIf="this.boletim">Gerar PDF</button>

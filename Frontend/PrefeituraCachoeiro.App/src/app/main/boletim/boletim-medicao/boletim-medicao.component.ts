@@ -1,9 +1,21 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { BoletimMedicaoModel } from 'src/app/modelsBoletim/boletim-models/boletim-medicao.model';
-import { BoletimService } from 'src/app/services/boletins/boletim.service';
 import { BoletimBase } from 'src/app/modelsBoletim/boletim-models/boletim-base.model';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import { MedicoesService } from 'src/app/services/medicoes.service';
+import { ContratosService } from 'src/app/services/contratos.service';
+import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
+import { ToastService } from 'src/app/services/toast.service';
+import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
+import { MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { PrefeituraService } from 'src/app/services/prefeitura.service';
+import { BoletimProjetoCabecalho, BoletimResponse, SubBoletim } from 'src/app/response/BoletimResponse/boletimResponse';
+import { BoletimService } from 'src/app/services/boletim.service';
+import { BuscarBoletimMedicaoRequest } from 'src/app/request/BoletimRequest/boletimMedicaoRequest';
+import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
 
 @Component({
   selector: 'app-boletim-medicao',
@@ -14,53 +26,159 @@ export class BoletimMedicaoComponent implements OnInit {
 
   @ViewChild('content', { static: false }) element!: ElementRef;
 
-  // Dados para armazenar o boletim retornado do backend  
-  dataSource: BoletimBase[] | undefined = [];
-  boletimCabecalho!: BoletimMedicaoModel['boletimMedicaoCabecalho'];
+  // Dados para armazenar o boletim retornado do backend
+  dataSource: SubBoletim[] = [];
+  boletimCabecalho: BoletimProjetoCabecalho;
   logoTipoImgUrl: string = ''; // URL tratada da imagem do logotipo
   nomeUnidade!: string | undefined;
   valorTotalMedicao!: number;
+  listaContratos: ContratosResponse[] = [];
+  listaMedicoes: MedicoesResponse[] = [];
+  form: FormGroup;
+  contratoSelecionado: ContratosResponse;
+  boletim: BoletimResponse;
 
   // Variável para gerenciar estado de carregamento e erros
   isLoading = true;
   errorMessage = '';
 
-  constructor(private boletimService: BoletimService) {}
+  constructor(
+    private _medicaoControllerService: MedicoesService,
+    private _contratoControllerService: ContratosService,
+    private fb: FormBuilder,
+    private _toastService: ToastService,
+    public _boletimControllerService: BoletimService,
+    private _prefeituraControllerService: PrefeituraService
+  ) {}
 
   ngOnInit(): void {
-    this.carregarBoletinsMedicao();
-    
+    this.createForm();
+    this.buscarListaContratos();
+  }
+
+  createForm(){
+      this.form = this.fb.group({
+        contratoId: [{ value: 0}, Validators.required],
+        medicaoId: [{ value: 0, disabled: true }, Validators.required]
+      });
+  }
+
+  async buscarListaContratos() {
+    var contratosFilter : BuscarContratosRequest = new BuscarContratosRequest();
+        contratosFilter.itemsPorPagina = 1000000;
+        contratosFilter.IdProjeto = null;
+        contratosFilter.pagina = 1;
+
+    await this._contratoControllerService.BuscarTodosContratos(contratosFilter)
+    .then((res) => {
+      this.listaContratos = res.data;
+    })
+    .catch((erro) => {
+      console.error(erro);
+      this._toastService.mensagemError('Erro ao buscar medições!');
+    });
+  }
+
+  async buscarMedicoes(contratoId: number) {
+    var medicoesRequest : MedicoesRequest = new MedicoesRequest();
+    medicoesRequest.idContrato = contratoId;
+    medicoesRequest.itemsPorPagina = 1000000;
+    medicoesRequest.pagina = 1;
+
+    await this._medicaoControllerService.BuscarTodasMedicoes(medicoesRequest)
+    .then((res) => {
+      this.listaMedicoes = res.data;
+    })
+    .catch((erro) => {
+      console.error(erro);
+      this._toastService.mensagemError('Erro ao buscar medições!');
+    });
+  }
+
+  async onSelectionChange(contratoId: number) {
+    this.form.get('medicaoId').enable();
+    this.contratoSelecionado = this.listaContratos.find(res => res.idContrato == contratoId);
+    await this.buscarMedicoes(contratoId);
+  }
+
+  async onSelectionChangeMedicao(medicaoId: number) {
+    this.carregarBoletinsMedicao(medicaoId);
   }
 
   // Método para carregar os dados do boletim de medição
-  carregarBoletinsMedicao(): void {
-    this.boletimService.getBoletinsMedicao().subscribe({
-      next: (dados) => {
-        if (dados) {
-          this.boletimCabecalho = dados.boletimMedicaoCabecalho;
+  carregarBoletinsMedicao(medicaoId: number): void {
+    // this.boletimService.getBoletinsMedicao().subscribe({
+    //   next: (dados) => {
+    //     if (dados) {
+    //       this.boletimCabecalho = dados.boletimMedicaoCabecalho;
 
-          // Verificar o tipo do campo logoTipoImg
-          const logoTipoImg = this.boletimCabecalho?.logoTipoImg;
+    //       // Verificar o tipo do campo logoTipoImg
+    //       const logoTipoImg = this.boletimCabecalho?.logoTipoImg;
 
-          if (logoTipoImg instanceof File) {
-            // Se for um arquivo, converte para URL acessível
-            this.logoTipoImgUrl = URL.createObjectURL(logoTipoImg);
-          } else if (typeof logoTipoImg === 'string') {
-            // Se for uma string, usa diretamente
-            this.logoTipoImgUrl = logoTipoImg;
-          }
+    //       if (logoTipoImg instanceof File) {
+    //         // Se for um arquivo, converte para URL acessível
+    //         this.logoTipoImgUrl = URL.createObjectURL(logoTipoImg);
+    //       } else if (typeof logoTipoImg === 'string') {
+    //         // Se for uma string, usa diretamente
+    //         this.logoTipoImgUrl = logoTipoImg;
+    //       }
 
-          this.nomeUnidade = this.boletimCabecalho?.nomeUnidade;
-          this.valorTotalMedicao = dados.valorTotalMedicao;
-          this.dataSource = dados.subBoletins;
-        }
-        this.isLoading = false;
-      },
-      error: (erro) => {
-        const message = 'Erro ao carregar os dados do boletim: '
-        console.error(message, erro);
-        this.isLoading = false;
+    //       this.nomeUnidade = this.boletimCabecalho?.nomeUnidade;
+    //       this.valorTotalMedicao = dados.valorTotalMedicao;
+    //       this.dataSource = dados.subBoletins;
+    //     }
+    //     this.isLoading = false;
+    //   },
+    //   error: (erro) => {
+    //     const message = 'Erro ao carregar os dados do boletim: '
+    //     console.error(message, erro);
+    //     this.isLoading = false;
+    //   }
+    // });
+    var boletimMedicaoRequest: BuscarBoletimMedicaoRequest = {
+      idMedicao: medicaoId
+    }
+
+    this._boletimControllerService.BuscarBoletimMedicao(boletimMedicaoRequest)
+    .then(async (dados) => {
+      if (dados.detalhes.length != 0) {
+        this.boletim = dados;
+        this.boletimCabecalho = dados.boletimProjetoCabecalho;
+
+        // Verificar o tipo do campo logoTipoImg
+        await this.RetornarLogoCliente(this.contratoSelecionado.prefeituraId);
+
+        /*if (logoTipoImg instanceof File) {
+          // Se for um arquivo, converte para URL acessível
+          this.logoTipoImgUrl = URL.createObjectURL(logoTipoImg);
+        } else if (typeof logoTipoImg === 'string') {
+          // Se for uma string, usa diretamente
+          this.logoTipoImgUrl = logoTipoImg;
+        }*/
+        this.dataSource = dados.detalhes.length == 0 ? [] : dados.detalhes[0].subBoletins;
+        this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
+        this.valorTotalMedicao = dados.valorTotalMedicao || 0;
       }
+      else {
+        this._toastService.messageWarning('Sem medição para apresentar!');
+      }
+    })
+    .catch((erro) => {
+      console.error(erro);
+      this._toastService.mensagemError('Erro ao buscar boletins!');
+    });
+  }
+
+  async RetornarLogoCliente(clienteId: number): Promise<void> {
+    await this._prefeituraControllerService.BuscarPrefeitura(clienteId)
+    .then((res) => {
+      if (res) {
+        this.logoTipoImgUrl = res.logo;
+      }
+    })
+    .catch((erro) => {
+      console.error(erro);
+      this._toastService.mensagemError('Erro ao buscar logo cliente!');
     });
   }
 
