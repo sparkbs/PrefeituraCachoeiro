@@ -23,7 +23,7 @@
     </form>
   </div>
   <!-- Tabela para exibir dados -->
-  <table class="styled-table">
+  <table class="styled-table" *ngIf="this.boletim">
     <thead *ngIf="boletimCabecalho">
       <!-- Linha do logotipo e título -->
       <tr>
@@ -157,7 +157,7 @@
       </tr>
     </tbody>
   </table>
-  <tfoot class="signature-section">
+  <tfoot class="signature-section" *ngIf="this.boletim">
 
     <div class="signature-contratante">
       <p>_______________________________________</p>
@@ -172,4 +172,4 @@
   </tfoot>
 </div>
 <!-- Botão para gerar PDF -->
-<button (click)="generatePDF()">Gerar PDF</button>
+<button (click)="generatePDF()" *ngIf="this.boletim">Gerar PDF</button>
