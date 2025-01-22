@@ -6,6 +6,7 @@ export class MedicoesRequest extends BaseFilter
     idContrato: number;
     statusMedicao?: number;
     idMedicaoAtual?: number;
+    idProjeto?: number;
 }
 
 export class InserirMedicao {
@@ -16,7 +17,7 @@ export class InserirMedicao {
     IdProjeto: number = 0;
     items: PermissoesItemsRequest[] = [];
   }
-  
+
   export class ItemMedicao {
     idItemContrato: number;
     unidade: number;
@@ -44,4 +45,3 @@ export class AlterarMedicaoProjetoRequest {
     items: ItemMedicao[];
     idMedicoesProjeto: number;
   }
-  
