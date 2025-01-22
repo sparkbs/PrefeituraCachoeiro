@@ -10,7 +10,7 @@ export class MedicoesResponse {
     items: ItemMedicao[];
     idProjeto: number;
   }
-  
+
   export class Contrato {
     idContrato: number;
     idProjeto: number;
@@ -32,12 +32,12 @@ export class MedicoesResponse {
     prefeituraId: number;
     prefeitura: Prefeitura;
   }
-  
+
   export class Projeto {
     idProjeto: number;
     nomeProjeto: string;
   }
-  
+
   export class ItemContrato {
     idItemContrato: number;
     idContrato: number;
@@ -50,7 +50,7 @@ export class MedicoesResponse {
     valorComBdi: number;
     valorTotalComBdi: number;
   }
-  
+
   export class Item {
     idItem: number;
     identificador: string;
@@ -67,22 +67,22 @@ export class MedicoesResponse {
     idItemPai: number;
     ordem: number;
   }
-  
+
   export class Origem {
     idOrigem: number;
     nome: string;
   }
-  
+
   export class Quantidade {
     idQuantidade: number;
     nome: string;
   }
-  
+
   export class StatusMedicao {
     idStatusMedicao: number;
     nome: string;
   }
-  
+
   export class ItemMedicao {
     idItemMedicoesProjeto: number;
     idItemContrato: number;
@@ -91,19 +91,19 @@ export class MedicoesResponse {
     unidadeSalvaMedida?: number;
     itemInvalido?: boolean = false;
   }
-  
+
   export class Empresa {
     empresaId: number;
     nome: string;
     logo: string;
   }
-  
+
   export class Prefeitura {
     idPrefeitura: number;
     nome: string;
     logo: string;
   }
-  
+
   export class TodasMedicaoProjetoResponse {
     data: MedicoesResponse[];
   }
@@ -111,7 +111,7 @@ export class MedicoesResponse {
   export class RetornoIdMedicao{
     idMedicoesProjeto: number;
   }
-  
+
   export class RetornoReprovacaoAprovacaoResponse{
     isSucesso: boolean;
     mensagemErro: string;
@@ -120,4 +120,9 @@ export class MedicoesResponse {
   export class MedicoesModel {
     numeroMedicao: number = 0;
     data: MedicoesResponse[] = [];
+  }
+
+  export class MedicaoLevantamento {
+    qtdItem: number;
+    valorTotalComBdi: number;
   }
