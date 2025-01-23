@@ -6,7 +6,7 @@ import { GenericResultResponse } from '../response/genericResultResponse';
 import { ContratoModel, ContratosResponse, TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
 import { CriarContratoResponse, DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
 import { AtualizarContratoRequest } from '../request/ContratoRequest/atualizarContratoRequest';
-import { BuscarContratosRequest } from '../request/ContratoRequest/buscarContratosRequest';
+import { BuscarAditivosContrato, BuscarContratosRequest } from '../request/ContratoRequest/buscarContratosRequest';
 import { CriarContratoRequest } from '../request/ContratoRequest/criarContratoRequest';
 import { VinculoProjetoContratoRequest } from '../request/ContratoRequest/vincularProjetoContrato';
 
@@ -15,6 +15,16 @@ import { VinculoProjetoContratoRequest } from '../request/ContratoRequest/vincul
 })
 export class ContratosService {
   constructor(private readonly http: HttpClient) { }
+
+  public async BuscarTodosAditivos(request: BuscarAditivosContrato): Promise<ContratosResponse[]> {
+    console.log(request);
+    return await firstValueFrom(
+      this.http.post<ContratosResponse[]>(
+        `${Environments.APIUrl}/contratos/buscartodosaditivos`,
+        request
+      )
+    );
+  }
 
   public async BuscarTodosContratos(request: BuscarContratosRequest): Promise<GenericResultResponse<ContratosResponse[]>> {
     return await firstValueFrom(

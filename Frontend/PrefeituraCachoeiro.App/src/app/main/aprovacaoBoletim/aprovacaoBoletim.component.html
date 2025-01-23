@@ -18,31 +18,43 @@
     [style.display]="showProjetos ? 'flex' : 'none'">
   
     <mat-card 
-      class="card-content-aprovacoes" 
-      *ngFor="let medicaoProjeto of medicaoProjetos" 
-      style="flex: 0 1 calc(33.333% - 5%); height: 200px; display: flex; flex-direction: column; margin-bottom: 3px;">
-      
-      <mat-card-header>
-        <span style="font-size: 15px;">Medição {{ medicaoProjeto.numeroMedicao }}</span>
-      </mat-card-header>
-      
-      <ul>
-        <li *ngFor="let projeto of medicaoProjeto.data">
-          <!--<span>{{ projeto.contratos.projetos[0].nomeProjeto }}</span>-->
-          <span>{{ nomeProjeto(projeto?.idProjeto,projeto?.contratos?.projetos) }}</span>
-
-          <span matTooltip="Aprovar Medição" style="cursor: pointer; margin-left: 10px;" (click)="aprovarMedicao(projeto.idMedicoesProjeto)">
-            <mat-icon style="font-size: 15px;height: auto; width: auto;">done_outline</mat-icon>
-          </span>
-          <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;" (click)="reprovarMedicao(projeto.idMedicoesProjeto)">
-            <mat-icon style="font-size: 15px;height: auto; width: auto;">highlight_off</mat-icon>
-          </span>
-          <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;">
-            <mat-icon style="font-size: 15px;height: auto; width: auto;">cloud_download</mat-icon>
-          </span>
-        </li>
-      </ul>
-    </mat-card>
+    class="card-content-aprovacoes" 
+    *ngFor="let medicaoProjeto of medicaoProjetos" 
+    style="flex: 0 1 calc(33.333% - 5%); height: 200px; display: flex; flex-direction: column; margin-bottom: 3px;">
+    
+    <mat-card-header>
+      <span style="font-size: 15px;">Medição {{ medicaoProjeto.numeroMedicao }}</span>
+    </mat-card-header>
+    
+    <ul>
+      <li *ngFor="let projeto of medicaoProjeto.data">
+        <!--<span>{{ projeto.contratos.projetos[0].nomeProjeto }}</span>-->
+        <span>{{ nomeProjeto(projeto?.idProjeto, projeto?.contratos?.projetos) }}</span>
+  
+        <span matTooltip="Aprovar Medição" style="cursor: pointer; margin-left: 10px;" (click)="aprovarMedicao(projeto.idMedicoesProjeto)">
+          <mat-icon style="font-size: 15px;height: auto; width: auto;">done_outline</mat-icon>
+        </span>
+        <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;" (click)="reprovarMedicao(projeto.idMedicoesProjeto)">
+          <mat-icon style="font-size: 15px;height: auto; width: auto;">highlight_off</mat-icon>
+        </span>
+        <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;">
+          <mat-icon style="font-size: 15px;height: auto; width: auto;">cloud_download</mat-icon>
+        </span>
+      </li>
+    </ul>
+  
+    <!-- Alinha o botão no fim do card e à direita -->
+    <div style="margin-top: auto; display: flex; justify-content: flex-end;padding: 20px;">
+      <button mat-button 
+              style="background-color: royalblue; color: white; width: 30%;" 
+              [style.display]="contratoSelecionado > 0 ? '' : 'none'" 
+              [routerLink]="['/main/boletimMedicao', contratoSelecionado, medicaoProjeto.data[0].idMedicoesProjeto]">
+        Boletim
+      </button>
+    </div>
+  
+  </mat-card>
+  
   
   </div>
   

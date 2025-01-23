@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { BoletimMedicaoModel } from 'src/app/modelsBoletim/boletim-models/boletim-medicao.model';
 import { BoletimBase } from 'src/app/modelsBoletim/boletim-models/boletim-base.model';
 import { jsPDF } from 'jspdf';
@@ -16,6 +16,7 @@ import { BoletimProjetoCabecalho, BoletimResponse, SubBoletim } from 'src/app/re
 import { BoletimService } from 'src/app/services/boletim.service';
 import { BuscarBoletimMedicaoRequest } from 'src/app/request/BoletimRequest/boletimMedicaoRequest';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-boletim-medicao',
@@ -41,6 +42,8 @@ export class BoletimMedicaoComponent implements OnInit {
   // Variável para gerenciar estado de carregamento e erros
   isLoading = true;
   errorMessage = '';
+  contratoId = '0';
+  medicaoId = '0';
 
   constructor(
     private _medicaoControllerService: MedicoesService,
@@ -48,19 +51,34 @@ export class BoletimMedicaoComponent implements OnInit {
     private fb: FormBuilder,
     private _toastService: ToastService,
     public _boletimControllerService: BoletimService,
-    private _prefeituraControllerService: PrefeituraService
+    private _prefeituraControllerService: PrefeituraService,
+    private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
-    this.createForm();
-    this.buscarListaContratos();
+  async ngOnInit() {
+    await this.buscarListaContratos();
+
+    this.route.paramMap.subscribe(params => {
+      this.contratoId = params.get('contratoId')!;
+      this.medicaoId = params.get('medicaoId')!;
+    });
+    this.createForm(Number(this.contratoId),Number(this.medicaoId));
+
+    if(this.contratoId != null && this.medicaoId != null){
+      this.onSelectionChange(Number(this.contratoId));
+      this.onSelectionChangeMedicao(Number(this.medicaoId));
+    }
   }
 
-  createForm(){
-      this.form = this.fb.group({
-        contratoId: [{ value: 0}, Validators.required],
-        medicaoId: [{ value: 0, disabled: true }, Validators.required]
-      });
+  createForm(contratoId: number, medicaoId:number){
+    console.log(contratoId);
+    console.log(medicaoId);
+    this.form = this.fb.group({
+      contratoId: [{ value: contratoId}, Validators.required],
+      medicaoId: [{ value: medicaoId, disabled: true }, Validators.required]
+    });
+    this.form.get('contratoId')?.setValue(contratoId);
+    this.form.get('medicaoId')?.setValue(medicaoId);
   }
 
   async buscarListaContratos() {

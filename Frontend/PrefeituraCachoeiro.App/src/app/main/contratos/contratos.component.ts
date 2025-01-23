@@ -104,8 +104,8 @@ export class ContratosComponent implements AfterViewInit, OnInit {
     });
   }
 
-  abrirAditivos(){
-    const dialogRef = this.dialog.open(AditivosContratosComponent);
+  abrirAditivos(contratobase:ContratosResponse){
+    const dialogRef = this.dialog.open(AditivosContratosComponent, {data:{contratobase}});
 
     dialogRef.afterClosed().subscribe(result => {
     });

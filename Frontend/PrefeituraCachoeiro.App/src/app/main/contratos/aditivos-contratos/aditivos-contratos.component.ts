@@ -1,42 +1,77 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-
-export interface ItemAditivos {
-  tipoAditivo: string;
-  planilha: string;
-  valor:string;
-  dataAssinatura: string;
-  validadeAditivo: string;
-  acoes: string;
-}
+import { AditivosContratoRequest } from 'src/app/request/ContratoRequest/aditivosContratoRequest';
+import { BuscarAditivosContrato } from 'src/app/request/ContratoRequest/buscarContratosRequest';
+import { CriarContratoRequest } from 'src/app/request/ContratoRequest/criarContratoRequest';
+import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { ContratosService } from 'src/app/services/contratos.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-aditivos-contratos',
   templateUrl: './aditivos-contratos.component.html',
   styleUrls: ['./aditivos-contratos.component.scss']
 })
-export class AditivosContratosComponent implements OnInit {
-  lista: ItemAditivos[] = [
-    { tipoAditivo: 'Prazo', planilha: 'planilha.xlsx', valor: 'R$1.232,90', dataAssinatura: '10/02/2020', validadeAditivo: '10/09/2020' ,acoes: ''},
-    { tipoAditivo: 'Valor', planilha: 'planilha2.xlsx',  valor: 'R$2.232,10',dataAssinatura: '20/05/2022', validadeAditivo: '20/10/2022' ,acoes: ''},
-    { tipoAditivo: 'Prazo', planilha: 'planilha3.xlsx',  valor: 'R$9.232,90',dataAssinatura: '11/12/2021', validadeAditivo: '11/09/2021' ,acoes: ''},
-    { tipoAditivo: 'Valor', planilha: 'planilha4.xlsx',  valor: 'R$5.232,90',dataAssinatura: '22/05/2021', validadeAditivo: '20/05/2022' ,acoes: ''},
-  ]
-  displayedColumns: string[] = ['tipoAditivo', 'planilha', 'valor','dataAssinatura', 'validadeAditivo','acoes'];
-  dataSource: MatTableDataSource<ItemAditivos>;
+export class AditivosContratosComponent implements AfterViewInit {
+  lista: ContratosResponse[] = [];
+  displayedColumns: string[] = ['tipoAditivo', 'valor','dataAssinatura', 'validadeAditivo','acoes'];
+  dataSource: MatTableDataSource<ContratosResponse>;
   valorAditivo: string;
-
-  constructor() {
-    this.dataSource = new MatTableDataSource(this.lista);
-   }
-
-  ngOnInit() {
+  contratoBase: ContratosResponse;
+  requestCriarAditivo: CriarContratoRequest = new CriarContratoRequest();
+  @ViewChild('baseDadosInput') baseDadosInput: any;
+  
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private readonly api: ContratosService, private _toastService: ToastService,   private dialogRef: MatDialogRef<AditivosContratosComponent>, ) {
+    this.dataSource = new MatTableDataSource(this.lista); 
   }
 
-  deletarAditivo(row: ItemAditivos){
-    this.lista = this.lista.filter(item => item != row);
-    this.dataSource.data = this.lista;
+  async ngAfterViewInit() {
+    this.contratoBase = this.data.contratobase;
+    console.log(this.data);
+    var aditivoFilter : BuscarAditivosContrato = new BuscarAditivosContrato();
+    aditivoFilter.idContrato = this.data.contratobase.idContrato;
+    await this.api.BuscarTodosAditivos(aditivoFilter)
+    .then((result) => {
+      this.lista = result;
+      this.dataSource.data = (this.lista);         
+      console.log(this.dataSource.data);
+      console.log(result);
+    });
+  }
+
+  async criarAditivo(){
+    this.requestCriarAditivo.TipoContratacao = this.contratoBase.tipoContratacao;
+    this.requestCriarAditivo.PrefeituraId = this.contratoBase.prefeituraId;
+    this.requestCriarAditivo.NumeroContrato = this.contratoBase.numeroContrato;
+    this.requestCriarAditivo.Gerente = this.contratoBase.gerente;
+    this.requestCriarAditivo.EmpresaId = this.contratoBase.empresaId;
+    this.requestCriarAditivo.DataTermino = this.contratoBase.dataTermino;
+    this.requestCriarAditivo.DataInicio = this.contratoBase.dataInicio;
+    this.requestCriarAditivo.DataContrato = this.contratoBase.dataContrato;
+    this.requestCriarAditivo.Aditivo = this.contratoBase.idContrato;
+    this.requestCriarAditivo.ArquivoTemplate = this.adicionarBaseDados();
+    this.requestCriarAditivo.Valor = this.valorAditivo.replaceAll(".","").replaceAll("R$","").replaceAll(",",".");
+
+    await this.api.CriarContrato(this.requestCriarAditivo)
+    .then((result) => {
+      this._toastService.mensagemSuccess("Aditivo criado com sucesso");
+      this.dialogRef.close(result);
+    })
+    .catch(() => {
+      this._toastService.mensagemError("Erro ao cadastrar aditivo");
+    });
+
+  }
+
+  adicionarBaseDados(){
+    if(this.baseDadosInput.nativeElement.files[0] != undefined){
+      const documentoFile = this.baseDadosInput.nativeElement.files[0] as File;
+      return documentoFile;
+    }
+    else{
+      return null;
+    }
   }
 
   handleKeyDown(event: KeyboardEvent): void {
@@ -60,6 +95,26 @@ export class AditivosContratosComponent implements OnInit {
     value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
     value = 'R$ ' + value; 
     this.valorAditivo = value; 
+  }
+
+  formatToCurrency(valor: number): string {
+    let valorFormatado = valor.toFixed(2);  // 2 casas decimais
+
+    valorFormatado = valorFormatado.replace('.', ',');
+
+    valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    return 'R$ ' + valorFormatado;
+  }
+
+  async deletarAditivo(id: number){
+    await this.api.DeletarContrato(id)  
+    .then((result) => {
+      var index = this.lista.findIndex(item => item.idContrato == id);
+      this.lista.splice(index, 1);
+  
+      this.dataSource.data = this.lista;
+    });
   }
 
 }

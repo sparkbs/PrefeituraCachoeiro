@@ -15,6 +15,7 @@ import { BoletimService } from 'src/app/services/boletim.service';
 import { BuscarBoletimProjetoRequest } from 'src/app/request/BoletimRequest/boletimProjetoRequest';
 import { BoletimProjetoCabecalho, BoletimResponse, SubBoletim } from 'src/app/response/BoletimResponse/boletimResponse';
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -44,6 +45,8 @@ export class BoletimProjetoComponent implements OnInit {
   // Variável para gerenciar estado de carregamento e erros
   isLoading = true;
   errorMessage = '';
+  parametro1 = '';
+  parametro2 = '';
 
   constructor(
     public _projetoControllerService: ProjetoService,
@@ -51,10 +54,18 @@ export class BoletimProjetoComponent implements OnInit {
     private readonly apiMedicoes: MedicoesService,
     private fb: FormBuilder,
     public _boletimControllerService: BoletimService,
-    private _prefeituraControllerService: PrefeituraService
+    private _prefeituraControllerService: PrefeituraService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      this.parametro1 = params.get('contratoId')!;
+      this.parametro2 = params.get('projetoId')!;
+    });
+    console.log(this.parametro1);
+    console.log(this.parametro2);
+    
     this.createForm();
     this.buscarProjetos();
   }

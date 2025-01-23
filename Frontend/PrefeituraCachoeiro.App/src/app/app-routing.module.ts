@@ -34,8 +34,8 @@ const routes: Routes = [
       { path: 'relatorioProjetosPorMedicao', component: RelatorioProjetosPorMedicaoComponent },
       { path: 'prefeitura', component: PrefeituraComponent },
       { path: 'boletim', component: BoletimComponent},
-      { path: 'boletimMedicao', component: BoletimMedicaoComponent },
-      { path: 'boletimPorProjeto', component: BoletimProjetoComponent },
+      { path: 'boletimMedicao/:contratoId/:medicaoId', component: BoletimMedicaoComponent },
+      { path: 'boletimPorProjeto/:contratoId/:projetoId', component: BoletimProjetoComponent },
       { path: 'boletimDetalhado', component: BoletimDetalhadoComponent },
       { path: 'aprovacaoBoletim', component: AprovacaoBoletimComponent }
     ]
