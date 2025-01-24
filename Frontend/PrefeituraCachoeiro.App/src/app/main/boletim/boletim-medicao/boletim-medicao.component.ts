@@ -38,12 +38,16 @@ export class BoletimMedicaoComponent implements OnInit {
   form: FormGroup;
   contratoSelecionado: ContratosResponse;
   boletim: BoletimResponse;
+  contratoSelecionadoPesquisa: number;
 
   // Variável para gerenciar estado de carregamento e erros
   isLoading = true;
   errorMessage = '';
   contratoId = '0';
   medicaoId = '0';
+  medicaoSelecionado: number;
+  enableMedicao: boolean = false;
+  isEnabledInputs: boolean = false;
 
   constructor(
     private _medicaoControllerService: MedicoesService,
@@ -56,18 +60,22 @@ export class BoletimMedicaoComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await this.buscarListaContratos();
-
     this.route.paramMap.subscribe(params => {
       this.contratoId = params.get('contratoId')!;
       this.medicaoId = params.get('medicaoId')!;
     });
-    this.createForm(Number(this.contratoId),Number(this.medicaoId));
+    
+    await this.buscarListaContratos();
+    await this.onSelectionChange(Number(this.contratoId));
 
-    if(this.contratoId != null && this.medicaoId != null){
-      this.onSelectionChange(Number(this.contratoId));
-      this.onSelectionChangeMedicao(Number(this.medicaoId));
+    if(this.contratoId != '0' && this.medicaoId != '0'){
+      this.contratoSelecionadoPesquisa = Number(this.contratoId);
+      this.medicaoSelecionado = Number(this.medicaoId);
+      this.isEnabledInputs = true;
     }
+    this.enableMedicao = false;
+    //this.createForm(Number(this.contratoId),Number(this.medicaoId));
+
   }
 
   createForm(contratoId: number, medicaoId:number){
@@ -114,7 +122,8 @@ export class BoletimMedicaoComponent implements OnInit {
   }
 
   async onSelectionChange(contratoId: number) {
-    this.form.get('medicaoId').enable();
+    //this.form.get('medicaoId').enable();
+    this.enableMedicao = true;
     this.contratoSelecionado = this.listaContratos.find(res => res.idContrato == contratoId);
     await this.buscarMedicoes(contratoId);
   }

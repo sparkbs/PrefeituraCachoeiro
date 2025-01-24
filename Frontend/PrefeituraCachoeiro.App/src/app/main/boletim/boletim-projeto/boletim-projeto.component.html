@@ -1,7 +1,7 @@
 <div class="boletim-projeto">
   <h2>Boletim por Projeto</h2>
 
-  <!-- Container para os campos de seleção -->
+  <!-- Container para os campos de seleção 
   <form [formGroup]="form" class="select-container">
 
     <mat-form-field appearance="outline">
@@ -20,7 +20,35 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-  </form>
+  </form>-->
+
+  <div class="select-container">
+    <mat-form-field appearance="outline">
+      <mat-label>Selecione o Projeto:</mat-label>
+      <mat-select [(ngModel)]="projetoSelecionadoPesquisa" (selectionChange)="onSelectionChange($event.value)" [disabled]="isEnabledInputs">
+        <mat-option *ngFor="let projetoItem of listaProjetos" [value]="projetoItem.idProjeto">
+          {{ projetoItem.nomeProjeto }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Selecione a Medição:</mat-label>
+      <mat-select [(ngModel)]="medicaoSelecionado" [disabled]="!enableMedicao || isEnabledInputs">
+        <mat-option *ngFor="let medicao of listaMedicoes" [value]="medicao.idMedicoesProjeto">
+          {{ medicao.numeroMedicao }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div style="margin-top: auto; display: flex; justify-content: flex-end;padding: 20px;">
+      <button mat-button 
+      style="background-color: royalblue; color: white; " 
+      (click)="onSelectionChangeMedicao(medicaoSelecionado)">
+        Buscar
+      </button>
+    </div>
+
+    </div>
 </div>
 <div class="boletim-projeto" id="content" #content>
   <!-- Tabela de Dados -->
@@ -138,4 +166,4 @@
   </tfoot>
 </div>
 <!-- Botão para Gerar PDF -->
-<button *ngIf="boletimCabecalho && dataSource" (click)="generatePDF()">Gerar PDF</button>
+<button *ngIf="boletimCabecalho && dataSource" class="button-class" (click)="generatePDF()">Gerar PDF</button>

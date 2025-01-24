@@ -11,6 +11,7 @@ import { ProjetoService } from 'src/app/services/projeto.service';
 import { AprovarMedicaoComponent } from './aprovarMedicao/aprovarMedicao.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastService } from 'src/app/services/toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-aprovacaoBoletim',
@@ -25,7 +26,7 @@ export class AprovacaoBoletimComponent implements OnInit {
   listaProjetos: ProjetoResponse[] = [];
   medicaoProjetos : MedicoesModel[] = [];
   showProjetos: boolean = false;
-  constructor(private readonly api: ContratosService,public _projetoControllerService: ProjetoService,private readonly apiMedicoes: MedicoesService,private _toastService: ToastService) { }
+  constructor(private readonly api: ContratosService,public _projetoControllerService: ProjetoService,private readonly apiMedicoes: MedicoesService,private _toastService: ToastService, private router: Router) { }
 
   async ngOnInit() {
     await this.buscarListaContratos(21);
@@ -35,6 +36,21 @@ export class AprovacaoBoletimComponent implements OnInit {
     await this.buscarMedicoes();
     this.showProjetos = true;
   }
+
+  openBoletim(idMedicao: number) {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/main/boletimMedicao', this.contratoSelecionado, idMedicao])
+    );
+    window.open(url, '_blank');  // Abre em uma nova guia
+  }
+
+  openBoletimMedicao(idProjeto, idMedicao: number) {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/main/boletimPorProjeto', idProjeto, idMedicao])
+    );
+    window.open(url, '_blank');  // Abre em uma nova guia
+  }
+
 
   async buscarMedicoes(){
     this.medicaoProjetos = [];

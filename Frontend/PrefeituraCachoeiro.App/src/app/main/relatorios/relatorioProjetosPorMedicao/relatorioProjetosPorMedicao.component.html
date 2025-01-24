@@ -5,7 +5,7 @@
         <div >
           <h3>Informe um contrato para exibir as medições</h3>    
           <mat-form-field>
-            <mat-label>Selecione a prefeitura</mat-label>
+            <mat-label>Selecione o cliente</mat-label>
             <mat-select [(ngModel)]="selectedPrefeitura" disableRipple (selectionChange)="onSelectionChange($event.value)">
               <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura" >{{prefeitura.nome}}</mat-option>
             </mat-select>

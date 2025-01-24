@@ -36,17 +36,20 @@ export class BoletimProjetoComponent implements OnInit {
   listaProjetos: ProjetoResponse[] = [];
   listaMedicoes: MedicoesResponse[] = [];
   projetoSelecionado: ProjetoResponse;
-
+  projetoSelecionadoPesquisa: number;
   projetos: ProjetoBaseModel[] = [];
   projetoItemSelecionado: ProjetoBaseModel = new ProjetoBaseModel();
+  medicaoSelecionado: number;
+  isEnabledInputs: boolean = false;
+  enableMedicao: boolean = false;
 
   form: FormGroup;
 
   // Variável para gerenciar estado de carregamento e erros
   isLoading = true;
   errorMessage = '';
-  parametro1 = '';
-  parametro2 = '';
+  projetoId = '';
+  medicaoId = '';
 
   constructor(
     public _projetoControllerService: ProjetoService,
@@ -58,16 +61,23 @@ export class BoletimProjetoComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      this.parametro1 = params.get('contratoId')!;
-      this.parametro2 = params.get('projetoId')!;
+      this.projetoId = params.get('projetoId')!;
+      this.medicaoId = params.get('medicaoId')!;
     });
-    console.log(this.parametro1);
-    console.log(this.parametro2);
     
-    this.createForm();
-    this.buscarProjetos();
+    console.log(this.medicaoId);
+    //this.createForm();
+    await this.buscarProjetos();
+    await this.onSelectionChange(Number(this.projetoId));
+    if(this.projetoId != '0' && this.medicaoId != '0'){
+      this.projetoSelecionadoPesquisa = Number(this.projetoId);
+      this.medicaoSelecionado = Number(this.medicaoId);
+      this.isEnabledInputs = true;
+    }
+
+    this.enableMedicao = false;
   }
 
   createForm(){
@@ -95,7 +105,7 @@ export class BoletimProjetoComponent implements OnInit {
   }
 
   async onSelectionChange(projetoId: number){
-    this.form.get('medicaoId').enable();
+    this.enableMedicao = true;
     this.projetoSelecionado = this.listaProjetos.find(res => res.idProjeto == projetoId);
 
     await this.buscarMedicoes(this.projetoSelecionado.contratos[0].idContrato);
