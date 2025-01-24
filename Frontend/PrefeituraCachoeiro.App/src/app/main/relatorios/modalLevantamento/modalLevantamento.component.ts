@@ -38,15 +38,16 @@ export class ModalLevantamentoComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: { idProjeto: number, idContrato: number },
+    @Inject(MAT_DIALOG_DATA) public data: { idProjeto: number },
     public _projetoControllerService: ProjetoService,
     private _toastService: ToastService,
     private _medicaoControllerService: MedicoesService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.createForm();
-    this.buscarProjetos();
+    await this.buscarProjetos();
+    this.verificarRecebimento();
     this.dataSource.paginator = this.paginator;
   }
 
@@ -56,8 +57,12 @@ export class ModalLevantamentoComponent implements OnInit {
     });
   }
 
-  construirTabela() {
-
+  verificarRecebimento() {
+    if (this.data.idProjeto != 0) {
+      this.listaProjetos;
+      this.form.get('projetoId').setValue(this.data.idProjeto);
+      this.buscarMedicoesProjeto();
+    }
   }
 
   async buscarProjetos() {
@@ -86,27 +91,25 @@ export class ModalLevantamentoComponent implements OnInit {
 
     this._medicaoControllerService.BuscarTodasMedicoes(medicoesRequest)
     .then((res) => {
-      debugger
       this.listaMedicoes = res.data;
 
       if (this.listaMedicoes.length != 0) {
         let dadoTabela: TabelaLevantamento;
         this.listaMedicoes.forEach((res) => {
           res.items.forEach((resItem) => {
-            // criar if verificando index de id de item existente dentro do array dadosTabela, se caso existir realizar o processo abaixo, se não criar um else para apenas adicionar medicaoLevantamento no index em questão
             const index = this.dadosTabela.findIndex(resIndex => resIndex.idItem == resItem.itemsContrato.itemId);
             if (index !== -1) {
               let medicaoLevantamento: MedicaoLevantamento = new MedicaoLevantamento();
-              medicaoLevantamento.qtdItem = resItem.itemsContrato.quantidadeId;
-              medicaoLevantamento.valorTotalComBdi = resItem.itemsContrato.valorComBdi * resItem.itemsContrato.quantidadeId;
+              medicaoLevantamento.qtdItem = resItem.unidade;
+              medicaoLevantamento.valorTotalComBdi = resItem.itemsContrato.valorComBdi * resItem.unidade;
               this.dadosTabela[index].medicoes.push(medicaoLevantamento);
             }
             else {
               dadoTabela = new TabelaLevantamento();
 
               let medicaoLevantamento: MedicaoLevantamento = new MedicaoLevantamento();
-              medicaoLevantamento.qtdItem = resItem.itemsContrato.quantidadeId;
-              medicaoLevantamento.valorTotalComBdi = resItem.itemsContrato.valorComBdi * resItem.itemsContrato.quantidadeId;
+              medicaoLevantamento.qtdItem = resItem.unidade;
+              medicaoLevantamento.valorTotalComBdi = resItem.itemsContrato.valorComBdi * resItem.unidade;
 
               dadoTabela.idItem = resItem.itemsContrato.itemId
               dadoTabela.nome = resItem.itemsContrato.item.descricao
@@ -116,9 +119,6 @@ export class ModalLevantamentoComponent implements OnInit {
             }
           });
         });
-        debugger
-        console.log(this.dadosTabela);
-
         this.maxMedicoes = Math.max(...this.dadosTabela.map(item => item.medicoes.length));
         this.displayedColumns = ['nome', ...Array.from({ length: this.maxMedicoes }, (_, i) => `medicao${i + 1}`)];
         this.dataSource.data = this.dadosTabela;
@@ -131,6 +131,8 @@ export class ModalLevantamentoComponent implements OnInit {
   }
 
   async buscarMedicoesProjeto(){
+    this.dataSource.data = [];
+    this.dadosTabela = [];
     const projetoId: number = this.form.get('projetoId').value;
     if (projetoId) {
       const projetoSelecionado = this.listaProjetos.find(res => res.idProjeto == projetoId);

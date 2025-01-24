@@ -107,12 +107,4 @@ export class SidebarComponent {
   toggleRelatorios() {
     this.relatoriosExpanded = !this.relatoriosExpanded;
   }
-
-  click() {
-    this.dialog.open(ModalLevantamentoComponent, {
-      width: window.innerWidth >= 1450 ? '80%' : '60%',
-    }).afterClosed().subscribe(
-      (res) => {
-    });
-  }
 }

@@ -9,6 +9,7 @@ import { ProjetoService } from 'src/app/services/projeto.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { AprovarMedicaoComponent } from '../../../../aprovacaoBoletim/aprovarMedicao/aprovarMedicao.component';
 import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
+import { ModalLevantamentoComponent } from '../../../modalLevantamento/modalLevantamento.component';
 
 @Component({
   selector: 'app-listaMedicao',
@@ -26,10 +27,10 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
 
   alterarMedicaoProjeto = false;
   constructor(private readonly apiMedicao: MedicoesService, private readonly api: ProjetoService,private globalService: GlobalServicesService,private _toastService: ToastService) {
-    this.dataSource = new MatTableDataSource(this.medicoes.items);    
+    this.dataSource = new MatTableDataSource(this.medicoes.items);
    }
 
-  ngOnInit() {   
+  ngOnInit() {
     this.medicoes.items.forEach(item =>{
       item.unidadeSalvaMedida = item.unidade;
       if(item?.itemsContrato != null){
@@ -83,7 +84,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
     request.Resumo = "";
     request.IdMedicoesProjeto = idMedicao;
     await this.apiMedicao.ReprovarMedicoes(request)
-    .then((result) => {     
+    .then((result) => {
       this._toastService.mensagemSuccess("Medição reprovada com sucesso.");
     })
     .catch(() => {
@@ -126,12 +127,12 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
         valorSaldoSomado += this.buscarItemMedicao(x.idItemContrato) * x?.itemsContrato?.item?.valorComBdi;
       }
     })
-    
+
     return valorSaldoSomado
   }
 
   async salvar(){
-    //this.quantidadeMedida = 1;    
+    //this.quantidadeMedida = 1;
     this.isLoading = true;
     let itemInvalido = this.medicoes.items.some(x => x.itemInvalido)
     if(!itemInvalido){
@@ -146,14 +147,14 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
       alterarMedicaoRequest.items = novaLista;
       alterarMedicaoRequest.numeroMedicao = this.medicoes.numeroMedicao;
       alterarMedicaoRequest.resumo = this.medicoes.resumo;
-  
+
       await this.apiMedicao.AlterarMedicoes(alterarMedicaoRequest)
-      .then((result) => {     
+      .then((result) => {
       })
       .finally(()=>{
         this.isLoading = false;
       });
-  
+
       this.alterarMedicaoProjeto = false;
     }
     else{
@@ -168,5 +169,14 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
       nome = result.nomeProjeto
     });
     return nome;
+  }
+
+  openModalLevantamento(idProjeto: number) {
+    this.dialog.open(ModalLevantamentoComponent, {
+          width: window.innerWidth >= 1450 ? '80%' : '60%',
+          data: { idProjeto }
+        }).afterClosed().subscribe(
+          (res) => {
+    });
   }
 }

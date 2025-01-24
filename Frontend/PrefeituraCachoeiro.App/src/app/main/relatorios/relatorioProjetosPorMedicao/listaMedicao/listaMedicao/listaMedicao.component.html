@@ -9,6 +9,9 @@
     <span matTooltip="Recusar Medição" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="reprovarMedicao(medicoes.idMedicoesProjeto)">
       <mat-icon>highlight_off</mat-icon>
     </span> -->
+    <span matTooltip="Medições do Projeto" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="openModalLevantamento(this.medicoes.idProjeto)">
+      <mat-icon>assessment</mat-icon>
+    </span>
     <span matTooltip="Editar Dados" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada" (click)="enableEditInput()">
       <mat-icon>edit</mat-icon>
     </span>
@@ -22,7 +25,7 @@
         <input type="text" style="width: 25%; margin-right: 16px;" [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" [(ngModel)]="medicoes.resumo"/>
         <span style="font-size: 14px; font-weight: bold;" [style.display]="!alterarMedicaoProjeto ? 'block' : 'none'">{{medicoes.resumo}}</span>
       </div>
-    
+
       <!-- Segunda div - Status Medição -->
       <div style="display: flex; align-items: center; flex: none; justify-content: flex-start;">
         <mat-label style="font-weight: bold; margin-right: 8px;">Status Medição: </mat-label>
@@ -31,7 +34,7 @@
         </mat-label>
       </div>
     </div>
-    
+
 
     <!-- Títulos exibidos uma única vez -->
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="margin-top: 8px;">
@@ -40,7 +43,7 @@
         <th mat-header-cell *matHeaderCellDef style="font-size: 13px;"> Item </th>
         <td mat-cell *matCellDef="let item" style="font-size: 12px;">{{ item.itemsContrato.item.identificador }}</td>
       </ng-container>
-  
+
       <!-- Coluna para 'Origem' -->
       <ng-container matColumnDef="item/qtd">
         <th mat-header-cell *matHeaderCellDef style="font-size: 13px;"> Descrição / Quantidade </th>
