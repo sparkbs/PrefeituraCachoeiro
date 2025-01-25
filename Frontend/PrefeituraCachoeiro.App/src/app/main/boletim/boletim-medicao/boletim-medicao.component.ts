@@ -182,6 +182,7 @@ export class BoletimMedicaoComponent implements OnInit {
           // Se for uma string, usa diretamente
           this.logoTipoImgUrl = logoTipoImg;
         }*/
+        dados.detalhes[0].subBoletins = (dados.detalhes[0].subBoletins.filter(x => parseFloat(x.unidade) != 0));
         this.dataSource = dados.detalhes.length == 0 ? [] : dados.detalhes[0].subBoletins;
         this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
         this.valorTotalMedicao = dados.valorTotalMedicao || 0;
@@ -207,6 +208,21 @@ export class BoletimMedicaoComponent implements OnInit {
       console.error(erro);
       this._toastService.mensagemError('Erro ao buscar logo cliente!');
     });
+  }
+
+  calcularValorTotalItemBoletim(unidade: string, precoComBdi: number){
+    var quantidadeItem = parseFloat(unidade);
+    return precoComBdi * quantidadeItem;
+  }
+
+  calcularSomaValorTotal(){
+    let valorSaldoSomado = 0;
+    this.dataSource.forEach( x => {
+      var quantidadeItem = parseFloat(x.unidade);
+      valorSaldoSomado += quantidadeItem * x.precoComBdi;
+    })
+
+    return valorSaldoSomado.toFixed(2);
   }
 
   //Método para gerar o PDF

@@ -44,4 +44,5 @@ export class AlterarMedicaoProjetoRequest {
     resumo: string;
     items: ItemMedicao[];
     idMedicoesProjeto: number;
+    idProjeto: number;
   }

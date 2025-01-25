@@ -2,8 +2,15 @@
   <mat-card class="card-content">
     <mat-card-header><span>Aprovações</span></mat-card-header>
     <div style="padding-left: 30px;">
-      <h3>Informe um contrato para exibir as medições</h3>            
-      <mat-form-field style="margin-left: 5px;" >
+      <h3>Informe um contrato para exibir as medições</h3> 
+      <mat-form-field>
+        <mat-label>Selecione o cliente</mat-label>
+        <mat-select [(ngModel)]="selectedPrefeitura" disableRipple (selectionChange)="onSelectionChange($event.value)">
+          <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura" >{{prefeitura.nome}}</mat-option>
+        </mat-select>
+      </mat-form-field>   
+
+      <mat-form-field style="margin-left: 5px;" [style.display]="exibirContrato ? '' : 'none'">
         <mat-label>Selecione o contrato</mat-label>
         <mat-select disableRipple [(ngModel)]="contratoSelecionado">
           <mat-option *ngFor="let contrato of listaContratos" [value]="contrato.idContrato" >{{contrato.numeroContrato}}</mat-option>

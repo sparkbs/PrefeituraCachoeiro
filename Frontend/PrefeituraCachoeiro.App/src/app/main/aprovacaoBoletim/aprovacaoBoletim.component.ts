@@ -12,6 +12,8 @@ import { AprovarMedicaoComponent } from './aprovarMedicao/aprovarMedicao.compone
 import { MatDialog } from '@angular/material/dialog';
 import { ToastService } from 'src/app/services/toast.service';
 import { Router } from '@angular/router';
+import { PrefeituraResponse, PrefeituraFilter } from 'src/app/response/prefeituraResponse/prefeituraResponse';
+import { PrefeituraService } from 'src/app/services/prefeitura.service';
 
 @Component({
   selector: 'app-aprovacaoBoletim',
@@ -26,10 +28,38 @@ export class AprovacaoBoletimComponent implements OnInit {
   listaProjetos: ProjetoResponse[] = [];
   medicaoProjetos : MedicoesModel[] = [];
   showProjetos: boolean = false;
-  constructor(private readonly api: ContratosService,public _projetoControllerService: ProjetoService,private readonly apiMedicoes: MedicoesService,private _toastService: ToastService, private router: Router) { }
+  listaPrefeitura: PrefeituraResponse[] = [];
+  selectedPrefeitura: number | null = null; // Valor selecionado
+  exibirContrato = false;
+
+  constructor(private readonly apiPrefeitura: PrefeituraService,private readonly api: ContratosService,public _projetoControllerService: ProjetoService,private readonly apiMedicoes: MedicoesService,private _toastService: ToastService, private router: Router) { }
 
   async ngOnInit() {
-    await this.buscarListaContratos(21);
+    await this.buscarListaPrefeituras();
+    //await this.buscarListaContratos(21);
+  }
+
+  async onSelectionChange(prefeituraId: number){
+    this.exibirContrato = true;
+    this.isLoading = true;
+    await this.buscarListaContratos(prefeituraId);
+  }
+
+  async buscarListaPrefeituras(){
+    var prefeituraFilter : PrefeituraFilter = new PrefeituraFilter();
+    prefeituraFilter.nome = "";
+    prefeituraFilter.itemsPorPagina = 1000000;
+    prefeituraFilter.pagina = 1;
+    await this.apiPrefeitura.BuscarTodasPrefeituras(prefeituraFilter)
+    .then((result) => {
+      this.listaPrefeitura = result.data;
+    })
+    .catch(() => {
+      this._toastService.mensagemError("Erro ao buscar prefeitura!");
+    })
+    .finally(() =>{
+      this.isLoading = false;
+    });
   }
 
   async buscar(contratoId: number){

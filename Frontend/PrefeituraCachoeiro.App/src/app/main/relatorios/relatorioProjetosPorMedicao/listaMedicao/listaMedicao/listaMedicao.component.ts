@@ -140,6 +140,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
       alterarMedicaoRequest.dataMedicao = this.medicoes.dataMedicao;
       alterarMedicaoRequest.idContrato = this.medicoes.idContrato;
       alterarMedicaoRequest.idMedicoesProjeto = this.medicoes.idMedicoesProjeto;
+      alterarMedicaoRequest.idProjeto = this.medicoes.idProjeto;
       const novaLista = this.medicoes.items.map(item => ({
         idItemContrato: item.idItemContrato,
         unidade: item.unidade || 0

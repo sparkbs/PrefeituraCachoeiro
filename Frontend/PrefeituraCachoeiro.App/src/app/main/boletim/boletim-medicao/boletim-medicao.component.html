@@ -92,8 +92,6 @@
         <th colspan="17">DESCRIÇÃO</th>
         <th colspan="1">QUANTIDADE</th>
         <th colspan="1">UND</th>
-        <th colspan="1">PREÇO SEM BDI</th>
-        <th colspan="1">BDI</th>
         <th colspan="1">PREÇO COM BDI</th>
         <th colspan="1">VALOR TOTAL</th>
       </tr>
@@ -106,8 +104,6 @@
         <th></th>
         <th></th>
         <th></th>
-        <th></th>
-        <th></th>
       </tr>
 
       <ng-container *ngFor="let item of dataSource">
@@ -116,18 +112,16 @@
           <td>{{ item.numero }}</td>
           <td>{{ item.codigoAta }}</td>
           <td colspan="17">{{ item.descricao }}</td>
-          <td>{{ item.quantidade }}</td>
+          <td> - </td>
           <td>{{ item.unidade }}</td>
-          <td>{{ item.precoSemBdi ? ('R$ ' + item.precoSemBdi.toFixed(2)) : '' }}</td>
-          <td>{{ item.bdi ? item.bdi + '%' : '' }}</td>
           <td>{{ item.precoComBdi ? ('R$ ' + item.precoComBdi.toFixed(2)) : '' }}</td>
-          <td>{{ item.valorTotal ? ('R$ ' + item.valorTotal.toFixed(2)) : '' }}</td>
+          <td>{{ item.valorTotal ? ('R$ ' + (calcularValorTotalItemBoletim(item.unidade, item.precoComBdi))) : '' }}</td>
         </tr>
       </ng-container>
 
       <tr>
-        <td style="background-color: #ffffff;" colspan="23" class="highlight">VALOR TOTAL DA MEDIÇÃO:</td>
-        <td style="background-color: #df0101;" colspan="2" class="highlight">R$ {{ this.valorTotalMedicao }}</td>
+        <td style="background-color: #ffffff;" colspan="21" class="highlight">VALOR TOTAL DA MEDIÇÃO:</td>
+        <td style="background-color: #df0101;" colspan="2" class="highlight">R$ {{ calcularSomaValorTotal() }}</td>
       </tr>
     </tbody>
   </table>
