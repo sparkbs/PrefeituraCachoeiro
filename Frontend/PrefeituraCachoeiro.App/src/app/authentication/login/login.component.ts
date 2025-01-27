@@ -14,8 +14,8 @@ export class LoginComponent {
   login: LoginRequest = new LoginRequest();
 
   constructor(
-    private _router: Router, 
-    private readonly api: AuthService, 
+    private _router: Router,
+    private readonly api: AuthService,
     private readonly cookie: CookieProjetaService,
     private _toastService: ToastService) {
 
@@ -23,7 +23,7 @@ export class LoginComponent {
   async onSubmit(): Promise<void> {
 
     await this.api.Login(this.login)
-    .then((result) => {  
+    .then((result) => {
       this.cookie.setToken(result.accessToken.accessToken);
       this.cookie.setCookie("_login",this.login.Login.charAt(0).toUpperCase() + this.login.Login.slice(1));
       this.cookie.setCookie("_nome",result.accessToken.nome);
