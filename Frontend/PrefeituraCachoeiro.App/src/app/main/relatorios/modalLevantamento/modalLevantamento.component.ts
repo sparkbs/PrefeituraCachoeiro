@@ -30,6 +30,7 @@ export class ModalLevantamentoComponent implements OnInit {
   form: FormGroup;
   listaProjetos: ProjetoResponse[] = [];
   listaMedicoes: MedicoesResponse[] = [];
+  listaContratos: number[] =[];
 
   dataSource = new MatTableDataSource<TabelaLevantamento>(this.dadosTabela);
 
@@ -92,17 +93,20 @@ export class ModalLevantamentoComponent implements OnInit {
     this._medicaoControllerService.BuscarTodasMedicoes(medicoesRequest)
     .then((res) => {
       this.listaMedicoes = res.data;
+      this.listaContratos = [];
 
       if (this.listaMedicoes.length != 0) {
         let dadoTabela: TabelaLevantamento;
         this.listaMedicoes.forEach((res) => {
+          this.listaContratos.push(Number(res.contratos.numeroContrato));
+
           res.items.forEach((resItem) => {
-            const index = this.dadosTabela.findIndex(resIndex => resIndex.idItem == resItem.itemsContrato.itemId);
-            if (index !== -1) {
+            const indexTab = this.dadosTabela.findIndex(resIndex => resIndex.idItem == resItem.itemsContrato.itemId);
+            if (indexTab !== -1) {
               let medicaoLevantamento: MedicaoLevantamento = new MedicaoLevantamento();
               medicaoLevantamento.qtdItem = resItem.unidade;
               medicaoLevantamento.valorTotalComBdi = resItem.itemsContrato.valorComBdi * resItem.unidade;
-              this.dadosTabela[index].medicoes.push(medicaoLevantamento);
+              this.dadosTabela[indexTab].medicoes.push(medicaoLevantamento);
             }
             else {
               dadoTabela = new TabelaLevantamento();
