@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
 import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { MedicaoLevantamento, MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
@@ -42,7 +43,8 @@ export class ModalLevantamentoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { idProjeto: number },
     public _projetoControllerService: ProjetoService,
     private _toastService: ToastService,
-    private _medicaoControllerService: MedicoesService
+    private _medicaoControllerService: MedicoesService,
+    private globalService: GlobalServicesService
   ) { }
 
   async ngOnInit() {
@@ -105,7 +107,9 @@ export class ModalLevantamentoComponent implements OnInit {
             if (indexTab !== -1) {
               let medicaoLevantamento: MedicaoLevantamento = new MedicaoLevantamento();
               medicaoLevantamento.qtdItem = resItem.unidade;
-              medicaoLevantamento.valorTotalComBdi = resItem.itemsContrato.valorComBdi * resItem.unidade;
+              medicaoLevantamento.idItemContrato = resItem.idItemContrato;
+              medicaoLevantamento.valorComBdi = resItem.itemsContrato.item.valorComBdi;
+
               this.dadosTabela[indexTab].medicoes.push(medicaoLevantamento);
             }
             else {
@@ -113,7 +117,8 @@ export class ModalLevantamentoComponent implements OnInit {
 
               let medicaoLevantamento: MedicaoLevantamento = new MedicaoLevantamento();
               medicaoLevantamento.qtdItem = resItem.unidade;
-              medicaoLevantamento.valorTotalComBdi = resItem.itemsContrato.valorComBdi * resItem.unidade;
+              medicaoLevantamento.idItemContrato = resItem.idItemContrato;
+              medicaoLevantamento.valorComBdi = resItem.itemsContrato.item.valorComBdi;
 
               dadoTabela.idItem = resItem.itemsContrato.itemId
               dadoTabela.nome = resItem.itemsContrato.item.descricao
@@ -146,6 +151,20 @@ export class ModalLevantamentoComponent implements OnInit {
     else {
       this._toastService.messageWarning("Um projeto deve ser selecionado!");
     }
+  }
+
+  buscarItemMedicao(idItemContrato: number){
+    return this.globalService.getItems(idItemContrato).quantidades;
+  }
+
+  formatToCurrency(valor: number): string {
+    let valorFormatado = valor.toFixed(2);  // 2 casas decimais
+
+    valorFormatado = valorFormatado.replace('.', ',');
+
+    valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    return 'R$ ' + valorFormatado;
   }
 
 }
