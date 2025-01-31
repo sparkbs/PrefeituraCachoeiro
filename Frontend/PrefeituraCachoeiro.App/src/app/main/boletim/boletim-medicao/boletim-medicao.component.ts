@@ -12,7 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
-import { BoletimProjetoCabecalho, BoletimResponse, SubBoletim } from 'src/app/response/BoletimResponse/boletimResponse';
+import { BoletimMedicaoResponse, BoletimProjetoCabecalho, BoletimResponse, SubBoletim } from 'src/app/response/BoletimResponse/boletimResponse';
 import { BoletimService } from 'src/app/services/boletim.service';
 import { BuscarBoletimMedicaoRequest } from 'src/app/request/BoletimRequest/boletimMedicaoRequest';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
@@ -37,8 +37,9 @@ export class BoletimMedicaoComponent implements OnInit {
   listaMedicoes: MedicoesResponse[] = [];
   form: FormGroup;
   contratoSelecionado: ContratosResponse;
-  boletim: BoletimResponse;
+  boletim: BoletimMedicaoResponse;
   contratoSelecionadoPesquisa: number;
+  nomePrefeitura: string = ''; // URL tratada da imagem do logotipo
 
   // Variável para gerenciar estado de carregamento e erros
   isLoading = true;
@@ -129,11 +130,11 @@ export class BoletimMedicaoComponent implements OnInit {
   }
 
   async onSelectionChangeMedicao(medicaoId: number) {
-    this.carregarBoletinsMedicao(medicaoId);
+    await this.carregarBoletinsMedicao(medicaoId);
   }
 
   // Método para carregar os dados do boletim de medição
-  carregarBoletinsMedicao(medicaoId: number): void {
+  async carregarBoletinsMedicao(medicaoId: number) {
     // this.boletimService.getBoletinsMedicao().subscribe({
     //   next: (dados) => {
     //     if (dados) {
@@ -166,11 +167,12 @@ export class BoletimMedicaoComponent implements OnInit {
       idMedicao: medicaoId
     }
 
-    this._boletimControllerService.BuscarBoletimMedicao(boletimMedicaoRequest)
+    await this._boletimControllerService.BuscarBoletimMedicao(boletimMedicaoRequest)
     .then(async (dados) => {
+      console.log(dados);
       if (dados.detalhes.length != 0) {
         this.boletim = dados;
-        this.boletimCabecalho = dados.boletimProjetoCabecalho;
+        this.boletimCabecalho = dados.boletimMedicaoCabecalho;
 
         // Verificar o tipo do campo logoTipoImg
         await this.RetornarLogoCliente(this.contratoSelecionado.prefeituraId);
@@ -202,6 +204,7 @@ export class BoletimMedicaoComponent implements OnInit {
     .then((res) => {
       if (res) {
         this.logoTipoImgUrl = res.logo;
+        this.nomePrefeitura = res.nome;
       }
     })
     .catch((erro) => {

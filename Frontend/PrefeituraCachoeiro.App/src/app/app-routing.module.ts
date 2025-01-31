@@ -16,6 +16,7 @@ import { BoletimMedicaoComponent } from './main/boletim/boletim-medicao/boletim-
 import { BoletimProjetoComponent } from './main/boletim/boletim-projeto/boletim-projeto.component';
 import { BoletimDetalhadoComponent } from './main/boletim/boletim-detalhado/boletim-detalhado.component';
 import { AprovacaoBoletimComponent } from './main/aprovacaoBoletim/aprovacaoBoletim.component';
+import { PowerBIComponent } from './main/relatorios/powerBI/powerBI.component';
 
 const routes: Routes = [
 
@@ -37,7 +38,8 @@ const routes: Routes = [
       { path: 'boletimMedicao/:contratoId/:medicaoId', component: BoletimMedicaoComponent },
       { path: 'boletimPorProjeto/:projetoId/:medicaoId', component: BoletimProjetoComponent },
       { path: 'boletimDetalhado', component: BoletimDetalhadoComponent },
-      { path: 'aprovacaoBoletim', component: AprovacaoBoletimComponent }
+      { path: 'aprovacaoBoletim', component: AprovacaoBoletimComponent },
+      { path: 'powerBi', component: PowerBIComponent }
     ]
   }
 ];

@@ -33,10 +33,11 @@
 
   </div>
 
-  <!-- Tabela para exibir dados -->
+<!-- <div class="boletim-medicao" id="content" #content>
+  Tabela para exibir dados 
   <table class="styled-table" *ngIf="this.boletim">
     <thead *ngIf="boletimCabecalho">
-      <!-- Linha do logotipo e título -->
+       Linha do logotipo e título 
       <tr>
         <th colspan="25" class="header-logo-title">
           <div class="logo-title-container">
@@ -48,13 +49,13 @@
           </div>
         </th>
       </tr>
-      <!-- Linha do título principal -->
+       Linha do título principal 
       <tr>
         <th colspan="25" class="main-title">
           {{ boletimCabecalho.tipoBoletimEmissao }}
         </th>
       </tr>
-      <!-- Linha do resumo -->
+       Linha do resumo 
       <tr>
         <th colspan="20" rowspan="2" class="summary">
           RESUMO: {{ boletimCabecalho.resumoBoletim }}
@@ -65,19 +66,19 @@
         <th colspan="3" class="bdi">BDI: {{ boletimCabecalho.bdi01 }}%</th>
         <th colspan="3" class="bdi">BDI 2 {{ boletimCabecalho.bdi02 }}</th>
       </tr>
-      <!-- Linha de data e contrato -->
+      Linha de data e contrato 
       <tr>
         <th colspan="10" class="left-align">DATA DE MEDIÇÃO: {{ boletimCabecalho.dataMedicao | date: 'dd/MM/yyyy' }}</th>
         <th colspan="10" class="center-align">NÚMERO DA MEDIÇÃO: {{ boletimCabecalho.numeroMedicao }}</th>
         <th colspan="5" class="center-align">{{ boletimCabecalho.contrato }}</th>
       </tr>
-      <!-- Linha de projeto e valor -->
+      Linha de projeto e valor 
       <tr>
         <th colspan="20" class="left-align">{{ boletimCabecalho.nomeProjeto }}</th>
         <th colspan="2" class="highlight">VALOR TOTAL DA MEDIÇÃO:</th>
         <th colspan="3" class="highlight">R$ {{ valorTotalMedicao.toFixed(2) }}</th>
       </tr>
-      <!-- Linha do rodapé do cabeçalho -->
+      Linha do rodapé do cabeçalho 
       <tr>
         <th colspan="25" class="footer-header">
           BOLETIM DE MEDIÇÃO: {{ boletimCabecalho.nomeBoletim }}
@@ -107,7 +108,7 @@
       </tr>
 
       <ng-container *ngFor="let item of dataSource">
-        <!-- Itera sobre os itens principais -->
+        Itera sobre os itens principais 
         <tr class="item-principal">
           <td>{{ item.numero }}</td>
           <td>{{ item.codigoAta }}</td>
@@ -138,6 +139,116 @@
       <p>CNPJ: 12.345.678/0001-90</p>
     </div>
   </tfoot>
+</div> -->
+
+<div class="boletim-medicao" id="content" #content>
+  <!-- Tabela de Dados -->
+  <table class="styled-table">
+    <thead *ngIf="boletimCabecalho">
+      <!-- Linha do logotipo e título -->
+      <tr>
+        <th colspan="25" class="header-logo-title">
+          <div class="logo-title-container">
+            <img [src]="logoTipoImgUrl" alt="Logotipo" class="logo" />
+            <div class="title-container">
+              <h2>{{ nomePrefeitura }}</h2>
+              <h4>{{ boletimCabecalho.nomeUnidade }}</h4>
+            </div>
+          </div>
+        </th>
+      </tr>
+      <!-- Linha do título principal -->
+      <tr>
+        <th colspan="25" class="main-title">
+          {{ boletimCabecalho.tipoBoletimEmissao }}
+        </th>
+      </tr>
+      <!-- Linha do resumo -->
+      <tr>
+        <th colspan="20" rowspan="2" class="summary">
+          RESUMO: {{ boletimCabecalho.resumoBoletim }}
+        </th>
+        <th colspan="5" class="consultancy-header">{{ boletimCabecalho.descontoFiscalizacao }}</th>
+      </tr>
+      <tr>
+        <th colspan="3" class="bdi">BDI: (FISCALIZAÇÃO)</th>
+        <th colspan="3" class="bdi">BDI 2 (PROJETOS)</th>
+      </tr>
+      <!-- Linha de data e contrato -->
+      <tr>
+        <th colspan="10" class="left-align">DATA DE MEDIÇÃO: {{ boletim.detalhes[0].dataMedicao | date: 'dd/MM/yyyy' }}
+        </th>
+        <th colspan="10" class="center-align">NÚMERO DA MEDIÇÃO: {{ boletim.detalhes[0].numeroMedicao }}</th>
+        <th colspan="5" class="center-align">{{ boletimCabecalho.contrato }}</th>
+      </tr>
+      <!-- Linha de projeto e valor -->
+      <tr>
+        <th colspan="20" class="left-align">{{ boletimCabecalho.nomeProjeto }}</th>
+        <th colspan="2" class="highlight">VALOR TOTAL DA MEDIÇÃO:</th>
+        <th colspan="3" class="highlight">R$ {{ calcularSomaValorTotal() }}</th>
+      </tr>
+      <!-- Linha do rodapé do cabeçalho -->
+      <tr>
+        <th colspan="25" class="footer-header">
+          BOLETIM MEDICÃO {{ boletim.detalhes[0].numeroMedicao }}
+        </th>
+      </tr>
+    </thead>
+
+    <tbody *ngIf=" boletimCabecalho && dataSource">
+      <tr class="body-first-head">
+        <th colspan="1">NÚMERO</th>
+        <th colspan="1">CÓDIGO EM ATA (REF.)</th>
+        <th colspan="17">DESCRIÇÃO</th>
+        <th colspan="1">QUANTIDADE</th>
+        <th colspan="1">UND</th>
+        <th colspan="1">PREÇO COM BDI</th>
+        <th colspan="2">VALOR TOTAL</th>
+      </tr>
+
+      <tr style="background-color: #F8CBAD;">
+        <th></th>
+        <th></th>
+        <th colspan="17">Item a medir</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th colspan="2"></th>
+      </tr>
+
+      <ng-container *ngFor="let item of dataSource">
+        <tr class="item-principal">
+          <td>{{ item.numero }}</td>
+          <td>{{ item.codigoAta }}</td>
+          <td colspan="17">{{ item.descricao }}</td>
+          <td> - </td>
+          <td>{{ item.unidade }}</td>
+          <td>{{ item.precoComBdi ? ('R$ ' + item.precoComBdi.toFixed(2)) : '' }}</td>
+          <td colspan="2">{{ item.valorTotal ? ('R$ ' + (calcularValorTotalItemBoletim(item.unidade, item.precoComBdi))) : '' }}</td>
+        </tr>
+      </ng-container>
+
+      <tr>
+        <td style="background-color: #ffffff;" colspan="22" class="highlight">VALOR TOTAL DA MEDIÇÃO:</td>
+        <td style="background-color: #df0101;" colspan="2" class="highlight">R$ {{ calcularSomaValorTotal() }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <tfoot *ngIf="boletimCabecalho && dataSource" class="signature-section">
+      <div class="signature-contratante">
+        <p>_______________________________________</p>
+        <p> {{this.nomeUnidade}}</p>
+      </div>
+      <div class="signature-contratada">
+        <p>_______________________________________</p>
+        <p>OBJETIVA PROJETOS E SERVIÇOS LTDA</p>
+        <p>CNPJ: 12.345.678/0001-90</p>
+      </div>
+  </tfoot>
 </div>
+
+</div>
+
 <!-- Botão para gerar PDF -->
 <button (click)="generatePDF()" class="button-class" *ngIf="this.boletim">Gerar PDF</button>

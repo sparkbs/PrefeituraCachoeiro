@@ -40,3 +40,9 @@ export class SubBoletim {
   precoComBdi: number;
   valorTotal: number;
 }
+
+export class BoletimMedicaoResponse {
+  boletimMedicaoCabecalho: BoletimProjetoCabecalho;
+  detalhes: Detalhe[];
+  valorTotalMedicao: number;
+}

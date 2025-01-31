@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ElementRef, ViewChild } from '@angular/core';
 import { jsPDF } from 'jspdf';
 import { BoletimDetalhadoModel } from 'src/app/modelsBoletim/boletim-models/boletim-detalhado.model';
-import { BoletimProjetoCabecalho, BoletimResponse, SubBoletim } from 'src/app/response/BoletimResponse/boletimResponse';
+import { BoletimMedicaoResponse, BoletimProjetoCabecalho, BoletimResponse, SubBoletim } from 'src/app/response/BoletimResponse/boletimResponse';
 import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -33,7 +33,7 @@ export class BoletimDetalhadoComponent implements OnInit {
   listaMedicoes: MedicoesResponse[] = [];
   form: FormGroup;
   contratoSelecionado: ContratosResponse;
-  boletim: BoletimResponse;
+  boletim: BoletimMedicaoResponse;
 
   // Variáveis de controle de carregamento e erros
   isLoading = true;
@@ -111,7 +111,7 @@ export class BoletimDetalhadoComponent implements OnInit {
         .then(async (dados) => {
           if (dados.detalhes.length != 0) {
             this.boletim = dados;
-            this.boletimCabecalho = dados.boletimProjetoCabecalho;
+            this.boletimCabecalho = dados.boletimMedicaoCabecalho;
 
             // Verificar o tipo do campo logoTipoImg
             await this.RetornarLogoCliente(this.contratoSelecionado.prefeituraId);
