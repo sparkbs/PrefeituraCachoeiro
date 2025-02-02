@@ -42,6 +42,7 @@ export class ProjetoService {
   public async CriarProjeto(projetoRequest: CriarProjetoRequest): Promise<RetornaProjetoIdResponse> {
     const formData = new FormData();
     formData.append('Nome', projetoRequest.nome);
+    formData.append('CodigoProjeto', projetoRequest.codigoProjeto.toString());
 
     return await firstValueFrom(
       this.http.post<RetornaProjetoIdResponse>(

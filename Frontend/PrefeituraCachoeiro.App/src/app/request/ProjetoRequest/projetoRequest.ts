@@ -9,6 +9,7 @@ export class ProjetoRequest extends BaseFilter
 export class CriarProjetoRequest 
 {
     nome: string = '';
+    codigoProjeto: number;
 }
 
 export class AtualizarProjetoRequest

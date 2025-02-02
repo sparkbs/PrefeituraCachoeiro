@@ -26,6 +26,11 @@
             <td mat-cell *matCellDef="let element"> {{element.nomeContrato}} </td>
           </ng-container>
 
+          <ng-container matColumnDef="codigoProjeto">
+            <th mat-header-cell *matHeaderCellDef> Código </th>
+            <td mat-cell *matCellDef="let element"> {{element.codigoProjeto}} </td>
+          </ng-container>
+
           <ng-container matColumnDef="nomeProjeto">
             <th mat-header-cell *matHeaderCellDef> Nome </th>
             <td mat-cell *matCellDef="let element"> {{element.nomeProjeto}} </td>

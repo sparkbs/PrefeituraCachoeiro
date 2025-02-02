@@ -19,7 +19,7 @@ import { VinculoProjetoContratoRequest } from 'src/app/request/ContratoRequest/v
   styleUrls: ['./projetos.component.scss']
 })
 export class ProjetosComponent implements OnInit {
-  displayedColumns: string[] = ['nomePrefeitura','nomeContrato', 'nomeProjeto', 'acoes'];
+  displayedColumns: string[] = ['nomePrefeitura','nomeContrato', 'codigoProjeto', 'nomeProjeto', 'acoes'];
   listaProjetos: ProjetoResponse[] = [];
   dataSource = new MatTableDataSource<ProjetoResponse>(this.listaProjetos);
   projetos: ProjetosResponse;
@@ -83,6 +83,7 @@ export class ProjetosComponent implements OnInit {
           idProjeto: res.idProjeto,
           nomeProjeto: res.nomeProjeto,
           nomePrefeitura: prefeitura ? prefeitura.nome : '',
+          codigoProjeto: res.codigoProjeto,
           nomeContrato: res.contratos.length != 0 ? res.contratos[0].contratos.numeroContrato : '',
           contratos: res.contratos
         };

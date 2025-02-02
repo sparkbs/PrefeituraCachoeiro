@@ -5,6 +5,7 @@ export class ProjetoResponse{
     nomeProjeto: string = '';
     nomeContrato?: string;
     nomePrefeitura?: string;
+    codigoProjeto: number;
     contratos: ContratoModel[];
     acoes?: string;
 }

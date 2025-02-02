@@ -30,6 +30,12 @@
         <input matInput formControlName="nome">
         <mat-error *ngIf="form.get('nome').hasError('required')">Campo obrigatório!</mat-error>
       </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Código do projeto</mat-label>
+        <input matInput formControlName="codigoProjeto">
+        <mat-error *ngIf="form.get('codigoProjeto').hasError('required')">Campo obrigatório!</mat-error>
+      </mat-form-field>
   </form>
 
   <div class="group-buttons">

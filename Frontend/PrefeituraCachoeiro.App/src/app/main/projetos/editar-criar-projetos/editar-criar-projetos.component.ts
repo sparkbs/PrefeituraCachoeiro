@@ -48,7 +48,8 @@ export class EditarCriarProjetosComponent implements OnInit {
     this.form = this.fb.group({
       nome: [{ value: '', disabled: true }, Validators.required],
       contrato: [{ value: 0, disabled: true }, Validators.required],
-      prefeitura: [0, [Validators.required]]
+      prefeitura: [0, [Validators.required]],
+      codigoProjeto: [{ value: 0, disabled: true }, Validators.required]
     });
   }
 
@@ -74,7 +75,8 @@ export class EditarCriarProjetosComponent implements OnInit {
 
   saveForm() {
     const projetoRequest: CriarProjetoRequest  = {
-      nome: this.form.get('nome').value
+      nome: this.form.get('nome').value,
+      codigoProjeto: this.form.get('codigoProjeto').value
     };
 
     if (this.data.edicao && this.data.id) {
@@ -139,6 +141,7 @@ export class EditarCriarProjetosComponent implements OnInit {
 
     async onSelectionChangeContrato() {
       this.form.get('nome').enable();
+      this.form.get('codigoProjeto').enable();
     }
   
     async buscarListaContratos(prefeituraId: number){
