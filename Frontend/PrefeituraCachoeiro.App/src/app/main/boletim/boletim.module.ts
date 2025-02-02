@@ -14,9 +14,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AprovacaoBoletimComponent } from '../aprovacaoBoletim/aprovacaoBoletim.component';
 import { MatButtonModule } from '@angular/material/button';
+import { AprovarMedicaoComponent } from '../aprovacaoBoletim/aprovarMedicao/aprovarMedicao.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
-  declarations: [ BoletimComponent, BoletimMedicaoComponent, BoletimProjetoComponent, BoletimDetalhadoComponent, AprovacaoBoletimComponent ],
+  declarations: [ BoletimComponent, BoletimMedicaoComponent, BoletimProjetoComponent, BoletimDetalhadoComponent, AprovacaoBoletimComponent, AprovarMedicaoComponent ],
   imports: [
     CommonModule,
     MatGridListModule,
@@ -28,7 +35,13 @@ import { MatButtonModule } from '@angular/material/button';
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule,
+    MatTabsModule,
+    BrowserAnimationsModule,
+    BrowserModule,
+    MatTableModule,
+    MatListModule
   ]
 })
 export class BoletimModule {}

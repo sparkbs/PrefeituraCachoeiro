@@ -46,4 +46,14 @@ export class ToastService {
 ): void {
     this.mensagemInfo(msg, duration, btn, horizontalPosition, verticalPosition, ['toast-error']);
 }
+
+  messageWarning(
+    msg: string,
+    duration: number = this._defaultDuration,
+    btn: string = '',
+    horizontalPosition: MatSnackBarHorizontalPosition = this._defaultHorizPosition,
+    verticalPosition: MatSnackBarVerticalPosition = this._defaultVertPosition
+  ) {
+    this.mensagemInfo(msg, duration, btn, horizontalPosition, verticalPosition, ['toast-warning']);
+  }
 }

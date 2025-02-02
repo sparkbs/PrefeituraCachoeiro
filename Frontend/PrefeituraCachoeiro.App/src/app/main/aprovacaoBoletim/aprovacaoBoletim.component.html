@@ -1,9 +1,16 @@
 <div class="aprovacoes-body">
   <mat-card class="card-content">
     <mat-card-header><span>Aprovações</span></mat-card-header>
-    <div >
-      <h3>Informe um contrato para exibir as medições</h3>            
-      <mat-form-field style="margin-left: 5px;" >
+    <div style="padding-left: 30px;">
+      <h3>Informe um contrato para exibir as medições</h3> 
+      <mat-form-field>
+        <mat-label>Selecione o cliente</mat-label>
+        <mat-select [(ngModel)]="selectedPrefeitura" disableRipple (selectionChange)="onSelectionChange($event.value)">
+          <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura" >{{prefeitura.nome}}</mat-option>
+        </mat-select>
+      </mat-form-field>   
+
+      <mat-form-field style="margin-left: 5px;" [style.display]="exibirContrato ? '' : 'none'">
         <mat-label>Selecione o contrato</mat-label>
         <mat-select disableRipple [(ngModel)]="contratoSelecionado">
           <mat-option *ngFor="let contrato of listaContratos" [value]="contrato.idContrato" >{{contrato.numeroContrato}}</mat-option>
@@ -13,51 +20,51 @@
         <button mat-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -10px; " [style.display]="contratoSelecionado > 0 ? '' : 'none'" (click)="buscar(contratoSelecionado)">Buscar</button>
     </div>  
 
-    <div style="gap: 5%;" [style.display]="showProjetos ? 'flex' : 'none'" >        
-
-      <mat-card class="card-content-aprovacoes" *ngFor="let projeto of listaProjetos">
-        <mat-card-header><span style="font-size: 15px;">{{projeto.nomeProjeto}}</span></mat-card-header>
-        <ul>
-          <li>
-            <span >Medição 1</span>
-            <span matTooltip="Aprovar Medição" style="cursor: pointer; margin-left:10px;" >
-              <mat-icon style="font-size: 15px;height: auto; width: auto;">done_outline</mat-icon>
-            </span>
-            <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;" >
-              <mat-icon style="font-size: 15px;height: auto; width: auto;">highlight_off</mat-icon>
-            </span>
-            <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;" >
-              <mat-icon style="font-size: 15px;height: auto; width: auto;">cloud_download</mat-icon>
-            </span>
-          </li>
-          <li>
-            <span >Medição 2</span>
-            <span matTooltip="Aprovar Medição" style="cursor: pointer;margin-left:10px;" >
-              <mat-icon style="font-size: 15px;height: auto; width: auto;">done_outline</mat-icon>
-            </span>
-            <span matTooltip="Recusar Medição" style="cursor: pointer; margin-left: 5px;" >
-              <mat-icon style="font-size: 15px;height: auto; width: auto;">highlight_off</mat-icon>
-            </span>
-            <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;" >
-              <mat-icon style="font-size: 15px;height: auto; width: auto;">cloud_download</mat-icon>
-            </span>
-          </li>
-          <li>
-            <span >Medição 3</span>
-            <span matTooltip="Aprovar Medição" style="cursor: pointer;margin-left:10px;" >
-              <mat-icon style="font-size: 15px;height: auto; width: auto;">done_outline</mat-icon>
-            </span>
-            <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;" >
-              <mat-icon style="font-size: 15px;height: auto; width: auto;">highlight_off</mat-icon>
-            </span>
-            <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;" >
-              <mat-icon style="font-size: 15px;height: auto; width: auto;">cloud_download</mat-icon>
-            </span>
-          </li>
-        </ul>
-      </mat-card>
-
+    <div 
+    style="display: flex; flex-wrap: wrap; gap: 5%; justify-content: flex-start;padding-left: 30px;overflow-y: auto; " 
+    [style.display]="showProjetos ? 'flex' : 'none'">
+  
+    <mat-card 
+    class="card-content-aprovacoes" 
+    *ngFor="let medicaoProjeto of medicaoProjetos" 
+    style="flex: 0 1 calc(33.333% - 5%); height: 200px; display: flex; flex-direction: column; margin-bottom: 3px;">
+    
+    <mat-card-header>
+      <span style="font-size: 15px;">Medição {{ medicaoProjeto.numeroMedicao }}</span>
+    </mat-card-header>
+    
+    <ul>
+      <li *ngFor="let projeto of medicaoProjeto.data">
+        <!--<span>{{ projeto.contratos.projetos[0].nomeProjeto }}</span>-->
+        <span>{{ nomeProjeto(projeto?.idProjeto, projeto?.contratos?.projetos) }}</span>
+  
+        <span matTooltip="Aprovar Medição" style="cursor: pointer; margin-left: 10px;" (click)="aprovarMedicao(projeto.idMedicoesProjeto)">
+          <mat-icon style="font-size: 15px;height: auto; width: auto;">done_outline</mat-icon>
+        </span>
+        <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;" (click)="reprovarMedicao(projeto.idMedicoesProjeto)">
+          <mat-icon style="font-size: 15px;height: auto; width: auto;">highlight_off</mat-icon>
+        </span>
+        <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;">
+          <mat-icon style="font-size: 15px;height: auto; width: auto;" (click)="openBoletimMedicao(projeto.idProjeto, medicaoProjeto.data[0].idMedicoesProjeto)">cloud_download</mat-icon >
+        </span>
+      </li>
+    </ul>
+  
+    <!-- Alinha o botão no fim do card e à direita -->
+    <div style="margin-top: auto; display: flex; justify-content: flex-end;padding: 20px;">
+      <button mat-button 
+              style="background-color: royalblue; color: white; width: 30%;" 
+              [style.display]="contratoSelecionado > 0 ? '' : 'none'" 
+              (click)="openBoletim(medicaoProjeto.data[0].idMedicoesProjeto)">
+        Boletim
+      </button>
     </div>
+  
+  </mat-card>
+  
+  
+  </div>
+  
   </mat-card>
 </div>
 

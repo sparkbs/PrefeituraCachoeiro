@@ -1,31 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
+import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
+import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
+import { MedicaoLevantamento, MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
+import { MedicoesService } from 'src/app/services/medicoes.service';
+import { ProjetoService } from 'src/app/services/projeto.service';
+import { ToastService } from 'src/app/services/toast.service';
 
-export interface PeriodicElement {
+export class TabelaLevantamento {
+  idItem: number;
   nome: string;
-  medicao1: number;
-  medicao2: number;
-  medicao3: number;
-  medicao4: number;
-  medicao5: number;
-  medicao6: number;
-  medicao7: number;
-  medicao8: number;
-  medicao9: number;
-  medicao10: number;
-  medicao11: number;
-  medicao12: number;
-  medicaoRestante: number;
+  medicoes: MedicaoLevantamento[] = [];
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { nome: 'Projetista Junior', medicao1: 15, medicao2: 23, medicao3: 1, medicao4: 3, medicao5: 4, medicao6: 5, medicao7: 12, medicao8: 42, medicao9: 13, medicao10: 23, medicao11: 34, medicao12: 54, medicaoRestante: 30},
-  { nome: 'Técnico Sênior',  medicao1: 15, medicao2: 23, medicao3: 1, medicao4: 3, medicao5: 4, medicao6: 5, medicao7: 12, medicao8: 42, medicao9: 13, medicao10: 23, medicao11: 34, medicao12: 54, medicaoRestante: 30},
-  { nome: 'Projeto Elétrico', medicao1: 15, medicao2: 23, medicao3: 1, medicao4: 3, medicao5: 4, medicao6: 5, medicao7: 12, medicao8: 42, medicao9: 13, medicao10: 23, medicao11: 34, medicao12: 54, medicaoRestante: 30, },
-];
 
 @Component({
   selector: 'app-modalLevantamento',
@@ -33,28 +25,146 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./modalLevantamento.component.scss']
 })
 export class ModalLevantamentoComponent implements OnInit {
-  displayedColumns: string[] = ['nome', 'medicao1', 'medicao2', 'medicao3', 'medicao4', 'medicao5', 'medicao6', 'medicao7', 'medicao8', 'medicao9', 'medicao10', 'medicao11', 'medicao12', 'medicaoRestante' ];
-  projetos: string[] = [
-      'projeto1',
-    ];
+  dadosTabela: TabelaLevantamento[] = [];
+  maxMedicoes: number;
+  displayedColumns: string[] = [];
   form: FormGroup;
+  listaProjetos: ProjetoResponse[] = [];
+  listaMedicoes: MedicoesResponse[] = [];
+  listaContratos: number[] =[];
 
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  
+  dataSource = new MatTableDataSource<TabelaLevantamento>(this.dadosTabela);
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: { idProjeto: number },
+    public _projetoControllerService: ProjetoService,
+    private _toastService: ToastService,
+    private _medicaoControllerService: MedicoesService,
+    private globalService: GlobalServicesService
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.createForm();
+    await this.buscarProjetos();
+    this.verificarRecebimento();
     this.dataSource.paginator = this.paginator;
   }
 
   createForm() {
     this.form = this.fb.group({
-          projeto: ['', [Validators.required]],
+      projetoId: [{ value: 0}, Validators.required],
+    });
+  }
+
+  verificarRecebimento() {
+    if (this.data.idProjeto != 0) {
+      this.listaProjetos;
+      this.form.get('projetoId').setValue(this.data.idProjeto);
+      this.buscarMedicoesProjeto();
+    }
+  }
+
+  async buscarProjetos() {
+      const projetoRequest: ProjetoRequest = {
+            nome: '',
+            pagina: 1,
+            itemsPorPagina: 10000
+      };
+
+      await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
+      .then((res) => {
+        this.listaProjetos = res.data;
+      })
+      .catch((erro) => {
+        console.error(erro);
+        this._toastService.mensagemError('Erro ao buscar projetos!');
+      });
+  }
+
+  async buscarMedicao(projetoId: number, contratoId: number) {
+    var medicoesRequest : MedicoesRequest = new MedicoesRequest();
+    medicoesRequest.idProjeto = projetoId;
+    medicoesRequest.idContrato = contratoId;
+    medicoesRequest.itemsPorPagina = 1000000;
+    medicoesRequest.pagina = 1;
+
+    this._medicaoControllerService.BuscarTodasMedicoes(medicoesRequest)
+    .then((res) => {
+      this.listaMedicoes = res.data;
+      this.listaContratos = [];
+
+      if (this.listaMedicoes.length != 0) {
+        let dadoTabela: TabelaLevantamento;
+        this.listaMedicoes.forEach((res) => {
+          this.listaContratos.push(Number(res.contratos.numeroContrato));
+
+          res.items.forEach((resItem) => {
+            const indexTab = this.dadosTabela.findIndex(resIndex => resIndex.idItem == resItem.itemsContrato.itemId);
+            if (indexTab !== -1) {
+              let medicaoLevantamento: MedicaoLevantamento = new MedicaoLevantamento();
+              medicaoLevantamento.qtdItem = resItem.unidade;
+              medicaoLevantamento.idItemContrato = resItem.idItemContrato;
+              medicaoLevantamento.valorComBdi = resItem.itemsContrato.item.valorComBdi;
+
+              this.dadosTabela[indexTab].medicoes.push(medicaoLevantamento);
+            }
+            else {
+              dadoTabela = new TabelaLevantamento();
+
+              let medicaoLevantamento: MedicaoLevantamento = new MedicaoLevantamento();
+              medicaoLevantamento.qtdItem = resItem.unidade;
+              medicaoLevantamento.idItemContrato = resItem.idItemContrato;
+              medicaoLevantamento.valorComBdi = resItem.itemsContrato.item.valorComBdi;
+
+              dadoTabela.idItem = resItem.itemsContrato.itemId
+              dadoTabela.nome = resItem.itemsContrato.item.descricao
+              dadoTabela.medicoes.push(medicaoLevantamento);
+
+              this.dadosTabela.push(dadoTabela);
+            }
+          });
         });
+        this.maxMedicoes = Math.max(...this.dadosTabela.map(item => item.medicoes.length));
+        this.displayedColumns = ['nome', ...Array.from({ length: this.maxMedicoes }, (_, i) => `medicao${i + 1}`)];
+        this.dataSource.data = this.dadosTabela;
+      }
+    })
+    .catch((erro) => {
+      console.error(erro);
+      this._toastService.mensagemError('Erro ao buscar medições!');
+    });
+  }
+
+  async buscarMedicoesProjeto(){
+    this.dataSource.data = [];
+    this.dadosTabela = [];
+    const projetoId: number = this.form.get('projetoId').value;
+    if (projetoId) {
+      const projetoSelecionado = this.listaProjetos.find(res => res.idProjeto == projetoId);
+
+      this.buscarMedicao(projetoId, projetoSelecionado.contratos[0].idContrato);
+    }
+    else {
+      this._toastService.messageWarning("Um projeto deve ser selecionado!");
+    }
+  }
+
+  buscarItemMedicao(idItemContrato: number){
+    return this.globalService.getItems(idItemContrato).quantidades;
+  }
+
+  formatToCurrency(valor: number): string {
+    let valorFormatado = valor.toFixed(2);  // 2 casas decimais
+
+    valorFormatado = valorFormatado.replace('.', ',');
+
+    valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    return 'R$ ' + valorFormatado;
   }
 
 }

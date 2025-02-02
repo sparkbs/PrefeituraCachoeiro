@@ -26,7 +26,7 @@ export class UsuariosService {
   public async DeletarUsuarios(id: number): Promise<GenericResultResponse<UsuariosMensagemResponse>> {
     return await firstValueFrom(
       this.http.delete<GenericResultResponse<UsuariosMensagemResponse>>(
-        `${Environments.APIUrl}/usuarios?id=${id}`
+        `${Environments.APIUrl}/usuarios/${id}`
       )
     );
   }
@@ -55,10 +55,16 @@ export class UsuariosService {
   }
 
   public async AtualizarUsuarios(request: AtualizarUsuariosRequest): Promise<GenericResultResponse<CriarUsuariosResponse>> {
+    const formData = new FormData();
+    formData.append('Id', request.id.toString());
+    formData.append('Login', request.login);
+    formData.append('Nome', request.nome);
+    formData.append('Senha', request.senha);
+    
     return await firstValueFrom(
       this.http.put<GenericResultResponse<CriarUsuariosResponse>>(
         `${Environments.APIUrl}/usuarios`,
-        request
+        formData
       )
     );
   }

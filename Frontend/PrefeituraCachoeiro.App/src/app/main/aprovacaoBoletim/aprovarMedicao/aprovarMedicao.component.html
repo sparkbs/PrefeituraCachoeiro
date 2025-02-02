@@ -4,12 +4,12 @@
     <div class="cadastrarMedicao">
       <mat-form-field>
         <mat-label>Resumo</mat-label>
-        <input [(ngModel)]="aprovarMedicoes.resumo" type="text" matInput/>
+        <input [(ngModel)]="aprovarMedicoes.Resumo" type="text" matInput/>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field style="margin-left: 8px;">
         <mat-label>Data Registro</mat-label>
-        <input matInput type="date" [(ngModel)]="aprovarMedicoes.dataRegistro" />
+        <input matInput type="date" [(ngModel)]="aprovarMedicoes.DataRegistro" />
       </mat-form-field>
       
       <div style="display: flex; flex-wrap: wrap; gap: 10px;">
@@ -21,7 +21,8 @@
         </div>
         <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;" (click)="adicionarDocumento()">
           <mat-icon>playlist_add</mat-icon>
-        </span>       
+        </span>   
+        </div>    
       <div *ngFor="let item of listaDocumentoContrato">
         <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
           {{item.nome}}
@@ -30,7 +31,6 @@
           </span>
         </div>
       </div>   
-      </div>
     </div>
   </div>
 </mat-dialog-content>

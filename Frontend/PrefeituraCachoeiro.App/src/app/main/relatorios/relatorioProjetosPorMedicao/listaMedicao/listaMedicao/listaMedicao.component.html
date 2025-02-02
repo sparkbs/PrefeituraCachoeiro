@@ -1,7 +1,7 @@
-<div>
+<div style="margin-bottom: 35px;">
   <div class="container rounded-shadow-div" style="margin-top: 10px;">
     <!-- <h3 class="texto"> Pegar nome projeto</h3> -->
-    <h3 class="texto"> {{medicoes?.contratos?.projetos[0].nomeProjeto }}</h3>
+    <h3 class="texto"> {{ medicoes?.idProjeto != null ? nomeProjeto(medicoes?.idProjeto) : ''}}</h3>
 
     <!--<span matTooltip="Aprovar Medição" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="aprovarMedicao(medicoes.idMedicoesProjeto)">
       <mat-icon>done_outline</mat-icon>
@@ -9,12 +9,33 @@
     <span matTooltip="Recusar Medição" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="reprovarMedicao(medicoes.idMedicoesProjeto)">
       <mat-icon>highlight_off</mat-icon>
     </span> -->
-    <span matTooltip="Editar Dados" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="enableEditInput()">
+    <span matTooltip="Medições do Projeto" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="openModalLevantamento(this.medicoes.idProjeto)">
+      <mat-icon>assessment</mat-icon>
+    </span>
+    <span matTooltip="Editar Dados" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada" (click)="enableEditInput()">
       <mat-icon>edit</mat-icon>
     </span>
   </div>
 
   <div class="list-container" style="max-height: 530px; overflow-y: auto;">
+    <div style="margin-top: 10px; display: flex; align-items: center; flex-wrap: wrap;">
+      <!-- Primeira div - Quando a condição for verdadeira -->
+      <div *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada || medicoes.resumo is not null" style="margin-top: 10px; display: flex; align-items: center; flex: 1;">
+        <mat-label style="font-weight: bold; margin-right: 8px;">Número da nota fiscal: </mat-label>
+        <input type="text" style="width: 25%; margin-right: 16px;" [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" [(ngModel)]="medicoes.resumo"/>
+        <span style="font-size: 14px; font-weight: bold;" [style.display]="!alterarMedicaoProjeto ? 'block' : 'none'">{{medicoes.resumo}}</span>
+      </div>
+
+      <!-- Segunda div - Status Medição -->
+      <div style="display: flex; align-items: center; flex: none; justify-content: flex-start;">
+        <mat-label style="font-weight: bold; margin-right: 8px;">Status Medição: </mat-label>
+        <mat-label style="font-weight: bold; margin-right: 8px;" [style.color]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Aprovada ? 'green' : medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Recusada ? 'red' : 'blue'">
+          {{ medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'Em Aberto' : medicoes?.statusMedicao.nome }}
+        </mat-label>
+      </div>
+    </div>
+
+
     <!-- Títulos exibidos uma única vez -->
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="margin-top: 8px;">
       <!-- Coluna para 'Item' -->
@@ -22,7 +43,7 @@
         <th mat-header-cell *matHeaderCellDef style="font-size: 13px;"> Item </th>
         <td mat-cell *matCellDef="let item" style="font-size: 12px;">{{ item.itemsContrato.item.identificador }}</td>
       </ng-container>
-  
+
       <!-- Coluna para 'Origem' -->
       <ng-container matColumnDef="item/qtd">
         <th mat-header-cell *matHeaderCellDef style="font-size: 13px;"> Descrição / Quantidade </th>
@@ -86,7 +107,9 @@
       <span>Valor Total Medido: {{ formatToCurrency(somarValorTotal())}}</span>
       <span>Valor Saldo Total: {{ formatToCurrency(somarValorSaldoTotal())}}</span>
 
-      <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="salvar()">Salvar</button>
+      <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="salvar()" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Salvar</button>
     </div>
   </div>
 </div>
+
+<app-loading *ngIf="this.isLoading"></app-loading>

@@ -35,7 +35,7 @@ export class ContratosComponent implements AfterViewInit, OnInit {
     { id: 3,nomePrefeitura: 'Teste',  dataInicioEFim: '25/03/2019 até 25/03/2021', consorcio: 'teste 3', gerente: 'Pedro', valorContrato:200.000, tipoContratacao:'Adesão',acoes: '' }
   ]*/
   lista: ContratosResponse[] = [];
-  displayedColumns: string[] = ['numeroContrato','nomePrefeitura', 'dataInicio', 'dataTermino', 'gerente','valor','tipoContratacao','acoes'];
+  displayedColumns: string[] = ['numeroContrato','nomePrefeitura', 'dataInicio', 'dataTermino', 'gerente','valor','valorTotalMedido', 'valorSaldoRestante','tipoContratacao','acoes'];
   dataSource: MatTableDataSource<ContratosResponse>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -104,24 +104,20 @@ export class ContratosComponent implements AfterViewInit, OnInit {
     });
   }
 
-  abrirAditivos(){
-    const dialogRef = this.dialog.open(AditivosContratosComponent);
+  abrirAditivos(contratobase:ContratosResponse){
+    const dialogRef = this.dialog.open(AditivosContratosComponent, {data:{contratobase}});
 
     dialogRef.afterClosed().subscribe(result => {
     });
   }
 
   formatToCurrency(valor: number): string {
-    // Formatar o valor como string com 2 casas decimais
     let valorFormatado = valor.toFixed(2);  // 2 casas decimais
 
-    // Substituir o ponto (.) por vírgula para separar os decimais
     valorFormatado = valorFormatado.replace('.', ',');
 
-    // Adicionar o separador de milhar (ponto) para valores maiores que 1.000
     valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-    // Adicionar o prefixo 'R$'
     return 'R$ ' + valorFormatado;
   }
 }

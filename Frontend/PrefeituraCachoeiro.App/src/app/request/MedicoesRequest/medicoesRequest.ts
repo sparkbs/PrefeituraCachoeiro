@@ -6,6 +6,7 @@ export class MedicoesRequest extends BaseFilter
     idContrato: number;
     statusMedicao?: number;
     idMedicaoAtual?: number;
+    idProjeto?: number;
 }
 
 export class InserirMedicao {
@@ -13,26 +14,26 @@ export class InserirMedicao {
     idContrato: number = 0;
     dataMedicao: Date;
     resumo: string = "";
-    idProjeto: number = 0;
+    IdProjeto: number = 0;
     items: PermissoesItemsRequest[] = [];
   }
-  
+
   export class ItemMedicao {
     idItemContrato: number;
     unidade: number;
   }
 
 export class AprovarMedicoesRequest{
-    arquivos: File[];
-    idMedicoesProjeto: number;
-    dataRegistro: string;
-    resumo: string;
+  Arquivos: File[] = [];
+  IdMedicoesProjeto: number;
+  DataRegistro: string;
+  Resumo: string;
 }
 
 export class DadosMedicoesRequest{
-    idMedicoesProjeto: number;
-    dataRegistro: string;
-    resumo: string;
+    IdMedicoesProjeto: number;
+    DataRegistro: string;
+    Resumo: string;
 }
 
 
@@ -43,5 +44,5 @@ export class AlterarMedicaoProjetoRequest {
     resumo: string;
     items: ItemMedicao[];
     idMedicoesProjeto: number;
+    idProjeto: number;
   }
-  
