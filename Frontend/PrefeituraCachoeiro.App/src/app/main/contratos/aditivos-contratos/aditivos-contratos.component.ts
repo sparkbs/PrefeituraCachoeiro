@@ -19,7 +19,7 @@ export class AditivosContratosComponent implements AfterViewInit {
   dataSource: MatTableDataSource<ContratosResponse>;
   valorAditivo: string;
   contratoBase: ContratosResponse;
-  requestCriarAditivo: CriarContratoRequest = new CriarContratoRequest();
+  requestCriarAditivo: AditivosContratoRequest = new AditivosContratoRequest();
   @ViewChild('baseDadosInput') baseDadosInput: any;
   
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private readonly api: ContratosService, private _toastService: ToastService,   private dialogRef: MatDialogRef<AditivosContratosComponent>, ) {
@@ -41,19 +41,14 @@ export class AditivosContratosComponent implements AfterViewInit {
   }
 
   async criarAditivo(){
-    this.requestCriarAditivo.TipoContratacao = this.contratoBase.tipoContratacao;
-    this.requestCriarAditivo.PrefeituraId = this.contratoBase.prefeituraId;
-    this.requestCriarAditivo.NumeroContrato = this.contratoBase.numeroContrato;
-    this.requestCriarAditivo.Gerente = this.contratoBase.gerente;
-    this.requestCriarAditivo.EmpresaId = this.contratoBase.empresaId;
-    this.requestCriarAditivo.DataTermino = this.contratoBase.dataTermino;
-    this.requestCriarAditivo.DataInicio = this.contratoBase.dataInicio;
-    this.requestCriarAditivo.DataContrato = this.contratoBase.dataContrato;
-    this.requestCriarAditivo.Aditivo = this.contratoBase.idContrato;
+   /* this.requestCriarAditivo.TipoAditivo = this.contratoBase.dataTermino;
+    this.requestCriarAditivo.DataValidadeAditivo = this.contratoBase.dataInicio;
+    this.requestCriarAditivo.DataAssinaturaAditivo = this.contratoBase.dataContrato;*/
+    this.requestCriarAditivo.ContratoId = this.contratoBase.idContrato;
     this.requestCriarAditivo.ArquivoTemplate = this.adicionarBaseDados();
-    this.requestCriarAditivo.Valor = this.valorAditivo.replaceAll(".","").replaceAll("R$","").replaceAll(",",".");
+    this._toastService.mensagemSuccess("Processamento iniciado!");
 
-    await this.api.CriarContrato(this.requestCriarAditivo)
+    await this.api.CriarAditivos(this.requestCriarAditivo)
     .then((result) => {
       this._toastService.mensagemSuccess("Aditivo criado com sucesso");
       this.dialogRef.close(result);

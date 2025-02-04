@@ -4,11 +4,12 @@ import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
 import { ContratoModel, ContratosResponse, TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
-import { CriarContratoResponse, DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
+import { CriarAditivoResponse, CriarContratoResponse, DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
 import { AtualizarContratoRequest } from '../request/ContratoRequest/atualizarContratoRequest';
 import { BuscarAditivosContrato, BuscarContratosRequest } from '../request/ContratoRequest/buscarContratosRequest';
 import { CriarContratoRequest } from '../request/ContratoRequest/criarContratoRequest';
 import { VinculoProjetoContratoRequest } from '../request/ContratoRequest/vincularProjetoContrato';
+import { AditivosContratoRequest } from '../request/ContratoRequest/aditivosContratoRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +62,20 @@ export class ContratosService {
     return await firstValueFrom(
       this.http.post<GenericResultResponse<CriarContratoResponse>>(
         `${Environments.APIUrl}/contratos`,
+        formData
+      )
+    );
+  }
+
+  public async CriarAditivos(request: AditivosContratoRequest): Promise<GenericResultResponse<CriarAditivoResponse>> {
+    const formData = new FormData();
+    Object.keys(request).forEach(key => {
+      formData.append(key, request[key]);
+    });
+
+    return await firstValueFrom(
+      this.http.post<GenericResultResponse<CriarAditivoResponse>>(
+        `${Environments.APIUrl}/aditivos`,
         formData
       )
     );
