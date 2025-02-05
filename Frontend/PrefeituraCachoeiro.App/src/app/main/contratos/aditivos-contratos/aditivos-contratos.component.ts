@@ -15,7 +15,7 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 export class AditivosContratosComponent implements AfterViewInit {
   lista: ContratosResponse[] = [];
-  displayedColumns: string[] = ['tipoAditivo', 'valor','dataAssinatura', 'validadeAditivo','acoes'];
+  displayedColumns: string[] = ['tipoAditivo', 'dataAssinatura', 'validadeAditivo','acoes'];
   dataSource: MatTableDataSource<ContratosResponse>;
   valorAditivo: string;
   contratoBase: ContratosResponse;
