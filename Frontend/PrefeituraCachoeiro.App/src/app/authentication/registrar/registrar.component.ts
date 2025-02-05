@@ -68,7 +68,8 @@ export class RegistrarComponent {
         id: this.listaPerfis[0].idUsuario,
         login: this.listaPerfis[0].login,
         nome: this.listaPerfis[0].nome,
-        senha: this.form.get('senhaNova').value
+        senha: this.form.get('senhaNova').value,
+        prefeituraId: this.listaPerfis[0].prefeituraId
       };
 
       this._usuarioControllerService.AtualizarUsuarios(usuarioUpdate)

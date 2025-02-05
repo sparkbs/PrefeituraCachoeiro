@@ -29,9 +29,9 @@ export class GruposService {
     );
   }
 
-  public async BuscarTodosGrupos(filter: GruposRequest): Promise<GenericResultResponse<TodosGruposResponse>> {
+  public async BuscarTodosGrupos(filter: GruposRequest): Promise<TodosGruposResponse> {
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<TodosGruposResponse>>(
+      this.http.post<TodosGruposResponse>(
         `${Environments.APIUrl}/grupos/buscartodos`,
         filter
       )

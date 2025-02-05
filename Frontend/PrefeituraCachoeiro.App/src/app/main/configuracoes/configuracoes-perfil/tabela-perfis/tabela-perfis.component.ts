@@ -13,15 +13,8 @@ export interface TablePerfis {
   id?: number;
   name: string;
   email: string;
-  grupo: string;
+  cliente: string;
   acoes?: string;
-}
-
-export class Perfil {
-  id: number;
-  name: string;
-  email: string;
-  grupo: string;
 }
 
 @Component({
@@ -31,7 +24,7 @@ export class Perfil {
 })
 export class TabelaPerfisComponent implements OnInit {
   listaPerfis: UsuariosResponse[] = [];
-  displayedColumns: string[] = ['login', 'nome', 'grupo', 'acoes'];
+  displayedColumns: string[] = ['login', 'nome', 'cliente', 'acoes'];
 
   dataSource = new MatTableDataSource<UsuariosResponse>(this.listaPerfis);
 

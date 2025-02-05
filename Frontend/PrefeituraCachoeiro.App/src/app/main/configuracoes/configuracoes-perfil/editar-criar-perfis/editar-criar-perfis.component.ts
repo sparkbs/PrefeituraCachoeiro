@@ -5,9 +5,15 @@ import { TablePerfis } from '../tabela-perfis/tabela-perfis.component';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { UsuariosResponse } from 'src/app/response/usuariosResponse/usuariosResponse';
 import { ToastService } from 'src/app/services/toast.service';
-import { CriarUsuariosRequest } from 'src/app/request/UsuariosRequest/usuariosRequest';
+import { AtualizarUsuariosRequest, CriarUsuariosRequest } from 'src/app/request/UsuariosRequest/usuariosRequest';
 import { GruposService } from 'src/app/services/grupos.service';
 import { GruposRequest } from 'src/app/request/GruposRequest/gruposRequest';
+import { PrefeituraResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { PrefeituraFilter } from 'src/app/response/prefeituraResponse/prefeituraResponse';
+import { PrefeituraService } from 'src/app/services/prefeitura.service';
+import { Grupo } from 'src/app/response/grupoResponse/todosGruposResponse';
+import { UsuariosGruposService } from 'src/app/services/usuariosGrupos.service';
+import { UsuariosGruposRequest } from 'src/app/request/UsuariosGruposRequest/usuariosGruposRequest';
 
 @Component({
   selector: 'app-editar-criar-perfis',
@@ -16,11 +22,8 @@ import { GruposRequest } from 'src/app/request/GruposRequest/gruposRequest';
 })
 export class EditarCriarPerfisComponent implements OnInit {
   usuarioEdit: UsuariosResponse = new UsuariosResponse();
-  grupos: string[] = [
-    'gerente',
-    'usuario',
-    'administrador'
-  ];
+  listaPrefeitura: PrefeituraResponse[] = [];
+  listaGrupos: Grupo[] =[];
   form: FormGroup;
 
   constructor(
@@ -29,12 +32,15 @@ export class EditarCriarPerfisComponent implements OnInit {
     private fb: FormBuilder,
     public _usuarioControllerService: UsuariosService,
     public _gruposControllerService: GruposService,
-    private _toastService: ToastService
+    private _toastService: ToastService,
+    public _prefeituraControllerService: PrefeituraService,
+    public _UsuariosGruposControllerService: UsuariosGruposService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
     this.getAllGroups();
+    this.buscarListaPrefeituras();
 
     if (this.data.edicao && this.data.id) {
       this.getUserById(this.data.id);
@@ -49,8 +55,20 @@ export class EditarCriarPerfisComponent implements OnInit {
       nome: ['', [Validators.required]],
       email: ['', [Validators.required]],
       senha: ['', [Validators.required]],
-      grupo: ['', [Validators.required]]
+      prefeitura: [0, [Validators.required]],
+      grupo: [0, [Validators.required]]
     });
+  }
+
+  async buscarListaPrefeituras(){
+        var prefeituraFilter : PrefeituraFilter = new PrefeituraFilter();
+        prefeituraFilter.nome = "";
+        prefeituraFilter.itemsPorPagina = 1000000;
+        prefeituraFilter.pagina = 1;
+        await this._prefeituraControllerService.BuscarTodasPrefeituras(prefeituraFilter)
+        .then((result) => {
+          this.listaPrefeitura = result.data;
+        });
   }
 
   getAllGroups() {
@@ -60,7 +78,7 @@ export class EditarCriarPerfisComponent implements OnInit {
     };
     this._gruposControllerService.BuscarTodosGrupos(grupo)
     .then((res) => {
-
+      this.listaGrupos = res.data;
     })
     .catch((erro) => {
       this._toastService.mensagemError("Erro ao buscar grupos!");
@@ -70,7 +88,7 @@ export class EditarCriarPerfisComponent implements OnInit {
   async getUserById(id: number) {
     this._usuarioControllerService.BuscarUsuario(id)
     .then((res) => {
-      this.usuarioEdit = res.data;
+      this.usuarioEdit = res;
       this.completeProfile();
     })
     .catch((erro) => {
@@ -81,8 +99,8 @@ export class EditarCriarPerfisComponent implements OnInit {
   completeProfile() {
     this.form.get('nome').setValue(this.usuarioEdit.nome);
     this.form.get('email').setValue(this.usuarioEdit.login);
-    this.form.get('grupo').setValue(this.usuarioEdit.grupo);
-    this.form.get('senha')?.disable();
+    this.form.get('prefeitura').setValue(this.usuarioEdit.prefeituraId);
+    this.form.get('grupo')?.disable();
   }
 
   saveForm() {
@@ -90,16 +108,47 @@ export class EditarCriarPerfisComponent implements OnInit {
       var usuarioRequest: CriarUsuariosRequest = {
         login: this.form.get('email').value,
         nome: this.form.get('nome').value,
-        senha: this.form.get('senha').value
+        senha: this.form.get('senha').value,
+        prefeituraId: this.form.get('prefeitura').value
       };
       
       this._usuarioControllerService.CriarUsuarios(usuarioRequest)
       .then((res) => {
+        var usuarioGrupoRequest: UsuariosGruposRequest = {
+          usuarioId: res.idUsuario,
+          grupoId: this.form.get('grupo').value
+        };
+
+        this._UsuariosGruposControllerService.InserirUsuariosGrupos(usuarioGrupoRequest)
+        .then((res) => {
+
+        })
+        .catch((err) => {
+          this._toastService.mensagemError("Erro ao vincular usuario com grupo!");
+        });
         this._toastService.mensagemSuccess("Perfil criado com sucesso!");
         this.dialogRef.close(true);
       })
       .catch((erro) => {
         this._toastService.mensagemError("Erro ao criar perfil!");
+      });
+    }
+    else {
+      var usuarioUpdateRequest: AtualizarUsuariosRequest = {
+        id: this.usuarioEdit.idUsuario,
+        login: this.form.get('email').value,
+        nome: this.form.get('nome').value,
+        senha: this.form.get('senha').value,
+        prefeituraId: this.form.get('prefeitura').value
+      };
+
+      this._usuarioControllerService.AtualizarUsuarios(usuarioUpdateRequest)
+      .then((res) => {
+        this._toastService.mensagemSuccess("Perfil atualizado com sucesso!");
+        this.dialogRef.close(true);
+      })
+      .catch((err) => {
+        this._toastService.mensagemError("Erro ao atualizar cliente!");
       });
     }
   }
