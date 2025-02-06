@@ -88,7 +88,7 @@ export class EditarCriarPerfisComponent implements OnInit {
   async getUserById(id: number) {
     this._usuarioControllerService.BuscarUsuario(id)
     .then((res) => {
-      this.usuarioEdit = res;
+      this.usuarioEdit = null,
       this.completeProfile();
     })
     .catch((erro) => {
@@ -115,7 +115,7 @@ export class EditarCriarPerfisComponent implements OnInit {
       this._usuarioControllerService.CriarUsuarios(usuarioRequest)
       .then((res) => {
         var usuarioGrupoRequest: UsuariosGruposRequest = {
-          usuarioId: res.idUsuario,
+          usuarioId: 0,
           grupoId: this.form.get('grupo').value
         };
 

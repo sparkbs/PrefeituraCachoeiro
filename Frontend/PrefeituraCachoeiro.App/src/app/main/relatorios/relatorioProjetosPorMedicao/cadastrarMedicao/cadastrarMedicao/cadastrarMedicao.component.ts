@@ -37,6 +37,7 @@ export class CadastrarMedicaoComponent implements OnInit {
   }
 
   async ngOnInit() {
+    console.log(this.data);
     this.isLoading = true;
     await this.getAllProjects()
   }
@@ -61,19 +62,25 @@ export class CadastrarMedicaoComponent implements OnInit {
       unidade: 0
     }));    
     medicaoRequest.numeroMedicao = this.nomeMedicao;    
-
-    await this.api.CriarMedicoes(medicaoRequest)
-    .then((result) => {     
-      this._toastService.mensagemSuccess("Medição criada com sucesso.");
-      this.dialogRef.close(result.idMedicoesProjeto);
-    })
-    .catch(() =>
-    {
-      //this._toastService.mensagemError("Erro ao criar uma medição.");
-    })
-    .finally(() => {
+    if(this.data.medicoes.projetos.some(x => x.idProjeto == this.projetoSelecionado)){
       this.isLoading = false;
-    });
+      this.dialogRef.close();
+      this._toastService.mensagemError("Projeto ja existe nessa medição");
+    }
+    else{
+      await this.api.CriarMedicoes(medicaoRequest)
+      .then((result) => {     
+        this._toastService.mensagemSuccess("Medição criada com sucesso.");
+        this.dialogRef.close(result.idMedicoesProjeto);
+      })
+      .catch(() =>
+      {
+        //this._toastService.mensagemError("Erro ao criar uma medição.");
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
+    }
   }
 
   async getAllProjects() {
