@@ -182,7 +182,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     }
   }
 
-  openDialogAssociate(numeroMedicao: number) {
+  openDialogAssociate(numeroMedicao: number, projetosMedidos: MedicoesResponse[]) {
     //let contrato = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
     let medicoes = new TodasMedicaoProjetoResponse();
     medicoes.data = [{
@@ -190,7 +190,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       idContrato: this.contratoSelecionado,
       items: [],
   }] as MedicoesResponse[]; 
-      const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao}});    
+      const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao, projetosMedidos: projetosMedidos}});    
       dialogRef.afterClosed().subscribe(async result => {
         if(result){
           await this.apiMedicoes.BuscarMedicoes(result)

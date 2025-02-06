@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { InserirMedicao } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { PermissoesRequest } from 'src/app/request/PermissoesRequest/permissoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
-import { Contrato, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { Contrato, MedicoesResponse, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { MedicoesService } from 'src/app/services/medicoes.service';
 import { PermissaoService } from 'src/app/services/permissao.service';
@@ -24,7 +24,7 @@ export class CadastrarMedicaoComponent implements OnInit {
 
   constructor(private readonly api: MedicoesService,
     @Inject(MAT_DIALOG_DATA) public data: {medicoes: Contrato, numeroMedicao?: 
-      number },
+      number, projetosMedidos: MedicoesResponse[] },
      public _projetoControllerService: ProjetoService,
      private _toastService: ToastService,
      public dialogRef: MatDialogRef<CadastrarMedicaoComponent> // Referência ao diálogo
@@ -62,7 +62,7 @@ export class CadastrarMedicaoComponent implements OnInit {
       unidade: 0
     }));    
     medicaoRequest.numeroMedicao = this.nomeMedicao;    
-    if(this.data.medicoes.projetos.some(x => x.idProjeto == this.projetoSelecionado)){
+    if(this.data.projetosMedidos.some(x => x.idProjeto == this.projetoSelecionado)){
       this.isLoading = false;
       this.dialogRef.close();
       this._toastService.mensagemError("Projeto ja existe nessa medição");
