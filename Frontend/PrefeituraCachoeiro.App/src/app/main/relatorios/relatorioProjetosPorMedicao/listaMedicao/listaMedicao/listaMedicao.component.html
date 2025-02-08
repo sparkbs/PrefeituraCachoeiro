@@ -50,7 +50,7 @@
         <td mat-cell *matCellDef="let item">
           <span style="font-size: 12px;">{{ item.itemsContrato.item.descricao }}</span><br/>
           <!--<input matInput style="margin-top: 5px;" [value]=2 >-->
-          <span style="font-size: 12px; color: gray;">{{ item.itemsContrato.unidade }}</span>
+          <span style="font-size: 12px; color: gray;">{{ item.itemsContrato.unidade }} - {{ item.itemsContrato.quantidade.nome }}</span>
           <!--<span style="font-size: 12px; color: gray;">{{ item.itemsContrato.unidade }} - {{ item.itemsContrato.item.quantidade.nome }}</span> -->
         </td>
       </ng-container>
@@ -106,9 +106,39 @@
     <div style="font-weight: bold; font-size: 17px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 12px;">
       <span>Valor Total Medido: {{ formatToCurrency(somarValorTotal())}}</span>
       <span>Valor Saldo Total: {{ formatToCurrency(somarValorSaldoTotal())}}</span>
+        <!-- Parte de Anexar Documento -->
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;" [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">
+          <div>
+            Documentos:
+          </div>
+          <div  [style.display]="alterarMedicaoProjeto ? 'flex' : 'none'" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">
+            <input #documentoInput type="file" style="width: 100%" />
+            <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;"  [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada" (click)="adicionarDocumento()">
+              <mat-icon>playlist_add</mat-icon>
+            </span>  
+          </div>
+           
 
-      <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="salvar()" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Salvar</button>
-    </div>
+          <div *ngFor="let item of listaDocumentoContrato">
+            <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
+              {{item.nome}}
+              <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarDocumentos(item)">
+                <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
+              </span>
+              <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" >
+                <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
+              </span>
+            </div>
+          </div> 
+        </div>    
+      
+        
+      
+        <!-- Botão de Salvar -->
+        <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="salvar()" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Salvar</button>
+      </div>
+
+       <!-- Lista de Documentos Anexados -->
   </div>
 </div>
 

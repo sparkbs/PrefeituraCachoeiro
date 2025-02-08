@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
@@ -10,6 +10,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { AprovarMedicaoComponent } from '../../../../aprovacaoBoletim/aprovarMedicao/aprovarMedicao.component';
 import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
 import { ModalLevantamentoComponent } from '../../../modalLevantamento/modalLevantamento.component';
+import { ListaDocumentosContrato } from 'src/app/response/contratosResponse/dadosContratoResponse';
 
 @Component({
   selector: 'app-listaMedicao',
@@ -18,9 +19,11 @@ import { ModalLevantamentoComponent } from '../../../modalLevantamento/modalLeva
 })
 export class ListaMedicaoComponent implements OnInit, OnChanges {
   readonly dialog = inject(MatDialog);
+  @ViewChild('documentoInput') documentoInput: any;
   @Input() medicoes: MedicoesResponse = new MedicoesResponse();
   StatusEnum = StatusMedicaoEnum;  // Expondo o enum no componente
   isLoading = false;
+  listaDocumentoContrato: ListaDocumentosContrato[] = [];
 
   dataSource: MatTableDataSource<ItemMedicao>;
   displayedColumns: string[] = ['item', 'item/qtd', 'valor(s)cBdi' , 'valorTotal/bdi','qtdRestante', 'qtdMedicaoItem', 'valorTotalMedidaBdi', 'valorSaldoRestante'];
@@ -179,5 +182,21 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
         }).afterClosed().subscribe(
           (res) => {
     });
+  }
+
+  adicionarDocumento(){
+    if(this.documentoInput.nativeElement.files[0] != undefined){
+      const documentoFile = this.documentoInput.nativeElement.files[0] as File;
+      this.listaDocumentoContrato.push({
+        nome: documentoFile.name,
+        file: documentoFile
+      });   
+      this.documentoInput.nativeElement.value = '';
+    }
+  }
+
+  deletarDocumentos(deletarDocumento: ListaDocumentosContrato): void {
+    // Filtra os documentos, removendo o que for igual ao item a ser deletado
+    this.listaDocumentoContrato = this.listaDocumentoContrato.filter(item => item !== deletarDocumento);
   }
 }

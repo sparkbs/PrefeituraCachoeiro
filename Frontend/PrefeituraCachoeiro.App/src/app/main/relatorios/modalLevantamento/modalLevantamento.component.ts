@@ -139,6 +139,17 @@ export class ModalLevantamentoComponent implements OnInit {
     });
   }
 
+  isRowHidden(row: any): boolean {
+    // Verifique se todos os valores de qtdItem para as medições dessa linha são 0
+    for (let i = 0; i < this.maxMedicoes; i++) {
+      if (row.medicoes[i] && row.medicoes[i].qtdItem !== 0) {
+        return false;  // Se algum valor de qtdItem for diferente de 0, não oculta a linha
+      }
+    }
+    return true;  // Se todos os qtdItem forem 0, oculta a linha
+  }
+  
+
   async buscarMedicoesProjeto(){
     this.dataSource.data = [];
     this.dadosTabela = [];
