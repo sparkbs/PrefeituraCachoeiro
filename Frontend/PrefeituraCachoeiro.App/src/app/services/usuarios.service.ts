@@ -15,10 +15,10 @@ import { AtualizarUsuariosRequest, CriarUsuariosRequest, UsuariosRequest } from 
 export class UsuariosService {
   constructor(private readonly http: HttpClient) { }
 
-  public async BuscarUsuario(id: number) : Promise<GenericResultResponse<UsuariosResponse>>{
+  public async BuscarUsuario(id: number) : Promise<UsuariosResponse>{
     return await firstValueFrom(
-      this.http.get<GenericResultResponse<UsuariosResponse>>(
-        `${Environments.APIUrl}/usuarios?id=${id}`
+      this.http.get<UsuariosResponse>(
+        `${Environments.APIUrl}/usuarios/${id}`
       )
     );
   }
@@ -40,14 +40,15 @@ export class UsuariosService {
     );
   }
 
-  public async CriarUsuarios(usuarios: CriarUsuariosRequest): Promise<GenericResultResponse<CriarUsuariosResponse>> {
+  public async CriarUsuarios(usuarios: CriarUsuariosRequest): Promise<CriarUsuariosResponse> {
     const formData = new FormData();
     formData.append('Nome', usuarios.nome);
     formData.append('Login', usuarios.login);
     formData.append('Senha', usuarios.senha);
+    formData.append('PrefeituraId', usuarios.prefeituraId.toString());
 
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<CriarUsuariosResponse>>(
+      this.http.post<CriarUsuariosResponse>(
         `${Environments.APIUrl}/usuarios`,
         formData
       )
@@ -60,6 +61,7 @@ export class UsuariosService {
     formData.append('Login', request.login);
     formData.append('Nome', request.nome);
     formData.append('Senha', request.senha);
+    formData.append('PrefeituraId', request.prefeituraId.toString());
     
     return await firstValueFrom(
       this.http.put<GenericResultResponse<CriarUsuariosResponse>>(
