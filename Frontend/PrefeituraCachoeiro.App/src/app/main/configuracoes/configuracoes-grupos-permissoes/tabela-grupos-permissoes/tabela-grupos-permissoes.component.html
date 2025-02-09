@@ -13,84 +13,26 @@
     </div>
 
     <table mat-table [dataSource]="dataSource" class="table">
-      <ng-container matColumnDef="grupo">
-        <th mat-header-cell *matHeaderCellDef> Grupo </th>
-        <td mat-cell *matCellDef="let element"> {{element.grupo}} </td>
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef> Nome </th>
+        <td mat-cell *matCellDef="let grupo"> {{ grupo.nome }} </td>
       </ng-container>
 
-      <ng-container matColumnDef="perfil">
-        <th mat-header-cell *matHeaderCellDef> Perfil </th>
-        <td mat-cell *matCellDef="let element">
-            <span *ngIf="element.perfil">
-              <mat-icon>check_box</mat-icon>
-            </span>
-
-            <span *ngIf="!element.perfil">
-              <mat-icon>check_box_outline_blank</mat-icon>
-            </span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="projeto">
-        <th mat-header-cell *matHeaderCellDef> Projeto </th>
-        <td mat-cell *matCellDef="let element">
-          <span *ngIf="element.projeto">
-            <mat-icon>check_box</mat-icon>
-          </span>
-
-          <span *ngIf="!element.projeto">
-            <mat-icon>check_box_outline_blank</mat-icon>
-          </span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="contrato">
-        <th mat-header-cell *matHeaderCellDef> Contrato </th>
-        <td mat-cell *matCellDef="let element">
-          <span *ngIf="element.contrato">
-            <mat-icon>check_box</mat-icon>
-          </span>
-
-          <span *ngIf="!element.contrato">
-            <mat-icon>check_box_outline_blank</mat-icon>
-          </span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="prefeitura">
-        <th mat-header-cell *matHeaderCellDef> Clientes </th>
-        <td mat-cell *matCellDef="let element">
-          <span *ngIf="element.prefeitura">
-            <mat-icon>check_box</mat-icon>
-          </span>
-
-          <span *ngIf="!element.prefeitura">
-            <mat-icon>check_box_outline_blank</mat-icon>
-          </span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="medicao">
-        <th mat-header-cell *matHeaderCellDef> Medições </th>
-        <td mat-cell *matCellDef="let element">
-          <span *ngIf="element.medicao">
-            <mat-icon>check_box</mat-icon>
-          </span>
-
-          <span *ngIf="!element.medicao">
-            <mat-icon>check_box_outline_blank</mat-icon>
-          </span>
+      <ng-container matColumnDef="permissoes">
+        <th mat-header-cell *matHeaderCellDef> Permissões </th>
+        <td mat-cell *matCellDef="let grupo"> 
+          {{ getPermissoes(grupo) }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="acoes">
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let element">
-            <span matTooltip="Editar" (click)="openEditarCriar(true, element.id)">
+            <span matTooltip="Editar" (click)="openEditarCriar(true, element.idGrupo)">
               <mat-icon>edit</mat-icon>
             </span>
 
-            <span matTooltip="Remover" (click)="removeGroupPermission(element.id)">
+            <span matTooltip="Remover" (click)="removeGroup(element.idGrupo)">
               <mat-icon>delete</mat-icon>
             </span>
         </td>
@@ -100,7 +42,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 7]"
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]"
                    showFirstLastButtons
                    aria-label="Select page of periodic elements">
     </mat-paginator>

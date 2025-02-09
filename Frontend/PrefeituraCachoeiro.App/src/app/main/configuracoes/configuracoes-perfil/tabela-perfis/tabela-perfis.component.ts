@@ -9,14 +9,6 @@ import { UsuariosRequest } from 'src/app/request/UsuariosRequest/usuariosRequest
 import { ToastService } from 'src/app/services/toast.service';
 import { UsuariosResponse } from 'src/app/response/usuariosResponse/usuariosResponse';
 
-export interface TablePerfis {
-  id?: number;
-  name: string;
-  email: string;
-  cliente: string;
-  acoes?: string;
-}
-
 @Component({
   selector: 'app-tabela-perfis',
   templateUrl: './tabela-perfis.component.html',

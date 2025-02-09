@@ -9,4 +9,5 @@ export class Grupo {
     idGrupo: number = 0;
     nome: string = '';
     permissoes: PermissoesResponse[];
+    acoes?: string;
 }

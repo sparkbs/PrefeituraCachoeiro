@@ -40,3 +40,19 @@
 .module-section div {
   padding: 8px;
 }
+
+.permissoes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Divide em colunas */
+  gap: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.nomeGroupContent {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+}

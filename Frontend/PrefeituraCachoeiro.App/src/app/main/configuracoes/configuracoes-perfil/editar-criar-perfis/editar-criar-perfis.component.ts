@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TablePerfis } from '../tabela-perfis/tabela-perfis.component';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { UsuariosResponse } from 'src/app/response/usuariosResponse/usuariosResponse';
 import { ToastService } from 'src/app/services/toast.service';
@@ -88,7 +87,7 @@ export class EditarCriarPerfisComponent implements OnInit {
   async getUserById(id: number) {
     this._usuarioControllerService.BuscarUsuario(id)
     .then((res) => {
-      this.usuarioEdit = null,
+      this.usuarioEdit = res;
       this.completeProfile();
     })
     .catch((erro) => {
@@ -115,7 +114,7 @@ export class EditarCriarPerfisComponent implements OnInit {
       this._usuarioControllerService.CriarUsuarios(usuarioRequest)
       .then((res) => {
         var usuarioGrupoRequest: UsuariosGruposRequest = {
-          usuarioId: 0,
+          usuarioId: res.idUsuario,
           grupoId: this.form.get('grupo').value
         };
 

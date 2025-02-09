@@ -5,32 +5,27 @@
   </div>
 
   <form [formGroup]="form">
-    <div class="nameGroupInput">
-      <mat-form-field  appearance="outline">
-        <mat-label>Nome do grupo</mat-label>
-        <input matInput formControlName="groupName">
-        <mat-error *ngIf="form.get('groupName').hasError('required')">Campo obrigatório!</mat-error>
+    <div class="nomeGroupContent">
+      <mat-form-field appearance="outline">
+        <mat-label>Nome do Grupo</mat-label>
+        <input matInput formControlName="nome"/>
+        <mat-error *ngIf="form.get('nome').hasError('required')">Campo obrigatório!</mat-error>
       </mat-form-field>
     </div>
-
-    <div class="module-section">
-      <div formArrayName="permissions">
-        <div *ngFor="let moduleGroup of form.get('permissions')['controls']; let i = index" [formGroupName]="i">
-          <mat-accordion>
-            <mat-expansion-panel [expanded]="true">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  {{ modules[i].nameModule }}
-                </mat-panel-title>
-              </mat-expansion-panel-header>
-              <mat-checkbox formControlName="access">
-                Permitir Acesso
-              </mat-checkbox>
-            </mat-expansion-panel>
-          </mat-accordion>
+  
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Permissões</mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <div class="permissoes-container" formArrayName="permissoes">
+        <div *ngFor="let permissaoCtrl of permissoesFormArray.controls; let i = index" [formGroupName]="i">
+          <mat-checkbox formControlName="selecionado">
+            {{ permissaoCtrl.value.nome }}
+          </mat-checkbox>
         </div>
       </div>
-    </div>
+    </mat-expansion-panel>
   </form>
 
   <div class="group-buttons">

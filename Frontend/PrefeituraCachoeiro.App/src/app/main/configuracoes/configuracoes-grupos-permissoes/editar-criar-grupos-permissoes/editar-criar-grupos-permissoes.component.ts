@@ -1,7 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GroupPermission, ModulesPermission } from '../tabela-grupos-permissoes/tabela-grupos-permissoes.component';
+import { GruposRequest } from 'src/app/request/GruposRequest/gruposRequest';
+import { PermissoesRequest } from 'src/app/request/PermissoesRequest/permissoesRequest';
+import { TipoPermissaoResponse } from 'src/app/response/tipoPermissaoResponse/tipoPermissaoResponse';
+import { GruposService } from 'src/app/services/grupos.service';
+import { PermissaoService } from 'src/app/services/permissao.service';
+import { TiposPermissoesService } from 'src/app/services/tiposPermissoes';
+import { ToastService } from 'src/app/services/toast.service';
+
+interface TipoPermissao {
+  idTipoPermissao: number;
+  nome: string;
+}
 
 @Component({
   selector: 'app-editar-criar-grupos-permissoes',
@@ -10,55 +21,98 @@ import { GroupPermission, ModulesPermission } from '../tabela-grupos-permissoes/
 })
 export class EditarCriarGruposPermissoesComponent implements OnInit {
   form: FormGroup;
-  panelOpenState = false;
-  listGroupPermission: GroupPermission = new GroupPermission();
-
-  modules: ModulesPermission[] = [
-    { nameModule: 'Perfil', access: false },
-    { nameModule: 'Projeto', access: false },
-    { nameModule: 'Contrato', access: false },
-    { nameModule: 'Cliente', access: false },
-    { nameModule: 'Medição', access: false }
-  ];
+  listaTiposPermissoes: TipoPermissaoResponse[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<EditarCriarGruposPermissoesComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { edicao: boolean, groupPermission: GroupPermission },
-    private fb: FormBuilder
+    @Inject(MAT_DIALOG_DATA) public data: { edicao: boolean, idGrupo: number },
+    private fb: FormBuilder,
+    public _tiposPermissoesControllerService: TiposPermissoesService,
+    public _gruposControllerService: GruposService,
+    public _permissaoControllerService: PermissaoService,
+    private _toastService: ToastService
   ){}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.createForm();
+    await this.getAllPermissions();
+    
+    this.listaTiposPermissoes.forEach(permissao => {
+      this.permissoesFormArray.push(this.createPermissaoControl(permissao));
+    });
+  }
+
+  createForm() {
     this.form = this.fb.group({
-      groupName: ['', [Validators.required]],
-      permissions: this.fb.array(
-        this.modules.map(module =>
-          this.fb.group({
-            nameModule: [module.nameModule],
-            access: [module.access]
-          })
-        )
-      )
+      nome: ['', [Validators.required]],
+      permissoes: this.fb.array([], [this.requireAtLeastOneCheckbox()])
     });
 
     if(this.data.edicao) {
-      this.form.get('groupName').setValue(this.data.groupPermission.nameGroup);
-      this.form.get('permissions').setValue(this.data.groupPermission.modules);
+      
     }
   }
 
+  async getAllPermissions() {
+    await this._tiposPermissoesControllerService.BuscarTodasTiposPermissoes()
+    .then((res) => {
+      this.listaTiposPermissoes = res;
+    })
+    .catch((err) => {
+
+    });
+  }
+
+  private createPermissaoControl(permissao: TipoPermissao) {
+    return this.fb.group({
+      idTipoPermissao: permissao.idTipoPermissao,
+      nome: permissao.nome,
+      selecionado: new FormControl(false)
+    });
+  }
+
+  get permissoesFormArray() {
+    return this.form.get('permissoes') as FormArray;
+  }
+
+  private requireAtLeastOneCheckbox() {
+    return (control: FormArray) => {
+      return control.controls.some(ctrl => ctrl.value.selecionado) ? null : { required: true };
+    };
+  }
+
   saveForm() {
-    if (this.form.invalid) {
-      return;
+    if(!this.data.edicao) {
+      const formValues = this.form.value;
+      const permissoesSelecionadas = formValues.permissoes.filter(res => res.selecionado);
+
+      if (formValues.nome == "" || permissoesSelecionadas.length == 0) {
+        this._toastService.messageWarning("Grupo e permissão devem ser preenchidos!");
+        return;
+      }
+
+      this._gruposControllerService.CriarGrupos(formValues.nome)
+      .then((res) => {
+        permissoesSelecionadas.forEach((resPermissao) => {
+          const permissaoRequest: PermissoesRequest = {
+            tipoPermissaoId: resPermissao.idTipoPermissao,
+            grupoId: res.idGrupo
+          };
+
+          this._permissaoControllerService.CriarPermissoes(permissaoRequest)
+          .then((resPermissaoRetorno) => {
+          })
+          .catch((err) => {
+            this._toastService.mensagemError("Erro ao vincular permissao: " + resPermissao.nome);
+          });
+        });
+
+        this._toastService.mensagemSuccess("Grupo criado com sucesso!");
+        this.dialogRef.close(true);
+      })
+      .catch((err) => {
+        this._toastService.mensagemError("Erro ao criar grupo!");
+      });
     }
-    const selectedPermissions: ModulesPermission[] = this.form.value.permissions.map(module => ({
-      nameModule: module.nameModule,
-      access: module.access
-    }));
-
-    this.listGroupPermission.id = this.data.groupPermission.id;
-    this.listGroupPermission.nameGroup = this.form.get('groupName').value;
-    this.listGroupPermission.modules.push(...selectedPermissions);
-
-    this.dialogRef.close(this.listGroupPermission);
   }
 }

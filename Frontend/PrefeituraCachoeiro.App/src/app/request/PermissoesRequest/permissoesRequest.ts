@@ -1,11 +1,7 @@
 export class PermissoesRequest 
 {
-    numeroMedicao: number = 0;
-    idContrato: number = 0;
-    dataMedicao: Date;
-    resumo: string = "";
-    idProjeto: number = 0;
-    items: PermissoesItemsRequest[] = [];
+    tipoPermissaoId: number;
+    grupoId: number;
 }
 
 export class PermissoesItemsRequest 

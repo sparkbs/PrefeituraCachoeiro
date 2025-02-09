@@ -38,11 +38,14 @@ export class GruposService {
     );
   }
 
-  public async CriarGrupos(nome: string): Promise<GenericResultResponse<number>> {
+  public async CriarGrupos(nome: string): Promise<GrupoResponse> {
+    const formData = new FormData();
+    formData.append('nome', nome);
+
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<number>>(
+      this.http.post<GrupoResponse>(
         `${Environments.APIUrl}/grupos`,
-        nome
+        formData
       )
     );
   }
