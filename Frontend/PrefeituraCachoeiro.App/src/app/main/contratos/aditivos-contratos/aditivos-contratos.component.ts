@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AditivosContratoRequest } from 'src/app/request/ContratoRequest/aditivosContratoRequest';
 import { BuscarAditivosContrato } from 'src/app/request/ContratoRequest/buscarContratosRequest';
 import { CriarContratoRequest } from 'src/app/request/ContratoRequest/criarContratoRequest';
-import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { ContratosAditivosResponse, ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { ToastService } from 'src/app/services/toast.service';
 
@@ -14,9 +14,9 @@ import { ToastService } from 'src/app/services/toast.service';
   styleUrls: ['./aditivos-contratos.component.scss']
 })
 export class AditivosContratosComponent implements AfterViewInit {
-  lista: ContratosResponse[] = [];
+  lista: ContratosAditivosResponse[] = [];
   displayedColumns: string[] = ['tipoAditivo', 'dataAssinatura', 'validadeAditivo','acoes'];
-  dataSource: MatTableDataSource<ContratosResponse>;
+  dataSource: MatTableDataSource<ContratosAditivosResponse>;
   valorAditivo: string;
   contratoBase: ContratosResponse;
   requestCriarAditivo: AditivosContratoRequest = new AditivosContratoRequest();
@@ -33,7 +33,8 @@ export class AditivosContratosComponent implements AfterViewInit {
     aditivoFilter.idContrato = this.data.contratobase.idContrato;
     await this.api.BuscarTodosAditivos(aditivoFilter)
     .then((result) => {
-      this.lista = result;
+      console.log(result);
+      this.lista = result.data;
       this.dataSource.data = (this.lista);         
       console.log(this.dataSource.data);
       console.log(result);
@@ -103,12 +104,17 @@ export class AditivosContratosComponent implements AfterViewInit {
   }
 
   async deletarAditivo(id: number){
-    await this.api.DeletarContrato(id)  
+    this._toastService.mensagemSuccess("Processando a deleção do aditivo");
+    await this.api.DeletarAditivo(id)  
     .then((result) => {
-      var index = this.lista.findIndex(item => item.idContrato == id);
+      var index = this.lista.findIndex(item => item.idAditivo == id);
       this.lista.splice(index, 1);
   
       this.dataSource.data = this.lista;
+      this._toastService.mensagemSuccess("Aditivo deletado com sucesso");
+    })
+    .catch(() => {
+      this._toastService.mensagemError("Erro ao deletar aditivo");
     });
   }
 

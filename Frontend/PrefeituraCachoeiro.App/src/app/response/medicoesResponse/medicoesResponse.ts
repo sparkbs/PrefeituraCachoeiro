@@ -127,3 +127,9 @@ export class MedicoesResponse {
     idItemContrato: number;
     valorComBdi: number;
   }
+
+
+  export class BuscarArquivosMedicaoResponse {
+    id: number;
+    arquivoMedicao: string;
+  }

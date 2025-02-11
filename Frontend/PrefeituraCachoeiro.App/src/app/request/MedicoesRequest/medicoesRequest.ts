@@ -46,3 +46,12 @@ export class AlterarMedicaoProjetoRequest {
     idMedicoesProjeto: number;
     idProjeto: number;
   }
+
+  export class RegistroDocumentosMedicoesRequest{
+    IdMedicoesProjeto: number;
+    Arquivos: File[] = [];
+}
+
+export class BuscarArquivosMedicaRequest extends BaseFilter{
+  IdMedicoesProjeto: number;
+}

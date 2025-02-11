@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
-import { MedicoesResponse, RetornoIdMedicao, RetornoReprovacaoAprovacaoResponse, TodasMedicaoProjetoResponse } from '../response/medicoesResponse/medicoesResponse';
-import { AlterarMedicaoProjetoRequest, AprovarMedicoesRequest, DadosMedicoesRequest, InserirMedicao, MedicoesRequest } from '../request/MedicoesRequest/medicoesRequest';
+import { BuscarArquivosMedicaoResponse, MedicoesResponse, RetornoIdMedicao, RetornoReprovacaoAprovacaoResponse, TodasMedicaoProjetoResponse } from '../response/medicoesResponse/medicoesResponse';
+import { AlterarMedicaoProjetoRequest, AprovarMedicoesRequest, BuscarArquivosMedicaRequest, DadosMedicoesRequest, InserirMedicao, MedicoesRequest, RegistroDocumentosMedicoesRequest } from '../request/MedicoesRequest/medicoesRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -74,4 +74,50 @@ export class MedicoesService {
       )
     );
   }
+
+  public async RegistrarDocumentosMedicoes(filter: RegistroDocumentosMedicoesRequest): Promise<RetornoReprovacaoAprovacaoResponse> {
+    const formData = new FormData();
+    Object.keys(filter).forEach(key => {
+      formData.append(key, filter[key]);
+    });
+
+    return await firstValueFrom(
+      this.http.post<RetornoReprovacaoAprovacaoResponse>(
+        `${Environments.APIUrl}medicoes/registrardocumentos`,
+        formData
+      )
+    );
+  }
+
+  public async DeletarArquivoMedicao(id: number): Promise<GenericResultResponse<string>> {
+    return await firstValueFrom(
+      this.http.delete<GenericResultResponse<string>>(
+        `${Environments.APIUrl}medicoes/apagararquivomedicao/${id}`
+      )
+    );
+  }
+
+  public async BuscarArquivosMedicoes(arquivosMedicoesFilter: BuscarArquivosMedicaRequest) : Promise<GenericResultResponse<BuscarArquivosMedicaoResponse[]>>{
+    const formData = new FormData();
+    Object.keys(arquivosMedicoesFilter).forEach(key => {
+      formData.append(key, arquivosMedicoesFilter[key]);
+    });
+
+    return await firstValueFrom(
+      this.http.post<GenericResultResponse<BuscarArquivosMedicaoResponse[]>>(
+        `${Environments.APIUrl}medicoes/buscararquivosmedicao`,
+        formData
+      )
+    );
+  }
+
+  public async DownloadArquivoMedicao(id: number) : Promise<MedicoesResponse>{
+    return await firstValueFrom(
+      this.http.get<MedicoesResponse>(
+        `${Environments.APIUrl}medicoes/downloadarquivomedicao/${id}`
+      )
+    );
+  }
+
+
 }

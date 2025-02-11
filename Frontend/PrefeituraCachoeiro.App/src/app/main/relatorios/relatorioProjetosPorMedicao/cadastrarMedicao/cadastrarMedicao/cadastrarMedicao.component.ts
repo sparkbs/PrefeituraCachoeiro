@@ -62,7 +62,7 @@ export class CadastrarMedicaoComponent implements OnInit {
       unidade: 0
     }));    
     medicaoRequest.numeroMedicao = this.nomeMedicao;    
-    if(this.data.projetosMedidos.some(x => x.idProjeto == this.projetoSelecionado)){
+    if(this.data?.projetosMedidos != null && this.data?.projetosMedidos != undefined && this.data.projetosMedidos.some(x => x.idProjeto == this.projetoSelecionado)){
       this.isLoading = false;
       this.dialogRef.close();
       this._toastService.mensagemError("Projeto ja existe nessa medição");

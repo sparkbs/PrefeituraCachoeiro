@@ -50,19 +50,19 @@
   
       <ng-container matColumnDef="dataAssinatura">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Data assinatura </th>
-        <td mat-cell *matCellDef="let row"> {{row.dataAssinaturaAditivo | date:'dd/MM/yyyy' :'UTC' }} </td>
+        <td mat-cell *matCellDef="let row"> {{row.dataAssinatura | date:'dd/MM/yyyy' :'UTC' }} </td>
       </ng-container>
   
       <ng-container matColumnDef="validadeAditivo">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Validade Aditivo </th>
-        <td mat-cell *matCellDef="let row"> {{row.dataValidadeAditivo | date:'dd/MM/yyyy' :'UTC' }} </td>
+        <td mat-cell *matCellDef="let row"> {{row.dataValidade | date:'dd/MM/yyyy' :'UTC' }} </td>
       </ng-container>
 
 
       <ng-container matColumnDef="acoes">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let row">
-            <button (click)="deletarAditivo(row.idContrato)">
+            <button (click)="deletarAditivo(row.idAditivo)">
             <span>
               <mat-icon>delete</mat-icon>
             </span>

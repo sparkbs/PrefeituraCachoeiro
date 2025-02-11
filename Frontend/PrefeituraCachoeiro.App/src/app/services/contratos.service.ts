@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
-import { ContratoModel, ContratosResponse, TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
+import { ContratoModel, ContratosAditivosResponse, ContratosResponse, TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
 import { CriarAditivoResponse, CriarContratoResponse, DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
 import { AtualizarContratoRequest } from '../request/ContratoRequest/atualizarContratoRequest';
 import { BuscarAditivosContrato, BuscarContratosRequest } from '../request/ContratoRequest/buscarContratosRequest';
@@ -17,11 +17,10 @@ import { AditivosContratoRequest } from '../request/ContratoRequest/aditivosCont
 export class ContratosService {
   constructor(private readonly http: HttpClient) { }
 
-  public async BuscarTodosAditivos(request: BuscarAditivosContrato): Promise<ContratosResponse[]> {
-    console.log(request);
+  public async BuscarTodosAditivos(request: BuscarAditivosContrato): Promise<GenericResultResponse<ContratosAditivosResponse[]>> {
     return await firstValueFrom(
-      this.http.post<ContratosResponse[]>(
-        `${Environments.APIUrl}/contratos/buscartodosaditivos`,
+      this.http.post<GenericResultResponse<ContratosAditivosResponse[]>>(
+        `${Environments.APIUrl}/aditivos/buscartodos`,
         request
       )
     );
@@ -99,6 +98,14 @@ export class ContratosService {
     return await firstValueFrom(
       this.http.delete<GenericResultResponse<string>>(
         `${Environments.APIUrl}/contratos/${id}`
+      )
+    );
+  }
+
+  public async DeletarAditivo(id: number): Promise<GenericResultResponse<string>> {
+    return await firstValueFrom(
+      this.http.delete<GenericResultResponse<string>>(
+        `${Environments.APIUrl}/aditivos/${id}`
       )
     );
   }

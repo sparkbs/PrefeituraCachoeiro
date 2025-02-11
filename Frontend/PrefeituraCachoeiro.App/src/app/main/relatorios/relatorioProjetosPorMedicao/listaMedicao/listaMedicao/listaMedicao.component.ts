@@ -2,8 +2,8 @@ import { Component, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild }
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
-import { AlterarMedicaoProjetoRequest, DadosMedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
-import { Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { AlterarMedicaoProjetoRequest, BuscarArquivosMedicaRequest, DadosMedicoesRequest, RegistroDocumentosMedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
+import { BuscarArquivosMedicaoResponse, Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { MedicoesService } from 'src/app/services/medicoes.service';
 import { ProjetoService } from 'src/app/services/projeto.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -23,7 +23,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
   @Input() medicoes: MedicoesResponse = new MedicoesResponse();
   StatusEnum = StatusMedicaoEnum;  // Expondo o enum no componente
   isLoading = false;
-  listaDocumentoContrato: ListaDocumentosContrato[] = [];
+  listaDocumentoContrato: BuscarArquivosMedicaoResponse[] = [];
 
   dataSource: MatTableDataSource<ItemMedicao>;
   displayedColumns: string[] = ['item', 'item/qtd', 'valor(s)cBdi' , 'valorTotal/bdi','qtdRestante', 'qtdMedicaoItem', 'valorTotalMedidaBdi', 'valorSaldoRestante'];
@@ -33,13 +33,30 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
     this.dataSource = new MatTableDataSource(this.medicoes.items);
    }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.medicoes.items.forEach(item =>{
       item.unidadeSalvaMedida = item.unidade;
       if(item?.itemsContrato != null){
         this.globalService.addItem(item.itemsContrato.item.descricao, item.itemsContrato.unidade, item.idItemContrato, item.unidade)
       }
     })
+
+    await this.buscarArquivosMedicao();
+  }
+
+  async buscarArquivosMedicao(){
+    var arquivosRequest = new BuscarArquivosMedicaRequest();
+    arquivosRequest.itemsPorPagina = 1000000;
+    arquivosRequest.pagina = 1;
+    arquivosRequest.IdMedicoesProjeto = this.medicoes.idMedicoesProjeto;
+
+    await this.apiMedicao.BuscarArquivosMedicoes(arquivosRequest)
+      .then((result) => {
+        this.listaDocumentoContrato = result.data;
+      })
+      .catch(() => 
+      {
+      });
   }
 
   buscarProjetos(idProjeto: number){
@@ -184,19 +201,61 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
     });
   }
 
-  adicionarDocumento(){
+  async adicionarDocumento(){
+    this.isLoading = true;
+
     if(this.documentoInput.nativeElement.files[0] != undefined){
       const documentoFile = this.documentoInput.nativeElement.files[0] as File;
-      this.listaDocumentoContrato.push({
-        nome: documentoFile.name,
-        file: documentoFile
-      });   
+
+      var request = new RegistroDocumentosMedicoesRequest();
+      request.IdMedicoesProjeto = this.medicoes.idMedicoesProjeto;
+      request.Arquivos.push(documentoFile);
+
+      await this.apiMedicao.RegistrarDocumentosMedicoes(request)
+      .then(() => {})
+      .catch(() => 
+      {
+        this.isLoading = false;
+      });
+
+      await this.buscarArquivosMedicao();
+
       this.documentoInput.nativeElement.value = '';
     }
+    this.isLoading = false;
   }
 
-  deletarDocumentos(deletarDocumento: ListaDocumentosContrato): void {
+  async deletarDocumentos(idDocumento: number) {
+    this.isLoading = true;
     // Filtra os documentos, removendo o que for igual ao item a ser deletado
-    this.listaDocumentoContrato = this.listaDocumentoContrato.filter(item => item !== deletarDocumento);
+    await this.apiMedicao.DeletarArquivoMedicao(idDocumento)
+    .then(async (result) => {
+      this._toastService.mensagemSuccess("Documento deletado com sucesso.");
+      await this.buscarArquivosMedicao();
+    })
+    .catch(() => 
+    {
+      this._toastService.mensagemSuccess("Erro ao deletar documento.");
+    })
+    .finally(()=>{
+      this.isLoading = false;
+    });
+  }
+
+
+  async downloadDocumento(idDocumento: number) {
+    this.isLoading = true;
+    // Filtra os documentos, removendo o que for igual ao item a ser deletado
+    await this.apiMedicao.DownloadArquivoMedicao(idDocumento)
+    .then(async (result) => {
+      this._toastService.mensagemSuccess("Download realizado com sucesso.");
+    })
+    .catch(() => 
+    {
+      this._toastService.mensagemSuccess("Erro ao realizar download documento.");
+    })
+    .finally(()=>{
+      this.isLoading = false;
+    });
   }
 }

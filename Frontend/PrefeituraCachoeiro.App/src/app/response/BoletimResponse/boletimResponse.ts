@@ -34,6 +34,7 @@ export class SubBoletim {
   codigoAta: string;
   descricao: string;
   quantidade: number;
+  quantidadeResponse: QuantidadeResponse;
   unidade: string;
   precoSemBdi: number;
   bdi: number;
@@ -45,4 +46,9 @@ export class BoletimMedicaoResponse {
   boletimMedicaoCabecalho: BoletimProjetoCabecalho;
   detalhes: Detalhe[];
   valorTotalMedicao: number;
+}
+
+export class QuantidadeResponse {
+  idQuantidade: number;
+  nome: string;
 }

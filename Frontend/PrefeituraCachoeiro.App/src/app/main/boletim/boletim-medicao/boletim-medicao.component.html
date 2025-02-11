@@ -222,7 +222,7 @@
           <td>{{ item.codigoAta }}</td>
           <td colspan="17">{{ item.descricao }}</td>
           <td>{{ item.unidade }}</td>
-          <td> - </td>
+          <td>{{ item.quantidadeResponse.nome }}</td>
           <td>{{ item.precoComBdi ? ('R$ ' + item.precoComBdi.toFixed(2)) : '' }}</td>
           <td colspan="2">{{ item.valorTotal ? ('R$ ' + (calcularValorTotalItemBoletim(item.unidade, item.precoComBdi))) : '' }}</td>
         </tr>

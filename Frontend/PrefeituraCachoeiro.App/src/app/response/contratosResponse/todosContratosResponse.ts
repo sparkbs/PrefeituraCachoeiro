@@ -93,3 +93,10 @@ export interface ContratosResponse {
     idProjeto: number;
   }
   
+  export interface ContratosAditivosResponse {
+    idAditivo: number,
+    contratoId: number,
+    dataAssinatura: Date,
+    dataValidade: Date,
+    tipoAditivo: string
+  }
