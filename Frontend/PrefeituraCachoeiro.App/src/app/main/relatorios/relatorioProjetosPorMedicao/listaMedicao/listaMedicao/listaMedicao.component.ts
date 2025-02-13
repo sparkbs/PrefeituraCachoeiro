@@ -257,7 +257,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
   }
 
 
-  async downloadDocumento(idDocumento: number) {
+  async downloadDocumento(idDocumento: number, arquivo:string) {
     this.isLoading = true;
     // Filtra os documentos, removendo o que for igual ao item a ser deletado
     await this.apiMedicao.DownloadArquivoMedicao(idDocumento)
@@ -266,7 +266,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
       const url = window.URL.createObjectURL(result);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'arquivo';  // Você pode definir o nome do arquivo
+      a.download = arquivo;  // Você pode definir o nome do arquivo
       a.click();
       window.URL.revokeObjectURL(url);  // Limpar a URL após o download
       this._toastService.mensagemSuccess("Download realizado com sucesso.");

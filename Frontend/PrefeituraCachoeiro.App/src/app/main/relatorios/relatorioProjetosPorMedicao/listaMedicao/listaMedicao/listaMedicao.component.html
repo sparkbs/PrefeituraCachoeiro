@@ -125,7 +125,7 @@
               <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" (click)="deletarDocumentos(item.id)">
                 <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
               </span>
-              <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumento(item.id)">
+              <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumento(item.id, item.arquivo)">
                 <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
               </span>
             </div>
