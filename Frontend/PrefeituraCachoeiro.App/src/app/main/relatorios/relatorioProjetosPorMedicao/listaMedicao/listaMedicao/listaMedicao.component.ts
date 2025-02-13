@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
 import { AlterarMedicaoProjetoRequest, BuscarArquivosMedicaRequest, DadosMedicoesRequest, RegistroDocumentosMedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
-import { BuscarArquivosMedicaoResponse, Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { ArquivosMedicoesProjetoResponse, BuscarArquivosMedicaoResponse, Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { MedicoesService } from 'src/app/services/medicoes.service';
 import { ProjetoService } from 'src/app/services/projeto.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -41,7 +41,15 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
       }
     })
 
-    await this.buscarArquivosMedicao();
+    
+    /*const cleanUrlsWithId = this.medicoes.arquivosMedicoesProjeto.map(x => {
+      const arquivoMedicao = x.arquivoMedicao.replace("https://imagensprefeituracachoeiro.s3.amazonaws.com/", ""); // Remove o prefixo
+    
+      // Retorna um objeto contendo o ID e a URL limpa
+      return { id: x.id, arquivoMedicao }; 
+    });   
+    
+    this.medicoes.arquivosMedicoesProjeto = cleanUrlsWithId*/
   }
 
   async buscarArquivosMedicao(){
@@ -206,13 +214,19 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
 
     if(this.documentoInput.nativeElement.files[0] != undefined){
       const documentoFile = this.documentoInput.nativeElement.files[0] as File;
-
+      
       var request = new RegistroDocumentosMedicoesRequest();
       request.IdMedicoesProjeto = this.medicoes.idMedicoesProjeto;
-      request.Arquivos.push(documentoFile);
-
+      request.Arquivos = (documentoFile);
       await this.apiMedicao.RegistrarDocumentosMedicoes(request)
-      .then(() => {})
+      .then((result) => {
+        var arqMed = new ArquivosMedicoesProjetoResponse();
+        arqMed.id = result.ids[0].id;
+        arqMed.arquivoMedicao = result.ids[0].arquivoMedicao;
+        arqMed.arquivo = documentoFile.name;
+
+        this.medicoes.arquivosMedicoesProjeto.push(arqMed);
+      })
       .catch(() => 
       {
         this.isLoading = false;
@@ -231,7 +245,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
     await this.apiMedicao.DeletarArquivoMedicao(idDocumento)
     .then(async (result) => {
       this._toastService.mensagemSuccess("Documento deletado com sucesso.");
-      await this.buscarArquivosMedicao();
+      this.medicoes.arquivosMedicoesProjeto = this.medicoes.arquivosMedicoesProjeto.filter(x => x.id != idDocumento);
     })
     .catch(() => 
     {
@@ -247,12 +261,19 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
     this.isLoading = true;
     // Filtra os documentos, removendo o que for igual ao item a ser deletado
     await this.apiMedicao.DownloadArquivoMedicao(idDocumento)
-    .then(async (result) => {
+    .then((result) => {
+      console.log(result);
+      const url = window.URL.createObjectURL(result);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'arquivo';  // Você pode definir o nome do arquivo
+      a.click();
+      window.URL.revokeObjectURL(url);  // Limpar a URL após o download
       this._toastService.mensagemSuccess("Download realizado com sucesso.");
     })
     .catch(() => 
     {
-      this._toastService.mensagemSuccess("Erro ao realizar download documento.");
+      this._toastService.mensagemError("Erro ao realizar download documento.");
     })
     .finally(()=>{
       this.isLoading = false;

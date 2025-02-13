@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
-import { BuscarArquivosMedicaoResponse, MedicoesResponse, RetornoIdMedicao, RetornoReprovacaoAprovacaoResponse, TodasMedicaoProjetoResponse } from '../response/medicoesResponse/medicoesResponse';
+import { BuscarArquivosMedicaoResponse, InserirDocumentoMedicaoResponse, MedicoesResponse, RetornoIdMedicao, RetornoReprovacaoAprovacaoResponse, TodasMedicaoProjetoResponse } from '../response/medicoesResponse/medicoesResponse';
 import { AlterarMedicaoProjetoRequest, AprovarMedicoesRequest, BuscarArquivosMedicaRequest, DadosMedicoesRequest, InserirMedicao, MedicoesRequest, RegistroDocumentosMedicoesRequest } from '../request/MedicoesRequest/medicoesRequest';
 
 @Injectable({
@@ -75,14 +75,14 @@ export class MedicoesService {
     );
   }
 
-  public async RegistrarDocumentosMedicoes(filter: RegistroDocumentosMedicoesRequest): Promise<RetornoReprovacaoAprovacaoResponse> {
+  public async RegistrarDocumentosMedicoes(filter: RegistroDocumentosMedicoesRequest): Promise<InserirDocumentoMedicaoResponse> {
     const formData = new FormData();
     Object.keys(filter).forEach(key => {
       formData.append(key, filter[key]);
     });
 
     return await firstValueFrom(
-      this.http.post<RetornoReprovacaoAprovacaoResponse>(
+      this.http.post<InserirDocumentoMedicaoResponse>(
         `${Environments.APIUrl}medicoes/registrardocumentos`,
         formData
       )
@@ -111,10 +111,11 @@ export class MedicoesService {
     );
   }
 
-  public async DownloadArquivoMedicao(id: number) : Promise<MedicoesResponse>{
+  public async DownloadArquivoMedicao(id: number) : Promise<Blob>{
     return await firstValueFrom(
-      this.http.get<MedicoesResponse>(
-        `${Environments.APIUrl}medicoes/downloadarquivomedicao/${id}`
+      this.http.get<Blob>(
+        `${Environments.APIUrl}medicoes/downloadarquivomedicao/${id}`,
+        {responseType: 'blob' as 'json'}
       )
     );
   }

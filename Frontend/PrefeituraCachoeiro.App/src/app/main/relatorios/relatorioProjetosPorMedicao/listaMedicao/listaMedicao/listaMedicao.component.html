@@ -107,22 +107,22 @@
       <span>Valor Total Medido: {{ formatToCurrency(somarValorTotal())}}</span>
       <span>Valor Saldo Total: {{ formatToCurrency(somarValorSaldoTotal())}}</span>
         <!-- Parte de Anexar Documento -->
-        <div style="display: flex; flex-wrap: wrap; gap: 10px;" [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">
+        <div style=" flex-wrap: wrap; gap: 10px;" >
           <div>
             Documentos:
           </div>
-          <div  [style.display]="alterarMedicaoProjeto ? 'flex' : 'none'" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">
+          <div  [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" >
             <input #documentoInput type="file" style="width: 100%" />
-            <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;"  [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada" (click)="adicionarDocumento()">
+            <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;" (click)="adicionarDocumento()">
               <mat-icon>playlist_add</mat-icon>
             </span>  
           </div>
            
 
-          <div *ngFor="let item of listaDocumentoContrato">
+          <div *ngFor="let item of medicoes.arquivosMedicoesProjeto">
             <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
-              {{item.arquivoMedicao}}
-              <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarDocumentos(item.id)">
+              {{item.arquivo}}
+              <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" (click)="deletarDocumentos(item.id)">
                 <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
               </span>
               <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumento(item.id)">

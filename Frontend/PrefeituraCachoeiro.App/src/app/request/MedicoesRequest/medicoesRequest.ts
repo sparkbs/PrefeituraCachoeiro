@@ -49,7 +49,7 @@ export class AlterarMedicaoProjetoRequest {
 
   export class RegistroDocumentosMedicoesRequest{
     IdMedicoesProjeto: number;
-    Arquivos: File[] = [];
+    Arquivos: File;
 }
 
 export class BuscarArquivosMedicaRequest extends BaseFilter{

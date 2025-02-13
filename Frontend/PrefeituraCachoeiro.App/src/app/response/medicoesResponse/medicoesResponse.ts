@@ -9,6 +9,13 @@ export class MedicoesResponse {
     statusMedicao: StatusMedicao;
     items: ItemMedicao[];
     idProjeto: number;
+    arquivosMedicoesProjeto: ArquivosMedicoesProjetoResponse[]; 
+  }
+
+  export class ArquivosMedicoesProjetoResponse {
+    id: number;
+    arquivoMedicao: string;
+    arquivo: string;
   }
 
   export class Contrato {
@@ -132,4 +139,15 @@ export class MedicoesResponse {
   export class BuscarArquivosMedicaoResponse {
     id: number;
     arquivoMedicao: string;
+  }
+
+  export class IdsResponse{
+    id: number;
+    arquivoMedicao: string;
+  }
+
+  export class InserirDocumentoMedicaoResponse{
+    ids: IdsResponse [];
+    isSucesso: boolean;
+    mensagemErro: string;
   }
