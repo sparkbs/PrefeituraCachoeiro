@@ -78,7 +78,7 @@ export class Editar_criar_contratosComponent implements OnInit {
   }
 
   async salvar(){
-    this.criarContrato.EmpresaId = 1;
+    this.criarContrato.EmpresaId = 2;
     this.criarContrato.Valor = this.criarContrato.Valor.replaceAll(".","").replaceAll("R$","").replaceAll(",",".");
     this.criarContrato.ArquivoTemplate = this.adicionarBaseDados();
 
