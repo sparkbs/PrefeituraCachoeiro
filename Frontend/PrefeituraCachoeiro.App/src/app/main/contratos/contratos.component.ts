@@ -111,13 +111,17 @@ export class ContratosComponent implements AfterViewInit, OnInit {
     });
   }
 
-  formatToCurrency(valor: number): string {
-    let valorFormatado = valor.toFixed(2);  // 2 casas decimais
-
-    valorFormatado = valorFormatado.replace('.', ',');
-
-    valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
-    return 'R$ ' + valorFormatado;
+  formatCurrency(event: string): string { 
+    let value = event.toString();
+    value = value.replace(/\D/g, ''); 
+    if (value === '') {
+      return ''; // Ou você pode definir um valor padrão
+    }
+    value = (parseInt(value) || 0).toString(); 
+    value = value.padStart(3, '0'); 
+    value = value.slice(0, -2) + ',' + value.slice(-2); 
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
+    value = 'R$ ' + value; 
+    return value; 
   }
 }

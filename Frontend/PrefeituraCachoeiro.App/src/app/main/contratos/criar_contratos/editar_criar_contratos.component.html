@@ -12,7 +12,13 @@
 
       <mat-form-field style="margin-left: 10px;">
         <mat-label>Data Contrato</mat-label>
-        <input matInput type="date" [(ngModel)]="criarContrato.DataContrato" />
+        <input matInput 
+               type="date" 
+               [(ngModel)]="criarContrato.DataContrato"
+               [formControl]="dateControl" />
+        <mat-error *ngIf="dateControl.hasError('invalidFormat')">
+          Formato de data inválido
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field style="margin-left: 10px;">
@@ -32,12 +38,24 @@
     <div>
       <mat-form-field>
         <mat-label>Data Inicio</mat-label>
-        <input matInput type="date" [(ngModel)]="criarContrato.DataInicio" />
+        <input matInput 
+               type="date" 
+               [(ngModel)]="criarContrato.DataInicio"
+               [formControl]="dateInicioControl" />
+        <mat-error *ngIf="dateInicioControl.hasError('invalidFormat')">
+          Formato de data inválido
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field style="margin-left: 10px;">
         <mat-label>Data Termino</mat-label>
-        <input matInput type="date" [(ngModel)]="criarContrato.DataTermino"/>
+        <input matInput 
+               type="date" 
+               [(ngModel)]="criarContrato.DataTermino"
+               [formControl]="dateTerminoControl" />
+        <mat-error *ngIf="dateTerminoControl.hasError('invalidFormat')">
+          Formato de data inválido
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field style="margin-left: 10px;">
@@ -49,7 +67,7 @@
 
       <mat-form-field style="margin-left: 10px;">
         <mat-label>Valor Contrato</mat-label>
-        <input matInput type="text" [(ngModel)]="criarContrato.Valor"  placeholder="R$ 0,00" (keydown)="handleKeyDown($event)" (input)="formatCurrency($event)"/>
+        <input matInput type="text" [(ngModel)]="valorContrato"  placeholder="R$ 0,00" (keydown)="handleKeyDown($event)" (input)="formatCurrency($event)"/>
       </mat-form-field>
     </div>
     <div style="display: flex; flex-wrap: wrap; gap: 10px;">

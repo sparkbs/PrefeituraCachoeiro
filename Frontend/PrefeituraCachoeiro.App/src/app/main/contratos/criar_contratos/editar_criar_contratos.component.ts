@@ -10,6 +10,7 @@ import { UsuariosRequest } from 'src/app/request/UsuariosRequest/usuariosRequest
 import { UsuariosResponse } from 'src/app/response/usuariosResponse/usuariosResponse';
 import { ListaDocumentosContrato } from 'src/app/response/contratosResponse/dadosContratoResponse';
 import { ToastService } from 'src/app/services/toast.service';
+import { AbstractControl, FormControl, ValidationErrors, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-editar_criar_contratos',
@@ -24,6 +25,7 @@ export class Editar_criar_contratosComponent implements OnInit {
   listaGerentes: UsuariosResponse[] = [];
   criarContrato: CriarContratoRequest = new CriarContratoRequest();
   listaDocumentoContrato: ListaDocumentosContrato[] = [];
+  valorContrato: string;
   
   constructor(@Inject(MAT_DIALOG_DATA) public data: Item, 
   private dialogRef: MatDialogRef<Editar_criar_contratosComponent>,
@@ -78,8 +80,11 @@ export class Editar_criar_contratosComponent implements OnInit {
   }
 
   async salvar(){
+    console.log(this.dateControl);
+    if (this.dateControl.status != "INVALID" && this.dateInicioControl.status != "INVALID" && this.dateTerminoControl.status != "INVALID") {
+
     this.criarContrato.EmpresaId = 2;
-    this.criarContrato.Valor = this.criarContrato.Valor.replaceAll(".","").replaceAll("R$","").replaceAll(",",".");
+    this.criarContrato.Valor = this.valorContrato.replaceAll(".","").replaceAll("R$","").replaceAll(",",".");
     this.criarContrato.ArquivoTemplate = this.adicionarBaseDados();
 
     let documentoContrato: File[] = [];
@@ -96,6 +101,11 @@ export class Editar_criar_contratosComponent implements OnInit {
       this._toastService.mensagemError("Erro ao cadastrar contrato");
     });
   }
+  else{
+    this._toastService.mensagemError("Informe uma data válida");
+
+  }
+  }
 
   handleKeyDown(event: KeyboardEvent): void {
     const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
@@ -109,7 +119,7 @@ export class Editar_criar_contratosComponent implements OnInit {
     let value = event.target.value.toString();
     value = value.replace(/\D/g, ''); 
     if (value === '') {
-      this.criarContrato.Valor = ''; // Ou você pode definir um valor padrão
+      this.valorContrato = ''; // Ou você pode definir um valor padrão
       return;
     }
     value = (parseInt(value) || 0).toString(); 
@@ -117,7 +127,30 @@ export class Editar_criar_contratosComponent implements OnInit {
     value = value.slice(0, -2) + ',' + value.slice(-2); 
     value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
     value = 'R$ ' + value; 
-    this.criarContrato.Valor = value; 
+    this.valorContrato = value; 
+  }
+
+  dateControl = new FormControl('', [
+    Validators.pattern(/^\d{4}-\d{2}-\d{2}$/),
+    this.dateValidator
+  ]);
+  
+  dateInicioControl = new FormControl('', [
+    Validators.pattern(/^\d{4}-\d{2}-\d{2}$/),
+    this.dateValidator
+  ]);
+
+  dateTerminoControl = new FormControl('', [
+    Validators.pattern(/^\d{4}-\d{2}-\d{2}$/),
+    this.dateValidator
+  ]);
+
+  dateValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) return null;
+    
+    const date = new Date(value);
+    return isNaN(date.getTime()) ? { 'invalidFormat': true } : null;
   }
 
   adicionarBaseDados(){
