@@ -65,10 +65,6 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field style="margin-left: 10px;">
-        <mat-label>Valor Contrato</mat-label>
-        <input matInput type="text" [(ngModel)]="valorContrato"  placeholder="R$ 0,00" (keydown)="handleKeyDown($event)" (input)="formatCurrency($event)"/>
-      </mat-form-field>
     </div>
     <div style="display: flex; flex-wrap: wrap; gap: 10px;">
       <div>

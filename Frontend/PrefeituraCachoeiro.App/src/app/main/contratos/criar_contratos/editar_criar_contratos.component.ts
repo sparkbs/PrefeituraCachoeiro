@@ -84,7 +84,8 @@ export class Editar_criar_contratosComponent implements OnInit {
     if (this.dateControl.status != "INVALID" && this.dateInicioControl.status != "INVALID" && this.dateTerminoControl.status != "INVALID") {
 
     this.criarContrato.EmpresaId = 2;
-    this.criarContrato.Valor = this.valorContrato.replaceAll(".","").replaceAll("R$","").replaceAll(",",".");
+    //retirar o valor
+    this.criarContrato.Valor = "1";
     this.criarContrato.ArquivoTemplate = this.adicionarBaseDados();
 
     let documentoContrato: File[] = [];

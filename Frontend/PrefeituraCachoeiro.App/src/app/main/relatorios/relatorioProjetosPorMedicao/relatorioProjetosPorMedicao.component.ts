@@ -146,14 +146,17 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: contrato, numeroMedicao :1}});
 
       dialogRef.afterClosed().subscribe(async result => {
+        console.log(this.todasMedicaoProjetoResponse);
         if(result){
           await this.apiMedicoes.BuscarMedicoes(result)
           .then((response) => {      
             let novoMedicao = new MedicoesModel();
             novoMedicao.numeroMedicao = response.numeroMedicao;
             novoMedicao.data.push(response);
-    
+
             this.medicaoProjetos.push(novoMedicao);   
+            console.log(this.medicaoProjetos);
+
           });          
         }
       });
@@ -182,27 +185,44 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     }
   }
 
-  openDialogAssociate(numeroMedicao: number, projetosMedidos: MedicoesResponse[]) {
-    //let contrato = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
+  async openDialogAssociate(numeroMedicao: number, projetosMedidos: MedicoesResponse[]) {
     let medicoes = new TodasMedicaoProjetoResponse();
     medicoes.data = [{
       numeroMedicao: numeroMedicao,
       idContrato: this.contratoSelecionado,
       items: [],
   }] as MedicoesResponse[]; 
-      const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao, projetosMedidos: projetosMedidos}});    
-      dialogRef.afterClosed().subscribe(async result => {
-        if(result){
-          await this.apiMedicoes.BuscarMedicoes(result)
-          .then((response) => {      
-            let novoMedicao = new MedicoesModel();
-            novoMedicao.numeroMedicao = response.numeroMedicao;
-            novoMedicao.data.push(response);
-    
-            this.medicaoProjetos.push(novoMedicao);   
-          });          
-        }
-      });
+
+    var medicoesRequest : MedicoesRequest = new MedicoesRequest();
+    medicoesRequest.idContrato = this.contratoSelecionado;
+    medicoesRequest.itemsPorPagina = 1000000;
+    medicoesRequest.pagina = 1;
+
+    if(this.todasMedicaoProjetoResponse.data == undefined){
+      this.isLoading = true;
+      await this.apiMedicoes.BuscarTodasMedicoes(medicoesRequest)
+      .then((result) => {      
+        this.todasMedicaoProjetoResponse = result;
+      }).catch(() => {
+        this._toastService.mensagemError("Erro ao buscar medições!");
+      }).finally(() =>{
+        this.isLoading = false;
+      })
+    }
+    console.log(this.todasMedicaoProjetoResponse);
+    const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao, projetosMedidos: projetosMedidos}});    
+    dialogRef.afterClosed().subscribe(async result => {
+      if(result){
+        await this.apiMedicoes.BuscarMedicoes(result)
+        .then((response) => {      
+          let novoMedicao = new MedicoesModel();
+          novoMedicao.numeroMedicao = response.numeroMedicao;
+          novoMedicao.data.push(response);
+  
+          this.medicaoProjetos.push(novoMedicao);   
+        });          
+      }
+    });
   }
 
   openDialogConsolidado(medicao: MedicoesResponse){

@@ -12,6 +12,27 @@
     justify-content: space-between; /* Alinha o texto à esquerda e o ícone à direita */
     align-items: center; /* Alinha verticalmente os itens no centro */
   }
+
+  .table-wrapper {
+    max-height: 70vh;
+    overflow: auto;
+    position: relative;
+  }
+  
+  .custom-table {
+    width: 100%;
+  }
+  
+  .mat-mdc-table thead {
+    background: white;
+  }
+  
+  .mat-mdc-header-row {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: white;
+  }
   
   .card-content {
     width: 90%;
@@ -46,7 +67,6 @@
   }
   
   .list-container {
-    overflow: auto;
     margin-bottom: 8px;
   }
   

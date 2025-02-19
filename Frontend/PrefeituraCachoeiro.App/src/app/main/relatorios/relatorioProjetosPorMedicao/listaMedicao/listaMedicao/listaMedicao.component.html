@@ -17,7 +17,7 @@
     </span>
   </div>
 
-  <div class="list-container" style="max-height: 530px; overflow-y: auto;">
+  <div class="list-container table-wrapper" style="max-height: 530px; overflow-y: auto;">
     <div style="margin-top: 10px; display: flex; align-items: center; flex-wrap: wrap;">
       <!-- Primeira div - Quando a condição for verdadeira -->
       <div *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada || medicoes.resumo is not null" style="margin-top: 10px; display: flex; align-items: center; flex: 1;">
@@ -35,9 +35,9 @@
       </div>
     </div>
 
-
+    <div >
     <!-- Títulos exibidos uma única vez -->
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="margin-top: 8px;">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 custom-table" style="margin-top: 8px;">
       <!-- Coluna para 'Item' -->
       <ng-container matColumnDef="item">
         <th mat-header-cell *matHeaderCellDef style="font-size: 13px;"> Item </th>
@@ -102,12 +102,18 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
 
     </table>
+    </div>
 
-    <div style="font-weight: bold; font-size: 17px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 12px;">
-      <span>Valor Total Medido: {{ formatToCurrency(somarValorTotal())}}</span>
-      <span>Valor Saldo Total: {{ formatToCurrency(somarValorSaldoTotal())}}</span>
-        <!-- Parte de Anexar Documento -->
-        <div style=" flex-wrap: wrap; gap: 10px;" >
+    <div style="font-weight: bold; font-size: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 12px;">
+      <span style="margin-right: 3px;">Valor Total Medido: {{ formatToCurrency(somarValorTotal())}}</span>
+      <span style="margin-right: 3px;">Valor Saldo Total: {{ formatToCurrency(somarValorSaldoTotal())}}</span>
+      <span style="margin-right: 3px;">Valor Contratual: {{ formatToCurrency(this.medicoes.contratos.valorTotalSolicitado)}}</span>
+      <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="salvar()" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Salvar</button>
+
+    </div>
+      <!-- Parte de Anexar Documento -->
+      <div style="font-weight: bold; font-size: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 12px;">
+      <div style=" flex-wrap: wrap; gap: 10px;" >
           <div>
             Documentos:
           </div>
@@ -135,7 +141,6 @@
         
       
         <!-- Botão de Salvar -->
-        <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="salvar()" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Salvar</button>
       </div>
 
        <!-- Lista de Documentos Anexados -->

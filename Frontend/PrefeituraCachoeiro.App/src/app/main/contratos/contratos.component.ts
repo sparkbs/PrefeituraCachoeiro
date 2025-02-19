@@ -35,7 +35,7 @@ export class ContratosComponent implements AfterViewInit, OnInit {
     { id: 3,nomePrefeitura: 'Teste',  dataInicioEFim: '25/03/2019 até 25/03/2021', consorcio: 'teste 3', gerente: 'Pedro', valorContrato:200.000, tipoContratacao:'Adesão',acoes: '' }
   ]*/
   lista: ContratosResponse[] = [];
-  displayedColumns: string[] = ['numeroContrato','nomePrefeitura', 'dataInicio', 'dataTermino', 'gerente', 'valorSolicitado','valor','valorTotalMedido', 'valorSaldoRestante','tipoContratacao','acoes'];
+  displayedColumns: string[] = ['numeroContrato','nomePrefeitura', 'dataInicio', 'dataTermino', 'gerente', 'valor','valorTotalMedido', 'valorSaldoRestante','tipoContratacao','acoes'];
   dataSource: MatTableDataSource<ContratosResponse>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
