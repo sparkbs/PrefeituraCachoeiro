@@ -21,6 +21,8 @@ import { MatTableModule } from '@angular/material/table';
 import { ResumoMedicaoComponent } from './resumoMedicao/resumoMedicao/resumoMedicao.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoadingComponent } from 'src/app/shared/loading/loading.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [ RelatorioProjetosPorMedicaoComponent, CadastrarMedicaoComponent, ListaMedicaoComponent, ResumoMedicaoComponent, LoadingComponent],
@@ -42,7 +44,9 @@ import { LoadingComponent } from 'src/app/shared/loading/loading.component';
     BrowserModule,
     MatTableModule,
     ReactiveFormsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSortModule,
+    MatPaginatorModule
   ]
 })
 export class RelatorioProjetosPorMedicaoModule { }

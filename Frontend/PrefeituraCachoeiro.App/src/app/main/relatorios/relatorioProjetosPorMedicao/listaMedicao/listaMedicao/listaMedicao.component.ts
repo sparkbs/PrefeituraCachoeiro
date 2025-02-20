@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
@@ -11,27 +11,63 @@ import { AprovarMedicaoComponent } from '../../../../aprovacaoBoletim/aprovarMed
 import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
 import { ModalLevantamentoComponent } from '../../../modalLevantamento/modalLevantamento.component';
 import { ListaDocumentosContrato } from 'src/app/response/contratosResponse/dadosContratoResponse';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { StatusOrdenacao } from 'src/app/enums/statusOrdenacao';
 
 @Component({
   selector: 'app-listaMedicao',
   templateUrl: './listaMedicao.component.html',
   styleUrls: ['./listaMedicao.component.scss']
 })
-export class ListaMedicaoComponent implements OnInit, OnChanges {
+export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
   readonly dialog = inject(MatDialog);
   @ViewChild('documentoInput') documentoInput: any;
   @Input() medicoes: MedicoesResponse = new MedicoesResponse();
   StatusEnum = StatusMedicaoEnum;  // Expondo o enum no componente
   isLoading = false;
   listaDocumentoContrato: BuscarArquivosMedicaoResponse[] = [];
+  isDivVisible: boolean = false;
+  
+  statusOrdem: StatusOrdenacao = StatusOrdenacao.SemOrdem;
 
   dataSource: MatTableDataSource<ItemMedicao>;
   displayedColumns: string[] = ['item', 'item/qtd', 'valor(s)cBdi' , 'valorTotal/bdi','qtdRestante', 'qtdMedicaoItem', 'valorTotalMedidaBdi', 'valorSaldoRestante'];
+
+  @ViewChild(MatSort) sort!: MatSort;
 
   alterarMedicaoProjeto = false;
   constructor(private readonly apiMedicao: MedicoesService, private readonly api: ProjetoService,private globalService: GlobalServicesService,private _toastService: ToastService) {
     this.dataSource = new MatTableDataSource(this.medicoes.items);
    }
+
+   definirOrdem(){
+    if(this.statusOrdem == StatusOrdenacao.SemOrdem){
+      this.statusOrdem = StatusOrdenacao.Decrescente;
+    }
+    else if(this.statusOrdem == StatusOrdenacao.Decrescente){
+      this.statusOrdem = StatusOrdenacao.Crescente;
+    }
+    else{
+      this.statusOrdem = StatusOrdenacao.SemOrdem;
+    }
+   }
+
+   ordemItens() {
+    this.definirOrdem();
+
+    if(this.statusOrdem == StatusOrdenacao.Decrescente){
+      this.dataSource.data = this.dataSource.data.sort((a, b) => {
+        return -1 * a.itemsContrato.item.identificador.localeCompare(b.itemsContrato.item.identificador);
+      });
+    }
+    
+    else if(this.statusOrdem == StatusOrdenacao.Crescente){
+      this.dataSource.data = this.dataSource.data.sort((a, b) => {
+        return a.itemsContrato.item.identificador.localeCompare(b.itemsContrato.item.identificador);
+      });
+    }
+  }
 
   async ngOnInit() {
     this.medicoes.items.forEach(item =>{
@@ -41,7 +77,6 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
       }
     })
 
-    
     /*const cleanUrlsWithId = this.medicoes.arquivosMedicoesProjeto.map(x => {
       const arquivoMedicao = x.arquivoMedicao.replace("https://imagensprefeituracachoeiro.s3.amazonaws.com/", ""); // Remove o prefixo
     
@@ -50,6 +85,11 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
     });   
     
     this.medicoes.arquivosMedicoesProjeto = cleanUrlsWithId*/
+  }
+
+  ngAfterViewInit() {
+    console.log(this.sort)
+    this.dataSource.sort = this.sort;
   }
 
   async buscarArquivosMedicao(){
@@ -74,6 +114,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['medicoes']) {
       this.dataSource.data = this.medicoes.items || [];
+      this.dataSource.sort = this.sort;
     }
   }
 
@@ -99,6 +140,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
         item.itemInvalido = false;
       }
     }
+    this.dataSource.sort = this.sort;
   }
 
   buscarItemMedicao(idItemContrato: number){
@@ -279,4 +321,9 @@ export class ListaMedicaoComponent implements OnInit, OnChanges {
       this.isLoading = false;
     });
   }
+
+    toggleDiv() {
+      console.log("Oi")
+      this.isDivVisible = !this.isDivVisible;
+    }  
 }
