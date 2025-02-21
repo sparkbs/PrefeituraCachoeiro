@@ -28,16 +28,12 @@ export class AditivosContratosComponent implements AfterViewInit {
 
   async ngAfterViewInit() {
     this.contratoBase = this.data.contratobase;
-    console.log(this.data);
     var aditivoFilter : BuscarAditivosContrato = new BuscarAditivosContrato();
     aditivoFilter.idContrato = this.data.contratobase.idContrato;
     await this.api.BuscarTodosAditivos(aditivoFilter)
     .then((result) => {
-      console.log(result);
       this.lista = result.data;
       this.dataSource.data = (this.lista);         
-      console.log(this.dataSource.data);
-      console.log(result);
     });
   }
 

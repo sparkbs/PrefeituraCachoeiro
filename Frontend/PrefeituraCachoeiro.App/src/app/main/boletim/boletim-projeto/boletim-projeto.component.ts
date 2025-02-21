@@ -67,7 +67,6 @@ export class BoletimProjetoComponent implements OnInit {
       this.medicaoId = params.get('medicaoId')!;
     });
     
-    console.log(this.medicaoId);
     //this.createForm();
     await this.buscarProjetos();
     await this.onSelectionChange(Number(this.projetoId));

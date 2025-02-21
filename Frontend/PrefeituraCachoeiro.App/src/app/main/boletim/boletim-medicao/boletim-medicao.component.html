@@ -15,7 +15,7 @@
       <mat-form-field >
         <mat-label>Selecione a Medição:</mat-label>
         <mat-select  [(ngModel)]="medicaoSelecionado" [disabled]="!enableMedicao || isEnabledInputs">
-          <mat-option *ngFor="let medicao of listaMedicoes" [value]="medicao.idMedicoesProjeto">
+          <mat-option *ngFor="let medicao of listaMedicoesAgrupados" [value]="medicao.numeroMedicao">
             {{ medicao.numeroMedicao }}
           </mat-option>
         </mat-select>

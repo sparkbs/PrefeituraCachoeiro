@@ -146,7 +146,6 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: contrato, numeroMedicao :1}});
 
       dialogRef.afterClosed().subscribe(async result => {
-        console.log(this.todasMedicaoProjetoResponse);
         if(result){
           await this.apiMedicoes.BuscarMedicoes(result)
           .then((response) => {      
@@ -155,8 +154,6 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
             novoMedicao.data.push(response);
 
             this.medicaoProjetos.push(novoMedicao);   
-            console.log(this.medicaoProjetos);
-
           });          
         }
       });
@@ -209,7 +206,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
         this.isLoading = false;
       })
     }
-    console.log(this.todasMedicaoProjetoResponse);
+
     const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao, projetosMedidos: projetosMedidos}});    
     dialogRef.afterClosed().subscribe(async result => {
       if(result){

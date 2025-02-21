@@ -88,7 +88,6 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.sort)
     this.dataSource.sort = this.sort;
   }
 
@@ -298,13 +297,11 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-
   async downloadDocumento(idDocumento: number, arquivo:string) {
     this.isLoading = true;
     // Filtra os documentos, removendo o que for igual ao item a ser deletado
     await this.apiMedicao.DownloadArquivoMedicao(idDocumento)
     .then((result) => {
-      console.log(result);
       const url = window.URL.createObjectURL(result);
       const a = document.createElement('a');
       a.href = url;
@@ -322,8 +319,14 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-    toggleDiv() {
-      console.log("Oi")
-      this.isDivVisible = !this.isDivVisible;
-    }  
+  toggleDiv() {
+    this.isDivVisible = !this.isDivVisible;
+  }  
+
+  enviar(){
+    const result = window.confirm('Você deseja enviar a medição?');
+    if (result) {
+      this._toastService.mensagemSuccess("Medição enviada com sucesso");
+    } 
+  }
 }

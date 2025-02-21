@@ -12,6 +12,11 @@ export class MedicoesResponse {
     arquivosMedicoesProjeto: ArquivosMedicoesProjetoResponse[]; 
   }
 
+  export class BoletimMedicoesResponse {
+    numeroMedicao: number;
+    medicaoResponse: MedicoesResponse[];
+  }
+
   export class ArquivosMedicoesProjetoResponse {
     id: number;
     arquivoMedicao: string;

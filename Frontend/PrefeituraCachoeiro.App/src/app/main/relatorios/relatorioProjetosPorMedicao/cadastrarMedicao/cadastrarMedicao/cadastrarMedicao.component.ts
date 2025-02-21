@@ -37,7 +37,6 @@ export class CadastrarMedicaoComponent implements OnInit {
   }
 
   async ngOnInit() {
-    console.log(this.data);
     this.isLoading = true;
     await this.getAllProjects()
   }

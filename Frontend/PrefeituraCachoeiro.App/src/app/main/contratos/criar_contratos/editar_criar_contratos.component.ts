@@ -80,7 +80,6 @@ export class Editar_criar_contratosComponent implements OnInit {
   }
 
   async salvar(){
-    console.log(this.dateControl);
     if (this.dateControl.status != "INVALID" && this.dateInicioControl.status != "INVALID" && this.dateTerminoControl.status != "INVALID") {
 
     this.criarContrato.EmpresaId = 2;

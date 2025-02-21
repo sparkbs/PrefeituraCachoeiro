@@ -39,7 +39,6 @@ export class AprovarMedicaoComponent implements OnInit {
       this.aprovarMedicoes.IdMedicoesProjeto = this.IdMedicoesProj.idMedicoesProj;
       this.listaDocumentoContrato.forEach(x => this.aprovarMedicoes.Arquivos.push(x.file));
        
-      console.log(this.aprovarMedicoes)
       await this.api.AprovarMedicoes(this.aprovarMedicoes)
       .then((result) => {     
         if(result.isSucesso){

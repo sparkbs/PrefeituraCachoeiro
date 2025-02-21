@@ -10,7 +10,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
-import { MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { BoletimMedicoesResponse, MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { BoletimMedicaoResponse, BoletimProjetoCabecalho, BoletimResponse, SubBoletim } from 'src/app/response/BoletimResponse/boletimResponse';
 import { BoletimService } from 'src/app/services/boletim.service';
@@ -40,6 +40,9 @@ export class BoletimMedicaoComponent implements OnInit {
   boletim: BoletimMedicaoResponse;
   contratoSelecionadoPesquisa: number;
   nomePrefeitura: string = ''; // URL tratada da imagem do logotipo
+  listaMedicoesAgrupados: BoletimMedicoesResponse[] =[];
+  listaMedicoesSelecionadasAgrupados: BoletimMedicoesResponse;
+  dadosSeparadosProjeto: SubBoletim[] =[];
 
   // Variável para gerenciar estado de carregamento e erros
   isLoading = true;
@@ -80,8 +83,7 @@ export class BoletimMedicaoComponent implements OnInit {
   }
 
   createForm(contratoId: number, medicaoId:number){
-    console.log(contratoId);
-    console.log(medicaoId);
+
     this.form = this.fb.group({
       contratoId: [{ value: contratoId}, Validators.required],
       medicaoId: [{ value: medicaoId, disabled: true }, Validators.required]
@@ -115,6 +117,8 @@ export class BoletimMedicaoComponent implements OnInit {
     await this._medicaoControllerService.BuscarTodasMedicoes(medicoesRequest)
     .then((res) => {
       this.listaMedicoes = res.data;
+
+      this.groupMedicoes();
     })
     .catch((erro) => {
       console.error(erro);
@@ -122,11 +126,37 @@ export class BoletimMedicaoComponent implements OnInit {
     });
   }
 
+
+  groupMedicoes() {
+    const grouped = this.listaMedicoes.reduce((acc, current) => {
+      const numeroMedicao = current.numeroMedicao;
+
+      // Se ainda não existir um grupo para esse numeroMedicao, cria um novo
+      if (!acc[numeroMedicao]) {
+        acc[numeroMedicao] = {
+          numeroMedicao: numeroMedicao,
+          medicaoResponse: []
+        };
+      }
+
+      // Adiciona o MedicoesResponse ao grupo correspondente
+      acc[numeroMedicao].medicaoResponse.push(current);
+      return acc;
+    }, {});
+
+    // Agora, agrupamos os dados em um array de BoletimMedicoesResponse
+    this.listaMedicoesAgrupados = Object.values(grouped);
+
+    console.log(this.listaMedicoesAgrupados);  // Exibindo a estrutura final
+  }
+
   async onSelectionChange(contratoId: number) {
     //this.form.get('medicaoId').enable();
     this.enableMedicao = true;
     this.contratoSelecionado = this.listaContratos.find(res => res.idContrato == contratoId);
-    await this.buscarMedicoes(contratoId);
+    console.log(contratoId);
+    if(contratoId != undefined && contratoId != null && contratoId != 0)
+      await this.buscarMedicoes(contratoId);
   }
 
   async onSelectionChangeMedicao(medicaoId: number) {
@@ -163,39 +193,49 @@ export class BoletimMedicaoComponent implements OnInit {
     //     this.isLoading = false;
     //   }
     // });
-    var boletimMedicaoRequest: BuscarBoletimMedicaoRequest = {
-      idMedicao: medicaoId
-    }
-
-    await this._boletimControllerService.BuscarBoletimMedicao(boletimMedicaoRequest)
-    .then(async (dados) => {
-      console.log(dados);
-      if (dados.detalhes.length != 0) {
-        this.boletim = dados;
-        this.boletimCabecalho = dados.boletimMedicaoCabecalho;
-
-        // Verificar o tipo do campo logoTipoImg
-        await this.RetornarLogoCliente(this.contratoSelecionado.prefeituraId);
-
-        /*if (logoTipoImg instanceof File) {
-          // Se for um arquivo, converte para URL acessível
-          this.logoTipoImgUrl = URL.createObjectURL(logoTipoImg);
-        } else if (typeof logoTipoImg === 'string') {
-          // Se for uma string, usa diretamente
-          this.logoTipoImgUrl = logoTipoImg;
-        }*/
-        dados.detalhes[0].subBoletins = (dados.detalhes[0].subBoletins.filter(x => parseFloat(x.unidade) != 0));
-        this.dataSource = dados.detalhes.length == 0 ? [] : dados.detalhes[0].subBoletins;
-        this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
-        this.valorTotalMedicao = dados.valorTotalMedicao || 0;
+    this.dadosSeparadosProjeto = [];
+    this.listaMedicoesSelecionadasAgrupados = this.listaMedicoesAgrupados.filter(x => x.numeroMedicao == this.medicaoSelecionado)[0];
+    console.log(this.listaMedicoesSelecionadasAgrupados);
+    
+    this.listaMedicoesSelecionadasAgrupados.medicaoResponse.forEach(async element => {    
+      var boletimMedicaoRequest: BuscarBoletimMedicaoRequest = {
+        idMedicao: element.idMedicoesProjeto
       }
-      else {
-        this._toastService.messageWarning('Sem medição para apresentar!');
-      }
-    })
-    .catch((erro) => {
-      console.error(erro);
-      this._toastService.mensagemError('Erro ao buscar boletins!');
+      
+      await this._boletimControllerService.BuscarBoletimMedicao(boletimMedicaoRequest)
+      .then(async (dados) => {
+        if (dados.detalhes.length != 0) {
+          this.boletim = dados;
+          this.boletimCabecalho = dados.boletimMedicaoCabecalho;
+
+          // Verificar o tipo do campo logoTipoImg
+          await this.RetornarLogoCliente(this.contratoSelecionado.prefeituraId);
+
+          /*if (logoTipoImg instanceof File) {
+            // Se for um arquivo, converte para URL acessível
+            this.logoTipoImgUrl = URL.createObjectURL(logoTipoImg);
+          } else if (typeof logoTipoImg === 'string') {
+            // Se for uma string, usa diretamente
+            this.logoTipoImgUrl = logoTipoImg;
+          }*/
+          dados.detalhes[0].subBoletins = (dados.detalhes[0].subBoletins.filter(x => parseFloat(x.unidade) != 0));
+          this.dataSource = dados.detalhes.length == 0 ? [] : dados.detalhes[0].subBoletins;
+          
+          this.dadosSeparadosProjeto = this.dadosSeparadosProjeto.concat(this.dataSource);
+
+          this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
+          this.valorTotalMedicao = dados.valorTotalMedicao || 0;
+        }
+        else {
+          this._toastService.messageWarning('Sem medição para apresentar!');
+        }
+      })
+      .catch((erro) => {
+        console.error(erro);
+        this._toastService.mensagemError('Erro ao buscar boletins!');
+      });
+
+      console.log(this.dadosSeparadosProjeto);
     });
   }
 
