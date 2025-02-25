@@ -112,7 +112,7 @@
       <span style="margin-right: 3px;">Valor Saldo Total: {{ formatToCurrency(somarValorSaldoTotal())}}</span>
       <span style="margin-right: 3px;">Valor Contratual: {{ formatToCurrency(this.medicoes.contratos.valorTotalSolicitado)}}</span>
       <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="salvar()" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Salvar</button>
-      <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="enviar()" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Enviar</button>
+      <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" [ngClass]="{'disabled-btn': isDisabledBtnEnviar}"  [disabled]="isDisabledBtnEnviar" (click)="enviar(medicoes.idMedicoesProjeto)" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Enviar</button>
 
     </div>
       <!-- Parte de Anexar Documento -->

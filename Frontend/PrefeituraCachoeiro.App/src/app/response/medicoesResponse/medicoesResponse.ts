@@ -125,7 +125,7 @@ export class MedicoesResponse {
   }
 
   export class RetornoReprovacaoAprovacaoResponse{
-    isSucesso: boolean;
+    isSucesso: boolean = false;
     mensagemErro: string;
   }
 

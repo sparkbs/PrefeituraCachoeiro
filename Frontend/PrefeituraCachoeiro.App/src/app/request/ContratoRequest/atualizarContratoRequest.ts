@@ -4,7 +4,6 @@ export class AtualizarContratoRequest {
     DataContrato: string;
     NumeroContrato: string = '';
     EmpresaId: number = 2;
-    Valor: string = '';
     TipoContratacao: number = 0;
     Gerente: string = '';
     DataInicio: string;

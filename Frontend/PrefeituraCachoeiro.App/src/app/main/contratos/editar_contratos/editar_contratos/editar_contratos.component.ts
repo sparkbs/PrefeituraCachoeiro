@@ -110,7 +110,6 @@ async salvar(){
   this.atualizarContrato.PrefeituraId = this.data.prefeituraId;
   this.atualizarContrato.TipoContratacao = this.data.tipoContratacao;
   //retirar o valor
-  this.atualizarContrato.Valor = "1";
   
   await this.api.AtualizarContrato(this.atualizarContrato)
   .then((result) => {

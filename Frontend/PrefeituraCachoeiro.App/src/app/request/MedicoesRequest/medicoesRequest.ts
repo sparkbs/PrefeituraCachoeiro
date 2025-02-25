@@ -55,3 +55,7 @@ export class AlterarMedicaoProjetoRequest {
 export class BuscarArquivosMedicaRequest extends BaseFilter{
   IdMedicoesProjeto: number;
 }
+
+export class BuscarArquivosMedicaoIdProjRequest {
+  IdMedicoesProjeto: number;
+}

@@ -84,7 +84,6 @@ export class Editar_criar_contratosComponent implements OnInit {
 
     this.criarContrato.EmpresaId = 2;
     //retirar o valor
-    this.criarContrato.Valor = "1";
     this.criarContrato.ArquivoTemplate = this.adicionarBaseDados();
 
     let documentoContrato: File[] = [];

@@ -14,6 +14,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { Router } from '@angular/router';
 import { PrefeituraResponse, PrefeituraFilter } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
+import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
 
 @Component({
   selector: 'app-aprovacaoBoletim',
@@ -90,7 +91,12 @@ export class AprovacaoBoletimComponent implements OnInit {
     medicoesRequest.pagina = 1;
     await this.apiMedicoes.BuscarTodasMedicoes(medicoesRequest)
     .then((result) => {      
-      this.popularMedicao(result);
+      result.data = result.data.filter(x => x.idStatusMedicao == StatusMedicaoEnum.Enviada);
+      if(result.data && result.data.length > 0){
+        this.popularMedicao(result);
+      }else{
+        this._toastService.mensagemError("Não existe medição para avaliação!");
+      }
     }).catch(() => {
     })
     .finally(() =>{

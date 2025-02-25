@@ -220,7 +220,12 @@ export class BoletimMedicaoComponent implements OnInit {
           }*/
           dados.detalhes[0].subBoletins = (dados.detalhes[0].subBoletins.filter(x => parseFloat(x.unidade) != 0));
           this.dataSource = dados.detalhes.length == 0 ? [] : dados.detalhes[0].subBoletins;
-          
+
+          var projeto = new SubBoletim();
+          projeto.descricao = dados.detalhes[0].projeto;
+          console.log(projeto);
+          this.dataSource.unshift(projeto);
+
           this.dadosSeparadosProjeto = this.dadosSeparadosProjeto.concat(this.dataSource);
 
           this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
@@ -260,9 +265,11 @@ export class BoletimMedicaoComponent implements OnInit {
 
   calcularSomaValorTotal(){
     let valorSaldoSomado = 0;
-    this.dataSource.forEach( x => {
-      var quantidadeItem = parseFloat(x.unidade);
-      valorSaldoSomado += quantidadeItem * x.precoComBdi;
+    this.dadosSeparadosProjeto.forEach( x => {
+      if(x.precoComBdi && x.unidade){
+        var quantidadeItem = parseFloat(x.unidade);
+        valorSaldoSomado += quantidadeItem * x.precoComBdi;
+      }
     })
 
     return valorSaldoSomado.toFixed(2);

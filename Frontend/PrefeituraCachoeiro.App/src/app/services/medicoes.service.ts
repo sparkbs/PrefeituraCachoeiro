@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
 import { BuscarArquivosMedicaoResponse, InserirDocumentoMedicaoResponse, MedicoesResponse, RetornoIdMedicao, RetornoReprovacaoAprovacaoResponse, TodasMedicaoProjetoResponse } from '../response/medicoesResponse/medicoesResponse';
-import { AlterarMedicaoProjetoRequest, AprovarMedicoesRequest, BuscarArquivosMedicaRequest, DadosMedicoesRequest, InserirMedicao, MedicoesRequest, RegistroDocumentosMedicoesRequest } from '../request/MedicoesRequest/medicoesRequest';
+import { AlterarMedicaoProjetoRequest, AprovarMedicoesRequest, BuscarArquivosMedicaoIdProjRequest, BuscarArquivosMedicaRequest, DadosMedicoesRequest, InserirMedicao, MedicoesRequest, RegistroDocumentosMedicoesRequest } from '../request/MedicoesRequest/medicoesRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -120,5 +120,17 @@ export class MedicoesService {
     );
   }
 
+  public async EnviarMedicaoCliente(IdMedicoesProjeto: BuscarArquivosMedicaoIdProjRequest) : Promise<RetornoReprovacaoAprovacaoResponse>{
+    const formData = new FormData();
+    Object.keys(IdMedicoesProjeto).forEach(key => {
+      formData.append(key, IdMedicoesProjeto[key]);
+    });
 
+    return await firstValueFrom(
+      this.http.post<RetornoReprovacaoAprovacaoResponse>(
+        `${Environments.APIUrl}medicoes/enviarcliente`,
+        formData
+      )
+    );
+  }
 }

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, inject, Input, OnChanges, OnInit, SimpleChang
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
-import { AlterarMedicaoProjetoRequest, BuscarArquivosMedicaRequest, DadosMedicoesRequest, RegistroDocumentosMedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
+import { AlterarMedicaoProjetoRequest, BuscarArquivosMedicaoIdProjRequest, BuscarArquivosMedicaRequest, DadosMedicoesRequest, RegistroDocumentosMedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ArquivosMedicoesProjetoResponse, BuscarArquivosMedicaoResponse, Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { MedicoesService } from 'src/app/services/medicoes.service';
 import { ProjetoService } from 'src/app/services/projeto.service';
@@ -28,7 +28,8 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
   isLoading = false;
   listaDocumentoContrato: BuscarArquivosMedicaoResponse[] = [];
   isDivVisible: boolean = false;
-  
+  isDisabledBtnEnviar = true;
+
   statusOrdem: StatusOrdenacao = StatusOrdenacao.SemOrdem;
 
   dataSource: MatTableDataSource<ItemMedicao>;
@@ -220,6 +221,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
 
       await this.apiMedicao.AlterarMedicoes(alterarMedicaoRequest)
       .then((result) => {
+        this.isDisabledBtnEnviar = false;
       })
       .finally(()=>{
         this.isLoading = false;
@@ -323,10 +325,30 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     this.isDivVisible = !this.isDivVisible;
   }  
 
-  enviar(){
+  async enviar(IdMedicoesProjeto: number){
+    this.isLoading = true;
     const result = window.confirm('Você deseja enviar a medição?');
     if (result) {
-      this._toastService.mensagemSuccess("Medição enviada com sucesso");
+      var req = new BuscarArquivosMedicaoIdProjRequest();
+      req.IdMedicoesProjeto = IdMedicoesProjeto;
+    
+      await this.apiMedicao.EnviarMedicaoCliente(req)
+      .then((result) => {
+        if(result.isSucesso){        
+          this._toastService.mensagemSuccess("Medição enviada com sucesso");
+        }
+        else{
+          this._toastService.mensagemSuccess(result.mensagemErro);
+        }
+      })
+      .catch(() => 
+      {
+        this._toastService.mensagemError("Erro ao enviar medição");
+      })
+      .finally(()=>{
+        this.isLoading = false;
+      });
+
     } 
   }
 }
