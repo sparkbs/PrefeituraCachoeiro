@@ -8,7 +8,7 @@ import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeitur
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { MedicoesService } from 'src/app/services/medicoes.service';
-import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
+import { BuscarArquivosMedicaoIdProjRequest, MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesModel, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ResumoMedicaoComponent } from './resumoMedicao/resumoMedicao/resumoMedicao.component';
 import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
@@ -220,6 +220,41 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
         });          
       }
     });
+  }
+
+
+  async enviar(numeroMedicao: number){
+    const result = window.confirm('Você deseja enviar a medição?');
+    if (result) {
+      this.isLoading = true;
+
+      var projetosPorMedicao = this.medicaoProjetos.filter( x=> x.numeroMedicao == numeroMedicao);
+
+      projetosPorMedicao.forEach(async (item) => {
+
+        item.data.forEach(async (data) =>{
+          var req = new BuscarArquivosMedicaoIdProjRequest();
+          req.IdMedicoesProjeto = data.idMedicoesProjeto;
+    
+          await this.apiMedicoes.EnviarMedicaoCliente(req)
+          .then((result) => {
+            if(result.isSucesso){        
+              this._toastService.mensagemSuccess("Medição enviada com sucesso");
+            }
+            else{
+              this._toastService.mensagemSuccess(result.mensagemErro);
+            }
+          })
+          .catch(() => 
+          {
+            this._toastService.mensagemError("Erro ao enviar medição");
+          })
+          .finally(()=>{
+            this.isLoading = false;
+          });
+        })      
+      })
+    } 
   }
 
   openDialogConsolidado(medicao: MedicoesResponse){
