@@ -23,13 +23,13 @@ export class CadastrarMedicaoComponent implements OnInit {
   isLoading = false;
 
   constructor(private readonly api: MedicoesService,
-    @Inject(MAT_DIALOG_DATA) public data: {medicoes: Contrato, numeroMedicao?: 
+    @Inject(MAT_DIALOG_DATA) public data: {medicoes: Contrato, numeroMedicao?:
       number, projetosMedidos: MedicoesResponse[] },
      public _projetoControllerService: ProjetoService,
      private _toastService: ToastService,
      public dialogRef: MatDialogRef<CadastrarMedicaoComponent> // Referência ao diálogo
-    ) 
-  { 
+    )
+  {
     if(data.numeroMedicao != null || data.numeroMedicao != undefined){
       this.nomeMedicao = data.numeroMedicao;
       this.disabledNomeMedicao = true;
@@ -52,15 +52,15 @@ export class CadastrarMedicaoComponent implements OnInit {
     this.data.medicoes.items.forEach(x => {
       x.idContrato = this.data.medicoes.idContrato;
     });
-    
+
     medicaoRequest.dataMedicao = new Date();
     medicaoRequest.idContrato = this.data.medicoes.idContrato;
     medicaoRequest.IdProjeto = this.projetoSelecionado;
     medicaoRequest.items = this.data.medicoes.items.map(item => ({
       idItemContrato: item.idItemContrato,
       unidade: 0
-    }));    
-    medicaoRequest.numeroMedicao = this.nomeMedicao;    
+    }));
+    medicaoRequest.numeroMedicao = this.nomeMedicao;
     if(this.data?.projetosMedidos != null && this.data?.projetosMedidos != undefined && this.data.projetosMedidos.some(x => x.idProjeto == this.projetoSelecionado)){
       this.isLoading = false;
       this.dialogRef.close();
@@ -68,13 +68,13 @@ export class CadastrarMedicaoComponent implements OnInit {
     }
     else{
       await this.api.CriarMedicoes(medicaoRequest)
-      .then((result) => {     
+      .then((result) => {
         this._toastService.mensagemSuccess("Medição criada com sucesso.");
         this.dialogRef.close(result.idMedicoesProjeto);
       })
-      .catch(() =>
+      .catch((err) =>
       {
-        //this._toastService.mensagemError("Erro ao criar uma medição.");
+        this._toastService.mensagemError(err.error.message);
       })
       .finally(() => {
         this.isLoading = false;
