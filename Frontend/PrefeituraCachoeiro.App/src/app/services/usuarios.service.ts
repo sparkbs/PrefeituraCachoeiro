@@ -45,7 +45,8 @@ export class UsuariosService {
     formData.append('Nome', usuarios.nome);
     formData.append('Login', usuarios.login);
     formData.append('Senha', usuarios.senha);
-    formData.append('PrefeituraId', usuarios.prefeituraId.toString());
+    if (usuarios.prefeituraId)
+      formData.append('PrefeituraId', usuarios.prefeituraId.toString());
 
     return await firstValueFrom(
       this.http.post<CriarUsuariosResponse>(
@@ -61,8 +62,9 @@ export class UsuariosService {
     formData.append('Login', request.login);
     formData.append('Nome', request.nome);
     formData.append('Senha', request.senha);
-    formData.append('PrefeituraId', request.prefeituraId.toString());
-    
+    if (request.prefeituraId)
+      formData.append('PrefeituraId', request.prefeituraId.toString());
+
     return await firstValueFrom(
       this.http.put<GenericResultResponse<CriarUsuariosResponse>>(
         `${Environments.APIUrl}/usuarios`,

@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
 import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
-import { MedicaoLevantamento, MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { Contrato, MedicaoLevantamento, MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { MedicoesService } from 'src/app/services/medicoes.service';
 import { ProjetoService } from 'src/app/services/projeto.service';
@@ -31,7 +31,7 @@ export class ModalLevantamentoComponent implements OnInit {
   form: FormGroup;
   listaProjetos: ProjetoResponse[] = [];
   listaMedicoes: MedicoesResponse[] = [];
-  listaContratos: number[] =[];
+  listaContratos: string[] =[];
 
   dataSource = new MatTableDataSource<TabelaLevantamento>(this.dadosTabela);
 
@@ -40,7 +40,7 @@ export class ModalLevantamentoComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: { idProjeto: number },
+    @Inject(MAT_DIALOG_DATA) public data: { idProjeto: number, contrato: Contrato },
     public _projetoControllerService: ProjetoService,
     private _toastService: ToastService,
     private _medicaoControllerService: MedicoesService,
@@ -77,7 +77,11 @@ export class ModalLevantamentoComponent implements OnInit {
 
       await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
       .then((res) => {
-        this.listaProjetos = res.data;
+        const listaProjetosFilter = this.data.contrato ?
+        res.data.filter(resF => resF.contratos[0].contratos.prefeituraId == this.data.contrato.prefeituraId) :
+        res.data;
+
+        this.listaProjetos = listaProjetosFilter;
       })
       .catch((erro) => {
         console.error(erro);
@@ -100,7 +104,7 @@ export class ModalLevantamentoComponent implements OnInit {
       if (this.listaMedicoes.length != 0) {
         let dadoTabela: TabelaLevantamento;
         this.listaMedicoes.forEach((res) => {
-          this.listaContratos.push(Number(res.contratos.numeroContrato));
+          this.listaContratos.push(res.contratos.numeroContrato);
 
           res.items.forEach((resItem) => {
             const indexTab = this.dadosTabela.findIndex(resIndex => resIndex.idItem == resItem.itemsContrato.itemId);
@@ -128,6 +132,7 @@ export class ModalLevantamentoComponent implements OnInit {
             }
           });
         });
+
         this.maxMedicoes = Math.max(...this.dadosTabela.map(item => item.medicoes.length));
         this.displayedColumns = ['nome', ...Array.from({ length: this.maxMedicoes }, (_, i) => `medicao${i + 1}`)];
         this.dataSource.data = this.dadosTabela;
@@ -148,7 +153,7 @@ export class ModalLevantamentoComponent implements OnInit {
     }
     return true;  // Se todos os qtdItem forem 0, oculta a linha
   }
-  
+
 
   async buscarMedicoesProjeto(){
     this.dataSource.data = [];
@@ -156,6 +161,10 @@ export class ModalLevantamentoComponent implements OnInit {
     const projetoId: number = this.form.get('projetoId').value;
     if (projetoId) {
       const projetoSelecionado = this.listaProjetos.find(res => res.idProjeto == projetoId);
+
+      if (!projetoSelecionado) {
+        this._toastService.mensagemError("Projeto não encontrado na lista");
+      }
 
       this.buscarMedicao(projetoId, projetoSelecionado.contratos[0].idContrato);
     }

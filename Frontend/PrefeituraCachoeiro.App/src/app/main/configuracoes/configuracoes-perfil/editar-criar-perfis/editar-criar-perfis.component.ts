@@ -54,7 +54,7 @@ export class EditarCriarPerfisComponent implements OnInit {
       nome: ['', [Validators.required]],
       email: ['', [Validators.required]],
       senha: ['', [Validators.required]],
-      prefeitura: [0, [Validators.required]],
+      prefeitura: [0],
       grupo: [0, [Validators.required]]
     });
   }
@@ -108,9 +108,9 @@ export class EditarCriarPerfisComponent implements OnInit {
         login: this.form.get('email').value,
         nome: this.form.get('nome').value,
         senha: this.form.get('senha').value,
-        prefeituraId: this.form.get('prefeitura').value
+        prefeituraId: this.form.get('prefeitura').value ? this.form.get('prefeitura').value : undefined
       };
-      
+
       this._usuarioControllerService.CriarUsuarios(usuarioRequest)
       .then((res) => {
         var usuarioGrupoRequest: UsuariosGruposRequest = {
@@ -129,6 +129,7 @@ export class EditarCriarPerfisComponent implements OnInit {
         this.dialogRef.close(true);
       })
       .catch((erro) => {
+        console.error(erro);
         this._toastService.mensagemError("Erro ao criar perfil!");
       });
     }

@@ -10,7 +10,7 @@ export class CriarUsuariosRequest
     login: string = '';
     nome: string = '';
     senha: string = '';
-    prefeituraId: number;
+    prefeituraId?: number;
 }
 
 export class AtualizarUsuariosRequest

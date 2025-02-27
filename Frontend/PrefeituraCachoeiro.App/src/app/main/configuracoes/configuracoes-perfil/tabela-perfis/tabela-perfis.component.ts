@@ -65,7 +65,8 @@ export class TabelaPerfisComponent implements OnInit {
   openEditarCriar(edicao: boolean = false, id?: number) {
     const dialogRef = this.dialog.open(EditarCriarPerfisComponent, {
       width: window.innerWidth >= 1450 ? '50%' : '50%',
-      data: { edicao, id }
+      data: { edicao, id },
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe((res) => {

@@ -14,6 +14,7 @@ import { ListaDocumentosContrato } from 'src/app/response/contratosResponse/dado
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { StatusOrdenacao } from 'src/app/enums/statusOrdenacao';
+import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 
 @Component({
   selector: 'app-listaMedicao',
@@ -62,7 +63,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
         return -1 * a.itemsContrato.item.identificador.localeCompare(b.itemsContrato.item.identificador);
       });
     }
-    
+
     else if(this.statusOrdem == StatusOrdenacao.Crescente){
       this.dataSource.data = this.dataSource.data.sort((a, b) => {
         return a.itemsContrato.item.identificador.localeCompare(b.itemsContrato.item.identificador);
@@ -80,11 +81,11 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
 
     /*const cleanUrlsWithId = this.medicoes.arquivosMedicoesProjeto.map(x => {
       const arquivoMedicao = x.arquivoMedicao.replace("https://imagensprefeituracachoeiro.s3.amazonaws.com/", ""); // Remove o prefixo
-    
+
       // Retorna um objeto contendo o ID e a URL limpa
-      return { id: x.id, arquivoMedicao }; 
-    });   
-    
+      return { id: x.id, arquivoMedicao };
+    });
+
     this.medicoes.arquivosMedicoesProjeto = cleanUrlsWithId*/
   }
 
@@ -102,7 +103,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       .then((result) => {
         this.listaDocumentoContrato = result.data;
       })
-      .catch(() => 
+      .catch(() =>
       {
       });
   }
@@ -244,9 +245,10 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   openModalLevantamento(idProjeto: number) {
+    const contrato = this.medicoes.contratos;
     this.dialog.open(ModalLevantamentoComponent, {
           width: window.innerWidth >= 1450 ? '80%' : '60%',
-          data: { idProjeto }
+          data: { idProjeto, contrato }
         }).afterClosed().subscribe(
           (res) => {
     });
@@ -257,7 +259,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
 
     if(this.documentoInput.nativeElement.files[0] != undefined){
       const documentoFile = this.documentoInput.nativeElement.files[0] as File;
-      
+
       var request = new RegistroDocumentosMedicoesRequest();
       request.IdMedicoesProjeto = this.medicoes.idMedicoesProjeto;
       request.Arquivos = (documentoFile);
@@ -270,7 +272,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
 
         this.medicoes.arquivosMedicoesProjeto.push(arqMed);
       })
-      .catch(() => 
+      .catch(() =>
       {
         this.isLoading = false;
       });
@@ -290,7 +292,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       this._toastService.mensagemSuccess("Documento deletado com sucesso.");
       this.medicoes.arquivosMedicoesProjeto = this.medicoes.arquivosMedicoesProjeto.filter(x => x.id != idDocumento);
     })
-    .catch(() => 
+    .catch(() =>
     {
       this._toastService.mensagemSuccess("Erro ao deletar documento.");
     })
@@ -312,7 +314,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       window.URL.revokeObjectURL(url);  // Limpar a URL após o download
       this._toastService.mensagemSuccess("Download realizado com sucesso.");
     })
-    .catch(() => 
+    .catch(() =>
     {
       this._toastService.mensagemError("Erro ao realizar download documento.");
     })
@@ -323,7 +325,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
 
   toggleDiv() {
     this.isDivVisible = !this.isDivVisible;
-  }  
+  }
 
   async enviar(IdMedicoesProjeto: number){
     this.isLoading = true;
@@ -331,17 +333,17 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     if (result) {
       var req = new BuscarArquivosMedicaoIdProjRequest();
       req.IdMedicoesProjeto = IdMedicoesProjeto;
-    
+
       await this.apiMedicao.EnviarMedicaoCliente(req)
       .then((result) => {
-        if(result.isSucesso){        
+        if(result.isSucesso){
           this._toastService.mensagemSuccess("Medição enviada com sucesso");
         }
         else{
           this._toastService.mensagemSuccess(result.mensagemErro);
         }
       })
-      .catch(() => 
+      .catch(() =>
       {
         this._toastService.mensagemError("Erro ao enviar medição");
       })
@@ -349,6 +351,6 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
         this.isLoading = false;
       });
 
-    } 
+    }
   }
 }

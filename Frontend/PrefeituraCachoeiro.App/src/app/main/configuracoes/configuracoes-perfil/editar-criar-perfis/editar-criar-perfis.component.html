@@ -30,7 +30,6 @@
           {{prefeitura.nome}}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="form.get('prefeitura').hasError('required')">Campo obrigatório!</mat-error>
     </mat-form-field>
 
     <mat-form-field *ngIf="!this.data.edicao">
