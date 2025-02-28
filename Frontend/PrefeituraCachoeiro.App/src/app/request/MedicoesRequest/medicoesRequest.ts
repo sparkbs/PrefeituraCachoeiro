@@ -41,7 +41,7 @@ export class AlterarMedicaoProjetoRequest {
     numeroMedicao: number;
     idContrato: number;
     dataMedicao: string; // ou Date, dependendo do seu uso
-    resumo: string;
+    observacao: string;
     items: ItemMedicao[];
     idMedicoesProjeto: number;
     idProjeto: number;

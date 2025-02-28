@@ -218,7 +218,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       }));
       alterarMedicaoRequest.items = novaLista;
       alterarMedicaoRequest.numeroMedicao = this.medicoes.numeroMedicao;
-      alterarMedicaoRequest.resumo = this.medicoes.resumo;
+      alterarMedicaoRequest.observacao = this.medicoes.observacao;
 
       await this.apiMedicao.AlterarMedicoes(alterarMedicaoRequest)
       .then((result) => {

@@ -40,8 +40,19 @@ export class MedicoesService {
 
   public async AprovarMedicoes(filter: AprovarMedicoesRequest): Promise<RetornoReprovacaoAprovacaoResponse> {
     const formData = new FormData();
+
+    // Adiciona os arquivos ao FormData
+    if (filter.Arquivos && Array.isArray(filter.Arquivos)) {
+      filter.Arquivos.forEach((file: File) => {
+        formData.append('Arquivos', file, file.name); // Adicionando o arquivo
+      });
+    }
+  
+    // Adiciona os outros campos de dados (não arquivos)
     Object.keys(filter).forEach(key => {
-      formData.append(key, filter[key]);
+      if (key !== 'Arquivos') { // Ignorar os arquivos, pois já foram adicionados
+        formData.append(key, filter[key]);
+      }
     });
     
     return await firstValueFrom(
