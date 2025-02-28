@@ -23,10 +23,10 @@
   <div class="list-container table-wrapper" *ngIf="isDivVisible" style="max-height: 530px; overflow-y: auto;">
     <div style="margin-top: 10px; display: flex; align-items: center; flex-wrap: wrap;">
       <!-- Primeira div - Quando a condição for verdadeira -->
-      <div *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada || medicoes.resumo is not null" style="margin-top: 10px; display: flex; align-items: center; flex: 1;">
+      <div *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada || medicoes.observacao is not null" style="margin-top: 10px; display: flex; align-items: center; flex: 1;">
         <mat-label style="font-weight: bold; margin-right: 8px;">Número da nota fiscal: </mat-label>
-        <input type="text" style="width: 25%; margin-right: 16px;" [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" [(ngModel)]="medicoes.resumo"/>
-        <span style="font-size: 14px; font-weight: bold;" [style.display]="!alterarMedicaoProjeto ? 'block' : 'none'">{{medicoes.resumo}}</span>
+        <input type="text" style="width: 25%; margin-right: 16px;" [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" [(ngModel)]="medicoes.observacao"/>
+        <span style="font-size: 14px; font-weight: bold;" [style.display]="!alterarMedicaoProjeto ? 'block' : 'none'">{{medicoes.observacao}}</span>
       </div>
 
       <!-- Segunda div - Status Medição -->
