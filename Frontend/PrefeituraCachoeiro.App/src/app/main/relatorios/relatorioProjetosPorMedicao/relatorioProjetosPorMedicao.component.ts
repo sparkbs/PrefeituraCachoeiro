@@ -13,6 +13,8 @@ import { Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesModel, Medi
 import { ResumoMedicaoComponent } from './resumoMedicao/resumoMedicao/resumoMedicao.component';
 import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-relatorioProjetosPorMedicao',
@@ -41,13 +43,41 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     private readonly api: ContratosService,
     private readonly apiMedicoes: MedicoesService,
     private globalService: GlobalServicesService,
-    private _toastService: ToastService) {
+    private _toastService: ToastService,
+    private auth: AuthService, 
+    private readonly aesEncryptDecript: AESEncryptDecriptService) {
      }
 
   async ngOnInit() {
     //this.todasMedicaoProjetoResponse.data = this.generateMockMedicoes();
     this.isLoading = true;
-    await this.buscarListaPrefeituras();
+    var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
+    
+    if(idPrefeituraUser){
+      idPrefeituraUser = this.aesEncryptDecript.decrypt(idPrefeituraUser);
+      if(idPrefeituraUser){
+        await this.buscarPrefeitura(Number(idPrefeituraUser));
+      }
+      else{
+        await this.buscarListaPrefeituras();
+      }
+    }else{
+      await this.buscarListaPrefeituras();
+    }
+  }
+
+  async buscarPrefeitura(id: number){
+    await this.apiPrefeitura.BuscarPrefeitura(id)
+    .then((result) => {
+      this.listaPrefeitura = [];
+      this.listaPrefeitura.push(result);
+    })
+    .catch(() => {
+      this._toastService.mensagemError("Erro ao buscar prefeitura!");
+    })
+    .finally(() =>{
+      this.isLoading = false;
+    });
   }
 
   async buscarMedicoes(){

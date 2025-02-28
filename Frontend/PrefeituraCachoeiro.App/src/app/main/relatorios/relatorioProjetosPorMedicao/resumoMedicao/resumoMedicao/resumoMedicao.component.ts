@@ -10,7 +10,7 @@ import { ItemContrato, ItemMedicao, MedicoesResponse } from 'src/app/response/me
 })
 export class ResumoMedicaoComponent implements OnInit {
   dataSource: MatTableDataSource<ItemContrato>;
-  displayedColumns: string[] = ['item', 'codigo', 'origem', 'item/qtd', 'valor(s)cBdi', 'valorTotal/bdi'];
+  displayedColumns: string[] = ['item', 'origem', 'item/qtd', 'valor(s)cBdi', 'valorTotal/bdi'];
   itemsToLoad : MedicoesResponse;
   constructor(@Inject(MAT_DIALOG_DATA) public data: MedicoesResponse) { 
     

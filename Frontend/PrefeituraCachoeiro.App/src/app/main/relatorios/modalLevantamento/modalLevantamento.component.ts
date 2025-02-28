@@ -174,7 +174,10 @@ export class ModalLevantamentoComponent implements OnInit {
   }
 
   buscarItemMedicao(idItemContrato: number){
-    return this.globalService.getItems(idItemContrato).quantidades;
+    console.log(idItemContrato);
+    var items = this.globalService.getItems(idItemContrato);
+    console.log(items);
+    return this.globalService.getItems(idItemContrato)?.quantidades;
   }
 
   formatToCurrency(valor: number): string {

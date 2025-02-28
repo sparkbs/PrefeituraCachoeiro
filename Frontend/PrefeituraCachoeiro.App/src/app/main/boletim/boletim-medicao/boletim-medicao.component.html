@@ -5,8 +5,16 @@
     <!-- Container para os campos de seleção -->
      <div class="select-container">
       <mat-form-field >
+        <mat-label>Selecione o Cliente:</mat-label>
+        <mat-select  [(ngModel)]="prefeituraSelecionadoPesquisa" (selectionChange)="onSelectionClienteChange($event.value)" [disabled]="isEnabledInputs">
+          <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura">
+            {{ prefeitura.nome }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field >
         <mat-label>Selecione o Contrato:</mat-label>
-        <mat-select  [(ngModel)]="contratoSelecionadoPesquisa" (selectionChange)="onSelectionChange($event.value)" [disabled]="isEnabledInputs">
+        <mat-select  [(ngModel)]="contratoSelecionadoPesquisa" (selectionChange)="onSelectionChange($event.value)" [disabled]="isEnabledInputs || !enableContrato ">
           <mat-option *ngFor="let contrato of listaContratos" [value]="contrato.idContrato">
             {{ contrato.numeroContrato }}
           </mat-option>
