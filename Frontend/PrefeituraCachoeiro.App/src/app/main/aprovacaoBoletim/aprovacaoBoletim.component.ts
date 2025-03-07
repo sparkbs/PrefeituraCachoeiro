@@ -3,7 +3,7 @@ import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarCo
 import { DadosMedicoesRequest, MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
-import { MedicoesModel, Projeto, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { ArquivosMedicoesProjetoResponse, MedicoesModel, Projeto, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { MedicoesService } from 'src/app/services/medicoes.service';
@@ -17,6 +17,7 @@ import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
 import { AuthService } from 'src/app/services/auth.service';
 import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
+import { VerDocumentosComponent } from './verDocumentos/verDocumentos.component';
 
 @Component({
   selector: 'app-aprovacaoBoletim',
@@ -138,6 +139,12 @@ export class AprovacaoBoletimComponent implements OnInit {
     })
     .finally(() =>{
     });;
+  }
+
+  openModalVerAnexo(arquivos: ArquivosMedicoesProjetoResponse[]){
+    const dialogRef = this.dialog.open(VerDocumentosComponent,{
+      data: arquivos
+    });
   }
 
   async reprovarMedicao(idMedicao: number){

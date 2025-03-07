@@ -22,6 +22,7 @@ export class MedicoesResponse {
     id: number;
     arquivoMedicao: string;
     arquivo: string;
+    idOrigemArquivo: number;
   }
 
   export class Contrato {
