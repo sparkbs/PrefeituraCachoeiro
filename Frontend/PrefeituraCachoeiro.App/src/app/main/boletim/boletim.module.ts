@@ -21,9 +21,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { VerDocumentosComponent } from '../aprovacaoBoletim/verDocumentos/verDocumentos.component';
 
 @NgModule({
-  declarations: [ BoletimComponent, BoletimMedicaoComponent, BoletimProjetoComponent, BoletimDetalhadoComponent, AprovacaoBoletimComponent, AprovarMedicaoComponent ],
+  declarations: [ BoletimComponent, BoletimMedicaoComponent, BoletimProjetoComponent, BoletimDetalhadoComponent, AprovacaoBoletimComponent, AprovarMedicaoComponent, VerDocumentosComponent ],
   imports: [
     CommonModule,
     MatGridListModule,

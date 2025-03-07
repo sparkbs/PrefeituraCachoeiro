@@ -129,10 +129,10 @@
           </div>
            
 
-          <div *ngFor="let item of medicoes.arquivosMedicoesProjeto">
+          <div *ngFor="let item of arquivosAnexadosTelaMedicao">
             <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
               {{item.arquivo}}
-              <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" (click)="deletarDocumentos(item.id)">
+              <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" (click)="deletarDocumentoMedicao(item.id)">
                 <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
               </span>
               <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumento(item.id, item.arquivo)">
@@ -147,10 +147,10 @@
             Documentos Anexados Pelo Aprovador:
           </div>                     
 
-          <div *ngFor="let item of medicoes.arquivosMedicoesProjeto">
+          <div *ngFor="let item of arquivosAnexadosTelaAprovacao">
             <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
               {{item.arquivo}}
-              <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" (click)="deletarDocumentos(item.id)">
+              <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" (click)="deletarDocumentoAprovacao(item.id)">
                 <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
               </span>
               <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumento(item.id, item.arquivo)">

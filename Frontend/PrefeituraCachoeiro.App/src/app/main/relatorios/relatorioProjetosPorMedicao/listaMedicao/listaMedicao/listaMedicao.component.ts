@@ -15,6 +15,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { StatusOrdenacao } from 'src/app/enums/statusOrdenacao';
 import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { OrigemArquivoAnexadoEnum } from 'src/app/enums/origemArquivoAnexado';
 
 @Component({
   selector: 'app-listaMedicao',
@@ -30,6 +31,8 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
   listaDocumentoContrato: BuscarArquivosMedicaoResponse[] = [];
   isDivVisible: boolean = false;
   isDisabledBtnEnviar = true;
+  arquivosAnexadosTelaMedicao: ArquivosMedicoesProjetoResponse[] =[];
+  arquivosAnexadosTelaAprovacao: ArquivosMedicoesProjetoResponse[] =[];
 
   statusOrdem: StatusOrdenacao = StatusOrdenacao.SemOrdem;
 
@@ -78,6 +81,9 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
         this.globalService.addItem(item.itemsContrato.item.descricao, item.itemsContrato.unidade, item.idItemContrato, item.unidade)
       }
     })
+
+    this.arquivosAnexadosTelaMedicao = this.medicoes.arquivosMedicoesProjeto.filter(x => x.idOrigemArquivo == OrigemArquivoAnexadoEnum.Medicao);
+    this.arquivosAnexadosTelaAprovacao = this.medicoes.arquivosMedicoesProjeto.filter(x => x.idOrigemArquivo == OrigemArquivoAnexadoEnum.Aprovacao);
 
     /*const cleanUrlsWithId = this.medicoes.arquivosMedicoesProjeto.map(x => {
       const arquivoMedicao = x.arquivoMedicao.replace("https://imagensprefeituracachoeiro.s3.amazonaws.com/", ""); // Remove o prefixo
@@ -284,13 +290,30 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     this.isLoading = false;
   }
 
-  async deletarDocumentos(idDocumento: number) {
+  async deletarDocumentoMedicao(idDocumento: number) {
     this.isLoading = true;
     // Filtra os documentos, removendo o que for igual ao item a ser deletado
     await this.apiMedicao.DeletarArquivoMedicao(idDocumento)
     .then(async (result) => {
       this._toastService.mensagemSuccess("Documento deletado com sucesso.");
-      this.medicoes.arquivosMedicoesProjeto = this.medicoes.arquivosMedicoesProjeto.filter(x => x.id != idDocumento);
+      this.arquivosAnexadosTelaMedicao = this.arquivosAnexadosTelaMedicao.filter(x => x.id != idDocumento && x.idOrigemArquivo == OrigemArquivoAnexadoEnum.Medicao);
+    })
+    .catch(() =>
+    {
+      this._toastService.mensagemSuccess("Erro ao deletar documento.");
+    })
+    .finally(()=>{
+      this.isLoading = false;
+    });
+  }
+
+  async deletarDocumentoAprovacao(idDocumento: number) {
+    this.isLoading = true;
+    // Filtra os documentos, removendo o que for igual ao item a ser deletado
+    await this.apiMedicao.DeletarArquivoMedicao(idDocumento)
+    .then(async (result) => {
+      this._toastService.mensagemSuccess("Documento deletado com sucesso.");
+      this.arquivosAnexadosTelaAprovacao = this.arquivosAnexadosTelaAprovacao.filter(x => x.id != idDocumento && x.idOrigemArquivo == OrigemArquivoAnexadoEnum.Aprovacao);
     })
     .catch(() =>
     {
