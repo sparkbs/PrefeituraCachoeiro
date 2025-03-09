@@ -16,10 +16,10 @@
         </span>
       </button>
 
-      <button [routerLink]="['/main/prefeitura']">
+      <button [routerLink]="['/main/projetos']">
         <span>
-          <mat-icon>account_balance</mat-icon>
-          <span>Cliente</span>
+          <mat-icon>build</mat-icon>
+          <span>Projeto</span>
         </span>
       </button>
 
@@ -30,20 +30,13 @@
         </span>
       </button>
 
-      <button [routerLink]="['/main/projetos']">
+      <button [routerLink]="['/main/prefeitura']">
         <span>
-          <mat-icon>build</mat-icon>
-          <span>Projeto</span>
+          <mat-icon>account_balance</mat-icon>
+          <span>Prefeitura</span>
         </span>
       </button>
-
-      <button [routerLink]="['/main/relatorioProjetosPorMedicao']">
-        <span>
-          <mat-icon>assignment</mat-icon>
-          <span>Medições</span>
-        </span>
-      </button>
-
+      
       <button (click)="toggleRelatorios()">
         <span class="menu">
           <div>
@@ -57,10 +50,10 @@
         </span>
       </button>
 
+
+
       <div *ngIf="relatoriosExpanded" class="submenu">
-        <button [routerLink]="['/main/boletim']">Boletins</button>
-        <button [routerLink]="['/main/aprovacaoBoletim']">Tela de Aprovações</button>
-        <button [routerLink]="['/main/powerBi']">Dashboards</button>
+        <button [routerLink]="['/main/relatorioProjetosPorMedicao']">Medições</button>
       </div>
     </nav>
   </aside>

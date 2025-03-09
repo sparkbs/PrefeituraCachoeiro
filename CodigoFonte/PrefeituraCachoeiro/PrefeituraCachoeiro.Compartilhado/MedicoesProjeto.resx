@@ -127,12 +127,21 @@
     <value>O apontamento de uma medição requer que na lista de items tenha pelo menos um item</value>
   </data>
   <data name="MedicaoNaoPodeSerAprovada" xml:space="preserve">
-    <value>Só é possível aprovar uma medição que esteja no status de criada</value>
+    <value>Só é possível aprovar uma medição que esteja no status de enviada</value>
   </data>
   <data name="MedicaoNaoPodeSerReprovada" xml:space="preserve">
-    <value>Só é possível reprovar uma medição que esteja no status de criada</value>
+    <value>Só é possível reprovar uma medição que esteja no status de enviada</value>
   </data>
   <data name="MedicaoNaoPodeSerAlterada" xml:space="preserve">
     <value>Só é possível alterar uma medição que esteja no status de criada.</value>
+  </data>
+  <data name="NaoFoiEncontradaNenhumaMedicao" xml:space="preserve">
+    <value>Não foi encontrada nenhuma medição para o contrato informado</value>
+  </data>
+  <data name="ArquivoIdNaoEncontrado" xml:space="preserve">
+    <value>O Identificador do arquivo de medição de projeto informado não foi encontrado</value>
+  </data>
+  <data name="MedicaoNaoPodeSerEnviadaAoCliente" xml:space="preserve">
+    <value>Só é possível enviar para o cliente uma medição que esteja no status de Criada</value>
   </data>
 </root>

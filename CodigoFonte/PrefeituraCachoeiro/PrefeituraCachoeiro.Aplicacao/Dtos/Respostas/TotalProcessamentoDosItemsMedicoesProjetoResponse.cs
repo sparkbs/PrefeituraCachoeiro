@@ -6,18 +6,16 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
     [ExcludeFromCodeCoverage]
     public class TotalProcessamentoDosItemsMedicoesProjetoResponse
     {
-        public decimal ValorTotalApurado { get; set; }
         public decimal ValorTotalMedido { get; set; }
         public Error Erro { get; set; }
 
-        public TotalProcessamentoDosItemsMedicoesProjetoResponse() :this(0,0)
+        public TotalProcessamentoDosItemsMedicoesProjetoResponse() :this(0)
         {
 
         }
 
-        public TotalProcessamentoDosItemsMedicoesProjetoResponse(decimal valorTotalApurado, decimal valorTotalMedido)
+        public TotalProcessamentoDosItemsMedicoesProjetoResponse(decimal valorTotalMedido)
         {
-            ValorTotalApurado = valorTotalApurado;
             ValorTotalMedido = valorTotalMedido;
         }
     }

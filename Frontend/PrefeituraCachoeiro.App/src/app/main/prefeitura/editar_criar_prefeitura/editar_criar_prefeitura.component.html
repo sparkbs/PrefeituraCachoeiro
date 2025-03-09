@@ -1,10 +1,10 @@
-<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;" >{{this.data ? "Editar Cliente" : "Cadastrar Cliente"}}</h1>
+<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;" >{{this.data ? "Editar Prefeitura" : "Cadastrar prefeitura"}}</h1>
 <mat-dialog-content class="mat-typography">
   <div style="margin-top: 20px;">
     <div style="display: flex; gap: 16px;" *ngIf="!this.data">
       <!-- Campo Nome Prefeitura -->
       <mat-form-field style="flex: 1;">
-        <mat-label>Nome Cliente</mat-label>
+        <mat-label>Nome prefeitura</mat-label>
         <input matInput [(ngModel)]="criarPrefeitura.Nome" />
       </mat-form-field>
 
@@ -18,7 +18,7 @@
     <div style="display: flex; gap: 16px;" *ngIf="this.data">
       <!-- Campo Nome Prefeitura -->
       <mat-form-field style="flex: 1; height: 100%;">
-        <mat-label>Nome Cliente</mat-label>
+        <mat-label>Nome prefeitura</mat-label>
         <input matInput [(ngModel)]="data.nome" />
       </mat-form-field>
 

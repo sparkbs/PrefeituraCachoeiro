@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Amazon.S3.Model.Internal.MarshallTransformations;
+using ExcelDataReader;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Respostas;
 using PrefeituraCachoeiro.Aplicacao.Interfaces;
 using PrefeituraCachoeiro.Dados.Filtros;
 using PrefeituraCachoeiro.Dominio.Extensoes;
+using System.Data;
+using System.Text;
 
 namespace PrefeituraCachoeiro.Api.Controllers
 {
@@ -37,6 +41,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         public async Task<IActionResult> BuscarPorIdAsync(int id, CancellationToken cancellationToken)
         {
             var response = await _contratosService.BuscarPorIdAsync(id, cancellationToken);
+            var _result = new StringBuilder();
 
             return response.Match(
               onSuccess: Ok,
@@ -61,6 +66,23 @@ namespace PrefeituraCachoeiro.Api.Controllers
         }
 
         /// <summary>
+        /// Retorna todos os aditivos de um contrato
+        /// </summary>
+        /// <response code="200">Retorna uma lista de aditivos</response>
+        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        [HttpPost("buscartodosaditivos")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ContratosDataResponse))]
+        [Authorize]
+        public async Task<IActionResult> BuscarTodosAditivosAsync([FromBody] AditivosContratoFilter filtro, CancellationToken cancellationToken)
+        {
+            var response = await _contratosService.BuscarTodosAditivosAsync(filtro.IdContrato, cancellationToken);
+
+            return response.Match(
+              onSuccess: Ok,
+              onFailure: error => error.ToHttpResponseError());
+        }
+
+        /// <summary>
         /// Cria um novo contrato
         /// </summary>
         /// <response code="200">Retorna id do contrato criado</response>
@@ -70,6 +92,22 @@ namespace PrefeituraCachoeiro.Api.Controllers
         [Authorize]
         public async Task<IActionResult> InserirAsync([FromForm] CriarContratoRequest requisicao, CancellationToken cancellationToken)
         {
+            // Verificar se o arquivo foi enviado
+            if (requisicao.ArquivoTemplate == null)
+                return BadRequest("A propriedade ArquivoTemplate deve ser preenchida");
+
+            // Verificar se o arquivo é um arquivo Excel (extensão .xlsx)
+            var fileExtension = Path.GetExtension(requisicao.ArquivoTemplate.FileName).ToLower();
+            if (fileExtension != ".xlsx" && fileExtension != ".xlsb")
+                return BadRequest("Deve ser enviado um arquivo excel");
+
+            //Verificar se o arquivo de template está no formato esperado
+            var _formato = await this.VerificarArquivoTemplateProjeto(requisicao);
+            var _resultado = (_formato as OkResult);
+
+            if (_resultado != null && _resultado.StatusCode != 200)
+                return (_formato);
+
             var response = await _contratosService.InserirAsync(requisicao, cancellationToken);
 
             return response.Match(
@@ -143,6 +181,31 @@ namespace PrefeituraCachoeiro.Api.Controllers
             return response.Match(
               onSuccess: Ok,
               onFailure: error => error.ToHttpResponseError());
+        }
+
+        private async Task<IActionResult> VerificarArquivoTemplateProjeto(CriarContratoRequest requisicao)
+        {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+            using (var stream = new MemoryStream())
+            {
+                await requisicao.ArquivoTemplate.CopyToAsync(stream);
+                stream.Position = 0; // Garantir que a posição no stream seja zero antes de carregar
+
+                // Usando ExcelDataReader para ler o arquivo .xlsb
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    var dataset = reader.AsDataSet();
+                    var worksheet = dataset.Tables.Cast<DataTable>()
+                        .FirstOrDefault(dt => dt.TableName.Equals("BASE DE DADOS", StringComparison.OrdinalIgnoreCase));
+
+                    if (worksheet == null)
+                        return BadRequest("O arquivo excel informado não está no padrão esperado");
+
+                }
+            }
+
+            return Ok();
         }
     }
 }

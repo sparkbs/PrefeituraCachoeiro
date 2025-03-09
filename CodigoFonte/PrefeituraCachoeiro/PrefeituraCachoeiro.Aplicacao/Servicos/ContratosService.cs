@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using ExcelDataReader;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.Validacoes;
@@ -8,7 +10,9 @@ using PrefeituraCachoeiro.Dados.Filtros;
 using PrefeituraCachoeiro.Dados.Interfaces;
 using PrefeituraCachoeiro.Dominio.Entidades;
 using PrefeituraCachoeiro.Dominio.Errors;
+using PrefeituraCachoeiro.Dominio.Modelos;
 using PrefeituraCachoeiro.TratadorControlador.ObjetosValor;
+using System.Data;
 
 namespace PrefeituraCachoeiro.Aplicacao.Servicos
 {
@@ -24,10 +28,21 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
         private readonly IItemRepository _itemRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISequenceService _sequenceService;
+        private readonly IS3Service _s3Service;
+        private readonly IProjetoRepository _projetoRepository;
+        private readonly IOrigemRepository _origemRepository;
+        private readonly IQuantidadeRepository _quantidadeRepository;
+        private readonly ITemplateRepository _templateRepository;
+        private readonly IItemsContratoRepository _itemsContratoRepository;
+        private readonly IArquivosContratoRepository _arquivosContratoRepository;
+        private readonly IAditivosRepository _aditivosRepository;
 
         public ContratosService(IMapper mapper, ILoggerFactory loggerFactory,
             IContratosRepository contratosRepository, IItemRepository itemRepository,
-            IUnitOfWork unitOfWork, ISequenceService sequenceService)
+            IUnitOfWork unitOfWork, ISequenceService sequenceService, IS3Service s3Service,
+            IProjetoRepository projetoRepository, IOrigemRepository origemRepository, IQuantidadeRepository quantidadeRepository,
+            ITemplateRepository templateRepository, IItemsContratoRepository itemsContratoRepository, IArquivosContratoRepository arquivosContratoRepository,
+            IAditivosRepository aditivosRepository)
         {
             _mapper = mapper;
             _logger = loggerFactory.CreateLogger<ContratosService>();
@@ -35,6 +50,14 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             _itemRepository = itemRepository;
             _unitOfWork = unitOfWork;
             _sequenceService = sequenceService;
+            _s3Service = s3Service;
+            _projetoRepository = projetoRepository;
+            _origemRepository = origemRepository;
+            _quantidadeRepository = quantidadeRepository;
+            _templateRepository = templateRepository;
+            _itemsContratoRepository = itemsContratoRepository;
+            _arquivosContratoRepository = arquivosContratoRepository;
+            _aditivosRepository = aditivosRepository;
         }
 
         public async Task<Result<ContratosDataResponse>> BuscarTodosAsync(ContratosFilter filter, CancellationToken cancellationToken)
@@ -52,6 +75,14 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             };
 
             return Result<ContratosDataResponse>.Success(result);
+        }
+
+        public async Task<Result<List<ContratosResponse>>> BuscarTodosAditivosAsync(int idContrato, CancellationToken cancellationToken)
+        {
+            var contratos = await _contratosRepository.BuscarTodosAditivosAsync(idContrato, cancellationToken);
+            var result = _mapper.Map<List<ContratosResponse>>(contratos);
+
+            return Result<List<ContratosResponse>>.Success(result);
         }
 
         public async Task<Result<ContratosResponse>> BuscarPorIdAsync(int idContrato, CancellationToken cancellationToken)
@@ -74,44 +105,118 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 if (!validation.IsValid)
                     return Result<CriarContratoResponse>.Failure(new ValidationError(validation.Errors));
 
-                var _items = await this._itemRepository.BuscarTodosAsync(cancellationToken);
-
-                _items = _items.Where(i => i.IdItemPai.HasValue).ToList();
-
                 decimal _totalPrevisto = 0;
-                decimal _totalSolicitado = _totalPrevisto;
-                decimal _totalRestante = _totalSolicitado;
+                decimal _totalSolicitado = 0;
+                decimal _totalRestante = 0;
                 decimal _totalMedido = 0;
-
-                if (_items != null && _items.Count > 0)
-                {
-                    decimal? _valorTotalPrevisto = _items.Sum(i => i.ValorTotalComBdi);
-
-                    if (_valorTotalPrevisto.HasValue)
-                        _totalPrevisto = _valorTotalPrevisto.Value;
-
-                    _totalSolicitado = _totalPrevisto;
-                    _totalRestante = _totalSolicitado;
-
-                    var _itemSomar = _items.Where(i => (i.Quantidade.Nome == QUANTIDADE_KM ||
-                                                        i.Quantidade.Nome == QUANTIDADE_M ||
-                                                        i.Quantidade.Nome == QUANTIDADE_M2));
-
-                    if (_itemSomar != null)
-                    {
-                        _itemSomar = _itemSomar.ToList();
-
-                        var _valorTotalMedido = _itemSomar.Sum(i => i.Unidade);
-
-                        if (_valorTotalMedido.HasValue)
-                            _totalMedido = _valorTotalMedido.Value;
-                    }
-                }
-
-                await _unitOfWork.BeginTransaction();
 
                 try
                 {
+                    //Faz a leitura do arquivo excel associado ao projeto que está sendo criado
+                    var _listaItems = await ProcessarArquivoTemplateProjeto(requisicao);
+
+                    //Cria um dicionário de origem localmente para usar como cache
+                    var _dicOrigem = new Dictionary<string, OrigemEntidade>();
+
+                    //Cria um dicionário de quantidade localmente para usar como cache]
+                    var _dicQuantidade = new Dictionary<string, QuantidadeEntidade>();
+
+                    //Verifica se algumas informações existentes no items que foram informadas são válidas
+                    foreach (var _itemLocal in _listaItems)
+                    {
+                        if (!_dicOrigem.ContainsKey(_itemLocal.Origem))
+                        {
+                            //Verifica se a origem obtida existe no banco de dados
+                            var _origemBancoDeDados = await this._origemRepository.BuscarPorNomeAsync(_itemLocal.Origem, cancellationToken);
+
+                            if (_origemBancoDeDados == null)
+                            {
+                                //Insere a origem
+                                _origemBancoDeDados = new OrigemEntidade()
+                                {
+                                    IdOrigem = await this._origemRepository.CriarNovoId(cancellationToken),
+                                    Nome = _itemLocal.Origem
+                                };
+
+                                await this._origemRepository.InserirAsync(_origemBancoDeDados, cancellationToken);
+                            }
+
+                            _dicOrigem.Add(_itemLocal.Origem, _origemBancoDeDados);
+                        }
+
+                        //Verificar se a quantidade foi informada
+                        if (!string.IsNullOrWhiteSpace(_itemLocal.Qntd))
+                        {
+                            if (!_dicQuantidade.ContainsKey(_itemLocal.Qntd))
+                            {
+                                //Verifica se a quantidade obtida existe no banco de dados
+                                var _quantidadeBancoDeDados = await this._quantidadeRepository.BuscarPorNomeAsync(_itemLocal.Qntd, cancellationToken);
+
+                                if (_quantidadeBancoDeDados == null)
+                                {
+                                    //Insere a quantidade
+                                    _quantidadeBancoDeDados = new QuantidadeEntidade()
+                                    {
+                                        IdQuantidade = await this._quantidadeRepository.CriarNovoId(cancellationToken),
+                                        Nome = _itemLocal.Qntd
+                                    };
+
+                                    await this._quantidadeRepository.InserirAsync(_quantidadeBancoDeDados, cancellationToken);
+                                }
+
+                                _dicQuantidade.Add(_itemLocal.Qntd, _quantidadeBancoDeDados);
+                            }
+                        }
+
+                        //Remove os símbolos de dinheiros dos campos de valor monetário
+                        _itemLocal.Valor = _itemLocal.Valor.Replace("R$", "");
+                        _itemLocal.ValorCBdi = _itemLocal.ValorCBdi.Replace("R$", "");
+                        _itemLocal.ValorSBdi = _itemLocal.ValorSBdi.Replace("R$", "");
+                    }
+
+                    //Cria um template para o nome do projeto
+                    var _novoTemplate = new TemplateEntidade()
+                    {
+                        Nome = $"Template do Contrato Número {requisicao.NumeroContrato}"
+                    };
+
+                    //Inseri o novo template no banco de dados
+                    _novoTemplate = await this._templateRepository.InserirAsync(_novoTemplate, cancellationToken);
+
+                    //Processa agora a lista de items para serem inseridos no banco de dados associados ao novo template
+                    var _contador = 0;
+                    ModeloTemplate _item;
+
+                    while (_contador <= _listaItems.Count() - 1)
+                    {
+                        _item = _listaItems[_contador];
+
+                        //Verifica se a origem obtida existe no banco de dados
+                        var _origemBancoDeDados = await this._origemRepository.BuscarPorNomeAsync(_item.Origem, cancellationToken);
+
+                        QuantidadeEntidade _quantidadeBancoDeDados = null;
+
+                        //Verifica se a quantidade foi informada
+                        if (!string.IsNullOrWhiteSpace(_item.Qntd))
+                        {
+                            //Verifica se a quantidade obtida existe no banco de dados
+                            _quantidadeBancoDeDados = await this._quantidadeRepository.BuscarPorNomeAsync(_item.Qntd, cancellationToken);
+                        }
+
+                        //Cria uma variável local para acessar o item temporário que está sendo lido no momento
+                        var _localItemTemp = _listaItems[_contador];
+
+                        //Criar o item a ser inserido na tabela de items
+                        var _itemPai = await CriarItemEntidade(_localItemTemp, _origemBancoDeDados, 1, _novoTemplate.IdTemplate, new Nullable<int>(), cancellationToken);
+                        var _ordemFilho = 0;
+
+                        while (++_contador <= _listaItems.Count() - 1 && _listaItems[_contador].Item.StartsWith(_item.Item))
+                        {
+                            //Realiza a criação dos items filhos
+                            var _novoItemFilho = await this.ProcessarItemFilho(_listaItems[_contador], ++_ordemFilho, _novoTemplate.IdTemplate, _itemPai.IdItem, cancellationToken);
+                        }
+                    }
+
                     var _contrato = new ContratosEntidade(requisicao.DataContrato.ToUniversalTime(),
                         requisicao.NumeroContrato, _totalPrevisto, _totalSolicitado, _totalMedido, _totalRestante)
                     {
@@ -121,29 +226,74 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                         Gerente = requisicao.Gerente,
                         PrefeituraId = requisicao.PrefeituraId,
                         TipoContratacao = requisicao.TipoContratacao,
-                        Valor = requisicao.Valor,
-                        Aditivo = requisicao.Aditivo
+                        IdTemplate = _novoTemplate.IdTemplate,
+                        Valor = 0
                     };
 
-                    _contrato.Items = new List<ItemsContratoEntidade>();
+                    _contrato = await _contratosRepository.InserirAsync(_contrato, cancellationToken);
 
-                    if (_items != null && _items.Count > 0)
+                    //Preenche a tabela de items de projeto
+                    var _itemsContrato = await this._itemRepository.BuscarTodosAsync(_novoTemplate.IdTemplate, cancellationToken);
+
+                    //Processa todos os items e associa ao contrato
+                    foreach (var _itemContrato in _itemsContrato)
                     {
-                        var _itemProcessarContrato = _items.Where(i => i.IdItemPai.HasValue).AsEnumerable();
-
-                        foreach (var _item in _itemProcessarContrato)
+                        if (_itemContrato.QuantidadeId.HasValue)
                         {
-                            var _itemContrato = new ItemsContratoEntidade(
-                                _contrato.IdContrato, _item.IdItem, _item.QuantidadeId.Value,
-                                _item.Unidade.Value, _item.ValorSemBdi.Value, _item.ValorComBdi.Value,
-                                _item.ValorTotalComBdi.Value);
+                            var _novoItemContrato = new ItemsContratoEntidade()
+                            {
+                                ContratosId = _contrato.IdContrato,
+                                ItemId = _itemContrato.IdItem,
+                            };
 
-                            _contrato.Items.Add(_itemContrato);
+                            if (_itemContrato.QuantidadeId.HasValue)
+                                _novoItemContrato.QuantidadeId = _itemContrato.QuantidadeId.Value;
+
+                            if (_itemContrato.Unidade.HasValue)
+                            {
+                                _novoItemContrato.Unidade = _itemContrato.Unidade.Value;
+                                _novoItemContrato.UnidadeOriginal = _novoItemContrato.Unidade;
+                            }
+
+                            if (_itemContrato.ValorComBdi.HasValue)
+                                _novoItemContrato.ValorComBdi = _itemContrato.ValorComBdi.Value;
+
+                            if (_itemContrato.ValorSemBdi.HasValue)
+                                _novoItemContrato.ValorSemBdi = _itemContrato.ValorSemBdi.Value;
+
+                            if (_itemContrato.ValorTotalComBdi.HasValue)
+                                _novoItemContrato.ValorTotalComBdi = _itemContrato.ValorTotalComBdi.Value;
+
+                            await this._itemsContratoRepository.InserirAsync(_novoItemContrato, cancellationToken);
                         }
                     }
 
-                    _contrato = await _contratosRepository.InserirAsync(_contrato, cancellationToken);
-                    await _unitOfWork.Commit();
+                    //Verifica se foram informados arquivos junto com o contrato
+                    if (requisicao.Arquivos != null)
+                    {
+                        foreach (var _arquivo in requisicao.Arquivos)
+                        {
+                            //Faz primeiro o upload do logo da empresa.
+                            var _upload = await _s3Service.UploadLogoAsync(_arquivo);
+
+                            //Cria um objeto de arquivo do contrato para ser gravado junto com o contrato
+                            var _arquivoContrato = new ArquivosContratosEntidade()
+                            {
+                                ArquivoContrato = _upload,
+                                IdContratos = _contrato.IdContrato
+                            };
+
+                            if (_contrato.ArquivosContratos == null)
+                                _contrato.ArquivosContratos = new List<ArquivosContratosEntidade>();
+
+                            await _arquivosContratoRepository.InserirAsync(_arquivoContrato, cancellationToken);
+                        }
+                    }
+
+                    //Atualiza os valores do contrato
+                    await this.AtualizarInformacoesCabecalhoContrato(_contrato.IdContrato, cancellationToken);
+
+                    //await _unitOfWork.Commit();
 
                     var result = _mapper.Map<CriarContratoResponse>(_contrato);
 
@@ -151,7 +301,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 }
                 catch (Exception Ex)
                 {
-                    await _unitOfWork.Rollback();
+                    //await _unitOfWork.Rollback();
                     throw Ex;
                 }
             }
@@ -160,6 +310,128 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 _logger.LogError(ex.Message);
 
                 return Result<CriarContratoResponse>.Failure(new UnknownError(ex.Message));
+            }
+        }
+
+        private async Task<ItemEntidade> CriarItemEntidade(ModeloTemplate localItemTemp, OrigemEntidade origemBancoDeDados, int ordem,
+            int idTemplate, int? idItemPai, CancellationToken cancellationToken)
+        {
+            //Criar o item a ser inserido na tabela de items
+            var _novoItem = new ItemEntidade()
+            {
+                Identificador = localItemTemp.Item,
+                Codigo = localItemTemp.Codigo,
+                OrigemId = origemBancoDeDados.IdOrigem,
+                Descricao = localItemTemp.Descricao,
+                Ordem = ordem,
+                IdTemplate = idTemplate,
+            };
+
+            //Verifica se a unidade está preenchida
+            if (!string.IsNullOrWhiteSpace(localItemTemp.Un))
+                _novoItem.Unidade = Convert.ToDecimal(localItemTemp.Un);
+
+            //Verifica se a quantidade está preenchida
+            if (!string.IsNullOrWhiteSpace(localItemTemp.Qntd))
+            {
+                //Verifica se a quantidade obtida existe no banco de dados
+                var _quantidadeBancoDeDados = await this._quantidadeRepository.BuscarPorNomeAsync(localItemTemp.Qntd, cancellationToken);
+
+                _novoItem.QuantidadeId = _quantidadeBancoDeDados.IdQuantidade;
+            }
+
+            //Verificar se o valor sem bdi está preenchido
+            if (!string.IsNullOrWhiteSpace(localItemTemp.ValorSBdi))
+                _novoItem.ValorSemBdi = Convert.ToDecimal(localItemTemp.ValorSBdi);
+
+            //Verificar se o valor com bdi está preenchido
+            if (!string.IsNullOrWhiteSpace(localItemTemp.ValorCBdi))
+                _novoItem.ValorComBdi = Convert.ToDecimal(localItemTemp.ValorCBdi);
+
+            //Verificar se o valor está preenchido
+            if (!string.IsNullOrWhiteSpace(localItemTemp.Valor))
+                _novoItem.ValorTotalComBdi = Convert.ToDecimal(localItemTemp.Valor);
+
+            //Verificase pode ser atribuído o item pai
+            if (_novoItem.Unidade.HasValue && _novoItem.QuantidadeId.HasValue && _novoItem.ValorSemBdi.HasValue && _novoItem.ValorComBdi.HasValue && _novoItem.ValorTotalComBdi.HasValue)
+                _novoItem.IdItemPai = idItemPai;
+
+            //Insere o item pai no banco de dados
+            _novoItem = await this._itemRepository.InserirAsync(_novoItem, cancellationToken);
+
+            return (_novoItem);
+        }
+
+        private async Task<List<ModeloTemplate>> ProcessarArquivoTemplateProjeto(CriarContratoRequest requisicao)
+        {
+            try
+            {
+                return (await this.ProcessarArquivoTemplateProjeto(requisicao.ArquivoTemplate));
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception($"Ocorreu o seguinte erro ao tentar processar o arquivo.Erro: {Ex.Message}");
+            }
+        }
+
+        private async Task<List<ModeloTemplate>> ProcessarArquivoTemplateProjeto(IFormFile arquivoTemplate)
+        {
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await arquivoTemplate.CopyToAsync(stream);
+                    stream.Position = 0; // Garantir que a posição no stream seja zero antes de carregar
+
+                    // Usando ExcelDataReader para ler o arquivo .xlsb
+                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                    {
+                        var dataset = reader.AsDataSet();
+                        var worksheet = dataset.Tables.Cast<DataTable>()
+                            .FirstOrDefault(dt => dt.TableName.Equals("BASE DE DADOS", StringComparison.OrdinalIgnoreCase));
+
+                        // Processamento dos dados da planilha "BASE DE DADOS"
+                        var modelosTemplate = new List<ModeloTemplate>();
+
+                        for (var i = 1; i <= worksheet.Rows.Count - 1; i++)
+                        {
+                            var row = worksheet.Rows[i];
+                            var modelo = new ModeloTemplate
+                            {
+                                Item = row[0]?.ToString().Trim(),
+                                Codigo = row[1]?.ToString().Trim(),
+                                Origem = row[2]?.ToString().Trim(),
+                                Descricao = row[3]?.ToString().Trim(),
+                                Un = row[4]?.ToString().Trim(),
+                                Qntd = row[5]?.ToString().Trim(),
+                                ValorSBdi = row[6]?.ToString().Trim(),
+                                ValorCBdi = row[7]?.ToString().Trim(),
+                                Valor = row[8]?.ToString().Trim()
+                            };
+
+                            modelosTemplate.Add(modelo);
+                        }
+
+                        // Retornar sucesso com a lista de modelos
+                        return (modelosTemplate.OrderBy(i => i.Item).ToList());
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception($"Ocorreu o seguinte erro ao tentar processar o arquivo.Erro: {Ex.Message}");
+            }
+        }
+
+        private async Task<List<ModeloTemplate>> ProcessarArquivoTemplateProjeto(CriarAditivoRequest requisicao)
+        {
+            try
+            {
+                return (await this.ProcessarArquivoTemplateProjeto(requisicao.ArquivoTemplate));
+            }
+            catch (Exception Ex)
+            {
+                throw new Exception($"Ocorreu o seguinte erro ao tentar processar o arquivo.Erro: {Ex.Message}");
             }
         }
 
@@ -179,15 +451,12 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
                 contratoFound.DataContrato = requisicao.DataContrato.ToUniversalTime();
                 contratoFound.NumeroContrato = requisicao.NumeroContrato;
-                contratoFound.ValorSaldoRestante = requisicao.ValorSaldoRestante;
                 contratoFound.DataInicio = requisicao.DataInicio.ToUniversalTime();
-                contratoFound.Valor = requisicao.Valor;
                 contratoFound.DataTermino = requisicao.DataTermino.ToUniversalTime();
                 contratoFound.EmpresaId = requisicao.EmpresaId;
                 contratoFound.Gerente = requisicao.Gerente;
                 contratoFound.PrefeituraId = requisicao.PrefeituraId;
                 contratoFound.TipoContratacao = requisicao.TipoContratacao;
-                contratoFound.Aditivo = requisicao.Aditivo;
 
                 await _contratosRepository.AtualizarAsync(contratoFound, cancellationToken);
                 var result = _mapper.Map<AtualizarContratosResponse>(contratoFound);
@@ -293,6 +562,53 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
                 return Result<AdicionarProjetoContratoResponse>.Failure(new UnknownError(Ex.Message));
             }
+        }
+
+        private async Task AtualizarInformacoesCabecalhoContrato(int idContrato, CancellationToken cancellationToken)
+        {
+            decimal _totalPrevisto = 0;
+            decimal _totalSolicitado = 0;
+            decimal _totalRestante = 0;
+
+            var _contratoBancoDeDados = await this._contratosRepository.BuscarPorIdAsync(idContrato, cancellationToken);
+
+            decimal? _valorTotalPrevisto = _contratoBancoDeDados.Items.Sum(i => i.ValorTotalComBdi);
+
+            if (_valorTotalPrevisto.HasValue)
+                _totalPrevisto = _valorTotalPrevisto.Value;
+
+            _totalRestante = _totalPrevisto;
+
+            if (_contratoBancoDeDados != null)
+            {
+                _contratoBancoDeDados.Valor += _totalPrevisto;
+                _contratoBancoDeDados.ValorTotalPrevisto += _totalPrevisto;
+                _contratoBancoDeDados.ValorTotalSolicitado = _totalSolicitado;
+                _contratoBancoDeDados.ValorSaldoRestante += _totalRestante;
+
+                //Atualizar o contrato no banco de dados
+                await this._contratosRepository.AtualizarAsync(_contratoBancoDeDados, cancellationToken);
+            }
+        }
+
+        private async Task<ItemEntidade> ProcessarItemFilho(ModeloTemplate itemFilho, int ordemFilho, int idTemplate, int idItemPai, CancellationToken cancellationToken)
+        {
+            //Verifica se a origem obtida existe no banco de dados
+            var _origemBancoDeDadosFilho = await this._origemRepository.BuscarPorNomeAsync(itemFilho.Origem, cancellationToken);
+
+            QuantidadeEntidade _quantidadeBancoDeDadosFilho = null;
+
+            //Verifica se a quantidade foi informada
+            if (!string.IsNullOrWhiteSpace(itemFilho.Qntd))
+            {
+                //Verifica se a quantidade obtida existe no banco de dados
+                _quantidadeBancoDeDadosFilho = await this._quantidadeRepository.BuscarPorNomeAsync(itemFilho.Qntd, cancellationToken);
+            }
+
+            //Criar o novo item filho a ser inserido na tabela de items
+            var _novoItemFilho = await CriarItemEntidade(itemFilho, _origemBancoDeDadosFilho, ordemFilho, idTemplate, idItemPai, cancellationToken);
+
+            return (_novoItemFilho);
         }
     }
 }

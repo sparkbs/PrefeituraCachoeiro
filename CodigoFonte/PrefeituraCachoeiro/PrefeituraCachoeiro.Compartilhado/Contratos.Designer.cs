@@ -61,11 +61,38 @@ namespace PrefeituraCachoeiro.Compartilhado {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A quantidade informada para o item {0} é superior ao limite de 25% sobre a quantidade original {1} do contrato.
+        /// </summary>
+        public static string AQuantidadeInformadaDoItemNaPlanilhaESuperiorAoMaximoPermitido {
+            get {
+                return ResourceManager.GetString("AQuantidadeInformadaDoItemNaPlanilhaESuperiorAoMaximoPermitido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O contrato foi deletado.
         /// </summary>
         public static string ContratoDeletado {
             get {
                 return ResourceManager.GetString("ContratoDeletado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O contrato informado expirou.
+        /// </summary>
+        public static string ContratoExpirado {
+            get {
+                return ResourceManager.GetString("ContratoExpirado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A prefeitura do contrato é diferente da prefeitura do usuário logado.
+        /// </summary>
+        public static string ContratoNaoPertenceAMesmaPrefeituraDoUsuarioLogado {
+            get {
+                return ResourceManager.GetString("ContratoNaoPertenceAMesmaPrefeituraDoUsuarioLogado", resourceCulture);
             }
         }
         
@@ -93,6 +120,15 @@ namespace PrefeituraCachoeiro.Compartilhado {
         public static string IdItemContratoNaoEncontrado {
             get {
                 return ResourceManager.GetString("IdItemContratoNaoEncontrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O item {0} informado na planilha não existe nos items do contrato original.
+        /// </summary>
+        public static string ItemImportadorNaPlanilhaNaoExistemItemsContratoOriginal {
+            get {
+                return ResourceManager.GetString("ItemImportadorNaPlanilhaNaoExistemItemsContratoOriginal", resourceCulture);
             }
         }
         

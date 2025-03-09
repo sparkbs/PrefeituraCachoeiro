@@ -29,23 +29,20 @@ export class GruposService {
     );
   }
 
-  public async BuscarTodosGrupos(filter: GruposRequest): Promise<TodosGruposResponse> {
+  public async BuscarTodaosGrupos(filter: GruposRequest): Promise<GenericResultResponse<TodosGruposResponse>> {
     return await firstValueFrom(
-      this.http.post<TodosGruposResponse>(
+      this.http.post<GenericResultResponse<TodosGruposResponse>>(
         `${Environments.APIUrl}/grupos/buscartodos`,
         filter
       )
     );
   }
 
-  public async CriarGrupos(nome: string): Promise<GrupoResponse> {
-    const formData = new FormData();
-    formData.append('nome', nome);
-
+  public async CriarGrupos(nome: string): Promise<GenericResultResponse<number>> {
     return await firstValueFrom(
-      this.http.post<GrupoResponse>(
+      this.http.post<GenericResultResponse<number>>(
         `${Environments.APIUrl}/grupos`,
-        formData
+        nome
       )
     );
   }

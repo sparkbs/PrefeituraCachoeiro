@@ -4,6 +4,7 @@
     {
         SMCriada = 1,
         SMReprovada = 2,
-        SMAprovada = 3
+        SMAprovada = 3,
+        SMEnviada = 4
     }
 }

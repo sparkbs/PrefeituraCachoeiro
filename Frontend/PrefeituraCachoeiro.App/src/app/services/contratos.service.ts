@@ -3,13 +3,11 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
-import { ContratoModel, ContratosAditivosResponse, ContratosResponse, TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
-import { CriarAditivoResponse, CriarContratoResponse, DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
+import { ContratosResponse, TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
+import { CriarContratoResponse, DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
 import { AtualizarContratoRequest } from '../request/ContratoRequest/atualizarContratoRequest';
-import { BuscarAditivosContrato, BuscarContratosRequest } from '../request/ContratoRequest/buscarContratosRequest';
+import { BuscarContratosRequest } from '../request/ContratoRequest/buscarContratosRequest';
 import { CriarContratoRequest } from '../request/ContratoRequest/criarContratoRequest';
-import { VinculoProjetoContratoRequest } from '../request/ContratoRequest/vincularProjetoContrato';
-import { AditivosContratoRequest } from '../request/ContratoRequest/aditivosContratoRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -17,27 +15,9 @@ import { AditivosContratoRequest } from '../request/ContratoRequest/aditivosCont
 export class ContratosService {
   constructor(private readonly http: HttpClient) { }
 
-  public async BuscarTodosAditivos(request: BuscarAditivosContrato): Promise<GenericResultResponse<ContratosAditivosResponse[]>> {
-    return await firstValueFrom(
-      this.http.post<GenericResultResponse<ContratosAditivosResponse[]>>(
-        `${Environments.APIUrl}/aditivos/buscartodos`,
-        request
-      )
-    );
-  }
-
   public async BuscarTodosContratos(request: BuscarContratosRequest): Promise<GenericResultResponse<ContratosResponse[]>> {
     return await firstValueFrom(
       this.http.post<GenericResultResponse<ContratosResponse[]>>(
-        `${Environments.APIUrl}/contratos/buscartodos`,
-        request
-      )
-    );
-  }
-  // Novo recebimento de contrato
-  public async BuscarTodosContratosNew(request: BuscarContratosRequest): Promise<GenericResultResponse<ContratoModel[]>> {
-    return await firstValueFrom(
-      this.http.post<GenericResultResponse<ContratoModel[]>>(
         `${Environments.APIUrl}/contratos/buscartodos`,
         request
       )
@@ -66,20 +46,6 @@ export class ContratosService {
     );
   }
 
-  public async CriarAditivos(request: AditivosContratoRequest): Promise<GenericResultResponse<CriarAditivoResponse>> {
-    const formData = new FormData();
-    Object.keys(request).forEach(key => {
-      formData.append(key, request[key]);
-    });
-
-    return await firstValueFrom(
-      this.http.post<GenericResultResponse<CriarAditivoResponse>>(
-        `${Environments.APIUrl}/aditivos`,
-        formData
-      )
-    );
-  }
-
   public async AtualizarContrato(request: AtualizarContratoRequest): Promise<GenericResultResponse<number>> {
     const formData = new FormData();
     Object.keys(request).forEach(key => {
@@ -98,34 +64,6 @@ export class ContratosService {
     return await firstValueFrom(
       this.http.delete<GenericResultResponse<string>>(
         `${Environments.APIUrl}/contratos/${id}`
-      )
-    );
-  }
-
-  public async DeletarAditivo(id: number): Promise<GenericResultResponse<string>> {
-    return await firstValueFrom(
-      this.http.delete<GenericResultResponse<string>>(
-        `${Environments.APIUrl}/aditivos/${id}`
-      )
-    );
-  }
-
-  public async AdicionarProjetoContrato(vinculoProjContrato: VinculoProjetoContratoRequest): Promise<GenericResultResponse<string>> {
-    return await firstValueFrom(
-      this.http.post<GenericResultResponse<string>>(
-        `${Environments.APIUrl}/contratos/adicionarprojetocontrato`,
-        vinculoProjContrato
-      )
-    );
-  }
-
-  public async removerProjetoContrato(vinculoProjContrato: VinculoProjetoContratoRequest): Promise<GenericResultResponse<string>> {
-    return await firstValueFrom(
-      this.http.delete<GenericResultResponse<string>>(
-        `${Environments.APIUrl}/contratos/removerprojetocontrato`,
-        {
-          body: vinculoProjContrato,
-        }
       )
     );
   }

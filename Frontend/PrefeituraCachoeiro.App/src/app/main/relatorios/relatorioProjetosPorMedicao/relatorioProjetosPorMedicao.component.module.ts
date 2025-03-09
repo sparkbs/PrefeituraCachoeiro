@@ -12,20 +12,13 @@ import { CadastrarMedicaoComponent } from './cadastrarMedicao/cadastrarMedicao/c
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ListaMedicaoComponent } from './listaMedicao/listaMedicao/listaMedicao.component';
-import { MatTableModule } from '@angular/material/table';
-import { ResumoMedicaoComponent } from './resumoMedicao/resumoMedicao/resumoMedicao.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { LoadingComponent } from 'src/app/shared/loading/loading.component';
-import { MatSortModule } from '@angular/material/sort';
-import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
-  declarations: [ RelatorioProjetosPorMedicaoComponent, CadastrarMedicaoComponent, ListaMedicaoComponent, ResumoMedicaoComponent, LoadingComponent],
+  declarations: [ RelatorioProjetosPorMedicaoComponent, CadastrarMedicaoComponent ],
   imports: [
     MatButtonModule,
     MatExpansionModule,
@@ -41,12 +34,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     FormsModule,
     CommonModule,
     BrowserAnimationsModule,
-    BrowserModule,
-    MatTableModule,
-    ReactiveFormsModule,
-    MatTooltipModule,
-    MatSortModule,
-    MatPaginatorModule
+    BrowserModule
   ]
 })
 export class RelatorioProjetosPorMedicaoModule { }

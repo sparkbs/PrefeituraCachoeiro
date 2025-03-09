@@ -8,7 +8,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.Validacoes
     {
         public CriarProjetoValidacao()
         {
-
             RuleFor(x => x.Nome)
                 .NotEmpty()
                 .WithMessage("O nome do projeto não pode ser vazio");
@@ -16,6 +15,10 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.Validacoes
             RuleFor(x => x.Nome)
                 .MaximumLength(500)
                 .WithMessage("O nome do projeto não pode ser maior do que 500 caracteres");
+
+            RuleFor(x => x.CodigoProjeto)
+                .NotEmpty()
+                .WithMessage("O código do projeto não pode ser vazio");
         }
     }
 }

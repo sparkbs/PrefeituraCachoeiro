@@ -29,7 +29,7 @@ namespace PrefeituraCachoeiro.Compartilhado {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Grupos() {
+        public Grupos() {
         }
         
         /// <summary>
@@ -93,6 +93,15 @@ namespace PrefeituraCachoeiro.Compartilhado {
         public static string GrupoTemPermissoesAssociadas {
             get {
                 return ResourceManager.GetString("GrupoTemPermissoesAssociadas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O grupo não pode ser removido porque tem usuários associados.
+        /// </summary>
+        public static string GrupoTemUsuariosAssociados {
+            get {
+                return ResourceManager.GetString("GrupoTemUsuariosAssociados", resourceCulture);
             }
         }
     }

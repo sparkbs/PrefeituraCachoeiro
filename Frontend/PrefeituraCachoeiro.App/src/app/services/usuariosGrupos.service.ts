@@ -31,14 +31,10 @@ export class UsuariosGruposService {
   }
 
   public async InserirUsuariosGrupos(filter: CriarUsuariosGruposRequest): Promise<GenericResultResponse<RetornarCriarUsuariosGruposResponse>> {
-    const formData = new FormData();
-    formData.append('UsuarioId', filter.usuarioId.toString());
-    formData.append('GrupoId', filter.grupoId.toString());
-
     return await firstValueFrom(
       this.http.post<GenericResultResponse<RetornarCriarUsuariosGruposResponse>>(
         `${Environments.APIUrl}/usuariosgrupos/inserir`,
-        formData
+        filter
       )
     );
   }

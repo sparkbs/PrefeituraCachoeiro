@@ -18,6 +18,7 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.DataCriacao).HasColumnName("datacriacao").IsRequired();
             builder.Property(x => x.DataDelecao).HasColumnName("datadelecao");
             builder.Property(x => x.IdProjeto).HasColumnName("idprojeto");
+            builder.Property(x => x.Observacao).HasColumnName("observacao").IsRequired(false).HasColumnType("varchar(5000)");
 
             builder.HasOne(x => x.Contratos)
                    .WithMany(x => x.MedicoesProjeto)
@@ -43,6 +44,11 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
                    .WithOne(x => x.MedicoesProjeto)
                    .HasForeignKey(x => x.IdMedicoesProjeto)
                    .HasConstraintName("fk_medicoesprojeto_arquivos");
+
+            builder.HasOne(x => x.Projeto)
+                   .WithMany(x => x.MedicoesProjeto)
+                   .HasForeignKey(x => x.IdProjeto)
+                   .HasConstraintName("fk_medicoes_projeto_projeto");
         }
     }
 }

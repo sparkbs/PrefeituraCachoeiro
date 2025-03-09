@@ -1,8 +1,6 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
-import { ModalLevantamentoComponent } from 'src/app/main/relatorios/modalLevantamento/modalLevantamento.component';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -19,8 +17,7 @@ export class SidebarComponent {
     private authService: AuthService,
     private el: ElementRef,
     private renderer: Renderer2,
-    private _router: Router,
-    public dialog: MatDialog) {
+    private _router: Router) {
       this.currentRoute = this._router.url;
   }
 
@@ -31,6 +28,7 @@ export class SidebarComponent {
       }
     });
 
+    console.log(this.currentRoute);
   }
 
   toggleSidenav(opened: boolean) {

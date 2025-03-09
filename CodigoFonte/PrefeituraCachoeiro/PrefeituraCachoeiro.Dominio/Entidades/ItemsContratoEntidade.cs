@@ -14,6 +14,7 @@
         public decimal ValorComBdi { get; set; }
         public decimal ValorTotalComBdi { get; set; }
         public List<ItemsMedicoesProjetoEntidade> ItemsMedicoesProjeto { get; set; }
+        public decimal? UnidadeOriginal { get; set; }
 
         public ItemsContratoEntidade(int idContrato, int idItem, int idQuantidade, decimal unidade,
             decimal valorSemBdi, decimal valorComBdi, decimal valorTotalComBdi): base()

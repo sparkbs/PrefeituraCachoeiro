@@ -10,5 +10,7 @@ namespace PrefeituraCachoeiro.Dados.Interfaces
         Task<ProjetoEntidade> InserirAsync(ProjetoEntidade projeto, CancellationToken cancellationToken);
         Task<ProjetoEntidade> AtualizarAsync(ProjetoEntidade projeto, CancellationToken cancellationToken);
         Task<ProjetoEntidade> DeletarAsync(ProjetoEntidade projeto, CancellationToken cancellationToken);
+        Task<ProjetoEntidade?> BuscarPorCodigoProjetoAsync(int codigoProjeto, CancellationToken cancellationToken);
+        Task<ProjetoEntidade?> BuscarPorCodigoProjetoAsync(int codigoProjeto, int idProjeto, CancellationToken cancellationToken);
     }
 }

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ExcelDataReader;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Respostas;
 using PrefeituraCachoeiro.Aplicacao.Interfaces;
 using PrefeituraCachoeiro.Dados.Filtros;
 using PrefeituraCachoeiro.Dominio.Extensoes;
+using System.Data;
 
 namespace PrefeituraCachoeiro.Api.Controllers
 {
@@ -110,5 +112,5 @@ namespace PrefeituraCachoeiro.Api.Controllers
               onSuccess: Ok,
               onFailure: error => error.ToHttpResponseError());
         }
-   }
+    }
 }

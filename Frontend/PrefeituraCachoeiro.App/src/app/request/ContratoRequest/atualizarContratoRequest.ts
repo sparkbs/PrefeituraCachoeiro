@@ -1,12 +1,13 @@
 export class AtualizarContratoRequest {
     IdProjeto: number = 0;
     IdContrato: number = 0;
-    DataContrato: string;
+    DataContrato: Date;
     NumeroContrato: string = '';
-    EmpresaId: number = 2;
+    EmpresaId: number = 1;
+    Valor: string = '';
     TipoContratacao: number = 0;
     Gerente: string = '';
-    DataInicio: string;
-    DataTermino: string;
+    DataInicio: Date;
+    DataTermino: Date;
     PrefeituraId: number;
 }

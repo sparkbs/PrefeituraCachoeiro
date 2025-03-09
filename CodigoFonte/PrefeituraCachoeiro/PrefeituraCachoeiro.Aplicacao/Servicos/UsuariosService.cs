@@ -71,7 +71,11 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                     return Result<CriarUsuarioResponse>.Failure(new LoginDuplicadoError(Compartilhado.Usuarios.LoginExistente));
 
                 var usuario = new UsuariosEntidade(requisicao.Login,
-                    requisicao.Nome, this._segurancaService.GerarHashSenha(requisicao.Senha));
+                    requisicao.Nome, this._segurancaService.GerarHashSenha(requisicao.Senha))
+                {
+                    PrefeituraId = requisicao.PrefeituraId
+                };
+
                 usuario = await _usuariosRepository.InserirAsync(usuario, cancellationToken);
                 var result = _mapper.Map<CriarUsuarioResponse>(usuario);
 
@@ -107,6 +111,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 usuarioFound.Nome = requisicao.Nome;
                 usuarioFound.Login = requisicao.Login;
                 usuarioFound.Senha = this._segurancaService.GerarHashSenha(requisicao.Senha);
+                usuarioFound.PrefeituraId = requisicao.PrefeituraId;
 
                 await _usuariosRepository.AtualizarAsync(usuarioFound, cancellationToken);
                 var result = _mapper.Map<AtualizarUsuarioResponse>(usuarioFound);

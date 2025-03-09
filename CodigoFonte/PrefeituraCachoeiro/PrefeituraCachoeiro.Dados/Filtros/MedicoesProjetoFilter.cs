@@ -4,9 +4,10 @@ namespace PrefeituraCachoeiro.Dados.Filtros
 {
     public class MedicoesProjetoFilter: BaseFilter
     {
-        public int IdContrato { get; set; }
+        public int? IdContrato { get; set; }
         public StatusMedicao? StatusMedicao { get; set; }
         public int? IdMedicaoAtual { get; set; }
+        public int? IdProjeto { get; set; }
 
         public MedicoesProjetoFilter()
         {

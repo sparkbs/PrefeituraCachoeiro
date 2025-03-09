@@ -4,23 +4,20 @@
       <img src="/assets/images/logos/logo_projeta_branca_290.png" alt="projeta" />
     </div>
     <p>Fazendo a diferença na vida das pessoas</p>
-    <form [formGroup]="form" class="form">
+    <form class="form-register" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
-        <input matInput formControlName="email">
-        <mat-error *ngIf="form.get('email').hasError('required')">Campo obrigatório!</mat-error>
+        <input matInput>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Senha atual</mat-label>
-        <input matInput formControlName="senhaAtual" type="password">
-        <mat-error *ngIf="form.get('senhaAtual').hasError('required')">Campo obrigatório!</mat-error>
+        <input matInput>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Senha nova</mat-label>
-        <input matInput formControlName="senhaNova" type="password">
-        <mat-error *ngIf="form.get('senhaNova').hasError('required')">Campo obrigatório!</mat-error>
+        <input matInput>
       </mat-form-field>
-      <button mat-raised-button color="primary" class="btn-save" (click)="salvar()">Salvar</button>
+      <button mat-raised-button color="primary">Salvar</button>
       <button mat-raised-button color="accent" class="btn-return" type="button" (click)="onReturn()">Voltar para tela inicial</button>
     </form>
   </div>

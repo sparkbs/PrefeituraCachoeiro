@@ -129,4 +129,10 @@
   <data name="ProjetoTemContratoAssociado" xml:space="preserve">
     <value>O projeto não pode ser removido porque tem contrato associado</value>
   </data>
+  <data name="IdItemProjetoNaoEncontrado" xml:space="preserve">
+    <value>O Id do item do projeto informado não foi encontrado</value>
+  </data>
+  <data name="CodigoProjetoExistente" xml:space="preserve">
+    <value>O código do projeto informado já existe.</value>
+  </data>
 </root>

@@ -6,6 +6,7 @@
         public int IdMedicoesProjeto { get; set; }
         public MedicoesProjetoEntidade MedicoesProjeto { get; set; }
         public string ArquivoMedicao { get; set; }
+        public int IdOrigemArquivo { get; set; }
 
         public ArquivosMedicoesProjetoEntidade()
         {

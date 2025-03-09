@@ -14,9 +14,10 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSelectModule} from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EditarCriarProjetosComponent } from './editar-criar-projetos/editar-criar-projetos.component';
+import { TabelaRecursosProjetoComponent } from './tabela-recursos-projeto/tabela-recursos-projeto.component';
 
 @NgModule({
-  declarations: [ ProjetosComponent, EditarCriarProjetosComponent ],
+  declarations: [ ProjetosComponent, EditarCriarProjetosComponent, TabelaRecursosProjetoComponent ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -30,7 +31,7 @@ import { EditarCriarProjetosComponent } from './editar-criar-projetos/editar-cri
     MatTableModule,
     MatPaginatorModule,
     MatSelectModule,
-    MatTooltipModule,
+    MatTooltipModule
   ]
 })
 export class ProjetosModule { }

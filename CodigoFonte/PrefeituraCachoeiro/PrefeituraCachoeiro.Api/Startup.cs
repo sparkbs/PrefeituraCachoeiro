@@ -76,15 +76,15 @@ namespace PrefeituraCachoeiro.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            //if (env.IsDevelopment())
+            //{
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
                     options.DocumentTitle = "Prefeitura de Cachoeiro - Gestor de Medições de Projetos";
                 });
-            }
+            //}
 
             app.UseCors("AllowSpecificOrigins");
             app.UseAuthentication();

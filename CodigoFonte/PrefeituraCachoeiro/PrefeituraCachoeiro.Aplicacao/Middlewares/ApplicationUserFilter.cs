@@ -22,15 +22,15 @@ namespace PrefeituraCachoeiro.Aplicacao.Middlewares
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var _email = _httpContext.HttpContext.User.Identity.Name;
+            var _login = _httpContext.HttpContext.User.Identity.Name;
 
-            if (_email != null)
+            if (_login != null)
             {
                 var _cancellationToken = new CancellationToken();
-                var _usuario = await this._usuariosRepository.BuscarPorLogingAsync(_email, _cancellationToken);
+                var _usuario = await this._usuariosRepository.BuscarPorLogingAsync(_login, _cancellationToken);
 
                 this._applicationUser.UserId = _usuario.IdUsuario;
-                this._applicationUser.Email = _email;
+                this._applicationUser.Email = _login;
             }
 
             await next();

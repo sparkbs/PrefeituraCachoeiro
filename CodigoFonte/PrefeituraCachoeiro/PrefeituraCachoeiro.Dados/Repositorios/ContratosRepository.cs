@@ -22,21 +22,36 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
                                 .Include(i => i.Empresa)
                                 .Include(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Origem)
                                 .Include(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Quantidade)
-                                .Include(i => i.Items).ThenInclude(i => i.Quantidade).AsQueryable();
+                                .Include(i => i.Items).ThenInclude(i => i.Quantidade)
+                                .Include(i => i.ArquivosContratos).AsQueryable();
 
             query = query.Where(x => x.DataDelecao == null);
 
+            var _listaParcial = await query.ToListAsync();
+            var _listaFinal = new List<ContratosEntidade>();
+
             if (filter.IdProjeto.HasValue)
-                query = query.Where(x => x.Projetos.Any(i=> i.IdProjeto == filter.IdProjeto));
+            {
+                foreach (var _itemParcial in _listaParcial)
+                {
+                    var _projetos = _itemParcial.Projetos.Where(i => i.IdProjeto == filter.IdProjeto).ToList();
 
-            var itemsCount = await query.AsNoTracking().CountAsync();
+                    if (_projetos.Count() > 0)
+                        _listaFinal.Add(_itemParcial);
+                }
+            }
+            else
+                _listaFinal.AddRange(_listaParcial);
 
-            query = query
+            var itemsCount = _listaFinal.Count();
+
+            _listaFinal = _listaFinal
                 .OrderBy(i => i.IdContrato)
                 .Skip((filter.Pagina - 1) * filter.ItemsPorPagina)
-                .Take(filter.ItemsPorPagina);
+                .Take(filter.ItemsPorPagina)
+                .ToList();
 
-            var items = await query.AsNoTracking().ToListAsync();
+            var items = _listaFinal;
 
             return new PaginatedEntity<ContratosEntidade>
             {
@@ -53,7 +68,26 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
                                  .Include(i => i.Empresa)
                                  .Include(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Quantidade)
                                  .Include(i => i.Items).ThenInclude(i => i.Quantidade)
+                                 .Include(i => i.ArquivosContratos)
                                  .FirstOrDefaultAsync(x => x.IdContrato == idContrato && x.DataDelecao == null, cancellationToken);
+        }
+
+        public async Task<List<ContratosEntidade>> BuscarTodosAditivosAsync(int idContrato, CancellationToken cancellationToken)
+        {
+            var query = _context.ContratosEntidade
+                                .Include(i => i.Projetos).ThenInclude(i => i.Projetos)
+                                .Include(i => i.Prefeitura)
+                                .Include(i => i.Empresa)
+                                .Include(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Origem)
+                                .Include(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Quantidade)
+                                .Include(i => i.Items).ThenInclude(i => i.Quantidade)
+                                .Include(i => i.ArquivosContratos).AsQueryable();
+
+            query = query.Where(x => x.DataDelecao == null && x.Aditivo == idContrato);
+
+            var _listaParcial = await query.ToListAsync();
+
+            return (_listaParcial);
         }
 
         public async Task<ContratosEntidade?> BuscarPorIdProjetoAsync(int idProjeto, CancellationToken cancellationToken)
@@ -62,6 +96,7 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
                                  .Include(i => i.Projetos).ThenInclude(i=> i.Projetos)
                                  .Include(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Quantidade)
                                  .Include(i => i.Items).ThenInclude(i => i.Quantidade)
+                                 .Include(i => i.ArquivosContratos)
                                  .FirstOrDefaultAsync(x => x.Projetos.Any(i=> i.IdProjeto == idProjeto) && x.DataDelecao == null, cancellationToken);
         }
 

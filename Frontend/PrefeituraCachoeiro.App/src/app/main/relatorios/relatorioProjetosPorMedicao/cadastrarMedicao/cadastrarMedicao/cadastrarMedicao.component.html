@@ -1,24 +1,63 @@
-<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Nova Medição</h1>
+<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Medir projetos</h1>
 <mat-dialog-content class="mat-typography">
   <div style="margin-top: 20px;">
-    <div class="cadastrarMedicao">
+    <div class="cards-group" style="width: 600px;" [style.display]="!isInserirNovoProjeto && !isNovaMedicao ? 'block' : 'none'">
+    <mat-grid-list cols="2" rowHeight="2:1">
+      <mat-grid-tile>
+        <mat-card style="width: 55%;" (click)="novaMedicao()">
+          <mat-card-header>
+            <mat-icon>description</mat-icon>
+          </mat-card-header>
+          <mat-card-content>Criar Medição</mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-card style="width: 55%;" (click)="inserirProjetoEmMedicao()">
+          <mat-card-header>
+            <mat-icon>build</mat-icon>
+          </mat-card-header>
+          <mat-card-content>Vincular Projetos</mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+    </div>
+    <div class="cadastrarMedicao" [style.display]="isNovaMedicao ? 'block' : 'none'">
       <mat-form-field>
-        <mat-label>Numero Medição</mat-label>
-        <input [(ngModel)]="nomeMedicao" type="number" [disabled]="disabledNomeMedicao" matInput/>
+        <mat-label>Nome Medição</mat-label>
+        <input matInput/>
       </mat-form-field>
 
-      <mat-form-field style="margin-left: 8px;">
+      <mat-form-field style="margin-left: 5px;">
         <mat-label>Selecione o projeto</mat-label>
-        <mat-select disableRipple [(ngModel)]="projetoSelecionado">
-          <mat-option *ngFor="let projeto of listaProjetos" [value]="projeto.idProjeto" >{{projeto.nomeProjeto}}</mat-option>
-        </mat-select>
+          <mat-select disableRipple>
+            <mat-option value="1">Projeto 1</mat-option>
+            <mat-option value="2">Projeto 2</mat-option>
+          </mat-select>
       </mat-form-field>
+
+    </div>
+
+    <div class="cadastrarProjetosEmMedicao" [style.display]="isInserirNovoProjeto ? 'block' : 'none'">
+      <mat-form-field style="margin-left: 5px;">
+        <mat-label>Selecione a medição</mat-label>
+          <mat-select disableRipple>
+            <mat-option value="1">Medição 1</mat-option>
+            <mat-option value="2">Medição 2</mat-option>
+          </mat-select>
+      </mat-form-field>
+
+      <mat-form-field style="margin-left: 5px;">
+        <mat-label>Selecione o projeto</mat-label>
+          <mat-select disableRipple>
+            <mat-option value="1">Projeto 1</mat-option>
+            <mat-option value="2">Projeto 2</mat-option>
+          </mat-select>
+      </mat-form-field>
+
     </div>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions >
-  <button mat-button style="border: solid 1px; border-color: black;"  (click)="voltarTelaCriarMedicaoOuProjeto()">Voltar</button>
-  <button mat-button style="border: solid 1px; border-color: black;"  (click)="criarNovaMedicao()">Salvar</button>
+  <button mat-button cdkFocusInitial style="border: solid 1px; border-color: black;"  [style.display]="isInserirNovoProjeto || isNovaMedicao ? 'block' : 'none'" (click)="voltarTelaCriarMedicaoOuProjeto()">Voltar</button>
+  <button mat-button cdkFocusInitial style="border: solid 1px; border-color: black;" [style.display]="isInserirNovoProjeto || isNovaMedicao ? 'block' : 'none'">Salvar</button>
 </mat-dialog-actions>
-
-<app-loading *ngIf="this.isLoading"></app-loading>

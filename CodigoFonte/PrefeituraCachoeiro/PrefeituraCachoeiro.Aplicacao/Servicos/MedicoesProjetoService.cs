@@ -19,6 +19,34 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
         private const string QUANTIDADE_M = @"M";
         private const string QUANTIDADE_M2 = @"M2";
         private const string QUANTIDADE_KM = @"KM";
+        private const string QUANTIDADE_M22 = "m²";
+
+        private const int JANEIRO = 1;
+        private const int FEVEREIRO = 2;
+        private const int MARCO = 3;
+        private const int ABRIL = 4;
+        private const int MAIO = 5;
+        private const int JUNHO = 6;
+        private const int JULHO = 7;
+        private const int AGOSTO = 8;
+        private const int SETEMBRO = 9;
+        private const int OUTUBRO = 10;
+        private const int NOVEMBRO = 11;
+
+        private const string MES_JANEIRO = "Janeiro";
+        private const string MES_FEVEREIRO = "Fevereiro";
+        private const string MES_MARCO = "Março";
+        private const string MES_ABRIL = "Abril";
+        private const string MES_MAIO = "Maio";
+        private const string MES_JUNHO = "Junho";
+        private const string MES_JULHO = "Julho";
+        private const string MES_AGOSTO = "Agosto";
+        private const string MES_SETEMBRO = "Setembro";
+        private const string MES_OUTUBRO = "Outubro";
+        private const string MES_NOVEMBRO = "Novembro";
+        private const string MES_DEZEMBRO = "Dezembro";
+
+        private const string FORMATAR_DATA = @"dd/MM/yyyy";
 
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
@@ -30,13 +58,16 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
         private readonly IItemsMedicoesProjetoRepository _itemsMedicoesProjetoRepository;
         private readonly IS3Service _s3Service;
         private readonly IArquivosMedicoesProjetoRepository _arquivosMedicoesProjetoRepository;
+        private readonly IProjetoRepository _projetoRepository;
+        private readonly IUsuariosRepository _usuariosRepository;
 
         public MedicoesProjetoService(IMapper mapper, ILoggerFactory loggerFactory,
             IMedicoesProjetoRepository medicoesProjetoRepository,
             IUnitOfWork unitOfWork, ILogStatusMedicaoRepository logStatusMedicaoRepository,
             IContratosRepository contratosRepository, IApplicationUser applicationUser,
             IItemsMedicoesProjetoRepository itemsMedicoesProjetoRepository, IS3Service s3Service,
-            IArquivosMedicoesProjetoRepository arquivosMedicoesProjetoRepository)
+            IArquivosMedicoesProjetoRepository arquivosMedicoesProjetoRepository, IProjetoRepository projetoRepository,
+            IUsuariosRepository usuariosRepository)
         {
             _mapper = mapper;
             _logger = loggerFactory.CreateLogger<MedicoesProjetoService>();
@@ -48,14 +79,275 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             _itemsMedicoesProjetoRepository = itemsMedicoesProjetoRepository;
             _s3Service = s3Service;
             _arquivosMedicoesProjetoRepository = arquivosMedicoesProjetoRepository;
+            _projetoRepository = projetoRepository;
+            _usuariosRepository = usuariosRepository;
+        }
+
+        public async Task<Result<BoletimMedicaoResponse>> BuscarBoletimMedicaoAsync(int idMedicao, CancellationToken cancellationToken)
+        {
+            var _medicoes = await this._medicoesProjetoRepository.BuscarBoletimMedicaoAsync(idMedicao, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
+            var _result = new BoletimMedicaoResponse()
+            {
+                BoletimMedicaoCabecalho = new BoletimMedicaoCabecalhoResponse()
+                {
+                    NomePrefeitura = "PREFEITURA MUNICIPAL DE CACHOEIRO DE ITAPEMIRIM",
+                    NomeUnidade = "SECRETARIA MUNICIPAL DE OBRAS - SEMO",
+                    TipoBoletimEmissao = CriarTipoBoletimEmissao()
+                },
+                Detalhes = new List<BoletimDetalheMedicaoResponse>(),
+                ValorTotalMedicao = 0
+            };
+
+            //Processa a lista de medições retornadas
+            foreach (var _medicao in _medicoes)
+            {
+                var _detalheMedicao = new BoletimDetalheMedicaoResponse()
+                {
+                    DataMedicao = _medicao.DataMedicao,
+                    NumeroMedicao = _medicao.NumeroMedicao,
+                    SubCabecalho = $"BOLETIM DEMEDIÇÃO: MEDIÇÃO {_medicao.NumeroMedicao}",
+                    SubBoletins = new List<BoletimMedicaoDetalheResponse>()
+                };
+
+                if (_medicao.Projeto != null)
+                {
+                    _detalheMedicao.Projeto = _medicao.Projeto.NomeProjeto;
+                    _detalheMedicao.IdProjeto = _medicao.Projeto.IdProjeto;
+                }
+
+                //Processa os items de cada medição
+                foreach (var _itemMedicao in _medicao.Items)
+                {
+                    var _subBoletim = new BoletimMedicaoDetalheResponse()
+                    {
+                        CodigoAta = _itemMedicao.ItemsContrato.Item.Codigo,
+                        Numero = _itemMedicao.ItemsContrato.Item.Identificador,
+                        Descricao = _itemMedicao.ItemsContrato.Item.Descricao,
+                        Quantidade = _itemMedicao.ItemsContrato.QuantidadeId,
+                        Unidade = _itemMedicao.Unidade.ToString(),
+                        QuantidadeResponse = new QuantidadeResponse()
+                        {
+                            IdQuantidade = _itemMedicao.ItemsContrato.QuantidadeId,
+                            Nome = _itemMedicao.ItemsContrato.Quantidade.Nome
+                        }
+                    };
+
+                    if (_itemMedicao.ItemsContrato.Item.ValorComBdi.HasValue)
+                        _subBoletim.PrecoComBdi = _itemMedicao.ItemsContrato.Item.ValorComBdi.Value;
+
+                    if (_itemMedicao.ItemsContrato.Item.ValorSemBdi.HasValue)
+                        _subBoletim.PrecoSemBdi = _itemMedicao.ItemsContrato.Item.ValorSemBdi.Value;
+
+                    if (_itemMedicao.ItemsContrato.Item.ValorTotalComBdi.HasValue)
+                        _subBoletim.ValorTotal = _itemMedicao.ItemsContrato.Item.ValorTotalComBdi.Value;
+
+                    if (_subBoletim.PrecoComBdi.HasValue && _subBoletim.PrecoSemBdi.HasValue)
+                        _subBoletim.Bdi = Math.Round(((_subBoletim.PrecoComBdi.Value / _subBoletim.PrecoSemBdi.Value) * 100) - 100, 2);
+
+                    _detalheMedicao.SubBoletins.Add(_subBoletim);
+
+                    if (_subBoletim.ValorTotal.HasValue)
+                        _result.ValorTotalMedicao += _subBoletim.ValorTotal.Value;
+                }
+
+                _result.Detalhes.Add(_detalheMedicao);
+            }
+
+            return Result<BoletimMedicaoResponse>.Success(_result);
+        }
+
+        public async Task<Result<BoletimMedicaoDetalhadoResponse>> BuscarBoletimMedicaoDetalhadoAsync(int idMedicao, CancellationToken cancellationToken)
+        {
+            var _medicoes = await this._medicoesProjetoRepository.BuscarBoletimMedicaoDetalhadoAsync(idMedicao, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
+            var _result = new BoletimMedicaoDetalhadoResponse()
+            {
+                BoletimDetalhadoCabecalho = new BoletimDetalhadoCabecalhoResponse()
+                {
+                    NomePrefeitura = "PREFEITURA MUNICIPAL DE CACHOEIRO DE ITAPEMIRIM",
+                    NomeUnidade = "SECRETARIA MUNICIPAL DE OBRAS - SEMO",
+                    TipoBoletimEmissao = CriarTipoBoletimEmissao()
+                },
+                Detalhes = new List<BoletimDetalheMedicaoDetalhadoResponse>(),
+                ValorTotalMedicao = 0
+            };
+
+            //Processa a lista de medições retornadas
+            foreach (var _medicao in _medicoes)
+            {
+                var _detalheMedicao = new BoletimDetalheMedicaoDetalhadoResponse()
+                {
+                    DataMedicao = _medicao.DataMedicao,
+                    NumeroMedicao = _medicao.NumeroMedicao,
+                    SubCabecalho = $"BOLETIM DEMEDIÇÃO: MEDIÇÃO {_medicao.NumeroMedicao}",
+                    SubBoletins = new List<BoletimMedicaoDetalheDetalhadoResponse>()
+                };
+
+                if (_medicao.Projeto != null)
+                {
+                    _detalheMedicao.Projeto = _medicao.Projeto.NomeProjeto;
+                    _detalheMedicao.IdProjeto = _medicao.Projeto.IdProjeto;
+                }
+
+                //Processa os items de cada medição
+                foreach (var _itemMedicao in _medicao.Items)
+                {
+                    var _subBoletim = new BoletimMedicaoDetalheDetalhadoResponse()
+                    {
+                        CodigoAta = _itemMedicao.ItemsContrato.Item.Codigo,
+                        Numero = _itemMedicao.ItemsContrato.Item.Identificador,
+                        Descricao = _itemMedicao.ItemsContrato.Item.Descricao,
+                        Quantidade = _itemMedicao.ItemsContrato.QuantidadeId,
+                        Unidade = _itemMedicao.Unidade.ToString(),
+                        QuantidadeResponse = new QuantidadeResponse()
+                        {
+                            IdQuantidade = _itemMedicao.ItemsContrato.QuantidadeId,
+                            Nome = _itemMedicao.ItemsContrato.Quantidade.Nome
+                        }
+                    };
+
+                    if (_itemMedicao.ItemsContrato.Item.ValorComBdi.HasValue)
+                        _subBoletim.PrecoComBdi = _itemMedicao.ItemsContrato.Item.ValorComBdi.Value;
+
+                    if (_itemMedicao.ItemsContrato.Item.ValorSemBdi.HasValue)
+                        _subBoletim.PrecoSemBdi = _itemMedicao.ItemsContrato.Item.ValorSemBdi.Value;
+
+                    if (_itemMedicao.ItemsContrato.Item.ValorTotalComBdi.HasValue)
+                        _subBoletim.ValorTotal = _itemMedicao.ItemsContrato.Item.ValorTotalComBdi.Value;
+
+                    if (_subBoletim.PrecoComBdi.HasValue && _subBoletim.PrecoSemBdi.HasValue)
+                        _subBoletim.Bdi = Math.Round(((_subBoletim.PrecoComBdi.Value / _subBoletim.PrecoSemBdi.Value) * 100) - 100, 2);
+
+                    _detalheMedicao.SubBoletins.Add(_subBoletim);
+
+                    if (_subBoletim.ValorTotal.HasValue)
+                        _result.ValorTotalMedicao += _subBoletim.ValorTotal.Value;
+                }
+
+                _result.Detalhes.Add(_detalheMedicao);
+            }
+
+            return Result<BoletimMedicaoDetalhadoResponse>.Success(_result);
+        }
+
+        public async Task<Result<BoletimProjetoResponse>> BuscarBoletimProjetoAsync(int idMedicao, int idProjeto, CancellationToken cancellationToken)
+        {
+            var _medicoes = await this._medicoesProjetoRepository.BuscarBoletimProjetoAsync(idMedicao, idProjeto, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
+            var _projeto = await this._projetoRepository.BuscarPorIdAsync(idProjeto, cancellationToken);
+            var _result = new BoletimProjetoResponse()
+            {
+                BoletimProjetoCabecalho = new BoletimProjetoCabecalhoResponse()
+                {
+                    NomePrefeitura = "PREFEITURA MUNICIPAL DE CACHOEIRO DE ITAPEMIRIM",
+                    NomeUnidade = "SECRETARIA MUNICIPAL DE OBRAS - SEMO",
+                    TipoBoletimEmissao = CriarTipoBoletimEmissao(),
+                    NomeProjeto = _projeto.NomeProjeto
+                },
+                Detalhes = new List<BoletimDetalheProjetoResponse>(),
+                ValorTotalMedicao = 0,
+                ProjetoId = idProjeto
+            };
+
+            //Processa a lista de medições retornadas
+            foreach (var _medicao in _medicoes)
+            {
+                var _detalheMedicao = new BoletimDetalheProjetoResponse()
+                {
+                    DataMedicao = _medicao.DataMedicao,
+                    NumeroMedicao = _medicao.NumeroMedicao,
+                    SubCabecalho = $"BOLETIM DEMEDIÇÃO: MEDIÇÃO {_medicao.NumeroMedicao}",
+                    SubBoletins = new List<BoletimProjetoDetalheResponse>(),
+                    IdContrato = _medicao.IdContrato
+                };
+
+                if (_medicao.Projeto != null)
+                    _detalheMedicao.Projeto = _medicao.Projeto.NomeProjeto;
+
+                //Processa os items de cada medição
+                foreach (var _itemMedicao in _medicao.Items)
+                {
+                    var _subBoletim = new BoletimProjetoDetalheResponse()
+                    {
+                        CodigoAta = _itemMedicao.ItemsContrato.Item.Codigo,
+                        Numero = _itemMedicao.ItemsContrato.Item.Identificador,
+                        Descricao = _itemMedicao.ItemsContrato.Item.Descricao,
+                        Quantidade = _itemMedicao.ItemsContrato.QuantidadeId,
+                        Unidade = _itemMedicao.Unidade.ToString(),
+                        QuantidadeResponse = new QuantidadeResponse()
+                        {
+                            IdQuantidade = _itemMedicao.ItemsContrato.QuantidadeId,
+                            Nome = _itemMedicao.ItemsContrato.Quantidade.Nome
+                        }
+                    };
+
+                    if (_itemMedicao.ItemsContrato.Item.ValorComBdi.HasValue)
+                        _subBoletim.PrecoComBdi = _itemMedicao.ItemsContrato.Item.ValorComBdi.Value;
+
+                    if (_itemMedicao.ItemsContrato.Item.ValorSemBdi.HasValue)
+                        _subBoletim.PrecoSemBdi = _itemMedicao.ItemsContrato.Item.ValorSemBdi.Value;
+
+                    if (_itemMedicao.ItemsContrato.Item.ValorTotalComBdi.HasValue)
+                        _subBoletim.ValorTotal = _itemMedicao.ItemsContrato.Item.ValorTotalComBdi.Value;
+
+                    if (_subBoletim.PrecoComBdi.HasValue && _subBoletim.PrecoSemBdi.HasValue)
+                        _subBoletim.Bdi = Math.Round(((_subBoletim.PrecoComBdi.Value / _subBoletim.PrecoSemBdi.Value) * 100) - 100, 2);
+
+                    _detalheMedicao.SubBoletins.Add(_subBoletim);
+
+                    if (_subBoletim.ValorTotal.HasValue)
+                        _result.ValorTotalMedicao += _subBoletim.ValorTotal.Value;
+                }
+
+                _result.Detalhes.Add(_detalheMedicao);
+            }
+
+            return Result<BoletimProjetoResponse>.Success(_result);
+        }
+
+        private string CriarTipoBoletimEmissao()
+        {
+            return ($"BOLETIM DE MEDIÇÃO EMITIDO NO MÊS DE {BuscarNomeMes(DateTime.Now.Month)}/{DateTime.Now.Year.ToString("yyyy")}");
+        }
+
+        private string BuscarNomeMes(int mes)
+        {
+            switch (mes)
+            {
+                case JANEIRO:
+                    return (MES_JANEIRO);
+                case FEVEREIRO:
+                    return (MES_FEVEREIRO);
+                case MARCO:
+                    return (MES_MARCO);
+                case ABRIL:
+                    return (MES_ABRIL);
+                case MAIO:
+                    return (MES_MAIO);
+                case JUNHO:
+                    return (MES_JUNHO);
+                case JULHO:
+                    return (MES_JULHO);
+                case AGOSTO:
+                    return (MES_AGOSTO);
+                case SETEMBRO:
+                    return (MES_SETEMBRO);
+                case OUTUBRO:
+                    return (MES_OUTUBRO);
+                case NOVEMBRO:
+                    return (MES_NOVEMBRO);
+                default:
+                    return (MES_DEZEMBRO);
+            }
         }
 
         public async Task<Result<MedicoesProjetoDataResponse>> BuscarTodosAsync(MedicoesProjetoFilter filter, CancellationToken cancellationToken)
         {
-            var medicoesProjetoFound = await _medicoesProjetoRepository.BuscarTodosAsync(filter, cancellationToken);
+            var medicoesProjetoFound = await _medicoesProjetoRepository.BuscarTodosAsync(filter, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
 
             if (medicoesProjetoFound.TotalRegistros is 0)
                 return Result<MedicoesProjetoDataResponse>.Failure(new NoRecordsError(Compartilhado.MedicoesProjeto.MedicoesProjetoNaoEncontrados));
+
+            foreach (var _item in medicoesProjetoFound.Items)
+                _item.ArquivosMedicoesProjeto = _item.ArquivosMedicoesProjeto.Where(i => i.DataDelecao == null).ToList();
 
             var mapped = _mapper.Map<List<MedicoesProjetoResponse>>(medicoesProjetoFound.Items);
             var result = new MedicoesProjetoDataResponse
@@ -69,10 +361,12 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
         public async Task<Result<MedicoesProjetoResponse>> BuscarPorIdAsync(int idMedicoesProjeto, CancellationToken cancellationToken)
         {
-            var medicoesProjetoFound = await _medicoesProjetoRepository.BuscarPorIdAsync(idMedicoesProjeto, cancellationToken);
+            var medicoesProjetoFound = await _medicoesProjetoRepository.BuscarPorIdAsync(idMedicoesProjeto, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
 
             if (medicoesProjetoFound is null)
                 return Result<MedicoesProjetoResponse>.Failure(new NoRecordsError(Compartilhado.MedicoesProjeto.MedicoesProjetoIdNaoEncontrado));
+
+            medicoesProjetoFound.ArquivosMedicoesProjeto = medicoesProjetoFound.ArquivosMedicoesProjeto.Where(i => i.DataDelecao == null).ToList();
 
             var result = _mapper.Map<MedicoesProjetoResponse>(medicoesProjetoFound);
             return Result<MedicoesProjetoResponse>.Success(result);
@@ -83,13 +377,13 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             try
             {
                 //Busca a medição original
-                var _medicaoProjeto = await this._medicoesProjetoRepository.BuscarPorIdAsync(requisicao.IdMedicoesProjeto, cancellationToken);
+                var _medicaoProjeto = await this._medicoesProjetoRepository.BuscarPorIdAsync(requisicao.IdMedicoesProjeto, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
 
                 if (_medicaoProjeto == null)
                     return Result<ResultadoRegistrarAprovacaoMedicaoResponse>.Failure(new NoRecordsError(Compartilhado.MedicoesProjeto.MedicoesProjetoIdNaoEncontrado));
 
-                //Verifica se a medição está no status de criada
-                if (_medicaoProjeto.IdStatusMedicao != (int)StatusMedicao.SMCriada)
+                //Verifica se a medição está no status de enviada
+                if (_medicaoProjeto.IdStatusMedicao != (int)StatusMedicao.SMEnviada)
                     return Result<ResultadoRegistrarAprovacaoMedicaoResponse>.Failure(new MedicaoNaoPodeSerAprovadaError(Compartilhado.MedicoesProjeto.MedicaoNaoPodeSerAprovada));
 
                 //Obtém o contrato associado a medição
@@ -97,6 +391,13 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
                 if (_contrato == null)
                     return Result<ResultadoRegistrarAprovacaoMedicaoResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.IdContratoNaoEncontrado));
+
+                //Obtém o usuário logado
+                var _usuarioLogado = await this.GetUsuarioLogado(cancellationToken);
+
+                //Verifica se o contrato informado pertence a mesma prefeitura do usuário logado
+                if (_contrato.PrefeituraId != _usuarioLogado.PrefeituraId)
+                    return Result<ResultadoRegistrarAprovacaoMedicaoResponse>.Failure(new AcessoInvalidoUsuarioError(Compartilhado.Contratos.ContratoNaoPertenceAMesmaPrefeituraDoUsuarioLogado));
 
                 //Atualizar o status da medição para aprovado
                 _medicaoProjeto.IdStatusMedicao = (int)StatusMedicao.SMAprovada;
@@ -110,6 +411,19 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                     //Atualizar a medição no banco de dados
                     _medicaoProjeto = await _medicoesProjetoRepository.AtualizarAsync(_medicaoProjeto, cancellationToken);
 
+                    //Atualiza do total da unidade do contrato a quantidade referente a unidade que foi aprovada
+                    foreach (var _itemMedicao in _medicaoProjeto.Items)
+                    {
+                        //Procura na lista de items do contrato o item da medição que acabou de ser aprovado
+                        var _itemContrato = _contrato.Items.Where(i => i.IdItemContrato == _itemMedicao.IdItemContrato).FirstOrDefault();
+
+                        if (_itemContrato != null)
+                            _itemContrato.Unidade -= _itemMedicao.Unidade;
+                    }
+
+                    //Atualiza o contrato
+                    await this._contratosRepository.AtualizarAsync(_contrato, cancellationToken);
+
                     //Insere o registro de log para mudança de status da medição
                     await this.InserirLogStatusMedicao(_medicaoProjeto.IdMedicoesProjeto, StatusMedicao.SMAprovada, cancellationToken);
 
@@ -122,18 +436,22 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                             var _upload = await _s3Service.UploadLogoAsync(_arquivo);
 
                             //Registra no banco de dados que o arquivo foi feito o download junto com a medição que está sendo aprovada.
-                            var _arquivoMedicaoProjeto = new ArquivosMedicoesProjetoEntidade(requisicao.IdMedicoesProjeto, _upload);
+                            var _arquivoMedicaoProjeto = new ArquivosMedicoesProjetoEntidade(requisicao.IdMedicoesProjeto, _upload)
+                            {
+                                IdOrigemArquivo = (int)OrigemArquivoMedicaoProjeto.OAAprovacao
+                            };
+
                             await this._arquivosMedicoesProjetoRepository.InserirAsync(_arquivoMedicaoProjeto, cancellationToken);
                         }
                     }
 
-                    /*Processa todos os items associados a medição para atualizar os valores medidos e
-                     * gastos do contrato*/
+                    /*Processa todos os items associados a medição para atualizar os valores medidos e gastos do contrato*/
                     var _totalItemsMedicao = ProcessarItemsMedicaoProjeto(_medicaoProjeto, cancellationToken);
 
                     //Atualiza as informações de consumo, medições e gastos do contrato
-                    _contrato.ValorSaldoRestante -= _totalItemsMedicao.Data.ValorTotalApurado;
+                    _contrato.ValorSaldoRestante -= _totalItemsMedicao.Data.ValorTotalMedido;
                     _contrato.ValorTotalMedido += _totalItemsMedicao.Data.ValorTotalMedido;
+                    _contrato.ValorTotalSolicitado -= _totalItemsMedicao.Data.ValorTotalMedido;
 
                     //Atualizar o contrato no banco de dados
                     await _contratosRepository.AtualizarAsync(_contrato, cancellationToken);
@@ -160,6 +478,73 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             }
         }
 
+        public async Task<Result<RegistrarDocumentosMedicaoResponse>> RegistrarDocumentosAsync(RegistrarDocumentosMedicaoRequest requisicao, CancellationToken cancellationToken)
+        {
+            try
+            {
+                //Busca a medição original
+                var _medicaoProjeto = await this._medicoesProjetoRepository.BuscarPorIdAsync(requisicao.IdMedicoesProjeto, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
+
+                if (_medicaoProjeto == null)
+                    return Result<RegistrarDocumentosMedicaoResponse>.Failure(new NoRecordsError(Compartilhado.MedicoesProjeto.MedicoesProjetoIdNaoEncontrado));
+
+                //Obtém o contrato associado a medição
+                var _contrato = await this._contratosRepository.BuscarPorIdAsync(_medicaoProjeto.IdContrato, cancellationToken);
+
+                if (_contrato == null)
+                    return Result<RegistrarDocumentosMedicaoResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.IdContratoNaoEncontrado));
+
+                //Obtém o usuário logado
+                var _usuarioLogado = await this.GetUsuarioLogado(cancellationToken);
+
+                //Verifica se o contrato informado pertence a mesma prefeitura do usuário logado
+                if (_usuarioLogado.PrefeituraId != null && _contrato.PrefeituraId != _usuarioLogado.PrefeituraId)
+                    return Result<RegistrarDocumentosMedicaoResponse>.Failure(new AcessoInvalidoUsuarioError(Compartilhado.Contratos.ContratoNaoPertenceAMesmaPrefeituraDoUsuarioLogado));
+
+                var _listaIds = new List<IdDocumentoRegistradoResponse>();
+
+                try
+                {
+                    //Verifica se foram informados arquivos no momento da aprovação
+                    if (requisicao.Arquivos != null)
+                    {
+                        foreach (var _arquivo in requisicao.Arquivos)
+                        {
+                            //Faz primeiro o upload do logo da empresa.
+                            var _upload = await _s3Service.UploadLogoAsync(_arquivo);
+
+                            //Registra no banco de dados que o arquivo foi feito o download junto com a medição que está sendo aprovada.
+                            var _arquivoMedicaoProjeto = new ArquivosMedicoesProjetoEntidade(requisicao.IdMedicoesProjeto, _upload)
+                            {
+                                IdOrigemArquivo = (int)OrigemArquivoMedicaoProjeto.OAMedicaoProjeto
+                            };
+
+                            _arquivoMedicaoProjeto = await this._arquivosMedicoesProjetoRepository.InserirAsync(_arquivoMedicaoProjeto, cancellationToken);
+
+                            _listaIds.Add(new IdDocumentoRegistradoResponse(_arquivoMedicaoProjeto.Id, _arquivoMedicaoProjeto.ArquivoMedicao));
+                        }
+                    }
+
+                    var result = new RegistrarDocumentosMedicaoResponse(true, string.Empty)
+                    {
+                         Ids = _listaIds
+                    };
+
+                    return Result<RegistrarDocumentosMedicaoResponse>.Success(result);
+                }
+                catch (Exception Ex)
+                {
+                    throw Ex;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+                return Result<RegistrarDocumentosMedicaoResponse>.Failure(new UnknownError(ex.Message));
+            }
+        }
+
         private Result<TotalProcessamentoDosItemsMedicoesProjetoResponse> ProcessarItemsMedicaoProjeto(
            MedicoesProjetoEntidade medicaoProjeto, CancellationToken cancellationToken)
         {
@@ -171,15 +556,10 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 var _itemIdContrato = medicaoProjeto.Contratos.Items.Where(i => i.IdItemContrato == _item.IdItemContrato).SingleOrDefault();
 
                 if (_itemIdContrato == null)
-                    return Result<TotalProcessamentoDosItemsMedicoesProjetoResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.IdItemContratoNaoEncontrado));
+                    return Result<TotalProcessamentoDosItemsMedicoesProjetoResponse>.Failure(new NoRecordsError(Compartilhado.Projetos.IdItemProjetoNaoEncontrado));
 
                 //Já faz a apuração do total que foi apontado na medição
-                _resultado.ValorTotalApurado += _itemIdContrato.ValorTotalComBdi;
-
-                /*Verifica se a unidade associada ao item é uma unidade que está associada a
-                  medição de tamanho*/
-                if (IsQuantidadeAssociadaMetros(_itemIdContrato.Quantidade))
-                    _resultado.ValorTotalMedido += _item.Unidade;
+                _resultado.ValorTotalMedido += (_itemIdContrato.ValorComBdi * _item.Unidade);
             }
 
             return (Result<TotalProcessamentoDosItemsMedicoesProjetoResponse>.Success(_resultado));
@@ -191,14 +571,27 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             try
             {
                 //Busca a medição original
-                var _medicaoProjeto = await this._medicoesProjetoRepository.BuscarPorIdAsync(requisicao.IdMedicoesProjeto, cancellationToken);
+                var _medicaoProjeto = await this._medicoesProjetoRepository.BuscarPorIdAsync(requisicao.IdMedicoesProjeto, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
 
                 if (_medicaoProjeto == null)
                     return Result<ResultadoRegistrarReprovacaoMedicaoResponse>.Failure(new NoRecordsError(Compartilhado.MedicoesProjeto.MedicoesProjetoIdNaoEncontrado));
 
-                //Verifica se a medição está no status de criada
-                if (_medicaoProjeto.IdStatusMedicao != (int)StatusMedicao.SMCriada)
+                //Verifica se a medição está no status de enviada
+                if (_medicaoProjeto.IdStatusMedicao != (int)StatusMedicao.SMEnviada)
                     return Result<ResultadoRegistrarReprovacaoMedicaoResponse>.Failure(new MedicaoNaoPodeSerReprovadaError(Compartilhado.MedicoesProjeto.MedicaoNaoPodeSerReprovada));
+
+                //Obtém o contrato associado a medição
+                var _contrato = await this._contratosRepository.BuscarPorIdAsync(_medicaoProjeto.IdContrato, cancellationToken);
+
+                if (_contrato == null)
+                    return Result<ResultadoRegistrarReprovacaoMedicaoResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.IdContratoNaoEncontrado));
+
+                //Obtém o usuário logado
+                var _usuarioLogado = await this.GetUsuarioLogado(cancellationToken);
+
+                //Verifica se o contrato informado pertence a mesma prefeitura do usuário logado
+                if (_contrato.PrefeituraId != _usuarioLogado.PrefeituraId)
+                    return Result<ResultadoRegistrarReprovacaoMedicaoResponse>.Failure(new AcessoInvalidoUsuarioError(Compartilhado.Contratos.ContratoNaoPertenceAMesmaPrefeituraDoUsuarioLogado));
 
                 //Atualizar o status da medição para reprovado
                 _medicaoProjeto.IdStatusMedicao = (int)StatusMedicao.SMReprovada;
@@ -209,6 +602,14 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
                 try
                 {
+                    /*Processa todos os items associados a medição para atualizar o valor total solicitado*/
+                    var _totalItemsMedicao = ProcessarItemsMedicaoProjeto(_medicaoProjeto, cancellationToken);
+
+                    _contrato.ValorTotalSolicitado -= _totalItemsMedicao.Data.ValorTotalMedido;
+
+                    //Atualiza o contrato
+                    await this._contratosRepository.AtualizarAsync(_contrato, cancellationToken);
+
                     //Atualizar a medição no banco de dados
                     _medicaoProjeto = await _medicoesProjetoRepository.AtualizarAsync(_medicaoProjeto, cancellationToken);
 
@@ -252,17 +653,41 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 if (_contrato == null)
                     return Result<CriarMedicoesProjetoResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.IdContratoNaoEncontrado));
 
+                //Verifica se o projeto informado está associado ao contrato
+                if (!_contrato.Projetos.Where(i => i.IdProjeto == requisicao.IdProjeto).Any())
+                    return Result<CriarMedicoesProjetoResponse>.Failure(new ProjetoNaoAssociadoAContratoError(Compartilhado.Contratos.ProjetoNaoAssociadoContrato));
+
+                //Verifica se o contrato não expirou
+                if (_contrato.DataTermino < DateTime.Today)
+                    return Result<CriarMedicoesProjetoResponse>.Failure(new ContratoExpirouError(Compartilhado.Contratos.ContratoExpirado));
+
+                //Obtém o usuário logado
+                var _usuarioLogado = await this.GetUsuarioLogado(cancellationToken);
+
+                //Verifica se o contrato informado pertence a mesma prefeitura do usuário logado
+                if (_usuarioLogado.PrefeituraId != null && _contrato.PrefeituraId != _usuarioLogado.PrefeituraId)
+                    return Result<CriarMedicoesProjetoResponse>.Failure(new AcessoInvalidoUsuarioError(Compartilhado.Contratos.ContratoNaoPertenceAMesmaPrefeituraDoUsuarioLogado));
+
                 //Busca a lista de medições atuais que estão no status de criada
-                var _medicoesFilterCriada = new MedicoesProjetoFilter(requisicao.IdContrato, Dominio.Enumeradores.StatusMedicao.SMCriada);
-                var _listaMedicoesCriada = await this._medicoesProjetoRepository.BuscarTodosAsync(_medicoesFilterCriada, cancellationToken);
+                var _medicoesFilterCriada = new MedicoesProjetoFilter(requisicao.IdContrato, Dominio.Enumeradores.StatusMedicao.SMCriada)
+                {
+                    ItemsPorPagina = 100000,
+                    Pagina = 1
+                };
+
+                var _listaMedicoesCriada = await this._medicoesProjetoRepository.BuscarTodosAsync(_medicoesFilterCriada, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
 
                 //Busca a lista de medições atuais que estão no status de aprovada
-                var _medicoesFilterAprovada = new MedicoesProjetoFilter(requisicao.IdContrato, Dominio.Enumeradores.StatusMedicao.SMAprovada);
-                var _listaMedicoesAprovada = await this._medicoesProjetoRepository.BuscarTodosAsync(_medicoesFilterAprovada, cancellationToken);
+                var _medicoesFilterAprovada = new MedicoesProjetoFilter(requisicao.IdContrato, Dominio.Enumeradores.StatusMedicao.SMAprovada)
+                {
+                    ItemsPorPagina = 1000000,
+                    Pagina = 1
+                };
+
+                var _listaMedicoesAprovada = await this._medicoesProjetoRepository.BuscarTodosAsync(_medicoesFilterAprovada, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
 
                 //Realiza o processamento dos items da requisição
-                var _itemProcessamentoItems = ProcessarItemsRequisicao(requisicao, _contrato, _listaMedicoesAprovada,
-                    _listaMedicoesCriada, cancellationToken);
+                var _itemProcessamentoItems = ProcessarItemsRequisicao(requisicao, _contrato, _listaMedicoesAprovada, _listaMedicoesCriada, cancellationToken);
 
                 if (_itemProcessamentoItems.Error != null)
                     return (Result<CriarMedicoesProjetoResponse>.Failure(_itemProcessamentoItems.Error));
@@ -313,7 +738,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                     return Result<AtualizarMedicoesProjetoResponse>.Failure(new ApontamentoMedicaoRequerPeloMenosUmItemError(Compartilhado.MedicoesProjeto.ApontamentoMedicaoProjetoRequerPeloMenosUmItem));
 
                 //Busca a medição
-                var _medicao = await this._medicoesProjetoRepository.BuscarPorIdAsync(requisicao.IdMedicoesProjeto, cancellationToken);
+                var _medicao = await this._medicoesProjetoRepository.BuscarPorIdAsync(requisicao.IdMedicoesProjeto, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
 
                 if (_medicao == null)
                     return Result<AtualizarMedicoesProjetoResponse>.Failure(new NoRecordsError(Compartilhado.MedicoesProjeto.MedicoesProjetoIdNaoEncontrado));
@@ -328,17 +753,31 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 if (_contrato == null)
                     return Result<AtualizarMedicoesProjetoResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.IdContratoNaoEncontrado));
 
+                //Verifica se o projeto informado está associado ao contrato
+                if (!_contrato.Projetos.Where(i => i.IdProjeto == requisicao.IdProjeto).Any())
+                    return Result<AtualizarMedicoesProjetoResponse>.Failure(new ProjetoNaoAssociadoAContratoError(Compartilhado.Contratos.ProjetoNaoAssociadoContrato));
+
+                //Verifica se o contrato não expirou
+                if (_contrato.DataTermino < DateTime.Today)
+                    return Result<AtualizarMedicoesProjetoResponse>.Failure(new ContratoExpirouError(Compartilhado.Contratos.ContratoExpirado));
+
+                //Obtém o usuário logado
+                var _usuarioLogado = await this.GetUsuarioLogado(cancellationToken);
+
+                //Verifica se o contrato informado pertence a mesma prefeitura do usuário logado
+                if (_usuarioLogado.PrefeituraId != null && _contrato.PrefeituraId != _usuarioLogado.PrefeituraId)
+                    return Result<AtualizarMedicoesProjetoResponse>.Failure(new AcessoInvalidoUsuarioError(Compartilhado.Contratos.ContratoNaoPertenceAMesmaPrefeituraDoUsuarioLogado));
+
                 //Busca a lista de medições atuais que estão no status de criada
                 var _medicoesFilterCriada = new MedicoesProjetoFilter(requisicao.IdContrato, StatusMedicao.SMCriada, requisicao.IdMedicoesProjeto);
-                var _listaMedicoesCriada = await this._medicoesProjetoRepository.BuscarTodosAsync(_medicoesFilterCriada, cancellationToken);
+                var _listaMedicoesCriada = await this._medicoesProjetoRepository.BuscarTodosAsync(_medicoesFilterCriada, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
 
                 //Busca a lisat de medições atuais que estão no status de aprovada
                 var _medicoesFilterAprovada = new MedicoesProjetoFilter(requisicao.IdContrato, StatusMedicao.SMAprovada);
-                var _listaMedicoesAprovada = await this._medicoesProjetoRepository.BuscarTodosAsync(_medicoesFilterAprovada, cancellationToken);
+                var _listaMedicoesAprovada = await this._medicoesProjetoRepository.BuscarTodosAsync(_medicoesFilterAprovada, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
 
                 //Realiza o processamento dos items da requisição
-                var _itemProcessamentoItems = ProcessarItemsRequisicao(requisicao, _contrato, _listaMedicoesAprovada,
-                    _listaMedicoesCriada, cancellationToken);
+                var _itemProcessamentoItems = ProcessarItemsRequisicao(requisicao, _contrato, _listaMedicoesAprovada, _listaMedicoesCriada, cancellationToken);
 
                 if (_itemProcessamentoItems.Error != null)
                     return (Result<AtualizarMedicoesProjetoResponse>.Failure(_itemProcessamentoItems.Error));
@@ -398,23 +837,22 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 /*Soma os totais associados a medições criadas e aprovadas*/
                 _totalUnidade += SomarTotalUnidade(listaMedicoesAprovada, listaMedicoesCriada, _item.IdItemContrato);
 
-                //Verifica se a quantidade informada extrapola o máximo aceito pelo contrato
-                if (_totalUnidade > _item.Unidade)
+                //Verifica se a quantidade informada extrapola o máximo aceito pelo item do projeto
+                if ((_totalUnidade + _item.Unidade) > _itemIdContrato.Unidade)
                 {
+                    decimal _totalMaximo = 0;
+
+                    _totalMaximo = (_itemIdContrato.Unidade - _totalUnidade);
+
                     /*Retorna para o usuário um erro informando a quantidade máxima que ele pode informar para o item de contrato*/
                     _resultado.Erro = new ValorUnidadeInformadoExcedeLimitePermitidoError(
-                        CriarMensagemErroRegistroItemMedicao(_itemIdContrato.Item.Descricao, _item.Unidade - _totalUnidade));
-                    return (Result<TotalProcessamentoDosItemsMedicoesProjetoResponse>.Success(_resultado));
+                        CriarMensagemErroRegistroItemMedicao(_itemIdContrato.Item.Descricao, _totalMaximo));
+                    return (Result<TotalProcessamentoDosItemsMedicoesProjetoResponse>.Failure(_resultado.Erro));
                 }
                 else
                 {
                     //Já faz a apuração do total que foi contabilizado
-                    _resultado.ValorTotalApurado += _itemIdContrato.ValorTotalComBdi;
-
-                    /*Verifica se a unidade associada ao item é uma unidade que está associada a
-                     * medição de tamanho*/
-                    if (IsQuantidadeAssociadaMetros(_itemIdContrato.Quantidade))
-                        _resultado.ValorTotalMedido += _item.Unidade;
+                    _resultado.ValorTotalMedido += _itemIdContrato.ValorComBdi * _item.Unidade;
                 }
             }
 
@@ -423,7 +861,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
         private bool IsQuantidadeAssociadaMetros(QuantidadeEntidade quantidade)
         {
-            if (quantidade.Nome == QUANTIDADE_M || quantidade.Nome == QUANTIDADE_M2 || quantidade.Nome == QUANTIDADE_KM)
+            if (quantidade.Nome == QUANTIDADE_M || quantidade.Nome == QUANTIDADE_M2 || quantidade.Nome == QUANTIDADE_KM || quantidade.Nome == QUANTIDADE_M22)
                 return (true);
 
             return (false);
@@ -431,7 +869,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
         private LogStatusMedicaoEntidade CriarLogStatusMedicaoEntidade(int idMedicaoProjeto, StatusMedicao status)
         {
-            var _userId = 1; //remover _applicationUser.UserId;
+            var _userId = _applicationUser.UserId;
 
             //Registra uma entrada no log de status de medição
             var _logStatusMedicao = new LogStatusMedicaoEntidade()
@@ -443,6 +881,14 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             };
 
             return (_logStatusMedicao);
+        }
+
+        private async Task<UsuariosEntidade?> GetUsuarioLogado(CancellationToken cancellationToken)
+        {
+            var _userId = _applicationUser.UserId;
+            var _usuario = await this._usuariosRepository.BuscarPorIdAsync(_userId, cancellationToken);
+
+            return (_usuario);
         }
 
         private async Task InserirLogStatusMedicao(int idMedicaoProjeto, StatusMedicao status, CancellationToken cancellationToken)
@@ -464,7 +910,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 NumeroMedicao = request.NumeroMedicao,
                 Resumo = request.Resumo,
                 Items = new List<ItemsMedicoesProjetoEntidade>(),
-                IdProjeto = request.IdProjeto
+                IdProjeto = request.IdProjeto,
+                Observacao = request.Observacao
             };
 
             return (_medicoesProjeto);
@@ -480,6 +927,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             medicoesProjeto.Resumo = request.Resumo;
             medicoesProjeto.Items = new List<ItemsMedicoesProjetoEntidade>();
             medicoesProjeto.IdProjeto = request.IdProjeto;
+            medicoesProjeto.Observacao = request.Observacao;
 
             return (medicoesProjeto);
         }
@@ -527,8 +975,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
         {
             decimal _totalUnidade = 0;
 
-            /*Soma na lista de medições aprovadas a quantidade que já foi aprovada para 
-             * este item de contrato*/
+            /*Soma na lista de medições aprovadas a quantidade que já foi aprovada para este item de contrato*/
             _totalUnidade += SomarTotalUnidade(itemsAprovados, idItemContrato);
 
             /*Soma na lista de medições criadas a quantidade que já foi criada e que ainda
@@ -543,9 +990,109 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             decimal _unidadeSomada = 0;
 
             foreach (var item in items.Items.ToList())
-                _unidadeSomada += item.Items.Where(i => i.IdItemContrato == idItemContrato).Sum(i => i.Unidade);
+            {
+                var _itemLocal = item.Items.Where(i => i.IdItemContrato == idItemContrato);
+
+                if (_itemLocal != null)
+                    _unidadeSomada += _itemLocal.Sum(i => i.Unidade);
+            }
 
             return (_unidadeSomada);
+        }
+
+        public async Task<Result<MedicoesProjetoResponse>> BuscarUltimaMedicaoPorContratoIdAsync(int idContrato, CancellationToken cancellationToken)
+        {
+            var _ultimaMedicao = await _medicoesProjetoRepository.BuscarUltimaMedicaoPorContratoIdAsync(idContrato, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
+
+            if (_ultimaMedicao is null)
+                return Result<MedicoesProjetoResponse>.Failure(new NoRecordsError(Compartilhado.MedicoesProjeto.NaoFoiEncontradaNenhumaMedicao));
+
+            _ultimaMedicao.ArquivosMedicoesProjeto = _ultimaMedicao.ArquivosMedicoesProjeto.Where(i => i.DataDelecao == null).ToList();
+
+            var result = _mapper.Map<MedicoesProjetoResponse>(_ultimaMedicao);
+            return Result<MedicoesProjetoResponse>.Success(result);
+        }
+
+        public async Task<Result<ResultadoRegistrarEnvioMedicaoClienteResponse>> RegistrarEnvioMedicaoClienteAsync(
+            RegistrarEnvioMedicaoClienteRequest requisicao, CancellationToken cancellationToken)
+        {
+            try
+            {
+                //Busca a medição original
+                var _medicaoProjeto = await this._medicoesProjetoRepository.BuscarPorIdAsync(requisicao.IdMedicoesProjeto, await this.GetUsuarioLogado(cancellationToken), cancellationToken);
+
+                if (_medicaoProjeto == null)
+                    return Result<ResultadoRegistrarEnvioMedicaoClienteResponse>.Failure(new NoRecordsError(Compartilhado.MedicoesProjeto.MedicoesProjetoIdNaoEncontrado));
+
+                //Verifica se a medição está no status de criada
+                if (_medicaoProjeto.IdStatusMedicao != (int)StatusMedicao.SMCriada)
+                    return Result<ResultadoRegistrarEnvioMedicaoClienteResponse>.Failure(new MedicaoNaoPodeSerEnviadaClienteError(Compartilhado.MedicoesProjeto.MedicaoNaoPodeSerEnviadaAoCliente));
+
+                //Obtém o contrato associado a medição
+                var _contrato = await this._contratosRepository.BuscarPorIdAsync(_medicaoProjeto.IdContrato, cancellationToken);
+
+                if (_contrato == null)
+                    return Result<ResultadoRegistrarEnvioMedicaoClienteResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.IdContratoNaoEncontrado));
+
+                //Obtém o usuário logado
+                var _usuarioLogado = await this.GetUsuarioLogado(cancellationToken);
+
+                //Verifica se o contrato informado pertence a mesma prefeitura do usuário logado
+                if (_usuarioLogado.PrefeituraId != null && _contrato.PrefeituraId != _usuarioLogado.PrefeituraId)
+                    return Result<ResultadoRegistrarEnvioMedicaoClienteResponse>.Failure(new AcessoInvalidoUsuarioError(Compartilhado.Contratos.ContratoNaoPertenceAMesmaPrefeituraDoUsuarioLogado));
+
+                //Atualizar o status da medição para enviado para o cliente
+                _medicaoProjeto.IdStatusMedicao = (int)StatusMedicao.SMEnviada;
+
+                //Abre uma transação com o banco de dados
+                await _unitOfWork.BeginTransaction();
+
+                try
+                {
+                    //Percorre todos os items da medição que foram enviados ao cliente
+                    decimal _totalItemsMedicao = 0;
+
+                    foreach (var _itemsMedicao in _medicaoProjeto.Items)
+                    {
+                        //Calcula o valor do item que foi medido
+                        var _valorItemMedido = (_itemsMedicao.ItemsContrato.ValorComBdi * _itemsMedicao.Unidade);
+
+                        //Totaliza o valor do item que foi medido
+                        _totalItemsMedicao += _valorItemMedido;
+                    }
+
+                    //Atualiza no contrato o valor total que foi solicitado
+                    _contrato.ValorTotalSolicitado += _totalItemsMedicao;
+
+                    //Atualiza o contrato no banco de dados
+                    await this._contratosRepository.AtualizarAsync(_contrato, cancellationToken);
+                    
+                    //Atualizar a medição no banco de dados
+                    _medicaoProjeto = await _medicoesProjetoRepository.AtualizarAsync(_medicaoProjeto, cancellationToken);
+
+                    //Insere o registro de log para mudança de status da medição
+                    await this.InserirLogStatusMedicao(_medicaoProjeto.IdMedicoesProjeto, StatusMedicao.SMReprovada, cancellationToken);
+
+                    //Confirma as operações no banco de dados
+                    await _unitOfWork.Commit();
+
+                    var result = new ResultadoRegistrarEnvioMedicaoClienteResponse(true, string.Empty);
+
+                    return Result<ResultadoRegistrarEnvioMedicaoClienteResponse>.Success(result);
+                }
+                catch (Exception Ex)
+                {
+                    //Desfaz a transação com o banco de dados
+                    await _unitOfWork.Rollback();
+                    throw Ex;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+                return Result<ResultadoRegistrarEnvioMedicaoClienteResponse>.Failure(new UnknownError(ex.Message));
+            }
         }
     }
 }

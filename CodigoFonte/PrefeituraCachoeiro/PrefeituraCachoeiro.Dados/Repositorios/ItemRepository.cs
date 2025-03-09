@@ -13,15 +13,23 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
             _context = context;
         }
 
-        public async Task<List<ItemEntidade>> BuscarTodosAsync(CancellationToken cancellationToken)
+        public async Task<List<ItemEntidade>> BuscarTodosAsync(int idTemplate, CancellationToken cancellationToken)
         {
             return await _context.ItemEntidade
-                                 .Include(i=> i.Quantidade)
+                                 .Include(i => i.Quantidade)
                                  .AsQueryable()
-                                 .Where(x => x.DataDelecao == null)
+                                 .Where(x => x.DataDelecao == null && x.IdTemplate == idTemplate)
                                  .OrderBy(i=> i.Ordem)
                                  .AsNoTracking()
                                  .ToListAsync();
+        }
+
+        public async Task<ItemEntidade> InserirAsync(ItemEntidade item, CancellationToken cancellationToken)
+        {
+            await _context.ItemEntidade.AddAsync(item, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return item;
         }
     }
 }

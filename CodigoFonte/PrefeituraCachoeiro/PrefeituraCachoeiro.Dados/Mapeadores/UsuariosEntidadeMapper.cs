@@ -15,6 +15,7 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.Senha).HasColumnName("senha").IsRequired().HasColumnType("varchar(5000)");
             builder.Property(x => x.DataCriacao).HasColumnName("datacriacao").IsRequired();
             builder.Property(x => x.DataDelecao).HasColumnName("datadelecao");
+            builder.Property(x => x.PrefeituraId).HasColumnName("prefeituraid").IsRequired(false);
 
             builder.HasMany(x => x.Grupos)
                 .WithOne(x => x.Usuario)

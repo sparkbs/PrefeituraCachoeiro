@@ -15,5 +15,6 @@ namespace PrefeituraCachoeiro.Dados.Interfaces
         Task RemoverProjetoContratoAsync(ContratosProjetosEntidade projeto, CancellationToken cancellationToken);
         Task<bool> VerificarProjetoAssociadoContratoAsync(int idContrato, int idProjeto, CancellationToken cancellationToken);
         Task<ContratosProjetosEntidade?> BuscarProjetoInContratoAsync(int idContrato, int idProjeto, CancellationToken cancellationToken);
+        Task<List<ContratosEntidade>> BuscarTodosAditivosAsync(int idContrato, CancellationToken cancellationToken);
     }
 }

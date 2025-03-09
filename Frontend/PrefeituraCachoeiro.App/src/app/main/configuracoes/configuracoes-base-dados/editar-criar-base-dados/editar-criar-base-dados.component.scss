@@ -1,27 +1,3 @@
 .editar-criar-base-dados-body {
   padding: 2%;
 }
-
-.editar-criar-base-dados-body form {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 2%;
-}
-
-.editar-criar-base-dados-body form > div {
-  display: flex;
-  flex-direction: column;
-}
-
-.group-buttons {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  margin-top: 2%;
-  gap: 10px;
-}
-
-.group-buttons button {
-  width: 10%;
-}

@@ -23,11 +23,12 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.Ordem).HasColumnName("ordem").IsRequired();
             builder.Property(x => x.DataCriacao).HasColumnName("datacriacao").IsRequired();
             builder.Property(x => x.DataDelecao).HasColumnName("datadelecao");
+            builder.Property(x => x.IdTemplate).HasColumnName("idtemplate").IsRequired();
 
-            builder.HasMany(x => x.ItemsContrato)
+            /*builder.HasMany(x => x.ItemsContrato)
                    .WithOne(x => x.Item)
                    .HasForeignKey(x => x.ItemId)
-                   .HasConstraintName("fk_items_items_contrato");
+                   .HasConstraintName("fk_items_items_contrato");*/
 
             builder.HasOne(x => x.Quantidade)
                    .WithMany(x => x.ItemsQuantidade)

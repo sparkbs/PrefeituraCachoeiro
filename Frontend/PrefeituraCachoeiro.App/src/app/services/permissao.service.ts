@@ -22,14 +22,10 @@ export class PermissaoService {
   }
 
   public async CriarPermissoes(filter: PermissoesRequest): Promise<GenericResultResponse<RetornaIdPermissaoResponse>> {
-    const formData = new FormData();
-    formData.append('TipoPermissaoId', filter.tipoPermissaoId.toString());
-    formData.append('GrupoId', filter.grupoId.toString());
-
     return await firstValueFrom(
       this.http.post<GenericResultResponse<RetornaIdPermissaoResponse>>(
         `${Environments.APIUrl}/permissoes/inserir`,
-        formData
+        filter
       )
     );
   }

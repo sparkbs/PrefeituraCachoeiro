@@ -15,5 +15,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
         public decimal ValorSemBdi { get; set; }
         public decimal ValorComBdi { get; set; }
         public decimal ValorTotalComBdi { get; set; }
+        public decimal? UnidadeOriginal { get; set; }
     }
 }

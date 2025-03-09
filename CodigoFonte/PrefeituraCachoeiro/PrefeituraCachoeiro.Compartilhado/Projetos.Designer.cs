@@ -61,6 +61,24 @@ namespace PrefeituraCachoeiro.Compartilhado {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O código do projeto informado já existe..
+        /// </summary>
+        public static string CodigoProjetoExistente {
+            get {
+                return ResourceManager.GetString("CodigoProjetoExistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O Id do item do projeto informado não foi encontrado.
+        /// </summary>
+        public static string IdItemProjetoNaoEncontrado {
+            get {
+                return ResourceManager.GetString("IdItemProjetoNaoEncontrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Projeto deletado.
         /// </summary>
         public static string ProjetoDeletado {

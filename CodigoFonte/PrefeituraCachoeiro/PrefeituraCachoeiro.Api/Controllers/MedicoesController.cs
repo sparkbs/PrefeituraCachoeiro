@@ -5,7 +5,6 @@ using PrefeituraCachoeiro.Aplicacao.Dtos.Respostas;
 using PrefeituraCachoeiro.Aplicacao.Interfaces;
 using PrefeituraCachoeiro.Dados.Filtros;
 using PrefeituraCachoeiro.Dominio.Extensoes;
-using System.Runtime.CompilerServices;
 
 namespace PrefeituraCachoeiro.Api.Controllers
 {
@@ -98,23 +97,6 @@ namespace PrefeituraCachoeiro.Api.Controllers
         }
 
         /// <summary>
-        /// Buscar os arquivos que foram aprovados junto com a medição
-        /// </summary>
-        /// <response code="200">Retorna uma lista de arquivos associados a medição</response>
-        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
-        [HttpPost("buscararquivosmedicao")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ArquivosMedicoesProjetoDataResponse))]
-        [Authorize]
-        public async Task<IActionResult> BuscarArquivosMedicao([FromForm] BuscarArquivosMedicoesProjetoFilter requisicao, CancellationToken cancellationToken)
-        {
-            var response = await _arquivosMedicoesProjetoService.BuscarTodosAsync(requisicao, cancellationToken);
-
-            return response.Match(
-              onSuccess: Ok,
-              onFailure: error => error.ToHttpResponseError());
-        }
-
-        /// <summary>
         /// Reprovar uma medição específica
         /// </summary>
         /// <response code="200">Retorna sucesso ou a mensagem de erro</response>
@@ -146,6 +128,84 @@ namespace PrefeituraCachoeiro.Api.Controllers
             return response.Match(
               onSuccess: Ok,
               onFailure: error => error.ToHttpResponseError());
+        }
+
+        /// <summary>
+        /// Registrar um ou mais arquivos a uma medição de projeto
+        /// </summary>
+        /// <response code="200">Retorna sucesso ou a mensagem de erro</response>
+        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        [HttpPost("registrardocumentos")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrarDocumentosMedicaoResponse))]
+        [Authorize]
+        public async Task<IActionResult> RegistrarDocumentosAsync([FromForm] RegistrarDocumentosMedicaoRequest requisicao, CancellationToken cancellationToken)
+        {
+            var response = await _medicoesProjetoService.RegistrarDocumentosAsync(requisicao, cancellationToken);
+
+            return response.Match(
+              onSuccess: Ok,
+              onFailure: error => error.ToHttpResponseError());
+        }
+
+        /// <summary>
+        /// Apagar um arquivo de medição de projeto
+        /// </summary>
+        /// <response code="200">Retorna uma mensagem de confirmação</response>
+        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        [HttpDelete("apagararquivomedicao/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeletarContratoResponse))]
+        [Authorize]
+        public async Task<IActionResult> DeletarArquivoMedicaoAsync(int id, CancellationToken cancellationToken)
+        {
+            var response = await _arquivosMedicoesProjetoService.DeletarAsync(id, cancellationToken);
+
+            return response.Match(
+              onSuccess: Ok,
+              onFailure: error => error.ToHttpResponseError());
+        }
+
+        /// <summary>
+        /// Método responsável por realizar o download de um determinado arquivo
+        /// </summary>
+        /// <param name="id">Identificador do arquivo</param>
+        /// <param name="cancellationToken">Token de cancelamento</param>
+        /// <returns>Retorna um stream contendo as informações do arquivo</returns>
+        [HttpGet("downloadarquivomedicao/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DownloadArquivoMedicaoAsync(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var _stream = await this._arquivosMedicoesProjetoService.DownloadArquivoMedicao(id, cancellationToken);
+
+                return File(_stream, "application/octet-stream", this.CriarNomeArquivoAleatorio());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao processar o download: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Realiza o envio de uma medição ao cliente
+        /// </summary>
+        /// <response code="200">Retorna sucesso ou a mensagem de erro</response>
+        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        [HttpPost("enviarcliente")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultadoRegistrarEnvioMedicaoClienteResponse))]
+        [Authorize]
+        public async Task<IActionResult> EnviarMedicaoClienteAsync([FromForm] RegistrarEnvioMedicaoClienteRequest requisicao, CancellationToken cancellationToken)
+        {
+            var response = await _medicoesProjetoService.RegistrarEnvioMedicaoClienteAsync(requisicao, cancellationToken);
+
+            return response.Match(
+              onSuccess: Ok,
+              onFailure: error => error.ToHttpResponseError());
+        }
+
+        private string CriarNomeArquivoAleatorio()
+        {
+            return ($"Arquivo_{DateTime.Now.ToString("ddMMyyyyhhmms")}");
         }
     }
 }

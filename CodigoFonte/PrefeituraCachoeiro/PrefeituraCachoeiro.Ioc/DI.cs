@@ -11,7 +11,6 @@ using PrefeituraCachoeiro.Aplicacao.Utils;
 using PrefeituraCachoeiro.Dados;
 using PrefeituraCachoeiro.Dados.Interfaces;
 using PrefeituraCachoeiro.Dados.Repositorios;
-using PrefeituraCachoeiro.Environment;
 using RestSharp;
 using System.Diagnostics.CodeAnalysis;
 
@@ -35,10 +34,10 @@ namespace PrefeituraCachoeiro.Ioc
             services.AddDefaultAWSOptions(new AWSOptions
             {
                 Credentials = new Amazon.Runtime.BasicAWSCredentials(
-                    EnvVariables.AwsAccessKey,
-                    EnvVariables.AwsSecretKey
+                    configuration["AccessKey"],
+                    configuration["SecretKey"]
                 ),
-                Region = Amazon.RegionEndpoint.GetBySystemName(EnvVariables.AwsRegion)
+                Region = Amazon.RegionEndpoint.GetBySystemName(configuration["Region"])
             });
 
             services.AddAWSService<IAmazonS3>();
@@ -55,7 +54,7 @@ namespace PrefeituraCachoeiro.Ioc
             services.AddScoped<IPermissoesService, PermissoesService>();
             services.AddScoped<IMedicoesProjetoService, MedicoesProjetoService>();
             services.AddScoped<IPrefeituraService, PrefeituraService>();
-            services.AddDbContext<ContextoDb>(options => options.UseNpgsql(EnvVariables.ConnectionString).EnableDetailedErrors());
+            services.AddDbContext<ContextoDb>(options => options.UseNpgsql(configuration["CONNECTION_STRING"]).EnableDetailedErrors());
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IProjetoRepository, ProjetoRepository>();
             services.AddScoped<IGruposRepository, GruposRepository>();
@@ -79,6 +78,13 @@ namespace PrefeituraCachoeiro.Ioc
             services.AddScoped<IParametrosSistemaService, ParametrosSistemaService>();
             services.AddScoped<IArquivosMedicoesProjetoRepository, ArquivosMedicoesProjetoRepository>();
             services.AddScoped<IArquivosMedicoesProjetoService, ArquivosMedicoesProjetoService>();
+            services.AddScoped<IOrigemRepository, OrigemRepository>();
+            services.AddScoped<ITemplateRepository, TemplateRepository>();
+            services.AddScoped<IQuantidadeRepository, QuantidadeRepository>();
+            services.AddScoped<IArquivosContratoRepository, ArquivosContratoRepository>();
+            services.AddScoped<IAditivosRepository, AditivosRepository>();
+            services.AddScoped<IAditivosService, AditivosService>();
+            services.AddScoped<IItemsAditivoRepository, ItemsAditivoRepository>();
         }
     }
 }

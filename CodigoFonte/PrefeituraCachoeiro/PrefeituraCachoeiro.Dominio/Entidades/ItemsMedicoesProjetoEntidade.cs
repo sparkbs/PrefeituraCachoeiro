@@ -18,7 +18,7 @@
         public ItemsMedicoesProjetoEntidade(int idItemContrato,decimal unidade): this()
         {
            this.IdItemContrato = idItemContrato;
-            this.Unidade = unidade;
+           this.Unidade = unidade;
         }
     }
 }

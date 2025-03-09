@@ -2,7 +2,7 @@ import { BaseFilter } from "src/app/request/baseFilter";
 
 export class GruposRequest extends BaseFilter
 {
-    nome?: string = '';
+    nome: string = '';
 }
 
 export class AtualizaGruposRequest

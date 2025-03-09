@@ -13,7 +13,7 @@ import { MatPaginatorModule} from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Editar_criar_contratosComponent } from './criar_contratos/editar_criar_contratos.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AditivosContratosComponent } from './aditivos-contratos/aditivos-contratos.component';
 import { MatSelectModule } from '@angular/material/select';
 import { Editar_contratosComponent } from './editar_contratos/editar_contratos/editar_contratos.component';
@@ -21,7 +21,6 @@ import { Editar_contratosComponent } from './editar_contratos/editar_contratos/e
 @NgModule({
   declarations: [ ContratosComponent, Editar_criar_contratosComponent, AditivosContratosComponent, Editar_contratosComponent ],
   imports: [
-    ReactiveFormsModule,
     CommonModule,
     MatCardModule,
     MatFormFieldModule, 

@@ -20,10 +20,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.Validacoes
                 .MaximumLength(50)
                 .WithMessage("O número do contrato não pode ser maior do que 50 caracteres");
 
-            RuleFor(x => x.Valor)
-                .GreaterThan(0)
-                .WithMessage("O valor do contrato deve ser maior do que zero");
-
             RuleFor(x => x.Gerente)
                 .NotEmpty()
                 .WithMessage("O gerente do contrato não pode ser vazio");

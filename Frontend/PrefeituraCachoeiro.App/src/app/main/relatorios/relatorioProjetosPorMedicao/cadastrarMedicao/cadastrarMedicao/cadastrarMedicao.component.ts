@@ -1,14 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { InserirMedicao } from 'src/app/request/MedicoesRequest/medicoesRequest';
-import { PermissoesRequest } from 'src/app/request/PermissoesRequest/permissoesRequest';
-import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
-import { Contrato, MedicoesResponse, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
-import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
-import { MedicoesService } from 'src/app/services/medicoes.service';
-import { PermissaoService } from 'src/app/services/permissao.service';
-import { ProjetoService } from 'src/app/services/projeto.service';
-import { ToastService } from 'src/app/services/toast.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-cadastrarMedicao',
@@ -16,91 +6,28 @@ import { ToastService } from 'src/app/services/toast.service';
   styleUrls: ['./cadastrarMedicao.component.scss']
 })
 export class CadastrarMedicaoComponent implements OnInit {
-  projetoSelecionado = 0;
-  nomeMedicao = 0;
-  listaProjetos: ProjetoResponse[] = [];
-  disabledNomeMedicao = false;
-  isLoading = false;
+  isNovaMedicao = false;
+  isInserirNovoProjeto = false;
 
-  constructor(private readonly api: MedicoesService,
-    @Inject(MAT_DIALOG_DATA) public data: {medicoes: Contrato, numeroMedicao?:
-      number, projetosMedidos: MedicoesResponse[] },
-     public _projetoControllerService: ProjetoService,
-     private _toastService: ToastService,
-     public dialogRef: MatDialogRef<CadastrarMedicaoComponent> // Referência ao diálogo
-    )
-  {
-    if(data.numeroMedicao != null || data.numeroMedicao != undefined){
-      this.nomeMedicao = data.numeroMedicao;
-      this.disabledNomeMedicao = true;
-    }
+  constructor() { }
+
+  ngOnInit() {
   }
 
-  async ngOnInit() {
-    this.isLoading = true;
-    await this.getAllProjects()
+  novaMedicao(){
+    this.isNovaMedicao = true;
+  }
+
+  inserirProjetoEmMedicao(){
+    this.isInserirNovoProjeto = true;
   }
 
   voltarTelaCriarMedicaoOuProjeto(){
-    this.dialogRef.close();
-  }
-
-  async criarNovaMedicao(){
-    this.isLoading = true;
-
-    let medicaoRequest = new InserirMedicao();
-    this.data.medicoes.items.forEach(x => {
-      x.idContrato = this.data.medicoes.idContrato;
-    });
-
-    medicaoRequest.dataMedicao = new Date();
-    medicaoRequest.idContrato = this.data.medicoes.idContrato;
-    medicaoRequest.IdProjeto = this.projetoSelecionado;
-    medicaoRequest.items = this.data.medicoes.items.map(item => ({
-      idItemContrato: item.idItemContrato,
-      unidade: 0
-    }));
-    medicaoRequest.numeroMedicao = this.nomeMedicao;
-    if(this.data?.projetosMedidos != null && this.data?.projetosMedidos != undefined && this.data.projetosMedidos.some(x => x.idProjeto == this.projetoSelecionado)){
-      this.isLoading = false;
-      this.dialogRef.close();
-      this._toastService.mensagemError("Projeto ja existe nessa medição");
+    if(this.isInserirNovoProjeto){
+      this.isInserirNovoProjeto = false;
     }
-    else{
-      await this.api.CriarMedicoes(medicaoRequest)
-      .then((result) => {
-        this._toastService.mensagemSuccess("Medição criada com sucesso.");
-        this.dialogRef.close(result.idMedicoesProjeto);
-      })
-      .catch((err) =>
-      {
-        this._toastService.mensagemError(err.error.message);
-      })
-      .finally(() => {
-        this.isLoading = false;
-      });
-    }
-  }
-
-  async getAllProjects() {
-    const projetoRequest: ProjetoRequest = {
-      nome: '',
-      itemsPorPagina: 1000000,
-      pagina: 1,
-      idContrato: this.data.medicoes.idContrato
-    };
-
-    try {
-      await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
-      .then((res) => {
-        this.listaProjetos = (res.data);
-      });
-
-    } catch (error) {
-      console.error('Erro ao buscar projetos:', error);
-    }
-    finally{
-      this.isLoading = false;
+    if(this.isNovaMedicao){
+      this.isNovaMedicao = false;
     }
   }
 }

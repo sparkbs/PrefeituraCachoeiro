@@ -7,5 +7,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
     {
         public int IdGrupo { get; set; }
         public string? Nome { get; set; }
+        public List<PermissoesResponse> Permissoes { get; set; }
     }
 }

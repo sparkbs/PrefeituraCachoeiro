@@ -32,6 +32,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             if (projetoFound is null)
                 return Result<GruposResponse>.Failure(new NoRecordsError(Compartilhado.Grupos.GrupoIdNaoEncontrado));
 
+            projetoFound.Permissoes = projetoFound.Permissoes.Where(i => i.DataDelecao == null).ToList();
+
             var result = _mapper.Map<GruposResponse>(projetoFound);
             return Result<GruposResponse>.Success(result);
         }
@@ -42,6 +44,9 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
             if (gruposFound.TotalRegistros is 0)
                 return Result<GruposDataResponse>.Failure(new NoRecordsError(Compartilhado.Grupos.GruposNaoEncontrado));
+            
+            foreach (var _itemGrupo in gruposFound.Items)
+                _itemGrupo.Permissoes = _itemGrupo.Permissoes.Where(i => i.DataDelecao == null).ToList();
 
             var mapped = _mapper.Map<List<GruposResponse>>(gruposFound.Items);
             var result = new GruposDataResponse
@@ -113,8 +118,11 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 if (grupoFound is null)
                     return Result<DeletarGrupoResponse>.Failure(new NoRecordsError(Compartilhado.Grupos.GrupoIdNaoEncontrado));
 
-                if (grupoFound.Permissoes.Count() > 0)
+                if (grupoFound.Permissoes.Where(i=> i.DataDelecao == null).Count() > 0)
                     return Result<DeletarGrupoResponse>.Failure(new GrupoTemPermissoesAssociadasError(Compartilhado.Grupos.GrupoTemPermissoesAssociadas));
+
+                if (grupoFound.Usuarios.Where(i=> i.DataDelecao == null).Count() > 0)
+                    return Result<DeletarGrupoResponse>.Failure(new GrupoTemUsuariosAssociadosError(Compartilhado.Grupos.GrupoTemUsuariosAssociados));
 
                 grupoFound.Delete();
                 await _gruposRepository.DeletarAsync(grupoFound, cancellationToken);

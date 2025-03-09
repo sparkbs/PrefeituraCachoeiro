@@ -23,9 +23,6 @@ import { RelatorioProjetosPorMedicaoModule } from './main/relatorios/relatorioPr
 import { PrefeituraModule } from './main/prefeitura/prefeitura/prefeitura.module';
 import { HttpBaseInterceptor } from './services/AuthService/http-base-interceptor/httpBase.interceptor';
 import { AESEncryptDecriptService } from './shared/aesEncryptDecript.service';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BoletimModule } from './main/boletim/boletim.module';
-import { ModalLevantamentoModule } from './main/relatorios/modalLevantamento/modalLevantamento.module';
 
 @NgModule({
   declarations: [ AppComponent, MainComponent, SidebarComponent, NavbarComponent ],
@@ -34,9 +31,8 @@ import { ModalLevantamentoModule } from './main/relatorios/modalLevantamento/mod
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-
+    
     // Autenticação
-    ModalLevantamentoModule,
     LoginModule,
     RegistrarModule,
     HomeModule,
@@ -48,11 +44,10 @@ import { ModalLevantamentoModule } from './main/relatorios/modalLevantamento/mod
     MatCardModule,
     PerfilModule,
     RelatorioProjetosPorMedicaoModule,
-    PrefeituraModule,
-    MatSnackBarModule,
-    BoletimModule
+    PrefeituraModule
+    
   ],
-  providers: [
+  providers: [ 
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,

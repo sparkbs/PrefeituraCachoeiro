@@ -13,29 +13,29 @@
     </div>
 
     <table mat-table [dataSource]="dataSource" class="table">
-      <ng-container matColumnDef="nome">
+      <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Nome </th>
-        <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="login">
+      <ng-container matColumnDef="email">
         <th mat-header-cell *matHeaderCellDef> Email </th>
-        <td mat-cell *matCellDef="let element"> {{element.login}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="cliente">
-        <th mat-header-cell *matHeaderCellDef> Cliente </th>
-        <td mat-cell *matCellDef="let element"> {{element.prefeituraId}} </td>
+      <ng-container matColumnDef="grupo">
+        <th mat-header-cell *matHeaderCellDef> Grupo </th>
+        <td mat-cell *matCellDef="let element"> {{element.grupo}} </td>
       </ng-container>
 
       <ng-container matColumnDef="acoes">
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let element">
-            <span matTooltip="Editar" (click)="openEditarCriar(true, element.idUsuario)">
+            <span matTooltip="Editar" (click)="openEditarCriar(true, element.id)">
               <mat-icon>edit</mat-icon>
             </span>
 
-            <span matTooltip="Remover" (click)="removePerfil(element.idUsuario)">
+            <span matTooltip="Remover" (click)="removePerfil(element.id)">
               <mat-icon>delete</mat-icon>
             </span>
         </td>
@@ -45,7 +45,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[10, 25, 100]"
+    <mat-paginator [pageSizeOptions]="[5, 7]"
                    showFirstLastButtons
                    aria-label="Select page of periodic elements">
     </mat-paginator>

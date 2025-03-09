@@ -19,7 +19,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.Validacoes
             RuleFor(x => x.Logo)
                 .NotEmpty()
                 .WithMessage("O logo da prefeitura não pode ser vazio");
-
         }
     }
 }

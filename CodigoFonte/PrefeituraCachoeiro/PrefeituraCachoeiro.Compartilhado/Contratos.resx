@@ -144,4 +144,16 @@
   <data name="ProjetoNaoAssociadoContrato" xml:space="preserve">
     <value>O projeto informado não está associado ao contrato informado</value>
   </data>
+  <data name="ContratoNaoPertenceAMesmaPrefeituraDoUsuarioLogado" xml:space="preserve">
+    <value>A prefeitura do contrato é diferente da prefeitura do usuário logado</value>
+  </data>
+  <data name="ItemImportadorNaPlanilhaNaoExistemItemsContratoOriginal" xml:space="preserve">
+    <value>O item {0} informado na planilha não existe nos items do contrato original</value>
+  </data>
+  <data name="AQuantidadeInformadaDoItemNaPlanilhaESuperiorAoMaximoPermitido" xml:space="preserve">
+    <value>A quantidade informada para o item {0} é superior ao limite de 25% sobre a quantidade original {1} do contrato</value>
+  </data>
+  <data name="ContratoExpirado" xml:space="preserve">
+    <value>O contrato informado expirou</value>
+  </data>
 </root>

@@ -13,11 +13,17 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.NomeProjeto).HasColumnName("nomeprojeto").IsRequired().HasColumnType("varchar(500)");
             builder.Property(x => x.DataCriacao).HasColumnName("datacriacao").IsRequired();
             builder.Property(x => x.DataDelecao).HasColumnName("datadelecao");
+            builder.Property(x => x.CodigoProjeto).HasColumnName("codigoprojeto").IsRequired(false);
 
             builder.HasMany(x => x.Contratos)
                    .WithOne(x => x.Projetos)
                    .HasForeignKey(x => x.IdProjeto)
                    .HasConstraintName("fk_projeto_contratos");
+
+            builder.HasMany(x => x.MedicoesProjeto)
+                   .WithOne(x => x.Projeto)
+                   .HasForeignKey(x => x.IdProjeto)
+                   .HasConstraintName("fk_projeto_medicoes");
         }
     }
 }

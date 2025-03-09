@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using PrefeituraCachoeiro.Dominio.Entidades;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
 {
@@ -14,6 +15,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
         public int IdStatusMedicao { get; set; }
         public StatusMedicaoResponse StatusMedicao { get; set; }
         public IEnumerable<ItemsMedicoesProjetoResponse> Items { get; set; }
+        public List<ArquivosMedicoesProjetoResponse> ArquivosMedicoesProjeto { get; set; }
         public int? IdProjeto { get; set; }
+        public string Observacao { get; set; }
     }
 }

@@ -67,8 +67,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
                 //Faz primeiro o upload do logo da prefeitura.
                 var _upload = await _s3Service.UploadLogoAsync(requisicao.Logo);
-
                 var prefeitura = new PrefeituraEntidade(requisicao.Nome, _upload);
+
                 prefeitura = await _prefeituraRepository.InserirAsync(prefeitura, cancellationToken);
                 var result = _mapper.Map<CriarPrefeituraResponse>(prefeitura);
 

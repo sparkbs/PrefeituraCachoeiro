@@ -7,5 +7,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes
     {
         public int Id { get; set; }
         public string Nome { get; set; }
+        public int CodigoProjeto { get; set; }
     }
 }

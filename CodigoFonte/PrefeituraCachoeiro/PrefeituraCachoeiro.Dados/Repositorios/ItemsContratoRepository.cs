@@ -20,5 +20,31 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
 
             return await query.Where(x => x.IdItemContrato == idItemContrato).SingleOrDefaultAsync(cancellationToken);
         }
+
+        public async Task<ItemsContratoEntidade> InserirAsync(ItemsContratoEntidade items, CancellationToken cancellationToken)
+        {
+            await _context.ItemsContratoEntidade.AddAsync(items, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return items;
+        }
+
+        public async Task<List<ItemsContratoEntidade>> BuscarTodosItemsContratosAsync(int idContrato, CancellationToken cancellationToken)
+        {
+            var query = await _context.ItemsContratoEntidade.Where(x => x.DataDelecao == null && x.ContratosId == idContrato)
+                                                            .Include(x => x.Item)
+                                                            .Include(x => x.Quantidade)
+                                                            .ToListAsync();
+
+            return (query);
+        }
+
+        public async Task<ItemsContratoEntidade> AtualizarAsync(ItemsContratoEntidade item, CancellationToken cancellationToken)
+        {
+            _context.ItemsContratoEntidade.Update(item);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return item;
+        }
     }
 }

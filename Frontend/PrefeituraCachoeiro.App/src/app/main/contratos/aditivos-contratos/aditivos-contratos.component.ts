@@ -1,117 +1,40 @@
-import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { AditivosContratoRequest } from 'src/app/request/ContratoRequest/aditivosContratoRequest';
-import { BuscarAditivosContrato } from 'src/app/request/ContratoRequest/buscarContratosRequest';
-import { CriarContratoRequest } from 'src/app/request/ContratoRequest/criarContratoRequest';
-import { ContratosAditivosResponse, ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
-import { ContratosService } from 'src/app/services/contratos.service';
-import { ToastService } from 'src/app/services/toast.service';
+
+export interface ItemAditivos {
+  tipoAditivo: string;
+  planilha: string;
+  dataAssinatura: string;
+  validadeAditivo: string;
+  acoes: string;
+}
 
 @Component({
   selector: 'app-aditivos-contratos',
   templateUrl: './aditivos-contratos.component.html',
   styleUrls: ['./aditivos-contratos.component.scss']
 })
-export class AditivosContratosComponent implements AfterViewInit {
-  lista: ContratosAditivosResponse[] = [];
-  displayedColumns: string[] = ['tipoAditivo', 'dataAssinatura', 'validadeAditivo','acoes'];
-  dataSource: MatTableDataSource<ContratosAditivosResponse>;
-  valorAditivo: string;
-  contratoBase: ContratosResponse;
-  requestCriarAditivo: AditivosContratoRequest = new AditivosContratoRequest();
-  @ViewChild('baseDadosInput') baseDadosInput: any;
-  
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private readonly api: ContratosService, private _toastService: ToastService,   private dialogRef: MatDialogRef<AditivosContratosComponent>, ) {
-    this.dataSource = new MatTableDataSource(this.lista); 
+export class AditivosContratosComponent implements OnInit {
+  lista: ItemAditivos[] = [
+    { tipoAditivo: 'Prazo', planilha: 'planilha.xlsx', dataAssinatura: '10/02/2020', validadeAditivo: '10/09/2020' ,acoes: ''},
+    { tipoAditivo: 'Valor', planilha: 'planilha2.xlsx', dataAssinatura: '20/05/2022', validadeAditivo: '20/10/2022' ,acoes: ''},
+    { tipoAditivo: 'Prazo', planilha: 'planilha3.xlsx', dataAssinatura: '11/12/2021', validadeAditivo: '11/09/2021' ,acoes: ''},
+    { tipoAditivo: 'Valor', planilha: 'planilha4.xlsx', dataAssinatura: '22/05/2021', validadeAditivo: '20/05/2022' ,acoes: ''},
+  ]
+  displayedColumns: string[] = ['tipoAditivo', 'planilha', 'dataAssinatura', 'validadeAditivo','acoes'];
+  dataSource: MatTableDataSource<ItemAditivos>;
+
+  constructor() {
+    this.dataSource = new MatTableDataSource(this.lista);
+   }
+
+  ngOnInit() {
   }
 
-  async ngAfterViewInit() {
-    this.contratoBase = this.data.contratobase;
-    var aditivoFilter : BuscarAditivosContrato = new BuscarAditivosContrato();
-    aditivoFilter.idContrato = this.data.contratobase.idContrato;
-    await this.api.BuscarTodosAditivos(aditivoFilter)
-    .then((result) => {
-      this.lista = result.data;
-      this.dataSource.data = (this.lista);         
-    });
-  }
-
-  async criarAditivo(){
-   /* this.requestCriarAditivo.TipoAditivo = this.contratoBase.dataTermino;
-    this.requestCriarAditivo.DataValidadeAditivo = this.contratoBase.dataInicio;
-    this.requestCriarAditivo.DataAssinaturaAditivo = this.contratoBase.dataContrato;*/
-    this.requestCriarAditivo.ContratoId = this.contratoBase.idContrato;
-    this.requestCriarAditivo.ArquivoTemplate = this.adicionarBaseDados();
-    this._toastService.mensagemSuccess("Processamento iniciado!");
-
-    await this.api.CriarAditivos(this.requestCriarAditivo)
-    .then((result) => {
-      this._toastService.mensagemSuccess("Aditivo criado com sucesso");
-      this.dialogRef.close(result);
-    })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao cadastrar aditivo");
-    });
-
-  }
-
-  adicionarBaseDados(){
-    if(this.baseDadosInput.nativeElement.files[0] != undefined){
-      const documentoFile = this.baseDadosInput.nativeElement.files[0] as File;
-      return documentoFile;
-    }
-    else{
-      return null;
-    }
-  }
-
-  handleKeyDown(event: KeyboardEvent): void {
-    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
-    
-    if (!allowedKeys.includes(event.key) && (event.key < '0' || event.key > '9')) {
-      event.preventDefault(); // Impede a entrada de letras
-    }
-  }
-  
-  formatCurrency(event: any): void { 
-    let value = event.target.value.toString();
-    value = value.replace(/\D/g, ''); 
-    if (value === '') {
-      this.valorAditivo = ''; // Ou você pode definir um valor padrão
-      return;
-    }
-    value = (parseInt(value) || 0).toString(); 
-    value = value.padStart(3, '0'); 
-    value = value.slice(0, -2) + ',' + value.slice(-2); 
-    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
-    value = 'R$ ' + value; 
-    this.valorAditivo = value; 
-  }
-
-  formatToCurrency(valor: number): string {
-    let valorFormatado = valor.toFixed(2);  // 2 casas decimais
-
-    valorFormatado = valorFormatado.replace('.', ',');
-
-    valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
-    return 'R$ ' + valorFormatado;
-  }
-
-  async deletarAditivo(id: number){
-    this._toastService.mensagemSuccess("Processando a deleção do aditivo");
-    await this.api.DeletarAditivo(id)  
-    .then((result) => {
-      var index = this.lista.findIndex(item => item.idAditivo == id);
-      this.lista.splice(index, 1);
-  
-      this.dataSource.data = this.lista;
-      this._toastService.mensagemSuccess("Aditivo deletado com sucesso");
-    })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao deletar aditivo");
-    });
+  deletarAditivo(row: ItemAditivos){
+    this.lista = this.lista.filter(item => item != row);
+    this.dataSource.data = this.lista;
   }
 
 }

@@ -4,7 +4,7 @@
     <div>
 
       <mat-form-field>
-        <mat-label>Selecione o Cliente</mat-label>
+        <mat-label>Selecione a prefeitura</mat-label>
         <mat-select disableRipple [(ngModel)]="criarContrato.PrefeituraId">
           <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura" >{{prefeitura.nome}}</mat-option>
         </mat-select>
@@ -12,13 +12,7 @@
 
       <mat-form-field style="margin-left: 10px;">
         <mat-label>Data Contrato</mat-label>
-        <input matInput 
-               type="date" 
-               [(ngModel)]="criarContrato.DataContrato"
-               [formControl]="dateControl" />
-        <mat-error *ngIf="dateControl.hasError('invalidFormat')">
-          Formato de data inválido
-        </mat-error>
+        <input matInput type="date" [(ngModel)]="criarContrato.DataContrato" />
       </mat-form-field>
 
       <mat-form-field style="margin-left: 10px;">
@@ -38,59 +32,34 @@
     <div>
       <mat-form-field>
         <mat-label>Data Inicio</mat-label>
-        <input matInput 
-               type="date" 
-               [(ngModel)]="criarContrato.DataInicio"
-               [formControl]="dateInicioControl" />
-        <mat-error *ngIf="dateInicioControl.hasError('invalidFormat')">
-          Formato de data inválido
-        </mat-error>
+        <input matInput type="date" [(ngModel)]="criarContrato.DataInicio" />
       </mat-form-field>
 
       <mat-form-field style="margin-left: 10px;">
         <mat-label>Data Termino</mat-label>
-        <input matInput 
-               type="date" 
-               [(ngModel)]="criarContrato.DataTermino"
-               [formControl]="dateTerminoControl" />
-        <mat-error *ngIf="dateTerminoControl.hasError('invalidFormat')">
-          Formato de data inválido
-        </mat-error>
+        <input matInput type="date" [(ngModel)]="criarContrato.DataTermino"/>
       </mat-form-field>
 
       <mat-form-field style="margin-left: 10px;">
-        <mat-label>Selecione o Gerente</mat-label>
-        <mat-select disableRipple [(ngModel)]="criarContrato.Gerente">
-          <mat-option *ngFor="let gerente of listaGerentes" [value]="gerente.login" >{{gerente.login}}</mat-option>
-        </mat-select>
+        <mat-label>Gerente</mat-label>
+        <input matInput [(ngModel)]="criarContrato.Gerente" />
       </mat-form-field>
 
+      <mat-form-field style="margin-left: 10px;">
+        <mat-label>Valor Contrato</mat-label>
+        <input matInput type="number" [(ngModel)]="criarContrato.Valor" />
+      </mat-form-field>
     </div>
-    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+    <div>
       <div>
         Documentos:
       </div>
       <div>
-        <input #documentoInput type="file" style="width: 100%" />
-      </div>
-      <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;" (click)="adicionarDocumento()">
-        <mat-icon>playlist_add</mat-icon>
-      </span>
-      <div style="margin-left: 30px;">
-        Base de dados:
-      </div>
-      <div>
-        <input #baseDadosInput type="file" style="width: 100%" />
+        <input type="file" style="width:100%"/>
       </div>
     </div>
-    <div *ngFor="let item of listaDocumentoContrato">
-      <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
-        {{item.nome}}
-        <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarDocumentos(item)">
-          <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
-        </span>
-      </div>
-    </div>    
+    
+    
   </div>
 </mat-dialog-content>
 <mat-dialog-actions >

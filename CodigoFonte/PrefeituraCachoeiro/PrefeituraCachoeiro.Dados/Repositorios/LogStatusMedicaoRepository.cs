@@ -45,8 +45,8 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
         {
             return await _context.LogStatusMedicaoEntidade
                                 .Include(i => i.Usuario)
-                                .Include(i => i.MedicoesProjeto).ThenInclude(i => i.Items).ThenInclude(i => i.ItemsContrato)/*remover .ThenInclude(i => i.Item)*/
-                                .Include(i => i.MedicoesProjeto).ThenInclude(i => i.Items).ThenInclude(i => i.ItemsContrato)/*remover .ThenInclude(i => i.Quantidade)*/
+                                .Include(i => i.MedicoesProjeto).ThenInclude(i => i.Items).ThenInclude(i => i.ItemsContrato).ThenInclude(i => i.Item)
+                                .Include(i => i.MedicoesProjeto).ThenInclude(i => i.Items).ThenInclude(i => i.ItemsContrato).ThenInclude(i => i.Quantidade)
                                 .Include(i => i.StatusMedicao)
                                 .FirstOrDefaultAsync(x => x.IdLogStatusMedicao == idLogStatusMedicao && x.DataDelecao == null, cancellationToken);
         }

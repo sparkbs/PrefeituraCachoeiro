@@ -19,10 +19,10 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
                    .HasForeignKey(x => x.QuantidadeId)
                    .HasConstraintName("fk_quantidade_items_entidade");
 
-            builder.HasMany(x => x.ItemsContrato)
+            /*builder.HasMany(x => x.ItemsContrato)
                    .WithOne(x => x.Quantidade)
                    .HasForeignKey(x => x.QuantidadeId)
-                   .HasConstraintName("fk_items_contrato_quantidade");
+                   .HasConstraintName("fk_items_contrato_quantidade");*/
         }
     }
 }

@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
         public string ArquivoMedicao { get; set; }
+        public string Arquivo { get; set; }
+        public int IdOrigemArquivo { get; set; }
 
         public ArquivosMedicoesProjetoResponse()
         {
@@ -14,6 +16,7 @@
         {
             this.Id = id;
             this.ArquivoMedicao = arquivoMedicao;
+            this.Arquivo = Path.GetFileName(arquivoMedicao);
         }
     }
 }

@@ -12,10 +12,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.Validacoes
                 .NotEmpty()
                 .WithMessage("A data do contrato não pode ser vazia");
 
-            RuleFor(x => x.Valor)
-                .GreaterThan(0)
-                .WithMessage("O valor do contrato deve ser maior do que zero");
-
             RuleFor(x => x.Gerente)
                 .NotEmpty()
                 .WithMessage("O gerente do contrato não pode ser vazio");

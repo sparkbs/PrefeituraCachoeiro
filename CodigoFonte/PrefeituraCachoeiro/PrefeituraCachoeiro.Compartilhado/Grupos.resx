@@ -129,4 +129,7 @@
   <data name="GrupoDeletado" xml:space="preserve">
     <value>O grupo foi removido</value>
   </data>
+  <data name="GrupoTemUsuariosAssociados" xml:space="preserve">
+    <value>O grupo não pode ser removido porque tem usuários associados</value>
+  </data>
 </root>

@@ -12,9 +12,9 @@ import { TipoPermissaoResponse } from '../response/tipoPermissaoResponse/tipoPer
 export class TiposPermissoesService {
   constructor(private readonly http: HttpClient) { }
 
-  public async BuscarTodasTiposPermissoes(): Promise<TipoPermissaoResponse[]> {
+  public async BuscarTodasTiposPermissoes(): Promise<GenericResultResponse<TipoPermissaoResponse>> {
     return await firstValueFrom(
-      this.http.get<TipoPermissaoResponse[]>(
+      this.http.get<GenericResultResponse<TipoPermissaoResponse>>(
         `${Environments.APIUrl}/tipospermissoes/buscartodos`
       )
     );

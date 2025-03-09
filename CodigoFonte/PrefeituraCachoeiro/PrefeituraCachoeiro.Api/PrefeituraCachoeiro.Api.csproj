@@ -29,4 +29,8 @@
     <ProjectReference Include="..\PrefeituraCachoeiro.Ioc\PrefeituraCachoeiro.Ioc.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Auth\" />
+  </ItemGroup>
+
 </Project>

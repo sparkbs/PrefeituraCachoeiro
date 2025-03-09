@@ -22,6 +22,11 @@
         public PrefeituraEntidade Prefeitura { get; set; }
         public List<ContratosProjetosEntidade> Projetos { get; set; }
         public int? Aditivo { get; set; }
+        public List<ArquivosContratosEntidade> ArquivosContratos { get; set; }
+        public string TipoAditivo { get; set; }
+        public DateTime? DataAssinaturaAditivo { get; set; }
+        public DateTime? DataValidadeAditivo { get; set; }
+        public int? IdTemplate { get; set; }
 
         public ContratosEntidade(): base()
         {

@@ -6,7 +6,7 @@ import { GenericResultResponse } from '../response/genericResultResponse';
 import { TodosGruposResponse } from '../response/grupoResponse/todosGruposResponse';
 import { AtualizaGruposRequest, GruposRequest } from '../request/GruposRequest/gruposRequest';
 import { MensagemProjetoResponse, ProjetoResponse, ProjetosResponse, RetornaProjetoIdResponse } from '../response/projetoResponse/projetoResponse';
-import { AtualizarProjetoRequest, CriarProjetoRequest, ProjetoRequest } from '../request/ProjetoRequest/projetoRequest';
+import { AtualizarProjetoRequest, ProjetoRequest } from '../request/ProjetoRequest/projetoRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +14,10 @@ import { AtualizarProjetoRequest, CriarProjetoRequest, ProjetoRequest } from '..
 export class ProjetoService {
   constructor(private readonly http: HttpClient) { }
 
-  public async BuscarProjeto(id: number) : Promise<ProjetoResponse>{
+  public async BuscarProjeto(id: number) : Promise<GenericResultResponse<ProjetoResponse>>{
     return await firstValueFrom(
-      this.http.get<ProjetoResponse>(
-        `${Environments.APIUrl}/projetos/${id}`
+      this.http.get<GenericResultResponse<ProjetoResponse>>(
+        `${Environments.APIUrl}/projetos?id=${id}`
       )
     );
   }
@@ -25,41 +25,34 @@ export class ProjetoService {
   public async DeletarProjeto(id: number): Promise<GenericResultResponse<MensagemProjetoResponse>> {
     return await firstValueFrom(
       this.http.delete<GenericResultResponse<MensagemProjetoResponse>>(
-        `${Environments.APIUrl}/projetos/${id}`
+        `${Environments.APIUrl}/projetos?id=${id}`
       )
     );
   }
 
-  public async BuscarTodosProjetos(filter: ProjetoRequest): Promise<ProjetosResponse> {
+  public async BuscarTodosProjetos(filter: ProjetoRequest): Promise<GenericResultResponse<ProjetosResponse>> {
     return await firstValueFrom(
-      this.http.post<ProjetosResponse>(
+      this.http.post<GenericResultResponse<ProjetosResponse>>(
         `${Environments.APIUrl}/projetos/buscartodos`,
         filter
       )
     );
   }
 
-  public async CriarProjeto(projetoRequest: CriarProjetoRequest): Promise<RetornaProjetoIdResponse> {
-    const formData = new FormData();
-    formData.append('Nome', projetoRequest.nome);
-    formData.append('CodigoProjeto', projetoRequest.codigoProjeto.toString());
-
+  public async CriarProjeto(nome: string): Promise<GenericResultResponse<RetornaProjetoIdResponse>> {
     return await firstValueFrom(
-      this.http.post<RetornaProjetoIdResponse>(
+      this.http.post<GenericResultResponse<RetornaProjetoIdResponse>>(
         `${Environments.APIUrl}/projetos`,
-        formData
+        nome
       )
     );
   }
 
   public async AtualizarProjeto(request: AtualizarProjetoRequest): Promise<GenericResultResponse<RetornaProjetoIdResponse>> {
-    const formData = new FormData();
-    formData.append('id', request.id.toString());
-    formData.append('nome', request.nome);
     return await firstValueFrom(
       this.http.put<GenericResultResponse<RetornaProjetoIdResponse>>(
         `${Environments.APIUrl}/projetos`,
-        formData
+        request
       )
     );
   }

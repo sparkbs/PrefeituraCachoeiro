@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Update="Aditivos.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Aditivos.resx</DependentUpon>
+    </Compile>
     <Compile Update="Contratos.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -32,6 +37,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MedicoesProjeto.resx</DependentUpon>
     </Compile>
+    <Compile Update="Origem.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Origem.resx</DependentUpon>
+    </Compile>
     <Compile Update="ParametrosSistema.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -52,6 +62,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Projetos.resx</DependentUpon>
     </Compile>
+    <Compile Update="Quantidade.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Quantidade.resx</DependentUpon>
+    </Compile>
     <Compile Update="UsuarioGrupo.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -65,6 +80,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Aditivos.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Aditivos.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Contratos.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Contratos.Designer.cs</LastGenOutput>
@@ -85,6 +104,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MedicoesProjeto.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Origem.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Origem.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="ParametrosSistema.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ParametrosSistema.Designer.cs</LastGenOutput>
@@ -101,6 +124,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Projetos.Designer.cs</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Quantidade.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Quantidade.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="UsuarioGrupo.resx">
       <Generator>ResXFileCodeGenerator</Generator>

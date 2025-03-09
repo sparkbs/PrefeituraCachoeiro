@@ -6,6 +6,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes
     [ExcludeFromCodeCoverage]
     public class RegistrarAprovacaoMedicaoRequest: BaseRegistrarMedicaoRequest
     {
-        public List<IFormFile> Arquivos { get; set; }
+        public List<IFormFile>? Arquivos { get; set; }
     }
 }

@@ -67,7 +67,7 @@ namespace PrefeituraCachoeiro.Api.Controllers
         /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CriarUsuarioResponse))]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> InserirAsync([FromForm] CriarUsuarioRequest requisicao, CancellationToken cancellationToken)
         {
             var response = await _usuariosService.InserirAsync(requisicao, cancellationToken);

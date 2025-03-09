@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
-import { BuscarArquivosMedicaoResponse, InserirDocumentoMedicaoResponse, MedicoesResponse, RetornoIdMedicao, RetornoReprovacaoAprovacaoResponse, TodasMedicaoProjetoResponse } from '../response/medicoesResponse/medicoesResponse';
-import { AlterarMedicaoProjetoRequest, AprovarMedicoesRequest, BuscarArquivosMedicaoIdProjRequest, BuscarArquivosMedicaRequest, DadosMedicoesRequest, InserirMedicao, MedicoesRequest, RegistroDocumentosMedicoesRequest } from '../request/MedicoesRequest/medicoesRequest';
+import { MedicoesResponse, RetornoIdMedicao, RetornoReprovacaoAprovacaoResponse, TodasMedicaoProjetoResponse } from '../response/medicoesResponse/medicoesResponse';
+import { AlterarMedicaoProjetoRequest, AprovarMedicoesRequest, DadosMedicoesRequest, InserirMedicao, MedicoesRequest } from '../request/MedicoesRequest/medicoesRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -12,67 +12,46 @@ import { AlterarMedicaoProjetoRequest, AprovarMedicoesRequest, BuscarArquivosMed
 export class MedicoesService {
   constructor(private readonly http: HttpClient) { }
 
-  public async BuscarMedicoes(id: number) : Promise<MedicoesResponse>{
+  public async BuscarMedicoes(id: number) : Promise<GenericResultResponse<MedicoesResponse>>{
     return await firstValueFrom(
-      this.http.get<MedicoesResponse>(
-        `${Environments.APIUrl}/medicoes/${id}`
+      this.http.get<GenericResultResponse<MedicoesResponse>>(
+        `${Environments.APIUrl}/medicoes?id=${id}`
       )
     );
   }
 
-  public async BuscarTodasMedicoes(filter: MedicoesRequest): Promise<TodasMedicaoProjetoResponse> {
+  public async BuscarTodasMedicoes(filter: MedicoesRequest): Promise<GenericResultResponse<TodasMedicaoProjetoResponse>> {
     return await firstValueFrom(
-      this.http.post<TodasMedicaoProjetoResponse>(
+      this.http.post<GenericResultResponse<TodasMedicaoProjetoResponse>>(
         `${Environments.APIUrl}/medicoes/buscartodos`,
         filter
       )
     );
   }
 
-  public async CriarMedicoes(filter: InserirMedicao): Promise<RetornoIdMedicao> {
+  public async CriarMedicoes(filter: InserirMedicao): Promise<GenericResultResponse<RetornoIdMedicao>> {
     return await firstValueFrom(
-      this.http.post<RetornoIdMedicao>(
-        `${Environments.APIUrl}medicoes/inserir`,
+      this.http.post<GenericResultResponse<RetornoIdMedicao>>(
+        `${Environments.APIUrl}/medicoes/inserir`,
         filter
       )
     );
   }
 
-  public async AprovarMedicoes(filter: AprovarMedicoesRequest): Promise<RetornoReprovacaoAprovacaoResponse> {
-    const formData = new FormData();
-
-    // Adiciona os arquivos ao FormData
-    if (filter.Arquivos && Array.isArray(filter.Arquivos)) {
-      filter.Arquivos.forEach((file: File) => {
-        formData.append('Arquivos', file, file.name); // Adicionando o arquivo
-      });
-    }
-  
-    // Adiciona os outros campos de dados (não arquivos)
-    Object.keys(filter).forEach(key => {
-      if (key !== 'Arquivos') { // Ignorar os arquivos, pois já foram adicionados
-        formData.append(key, filter[key]);
-      }
-    });
-    
+  public async AprovarMedicoes(filter: AprovarMedicoesRequest): Promise<GenericResultResponse<RetornoReprovacaoAprovacaoResponse>> {
     return await firstValueFrom(
-      this.http.post<RetornoReprovacaoAprovacaoResponse>(
-        `${Environments.APIUrl}medicoes/aprovar`,
-        formData
+      this.http.post<GenericResultResponse<RetornoReprovacaoAprovacaoResponse>>(
+        `${Environments.APIUrl}/medicoes/aprovar`,
+        filter
       )
     );
   }
 
-  public async ReprovarMedicoes(filter: DadosMedicoesRequest): Promise<RetornoReprovacaoAprovacaoResponse> {
-    const formData = new FormData();
-    Object.keys(filter).forEach(key => {
-      formData.append(key, filter[key]);
-    });
-
+  public async ReprovarMedicoes(filter: DadosMedicoesRequest): Promise<GenericResultResponse<RetornoReprovacaoAprovacaoResponse>> {
     return await firstValueFrom(
-      this.http.post<RetornoReprovacaoAprovacaoResponse>(
-        `${Environments.APIUrl}medicoes/reprovar`,
-        formData
+      this.http.post<GenericResultResponse<RetornoReprovacaoAprovacaoResponse>>(
+        `${Environments.APIUrl}/medicoes/reprovar`,
+        filter
       )
     );
   }
@@ -82,65 +61,6 @@ export class MedicoesService {
       this.http.put<GenericResultResponse<RetornoIdMedicao>>(
         `${Environments.APIUrl}/medicoes/alterar`,
         filter
-      )
-    );
-  }
-
-  public async RegistrarDocumentosMedicoes(filter: RegistroDocumentosMedicoesRequest): Promise<InserirDocumentoMedicaoResponse> {
-    const formData = new FormData();
-    Object.keys(filter).forEach(key => {
-      formData.append(key, filter[key]);
-    });
-
-    return await firstValueFrom(
-      this.http.post<InserirDocumentoMedicaoResponse>(
-        `${Environments.APIUrl}medicoes/registrardocumentos`,
-        formData
-      )
-    );
-  }
-
-  public async DeletarArquivoMedicao(id: number): Promise<GenericResultResponse<string>> {
-    return await firstValueFrom(
-      this.http.delete<GenericResultResponse<string>>(
-        `${Environments.APIUrl}medicoes/apagararquivomedicao/${id}`
-      )
-    );
-  }
-
-  public async BuscarArquivosMedicoes(arquivosMedicoesFilter: BuscarArquivosMedicaRequest) : Promise<GenericResultResponse<BuscarArquivosMedicaoResponse[]>>{
-    const formData = new FormData();
-    Object.keys(arquivosMedicoesFilter).forEach(key => {
-      formData.append(key, arquivosMedicoesFilter[key]);
-    });
-
-    return await firstValueFrom(
-      this.http.post<GenericResultResponse<BuscarArquivosMedicaoResponse[]>>(
-        `${Environments.APIUrl}medicoes/buscararquivosmedicao`,
-        formData
-      )
-    );
-  }
-
-  public async DownloadArquivoMedicao(id: number) : Promise<Blob>{
-    return await firstValueFrom(
-      this.http.get<Blob>(
-        `${Environments.APIUrl}medicoes/downloadarquivomedicao/${id}`,
-        {responseType: 'blob' as 'json'}
-      )
-    );
-  }
-
-  public async EnviarMedicaoCliente(IdMedicoesProjeto: BuscarArquivosMedicaoIdProjRequest) : Promise<RetornoReprovacaoAprovacaoResponse>{
-    const formData = new FormData();
-    Object.keys(IdMedicoesProjeto).forEach(key => {
-      formData.append(key, IdMedicoesProjeto[key]);
-    });
-
-    return await firstValueFrom(
-      this.http.post<RetornoReprovacaoAprovacaoResponse>(
-        `${Environments.APIUrl}medicoes/enviarcliente`,
-        formData
       )
     );
   }

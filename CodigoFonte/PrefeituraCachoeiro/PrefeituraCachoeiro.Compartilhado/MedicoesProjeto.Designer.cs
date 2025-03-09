@@ -29,7 +29,7 @@ namespace PrefeituraCachoeiro.Compartilhado {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public MedicoesProjeto() {
+        internal MedicoesProjeto() {
         }
         
         /// <summary>
@@ -70,6 +70,15 @@ namespace PrefeituraCachoeiro.Compartilhado {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O Identificador do arquivo de medição de projeto informado não foi encontrado.
+        /// </summary>
+        public static string ArquivoIdNaoEncontrado {
+            get {
+                return ResourceManager.GetString("ArquivoIdNaoEncontrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Só é possível alterar uma medição que esteja no status de criada..
         /// </summary>
         public static string MedicaoNaoPodeSerAlterada {
@@ -79,7 +88,7 @@ namespace PrefeituraCachoeiro.Compartilhado {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Só é possível aprovar uma medição que esteja no status de criada.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Só é possível aprovar uma medição que esteja no status de enviada.
         /// </summary>
         public static string MedicaoNaoPodeSerAprovada {
             get {
@@ -88,7 +97,16 @@ namespace PrefeituraCachoeiro.Compartilhado {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Só é possível reprovar uma medição que esteja no status de criada.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Só é possível enviar para o cliente uma medição que esteja no status de Criada.
+        /// </summary>
+        public static string MedicaoNaoPodeSerEnviadaAoCliente {
+            get {
+                return ResourceManager.GetString("MedicaoNaoPodeSerEnviadaAoCliente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Só é possível reprovar uma medição que esteja no status de enviada.
         /// </summary>
         public static string MedicaoNaoPodeSerReprovada {
             get {
@@ -111,6 +129,15 @@ namespace PrefeituraCachoeiro.Compartilhado {
         public static string MedicoesProjetoNaoEncontrados {
             get {
                 return ResourceManager.GetString("MedicoesProjetoNaoEncontrados", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi encontrada nenhuma medição para o contrato informado.
+        /// </summary>
+        public static string NaoFoiEncontradaNenhumaMedicao {
+            get {
+                return ResourceManager.GetString("NaoFoiEncontradaNenhumaMedicao", resourceCulture);
             }
         }
     }

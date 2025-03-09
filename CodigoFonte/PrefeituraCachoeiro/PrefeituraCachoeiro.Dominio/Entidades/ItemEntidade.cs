@@ -17,5 +17,7 @@
         public int? IdItemPai { get; set; }
         public int Ordem { get; set; }
         public List<ItemsContratoEntidade> ItemsContrato { get; set; }
+        public List<ItemsAditivoEntidade> ItemsAditivo { get; set; }
+        public int IdTemplate { get; set; }
     }
 }

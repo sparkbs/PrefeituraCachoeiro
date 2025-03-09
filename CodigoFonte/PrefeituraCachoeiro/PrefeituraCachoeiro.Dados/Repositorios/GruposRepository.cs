@@ -16,7 +16,7 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
 
         public async Task<PaginatedEntity<GruposEntidade>> BuscarTodosAsync(GruposFilter filter, CancellationToken cancellationToken)
         {
-            var query = _context.GruposEntidade.AsQueryable();
+            var query = _context.GruposEntidade.Include(i=> i.Permissoes).ThenInclude(i=> i.TipoPermissao).AsQueryable();
 
             query = query.Where(x => x.DataDelecao == null);
 
@@ -42,7 +42,8 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
         public async Task<GruposEntidade?> BuscarPorIdAsync(int id, CancellationToken cancellationToken)
         {
             return await _context.GruposEntidade
-                .Include(i => i.Permissoes)
+                .Include(i => i.Permissoes).ThenInclude(i=> i.TipoPermissao)
+                .Include(i => i.Usuarios)
                 .FirstOrDefaultAsync(x => x.IdGrupo == id && x.DataDelecao == null, cancellationToken);
         }
 

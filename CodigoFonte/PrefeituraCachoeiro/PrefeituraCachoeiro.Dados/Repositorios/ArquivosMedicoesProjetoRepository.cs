@@ -14,11 +14,16 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
             _context = context;
         }
 
-        public async Task<PaginatedEntity<ArquivosMedicoesProjetoEntidade>> BuscarTodosAsync(BuscarArquivosMedicoesProjetoFilter filter, CancellationToken cancellationToken)
+        public async Task<PaginatedEntity<ArquivosMedicoesProjetoEntidade>> BuscarTodosAsync(BuscarArquivosMedicoesProjetoFilter filter, 
+            UsuariosEntidade? usuarioLogado, CancellationToken cancellationToken)
         {
-            var query = _context.ArquivosMedicoesProjeto.Where(i => i.IdMedicoesProjeto == filter.IdMedicoesProjeto);
+            var query = _context.ArquivosMedicoesProjeto
+                                .Include(i=> i.MedicoesProjeto)
+                                .ThenInclude(i=> i.Contratos)
+                                .Where(i => i.IdMedicoesProjeto == filter.IdMedicoesProjeto);
 
             query = query.Where(x => x.DataDelecao == null);
+            query = query.Where(i => i.MedicoesProjeto.Contratos.PrefeituraId == usuarioLogado.PrefeituraId);
 
             var itemsCount = await query.AsNoTracking().CountAsync();
 
@@ -42,6 +47,19 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
             await _context.SaveChangesAsync(cancellationToken);
 
             return arquivo;
+        }
+
+        public async Task<ArquivosMedicoesProjetoEntidade> DeletarAsync(ArquivosMedicoesProjetoEntidade arquivo, CancellationToken cancellationToken)
+        {
+            _context.ArquivosMedicoesProjeto.Update(arquivo);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return arquivo;
+        }
+
+        public async Task<ArquivosMedicoesProjetoEntidade?> BuscarPorIdAsync(int id, CancellationToken cancellationToken)
+        {
+            return await _context.ArquivosMedicoesProjeto.FirstOrDefaultAsync(x => x.Id == id && x.DataDelecao == null, cancellationToken);
         }
     }
 }

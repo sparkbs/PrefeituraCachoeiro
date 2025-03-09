@@ -1,9 +1,9 @@
-﻿using Amazon.S3;
+﻿using Amazon.Runtime.Internal.Endpoints.StandardLibrary;
+using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using PrefeituraCachoeiro.Aplicacao.Interfaces;
-using PrefeituraCachoeiro.Environment;
 
 namespace PrefeituraCachoeiro.Aplicacao.Servicos
 {
@@ -17,7 +17,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
         {
             _s3Client = s3Client;
             _configuration = configuration;
-            _bucketName =  EnvVariables.BucketImagesLogos;
+            _bucketName =  configuration["bucketimageslogos"];
         }
 
         public async Task<string> UploadLogoAsync(IFormFile logo)
@@ -64,6 +64,49 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             var response = await _s3Client.DeleteObjectAsync(request);
             if (response.HttpStatusCode != System.Net.HttpStatusCode.NoContent)
                 throw new Exception($"Erro ao apagar o arquivo no S3.Erro: {response.ToString()}");
+        }
+
+        public string ExtractFileNameFromUrl(string fileUrl)
+        {
+            try
+            {
+                // Extrai o nome do arquivo (key) a partir da URL
+                var key = fileUrl.Substring(fileUrl.LastIndexOf('/') + 1);
+
+                return (key);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<MemoryStream> DownloadFileFromS3Async(string fileName)
+        {
+            try
+            {
+                // Cria a solicitação para obter o arquivo do S3
+                var request = new GetObjectRequest
+                {
+                    BucketName = _bucketName,
+                    Key = fileName
+                };
+
+                // Obtém o objeto do S3
+                var response = await _s3Client.GetObjectAsync(request);
+
+                // Cria um MemoryStream para armazenar o conteúdo do arquivo
+                var memoryStream = new MemoryStream();
+                await response.ResponseStream.CopyToAsync(memoryStream);
+                memoryStream.Position = 0;  // Reseta a posição do stream
+
+                return memoryStream;
+            }
+            catch (Exception)
+            {
+                // Caso ocorra algum erro, retornamos null
+                return null;
+            }
         }
     }
 }

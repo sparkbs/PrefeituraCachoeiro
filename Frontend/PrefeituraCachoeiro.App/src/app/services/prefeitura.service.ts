@@ -14,10 +14,10 @@ import { BasePrefeituraRequest } from '../request/PrefeituraRequest/BasePrefeitu
 export class PrefeituraService {
   constructor(private readonly http: HttpClient) { }
 
-  public async BuscarPrefeitura(id: number) : Promise<PrefeituraResponse>{
+  public async BuscarPrefeitura(id: number) : Promise<GenericResultResponse<PrefeituraResponse>>{
     return await firstValueFrom(
-      this.http.get<PrefeituraResponse>(
-        `${Environments.APIUrl}/prefeitura/${id}`
+      this.http.get<GenericResultResponse<PrefeituraResponse>>(
+        `${Environments.APIUrl}/prefeitura?id=${id}`
       )
     );
   }
@@ -33,10 +33,10 @@ export class PrefeituraService {
 
   public async CriarPrefeitura(request: BasePrefeituraRequest): Promise<GenericResultResponse<AtualizarPrefeituraResponse>> {
     const formData = new FormData();
-    formData.append('Nome', request.Nome);
-
+    formData.append('Nome', request.Nome);  
+  
     if (request.Logo) {
-      formData.append('Logo', request.Logo);
+      formData.append('Logo', request.Logo);  
     }
 
     return await firstValueFrom(
@@ -49,11 +49,11 @@ export class PrefeituraService {
 
   public async AtualizarPrefeitura(request: AtualizarPrefeituraRequest): Promise<GenericResultResponse<AtualizarPrefeituraResponse>> {
     const formData = new FormData();
-    formData.append('Nome', request.Nome);
-    formData.append('IdPrefeitura', request.IdPrefeitura.toString());
+    formData.append('Nome', request.Nome);  
+    formData.append('IdPrefeitura', request.IdPrefeitura.toString());  
 
     if (request.Logo) {
-      formData.append('Logo', request.Logo);
+      formData.append('Logo', request.Logo);  
     }
 
     return await firstValueFrom(
