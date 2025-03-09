@@ -228,7 +228,11 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
 
       await this.apiMedicao.AlterarMedicoes(alterarMedicaoRequest)
       .then((result) => {
+        this._toastService.mensagemSuccess("Sucesso ao salvar medição.");
         this.isDisabledBtnEnviar = false;
+      })
+      .catch(() => {
+        this._toastService.mensagemErro("Erro ao salvar medição.");
       })
       .finally(()=>{
         this.isLoading = false;

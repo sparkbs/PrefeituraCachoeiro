@@ -10,7 +10,7 @@
 
   .card-content {
     width: 90%;
-    height: 90%;
+    height: auto;
     margin-top: 3%;
     border-radius: 20px;
   }
@@ -36,3 +36,9 @@
     width: 80%;
   }
   
+  .mat-mdc-header-row {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: white;
+  }
