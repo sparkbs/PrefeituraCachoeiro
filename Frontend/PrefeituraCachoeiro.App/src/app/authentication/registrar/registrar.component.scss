@@ -29,16 +29,16 @@
     background-color: #ffffff;
 
     @media (max-width: 768px) {
-      width: 80%; // Ocupa mais espaço na tela
-      padding: 5%; // Padding maior para melhor espaçamento
+      width: 80%;
+      padding: 5%;
     }
 
     @media (max-width: 480px) {
-      width: 90%; // Quase ocupa toda a tela em dispositivos muito pequenos
+      width: 90%;
     }
   }
 
-  .form-register {
+  .form {
     display: flex;
     flex-direction: column;
     margin-top: 5%;
@@ -68,6 +68,10 @@
 
   .btn-return {
     margin-top: 3%;
+  }
+
+  .btn-save {
+    display: block;
   }
 
   p {

@@ -2,7 +2,7 @@ import { BaseFilter } from "src/app/request/baseFilter";
 
 export class UsuariosRequest extends BaseFilter
 {
-    nome: string = '';
+    nome?: string = '';
 }
 
 export class CriarUsuariosRequest
@@ -10,6 +10,7 @@ export class CriarUsuariosRequest
     login: string = '';
     nome: string = '';
     senha: string = '';
+    prefeituraId?: number;
 }
 
 export class AtualizarUsuariosRequest
@@ -18,4 +19,5 @@ export class AtualizarUsuariosRequest
     login: string = '';
     nome: string = '';
     senha: string = '';
+    prefeituraId: number;
 }

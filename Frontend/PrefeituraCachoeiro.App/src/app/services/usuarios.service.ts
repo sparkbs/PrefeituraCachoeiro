@@ -15,10 +15,10 @@ import { AtualizarUsuariosRequest, CriarUsuariosRequest, UsuariosRequest } from 
 export class UsuariosService {
   constructor(private readonly http: HttpClient) { }
 
-  public async BuscarUsuario(id: number) : Promise<GenericResultResponse<UsuariosResponse>>{
+  public async BuscarUsuario(id: number) : Promise<UsuariosResponse>{
     return await firstValueFrom(
-      this.http.get<GenericResultResponse<UsuariosResponse>>(
-        `${Environments.APIUrl}/usuarios?id=${id}`
+      this.http.get<UsuariosResponse>(
+        `${Environments.APIUrl}/usuarios/${id}`
       )
     );
   }
@@ -26,34 +26,49 @@ export class UsuariosService {
   public async DeletarUsuarios(id: number): Promise<GenericResultResponse<UsuariosMensagemResponse>> {
     return await firstValueFrom(
       this.http.delete<GenericResultResponse<UsuariosMensagemResponse>>(
-        `${Environments.APIUrl}/usuarios?id=${id}`
+        `${Environments.APIUrl}/usuarios/${id}`
       )
     );
   }
 
-  public async BuscarTodosUsuarios(filter: UsuariosRequest): Promise<GenericResultResponse<ListaUsuariosResponse>> {
+  public async BuscarTodosUsuarios(filter: UsuariosRequest): Promise<ListaUsuariosResponse> {
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<ListaUsuariosResponse>>(
+      this.http.post<ListaUsuariosResponse>(
         `${Environments.APIUrl}/usuarios/buscartodos`,
         filter
       )
     );
   }
 
-  public async CriarUsuarios(usuarios: CriarUsuariosRequest): Promise<GenericResultResponse<CriarUsuariosResponse>> {
+  public async CriarUsuarios(usuarios: CriarUsuariosRequest): Promise<CriarUsuariosResponse> {
+    const formData = new FormData();
+    formData.append('Nome', usuarios.nome);
+    formData.append('Login', usuarios.login);
+    formData.append('Senha', usuarios.senha);
+    if (usuarios.prefeituraId)
+      formData.append('PrefeituraId', usuarios.prefeituraId.toString());
+
     return await firstValueFrom(
-      this.http.post<GenericResultResponse<CriarUsuariosResponse>>(
+      this.http.post<CriarUsuariosResponse>(
         `${Environments.APIUrl}/usuarios`,
-        usuarios
+        formData
       )
     );
   }
 
   public async AtualizarUsuarios(request: AtualizarUsuariosRequest): Promise<GenericResultResponse<CriarUsuariosResponse>> {
+    const formData = new FormData();
+    formData.append('Id', request.id.toString());
+    formData.append('Login', request.login);
+    formData.append('Nome', request.nome);
+    formData.append('Senha', request.senha);
+    if (request.prefeituraId)
+      formData.append('PrefeituraId', request.prefeituraId.toString());
+
     return await firstValueFrom(
       this.http.put<GenericResultResponse<CriarUsuariosResponse>>(
         `${Environments.APIUrl}/usuarios`,
-        request
+        formData
       )
     );
   }

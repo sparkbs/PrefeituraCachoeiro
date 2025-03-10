@@ -5,7 +5,6 @@ import { BasePrefeituraRequest } from 'src/app/request/PrefeituraRequest/BasePre
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { AtualizarPrefeituraRequest, DadosEnviadosAtualizarPrefeitura } from 'src/app/request/PrefeituraRequest/AtualizarPrefeituraRequest';
-import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-editar_criar_prefeitura',
@@ -16,9 +15,7 @@ export class Editar_criar_prefeituraComponent {
   criarPrefeitura: BasePrefeituraRequest = new BasePrefeituraRequest();
   atualizarPrefeitura: AtualizarPrefeituraRequest = new AtualizarPrefeituraRequest();
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: PrefeituraResponse,
-  private _toastService: ToastService,
-   private readonly api: PrefeituraService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: PrefeituraResponse, private readonly api: PrefeituraService,
   private dialogRef: MatDialogRef<Editar_criar_prefeituraComponent>
 ) { 
 
@@ -51,11 +48,7 @@ export class Editar_criar_prefeituraComponent {
 
     await this.api.AtualizarPrefeitura(this.atualizarPrefeitura)
     .then((result) => {
-      this._toastService.mensagemSuccess("Cliente cadastrado com sucesso!");
       this.dialogRef.close(result);
-    })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao cadastrar cliente!");
     });
   }
 

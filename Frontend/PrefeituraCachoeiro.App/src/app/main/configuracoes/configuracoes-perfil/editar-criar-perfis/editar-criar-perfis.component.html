@@ -7,8 +7,8 @@
   <form [formGroup]="form">
     <mat-form-field appearance="outline">
       <mat-label>Nome</mat-label>
-      <input matInput formControlName="name">
-      <mat-error *ngIf="form.get('name').hasError('required')">Campo obrigatório!</mat-error>
+      <input matInput formControlName="nome">
+      <mat-error *ngIf="form.get('nome').hasError('required')">Campo obrigatório!</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -17,17 +17,26 @@
       <mat-error *ngIf="form.get('email').hasError('required')">Campo obrigatório!</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" *ngIf="!this.data.edicao">
+    <mat-form-field appearance="outline">
       <mat-label>Senha</mat-label>
       <input matInput formControlName="senha" type="password">
       <mat-error *ngIf="form.get('senha').hasError('required')">Campo obrigatório!</mat-error>
     </mat-form-field>
 
     <mat-form-field>
+      <mat-label>Cliente</mat-label>
+      <mat-select formControlName="prefeitura">
+        <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura">
+          {{prefeitura.nome}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="!this.data.edicao">
       <mat-label>Grupo</mat-label>
       <mat-select formControlName="grupo">
-        <mat-option *ngFor="let grupo of grupos" [value]="grupo">
-          {{grupo}}
+        <mat-option *ngFor="let grupo of listaGrupos" [value]="grupo.idGrupo">
+          {{grupo.nome}}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="form.get('grupo').hasError('required')">Campo obrigatório!</mat-error>

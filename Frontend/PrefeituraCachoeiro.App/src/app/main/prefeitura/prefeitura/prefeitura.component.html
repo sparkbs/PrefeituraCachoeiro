@@ -1,6 +1,6 @@
 <div class="contratos-body">
   <mat-card class="card-content">
-      <mat-card-header><span>Prefeitura</span></mat-card-header>
+      <mat-card-header><span>Cliente</span></mat-card-header>
       <mat-card-content>
         <div style="margin-top: 10px;">
           <mat-form-field>
@@ -9,7 +9,7 @@
           </mat-form-field>
 
           <button mat-button mat-stroked-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -8px;" (click)="openDialog()">
-            <span>Adicionar Prefeitura
+            <span>Adicionar Cliente
             </span>
               <mat-icon>add</mat-icon>
           </button>
@@ -24,7 +24,7 @@
             </ng-container>
         
             <ng-container matColumnDef="nome">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Prefeitura </th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
               <td mat-cell *matCellDef="let row"> {{row.nome}} </td>
             </ng-container>
         

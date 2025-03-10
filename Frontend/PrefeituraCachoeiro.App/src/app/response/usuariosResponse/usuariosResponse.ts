@@ -2,6 +2,9 @@ export class UsuariosResponse {
   idUsuario: number;
   login: string;
   nome: string;
+  prefeituraId: number;
+  grupo: string;
+  acoes?: string;
 }
 
 export class UsuariosMensagemResponse {

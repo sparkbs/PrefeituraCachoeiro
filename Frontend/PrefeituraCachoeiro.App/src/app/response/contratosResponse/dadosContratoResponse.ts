@@ -60,3 +60,14 @@ export class CriarContratoResponse
 {
     IdContrato: number = 0;
 }
+
+export class CriarAditivoResponse
+{
+    idAditivo: number = 0;
+}
+
+export class ListaDocumentosContrato
+{
+    nome: string = '';
+    file: File;
+}

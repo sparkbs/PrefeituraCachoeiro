@@ -2,6 +2,33 @@
 
 @include mat.core();
 
+.toast-error {
+  background-color: #cb5f55 !important;
+  text-align: center !important;
+  font-weight: 500 !important;
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  background-color: transparent !important;
+}
+
+.toast-success {
+  background-color: #54a254 !important;
+  text-align: center !important;
+  font-weight: 500 !important;
+}
+
+.toast-warning {
+  background-color: #FFC107 !important;
+  text-align: center !important;
+  font-weight: 500 !important;
+}
+
+.toast-info {
+  text-align: center !important;
+  font-weight: 500 !important;
+}
+
 html, body {
   font-family: Arial, Helvetica, sans-serif;
 }

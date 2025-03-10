@@ -10,7 +10,6 @@ export class Grupo {
 
 export interface ContratosResponse {
     idContrato: number;
-    idProjeto: number;
     projeto: ProjetoResponse;
     dataContrato: Date;
     numeroContrato?: string;
@@ -86,4 +85,18 @@ export interface ContratosResponse {
     nome: string;
     logo: string;
   }
+
+  export class ContratoModel {
+    contratos: ContratosResponse;
+    idContrato: number;
+    idContratoProjeto: number;
+    idProjeto: number;
+  }
   
+  export interface ContratosAditivosResponse {
+    idAditivo: number,
+    contratoId: number,
+    dataAssinatura: Date,
+    dataValidade: Date,
+    tipoAditivo: string
+  }

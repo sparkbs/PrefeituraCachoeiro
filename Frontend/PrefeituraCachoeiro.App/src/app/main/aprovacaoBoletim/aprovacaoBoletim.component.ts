@@ -3,7 +3,7 @@ import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarCo
 import { DadosMedicoesRequest, MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
-import { ArquivosMedicoesProjetoResponse, MedicoesModel, Projeto, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { MedicoesModel, Projeto, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { MedicoesService } from 'src/app/services/medicoes.service';
@@ -15,9 +15,6 @@ import { Router } from '@angular/router';
 import { PrefeituraResponse, PrefeituraFilter } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
-import { AuthService } from 'src/app/services/auth.service';
-import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
-import { VerDocumentosComponent } from './verDocumentos/verDocumentos.component';
 
 @Component({
   selector: 'app-aprovacaoBoletim',
@@ -36,31 +33,10 @@ export class AprovacaoBoletimComponent implements OnInit {
   selectedPrefeitura: number | null = null; // Valor selecionado
   exibirContrato = false;
 
-  constructor(private readonly apiPrefeitura: PrefeituraService,
-    private auth: AuthService, 
-    private readonly api: ContratosService,
-    public _projetoControllerService: ProjetoService,
-    private readonly apiMedicoes: MedicoesService,
-    private _toastService: ToastService, 
-    private router: Router,
-    private readonly aesEncryptDecript: AESEncryptDecriptService
-  ) { }
+  constructor(private readonly apiPrefeitura: PrefeituraService,private readonly api: ContratosService,public _projetoControllerService: ProjetoService,private readonly apiMedicoes: MedicoesService,private _toastService: ToastService, private router: Router) { }
 
   async ngOnInit() {
-    var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
-    
-    if(idPrefeituraUser){
-      idPrefeituraUser = this.aesEncryptDecript.decrypt(idPrefeituraUser);
-      if(idPrefeituraUser){
-        await this.buscarPrefeitura(Number(idPrefeituraUser));
-      }
-      else{
-        await this.buscarListaPrefeituras();
-      }
-    }else{
-      await this.buscarListaPrefeituras();
-    }
-
+    await this.buscarListaPrefeituras();
     //await this.buscarListaContratos(21);
   }
 
@@ -87,20 +63,6 @@ export class AprovacaoBoletimComponent implements OnInit {
     });
   }
 
-  async buscarPrefeitura(id: number){
-    await this.apiPrefeitura.BuscarPrefeitura(id)
-    .then((result) => {
-      this.listaPrefeitura = [];
-      this.listaPrefeitura.push(result);
-    })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao buscar prefeitura!");
-    })
-    .finally(() =>{
-      this.isLoading = false;
-    });
-  }
-
   async buscar(contratoId: number){
     await this.buscarMedicoes();
     this.showProjetos = true;
@@ -108,7 +70,7 @@ export class AprovacaoBoletimComponent implements OnInit {
 
   openBoletim(idMedicao: number) {
     const url = this.router.serializeUrl(
-      this.router.createUrlTree(['/main/boletimMedicao', this.selectedPrefeitura, this.contratoSelecionado, idMedicao])
+      this.router.createUrlTree(['/main/boletimMedicao', this.contratoSelecionado, idMedicao])
     );
     window.open(url, '_blank');  // Abre em uma nova guia
   }
@@ -139,12 +101,6 @@ export class AprovacaoBoletimComponent implements OnInit {
     })
     .finally(() =>{
     });;
-  }
-
-  openModalVerAnexo(arquivos: ArquivosMedicoesProjetoResponse[]){
-    const dialogRef = this.dialog.open(VerDocumentosComponent,{
-      data: arquivos
-    });
   }
 
   async reprovarMedicao(idMedicao: number){

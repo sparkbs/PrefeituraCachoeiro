@@ -17,7 +17,7 @@
 
 .card-content {
   width: 90%;
-  height: auto;
+  height: 90%;
   margin-top: 3%;
   border-radius: 20px;
 }
@@ -45,11 +45,4 @@
 .table td > span {
   margin-left: 3%;
   cursor: pointer;
-}
-
-.mat-mdc-header-row {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background: white;
 }

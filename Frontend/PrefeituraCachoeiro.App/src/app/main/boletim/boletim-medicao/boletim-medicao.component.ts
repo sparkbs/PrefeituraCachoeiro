@@ -17,9 +17,6 @@ import { BoletimService } from 'src/app/services/boletim.service';
 import { BuscarBoletimMedicaoRequest } from 'src/app/request/BoletimRequest/boletimMedicaoRequest';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { ActivatedRoute } from '@angular/router';
-import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
-import { AuthService } from 'src/app/services/auth.service';
-import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
 
 @Component({
   selector: 'app-boletim-medicao',
@@ -42,22 +39,18 @@ export class BoletimMedicaoComponent implements OnInit {
   contratoSelecionado: ContratosResponse;
   boletim: BoletimMedicaoResponse;
   contratoSelecionadoPesquisa: number;
-  prefeituraSelecionadoPesquisa: number;
   nomePrefeitura: string = ''; // URL tratada da imagem do logotipo
   listaMedicoesAgrupados: BoletimMedicoesResponse[] =[];
   listaMedicoesSelecionadasAgrupados: BoletimMedicoesResponse;
   dadosSeparadosProjeto: SubBoletim[] =[];
-  listaPrefeitura: PrefeituraResponse[] = [];
 
   // Variável para gerenciar estado de carregamento e erros
   isLoading = true;
   errorMessage = '';
   contratoId = '0';
-  clienteId = '0';
   medicaoId = '0';
   medicaoSelecionado: number;
   enableMedicao: boolean = false;
-  enableContrato: boolean = false;
   isEnabledInputs: boolean = false;
 
   constructor(
@@ -67,80 +60,26 @@ export class BoletimMedicaoComponent implements OnInit {
     private _toastService: ToastService,
     public _boletimControllerService: BoletimService,
     private _prefeituraControllerService: PrefeituraService,
-    private route: ActivatedRoute,    
-    private auth: AuthService, 
-    private readonly aesEncryptDecript: AESEncryptDecriptService
+    private route: ActivatedRoute
   ) {}
 
   async ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      this.clienteId = params.get('clienteId')!;
       this.contratoId = params.get('contratoId')!;
       this.medicaoId = params.get('medicaoId')!;
     });
     
-
-    var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
-    
-    if(idPrefeituraUser){
-      idPrefeituraUser = this.aesEncryptDecript.decrypt(idPrefeituraUser);
-      if(idPrefeituraUser){
-        await this.buscarPrefeitura(Number(idPrefeituraUser));
-      }
-      else{
-        await this.buscarPrefeituras();
-      }
-    }else{
-      await this.buscarPrefeituras();
-    }
-
-    //await this.buscarListaContratos();
-    await this.onSelectionClienteChange(Number(this.clienteId));
-
+    await this.buscarListaContratos();
     await this.onSelectionChange(Number(this.contratoId));
 
     if(this.contratoId != '0' && this.medicaoId != '0'){
-      this.prefeituraSelecionadoPesquisa = Number(this.clienteId);
       this.contratoSelecionadoPesquisa = Number(this.contratoId);
       this.medicaoSelecionado = Number(this.medicaoId);
       this.isEnabledInputs = true;
     }
     this.enableMedicao = false;
-    this.enableContrato = false;
     //this.createForm(Number(this.contratoId),Number(this.medicaoId));
 
-  }
-
-  async buscarPrefeitura(id: number){
-    await this._prefeituraControllerService.BuscarPrefeitura(id)
-    .then((result) => {
-      this.listaPrefeitura = [];
-      this.listaPrefeitura.push(result);
-    })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao buscar prefeitura!");
-    })
-    .finally(() =>{
-      this.isLoading = false;
-    });
-  }
-
-  async buscarPrefeituras() {
-    var prefeituraRequest : PrefeituraFilter = new PrefeituraFilter();
-
-    prefeituraRequest.itemsPorPagina = 1000000;
-    prefeituraRequest.pagina = 1
-    prefeituraRequest.nome = "";
-
-    await this._prefeituraControllerService.BuscarTodasPrefeituras(prefeituraRequest)
-    .then((result) => {
-      this.listaPrefeitura = result.data;
-    })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao buscar prefeitura!");
-    })
-    .finally(() =>{
-    });
   }
 
   createForm(contratoId: number, medicaoId:number){
@@ -351,22 +290,6 @@ export class BoletimMedicaoComponent implements OnInit {
         logging: true,
         letterRendering: true
       }
-    });
-  }
-
-  async onSelectionClienteChange(prefeituraId: number) {
-    this.enableContrato = true;
-    await this.buscarListaContratosPrefeituraId(prefeituraId);
-  }
-
-  async buscarListaContratosPrefeituraId(prefeituraId: number){
-    var contratosFilter : BuscarContratosRequest = new BuscarContratosRequest();
-    contratosFilter.itemsPorPagina = 1000000;
-    contratosFilter.IdProjeto = null;
-    contratosFilter.pagina = 1;
-    await this._contratoControllerService.BuscarTodosContratos(contratosFilter)
-    .then((result) => {
-      this.listaContratos = result.data.filter(x => x.prefeituraId == prefeituraId);
     });
   }
 

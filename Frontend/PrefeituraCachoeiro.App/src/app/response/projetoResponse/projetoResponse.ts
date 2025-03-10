@@ -1,6 +1,13 @@
+import { ContratoModel, ContratosResponse } from "../contratosResponse/todosContratosResponse";
+
 export class ProjetoResponse{
     idProjeto: number = 0;
     nomeProjeto: string = '';
+    nomeContrato?: string;
+    nomePrefeitura?: string;
+    codigoProjeto: number;
+    contratos: ContratoModel[];
+    acoes?: string;
 }
 
 export class MensagemProjetoResponse{

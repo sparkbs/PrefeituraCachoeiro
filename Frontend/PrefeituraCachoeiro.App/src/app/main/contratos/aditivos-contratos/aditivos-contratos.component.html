@@ -1,56 +1,68 @@
 <h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Historico de aditivos</h1>
 <mat-dialog-content class="mat-typography">
   <div style="margin-top: 20px;">
-    <div style="width: 100%;     text-align: center;">
-      <mat-form-field style="width: 18%;">
+    <div style="width: 100%; display: flex; align-items: center;">
+      <mat-form-field style="width: 33%;">
         <mat-label>Tipo Aditivo</mat-label>
-        <input matInput >
+        <input matInput [(ngModel)]="requestCriarAditivo.TipoAditivo" >
       </mat-form-field>
-      <mat-form-field style="width: 18%; margin-left: 5px">
-        <mat-label>Planilha</mat-label>
-        <input matInput >
-      </mat-form-field>
-      <mat-form-field style="width: 18%; margin-left: 5px">
+      <mat-form-field style="width: 33%; margin-left: 5px">
         <mat-label>Data Assinatura</mat-label>
-        <input matInput type="date">
+        <input matInput [(ngModel)]="requestCriarAditivo.DataAssinaturaAditivo" type="date">
       </mat-form-field>
-      <mat-form-field style="width: 18%; margin-left: 5px">
+      <mat-form-field style="width: 33%; margin-left: 5px">
         <mat-label>Validade Aditivo</mat-label>
-        <input matInput type="date">
-      </mat-form-field>
-      
-        <button mat-button mat-stroked-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -8px; " >
-          <span>Criar Aditivo
-          </span>
-            <mat-icon>add</mat-icon>
-        </button>
+        <input matInput [(ngModel)]="requestCriarAditivo.DataValidadeAditivo" type="date">
+      </mat-form-field>     
     </div>
+
+    <div style="width: 100%; display: flex; align-items: center;">      
+      <div style="width: 45%; margin-left: 5px; margin-top: -22px;">
+        <div>
+          Documentos:
+        </div>
+        <div>
+          <input #baseDadosInput type="file" style="width: 100%" />
+        </div>
+      </div>
+      
+      <button mat-button mat-stroked-button style="background-color:royalblue; color: white; margin-left: 10px; margin-top: -8px;" (click)="criarAditivo()">
+        <span>Criar Aditivo</span>
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    
     <table mat-table [dataSource]="dataSource" matSort>          
       <ng-container matColumnDef="tipoAditivo">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo do Aditivo </th>
         <td mat-cell *matCellDef="let row"> {{row.tipoAditivo}} </td>
       </ng-container>
   
-      <ng-container matColumnDef="planilha">
+     <!-- <ng-container matColumnDef="planilha">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Planilha </th>
         <td mat-cell *matCellDef="let row"> <a>{{row.planilha}}</a> </td>
-      </ng-container>
+      </ng-container> 
+
+      <ng-container matColumnDef="valor">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor </th>
+        <td mat-cell *matCellDef="let row"> {{formatToCurrency(row.valor)}} </td>
+      </ng-container>-->
   
       <ng-container matColumnDef="dataAssinatura">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Data assinatura </th>
-        <td mat-cell *matCellDef="let row"> {{row.dataAssinatura}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.dataAssinatura | date:'dd/MM/yyyy' :'UTC' }} </td>
       </ng-container>
   
       <ng-container matColumnDef="validadeAditivo">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Validade Aditivo </th>
-        <td mat-cell *matCellDef="let row"> {{row.validadeAditivo}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.dataValidade | date:'dd/MM/yyyy' :'UTC' }} </td>
       </ng-container>
 
 
       <ng-container matColumnDef="acoes">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let row">
-            <button (click)="deletarAditivo(row)">
+            <button (click)="deletarAditivo(row.idAditivo)">
             <span>
               <mat-icon>delete</mat-icon>
             </span>

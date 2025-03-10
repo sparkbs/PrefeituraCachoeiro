@@ -35,7 +35,7 @@ export class ContratosComponent implements AfterViewInit, OnInit {
     { id: 3,nomePrefeitura: 'Teste',  dataInicioEFim: '25/03/2019 até 25/03/2021', consorcio: 'teste 3', gerente: 'Pedro', valorContrato:200.000, tipoContratacao:'Adesão',acoes: '' }
   ]*/
   lista: ContratosResponse[] = [];
-  displayedColumns: string[] = ['numeroContrato','nomePrefeitura', 'dataInicio', 'dataTermino', 'gerente','valor','tipoContratacao','acoes'];
+  displayedColumns: string[] = ['numeroContrato','nomePrefeitura', 'dataInicio', 'dataTermino', 'gerente', 'valor','valorTotalMedido', 'valorSaldoRestante','tipoContratacao','acoes'];
   dataSource: MatTableDataSource<ContratosResponse>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -51,7 +51,7 @@ export class ContratosComponent implements AfterViewInit, OnInit {
 
   async buscarListaContratos(){
     var contratosFilter : BuscarContratosRequest = new BuscarContratosRequest();
-    contratosFilter.itemsPorPagina = 10;
+    contratosFilter.itemsPorPagina = 1000000;
     contratosFilter.IdProjeto = null;
     contratosFilter.pagina = 1;
     await this.api.BuscarTodosContratos(contratosFilter)
@@ -75,7 +75,7 @@ export class ContratosComponent implements AfterViewInit, OnInit {
     }
   }
 
-  async deleteContrato(id: number){
+  async deleteContrato(id: any){
     await this.api.DeletarContrato(id)  
     .then((result) => {
       var index = this.lista.findIndex(item => item.idContrato == id);
@@ -104,10 +104,24 @@ export class ContratosComponent implements AfterViewInit, OnInit {
     });
   }
 
-  abrirAditivos(){
-    const dialogRef = this.dialog.open(AditivosContratosComponent);
+  abrirAditivos(contratobase:ContratosResponse){
+    const dialogRef = this.dialog.open(AditivosContratosComponent, {data:{contratobase}});
 
     dialogRef.afterClosed().subscribe(result => {
     });
+  }
+
+  formatCurrency(event: string): string { 
+    let value = event.toString();
+    value = value.replace(/\D/g, ''); 
+    if (value === '') {
+      return ''; // Ou você pode definir um valor padrão
+    }
+    value = (parseInt(value) || 0).toString(); 
+    value = value.padStart(3, '0'); 
+    value = value.slice(0, -2) + ',' + value.slice(-2); 
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
+    value = 'R$ ' + value; 
+    return value; 
   }
 }
