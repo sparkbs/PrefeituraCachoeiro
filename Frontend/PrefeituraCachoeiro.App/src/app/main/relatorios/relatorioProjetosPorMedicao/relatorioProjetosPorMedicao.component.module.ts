@@ -23,9 +23,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoadingComponent } from 'src/app/shared/loading/loading.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-  declarations: [ RelatorioProjetosPorMedicaoComponent, CadastrarMedicaoComponent, ListaMedicaoComponent, ResumoMedicaoComponent, LoadingComponent],
+  declarations: [ RelatorioProjetosPorMedicaoComponent, CadastrarMedicaoComponent, ListaMedicaoComponent, ResumoMedicaoComponent],
   imports: [
     MatButtonModule,
     MatExpansionModule,
@@ -45,6 +46,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTableModule,
     ReactiveFormsModule,
     MatTooltipModule,
+    SharedModule,
     MatSortModule,
     MatPaginatorModule
   ]

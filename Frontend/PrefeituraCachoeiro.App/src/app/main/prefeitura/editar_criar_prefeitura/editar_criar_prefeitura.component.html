@@ -42,3 +42,5 @@
   <button mat-button mat-stroked-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -8px;" *ngIf="!this.data" (click)="cadastrar()" cdkFocusInitial>Cadastrar</button>
   <button mat-button mat-stroked-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -8px;" *ngIf="this.data" (click)="salvar()" cdkFocusInitial>Salvar</button>
 </mat-dialog-actions>
+
+<app-loading *ngIf="this.isLoading"></app-loading>

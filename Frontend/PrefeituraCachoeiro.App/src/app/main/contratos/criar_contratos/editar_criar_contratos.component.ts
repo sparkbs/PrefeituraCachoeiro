@@ -26,7 +26,8 @@ export class Editar_criar_contratosComponent implements OnInit {
   criarContrato: CriarContratoRequest = new CriarContratoRequest();
   listaDocumentoContrato: ListaDocumentosContrato[] = [];
   valorContrato: string;
-  
+  isLoading = false;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: Item, 
   private dialogRef: MatDialogRef<Editar_criar_contratosComponent>,
   private readonly apiPrefeitura: PrefeituraService,
@@ -80,6 +81,8 @@ export class Editar_criar_contratosComponent implements OnInit {
   }
 
   async salvar(){
+    this.isLoading = true;
+
     if (this.dateControl.status != "INVALID" && this.dateInicioControl.status != "INVALID" && this.dateTerminoControl.status != "INVALID") {
 
     this.criarContrato.EmpresaId = 2;
@@ -98,11 +101,14 @@ export class Editar_criar_contratosComponent implements OnInit {
     })
     .catch(() => {
       this._toastService.mensagemError("Erro ao cadastrar contrato");
+    })
+    .finally(() => {
+      this.isLoading = false;
     });
   }
   else{
     this._toastService.mensagemError("Informe uma data válida");
-
+    this.isLoading = false;
   }
   }
 

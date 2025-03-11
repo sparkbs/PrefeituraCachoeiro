@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AditivosContratosComponent } from './aditivos-contratos/aditivos-contratos.component';
 import { MatSelectModule } from '@angular/material/select';
 import { Editar_contratosComponent } from './editar_contratos/editar_contratos/editar_contratos.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [ ContratosComponent, Editar_criar_contratosComponent, AditivosContratosComponent, Editar_contratosComponent ],
@@ -35,6 +36,7 @@ import { Editar_contratosComponent } from './editar_contratos/editar_contratos/e
     MatButtonModule,
     MatDialogModule,
     FormsModule ,
+    SharedModule,
     MatSelectModule
   ]
 })

@@ -16,6 +16,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Editar_criar_prefeituraComponent } from '../editar_criar_prefeitura/editar_criar_prefeitura.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [ PrefeituraComponent, Editar_criar_prefeituraComponent ],
@@ -32,7 +33,8 @@ import { Editar_criar_prefeituraComponent } from '../editar_criar_prefeitura/edi
     MatPaginatorModule,
     MatButtonModule,
     MatDialogModule,
-    FormsModule 
+    FormsModule,
+    SharedModule
   ]
 })
 export class PrefeituraModule { }

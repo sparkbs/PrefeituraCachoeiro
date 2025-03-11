@@ -13,7 +13,12 @@
         <mat-label>Senha</mat-label>
         <input matInput [(ngModel)]="login.Senha" name="senha" type="password" required>
       </mat-form-field>
-      <button mat-raised-button color="primary" class="btn-entrar">Entrar</button>
+      <button mat-raised-button color="primary" class="btn-entrar">
+        <span *ngIf="!this.isLoading">Entrar</span>
+        <div class="loading-overlay" *ngIf="this.isLoading">
+          <div class="spinner"></div>
+        </div>        
+      </button>
       <button mat-raised-button color="accent" class="btn-cadastrar" type="button" (click)="onRegister()">Alterar Senha</button>
     </form>
   </div>

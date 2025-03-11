@@ -15,6 +15,7 @@ import { ToastService } from 'src/app/services/toast.service';
 export class Editar_criar_prefeituraComponent {
   criarPrefeitura: BasePrefeituraRequest = new BasePrefeituraRequest();
   atualizarPrefeitura: AtualizarPrefeituraRequest = new AtualizarPrefeituraRequest();
+  isLoading = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: PrefeituraResponse,
   private _toastService: ToastService,
@@ -25,10 +26,19 @@ export class Editar_criar_prefeituraComponent {
   }
 
   async cadastrar(){
+    this.isLoading = true;
     await this.api.CriarPrefeitura(this.criarPrefeitura)
     .then((result) => {
+      this._toastService.mensagemSuccess("Cliente criado com sucesso");
       this.dialogRef.close(result);
-    });
+    })
+    .catch(() => {
+      this._toastService.mensagemError("Erro ao criar cliente");
+    })
+    .finally(() => {
+      this.isLoading = false
+    })
+    ;
   }
 
   onFileChange(event: any) {
@@ -46,16 +56,21 @@ export class Editar_criar_prefeituraComponent {
   }
 
   async salvar(){
+    this.isLoading = true;
+
     this.atualizarPrefeitura.IdPrefeitura = this.data.idPrefeitura;
     this.atualizarPrefeitura.Nome = this.data.nome;
 
     await this.api.AtualizarPrefeitura(this.atualizarPrefeitura)
     .then((result) => {
-      this._toastService.mensagemSuccess("Cliente cadastrado com sucesso!");
+      this._toastService.mensagemSuccess("Cliente editado com sucesso!");
       this.dialogRef.close(result);
     })
     .catch(() => {
-      this._toastService.mensagemError("Erro ao cadastrar cliente!");
+      this._toastService.mensagemError("Erro ao editar cliente!");
+    })
+    .finally(() => {
+      this.isLoading = false
     });
   }
 

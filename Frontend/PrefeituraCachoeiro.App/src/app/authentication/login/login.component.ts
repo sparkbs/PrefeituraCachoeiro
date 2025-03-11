@@ -12,6 +12,7 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 export class LoginComponent {
   login: LoginRequest = new LoginRequest();
+  isLoading = false;
 
   constructor(
     private _router: Router,
@@ -21,7 +22,7 @@ export class LoginComponent {
 
   }
   async onSubmit(): Promise<void> {
-
+    this.isLoading = true;
     await this.api.Login(this.login)
     .then((result) => {
       this.cookie.setToken(result.accessToken.accessToken);
@@ -35,6 +36,9 @@ export class LoginComponent {
     })
     .catch((erro) => {
       this._toastService.mensagemError("Erro ao logar!");
+    })
+    .finally(() => {
+      this.isLoading = false;
     });
   }
 

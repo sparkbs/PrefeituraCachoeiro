@@ -8,6 +8,7 @@ import { PrefeituraFilter } from 'src/app/response/prefeituraResponse/prefeitura
 import { UsuariosResponse } from 'src/app/response/usuariosResponse/usuariosResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
+import { ToastService } from 'src/app/services/toast.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
@@ -27,12 +28,14 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
   dataInicioString: string;
   dataContratoString: string;
   listaGerentes: UsuariosResponse[] = [];
+  isLoading = false;
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: ContratosResponse,
   private readonly apiPrefeitura: PrefeituraService,
    private dialogRef: MatDialogRef<Editar_contratosComponent>,
    private readonly api: ContratosService,
-     private readonly apiUsuarios: UsuariosService
+  private readonly apiUsuarios: UsuariosService,
+  private _toastService: ToastService
   ) { }
 
   async ngAfterViewInit() {
@@ -100,6 +103,8 @@ formatDateToString(date: Date): string {
 
 
 async salvar(){
+  this.isLoading = true;
+
   this.atualizarContrato.DataContrato = (this.dataContratoString);
   this.atualizarContrato.DataInicio = (this.dataInicioString);
   this.atualizarContrato.DataTermino = (this.dataTerminoString);
@@ -113,7 +118,14 @@ async salvar(){
   
   await this.api.AtualizarContrato(this.atualizarContrato)
   .then((result) => {
+    this._toastService.mensagemSuccess("Contrato editado com sucesso");
     this.dialogRef.close(result);
+  })
+  .catch(() => {
+    this._toastService.mensagemError("Erro ao editar contrato");
+  })
+  .finally(() => {
+    this.isLoading = false;
   });
 }
 
