@@ -50,7 +50,7 @@ export class BoletimMedicaoComponent implements OnInit {
   listaPrefeitura: PrefeituraResponse[] = [];
 
   // Variável para gerenciar estado de carregamento e erros
-  isLoading = true;
+  isLoading = false;
   errorMessage = '';
   contratoId = '0';
   clienteId = '0';
@@ -73,6 +73,8 @@ export class BoletimMedicaoComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.isLoading = true;
+
     this.route.paramMap.subscribe(params => {
       this.clienteId = params.get('clienteId')!;
       this.contratoId = params.get('contratoId')!;
@@ -108,7 +110,7 @@ export class BoletimMedicaoComponent implements OnInit {
     this.enableMedicao = false;
     this.enableContrato = false;
     //this.createForm(Number(this.contratoId),Number(this.medicaoId));
-
+    this.isLoading = false;
   }
 
   async buscarPrefeitura(id: number){
@@ -137,6 +139,7 @@ export class BoletimMedicaoComponent implements OnInit {
       this.listaPrefeitura = result.data;
     })
     .catch(() => {
+      this.isLoading = false;
       this._toastService.mensagemError("Erro ao buscar prefeitura!");
     })
     .finally(() =>{
@@ -182,6 +185,7 @@ export class BoletimMedicaoComponent implements OnInit {
       this.groupMedicoes();
     })
     .catch((erro) => {
+      this.isLoading = false;
       console.error(erro);
       this._toastService.mensagemError('Erro ao buscar medições!');
     });
@@ -208,14 +212,12 @@ export class BoletimMedicaoComponent implements OnInit {
     // Agora, agrupamos os dados em um array de BoletimMedicoesResponse
     this.listaMedicoesAgrupados = Object.values(grouped);
 
-    console.log(this.listaMedicoesAgrupados);  // Exibindo a estrutura final
   }
 
   async onSelectionChange(contratoId: number) {
     //this.form.get('medicaoId').enable();
     this.enableMedicao = true;
     this.contratoSelecionado = this.listaContratos.find(res => res.idContrato == contratoId);
-    console.log(contratoId);
     if(contratoId != undefined && contratoId != null && contratoId != 0)
       await this.buscarMedicoes(contratoId);
   }
@@ -256,7 +258,6 @@ export class BoletimMedicaoComponent implements OnInit {
     // });
     this.dadosSeparadosProjeto = [];
     this.listaMedicoesSelecionadasAgrupados = this.listaMedicoesAgrupados.filter(x => x.numeroMedicao == this.medicaoSelecionado)[0];
-    console.log(this.listaMedicoesSelecionadasAgrupados);
     
     this.listaMedicoesSelecionadasAgrupados.medicaoResponse.forEach(async element => {    
       var boletimMedicaoRequest: BuscarBoletimMedicaoRequest = {
@@ -284,7 +285,6 @@ export class BoletimMedicaoComponent implements OnInit {
 
           var projeto = new SubBoletim();
           projeto.descricao = dados.detalhes[0].projeto;
-          console.log(projeto);
           this.dataSource.unshift(projeto);
 
           this.dadosSeparadosProjeto = this.dadosSeparadosProjeto.concat(this.dataSource);
@@ -301,7 +301,6 @@ export class BoletimMedicaoComponent implements OnInit {
         this._toastService.mensagemError('Erro ao buscar boletins!');
       });
 
-      console.log(this.dadosSeparadosProjeto);
     });
   }
 
@@ -321,7 +320,7 @@ export class BoletimMedicaoComponent implements OnInit {
 
   calcularValorTotalItemBoletim(unidade: string, precoComBdi: number){
     var quantidadeItem = parseFloat(unidade);
-    return precoComBdi * quantidadeItem;
+    return (precoComBdi * quantidadeItem).toFixed(2);
   }
 
   calcularSomaValorTotal(){
@@ -367,6 +366,9 @@ export class BoletimMedicaoComponent implements OnInit {
     await this._contratoControllerService.BuscarTodosContratos(contratosFilter)
     .then((result) => {
       this.listaContratos = result.data.filter(x => x.prefeituraId == prefeituraId);
+    })
+    .catch(() =>{
+      this.isLoading = false;
     });
   }
 

@@ -22,6 +22,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VerDocumentosComponent } from '../aprovacaoBoletim/verDocumentos/verDocumentos.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [ BoletimComponent, BoletimMedicaoComponent, BoletimProjetoComponent, BoletimDetalhadoComponent, AprovacaoBoletimComponent, AprovarMedicaoComponent, VerDocumentosComponent ],
@@ -42,7 +43,8 @@ import { VerDocumentosComponent } from '../aprovacaoBoletim/verDocumentos/verDoc
     BrowserAnimationsModule,
     BrowserModule,
     MatTableModule,
-    MatListModule
+    MatListModule,
+    SharedModule
   ]
 })
 export class BoletimModule {}

@@ -4,7 +4,7 @@ import { Environments } from '../environments/Environments';
 import { firstValueFrom } from 'rxjs';
 import { BoletimProjetoModel } from '../modelsBoletim/boletim-models/boletim-projeto.model';
 import { BuscarBoletimProjetoRequest } from '../request/BoletimRequest/boletimProjetoRequest';
-import { BoletimMedicaoResponse, BoletimResponse } from '../response/BoletimResponse/boletimResponse';
+import { BoletimMedicaoDetalhadoResponse, BoletimMedicaoResponse, BoletimResponse } from '../response/BoletimResponse/boletimResponse';
 import { BuscarBoletimMedicaoRequest } from '../request/BoletimRequest/boletimMedicaoRequest';
 
 @Injectable({
@@ -27,6 +27,15 @@ export class BoletimService {
     return await firstValueFrom(
       this.http.post<BoletimMedicaoResponse>(
         `${Environments.APIUrl}/boletins/buscarboletimmedicao`,
+        medicaoRequest
+      )
+    );
+  }
+
+  public async BuscarBoletimDetalhado(medicaoRequest: BuscarBoletimMedicaoRequest): Promise<BoletimMedicaoDetalhadoResponse> {
+    return await firstValueFrom(
+      this.http.post<BoletimMedicaoDetalhadoResponse>(
+        `${Environments.APIUrl}/boletins/buscarboletimmedicaodetalhado`,
         medicaoRequest
       )
     );

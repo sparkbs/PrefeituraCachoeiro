@@ -37,7 +37,7 @@ const routes: Routes = [
       { path: 'boletim', component: BoletimComponent},
       { path: 'boletimMedicao/:clienteId/:contratoId/:medicaoId', component: BoletimMedicaoComponent },
       { path: 'boletimPorProjeto/:projetoId/:medicaoId', component: BoletimProjetoComponent },
-      { path: 'boletimDetalhado', component: BoletimDetalhadoComponent },
+      { path: 'boletimDetalhado/:clienteId/:contratoId/:medicaoId', component: BoletimDetalhadoComponent },
       { path: 'aprovacaoBoletim', component: AprovacaoBoletimComponent },
       { path: 'powerBi', component: PowerBIComponent }
     ]

@@ -48,6 +48,12 @@ export class BoletimMedicaoResponse {
   valorTotalMedicao: number;
 }
 
+export class BoletimMedicaoDetalhadoResponse {
+  boletimDetalhadoCabecalho: BoletimProjetoCabecalho;
+  detalhes: Detalhe[];
+  valorTotalMedicao: number;
+}
+
 export class QuantidadeResponse {
   idQuantidade: number;
   nome: string;

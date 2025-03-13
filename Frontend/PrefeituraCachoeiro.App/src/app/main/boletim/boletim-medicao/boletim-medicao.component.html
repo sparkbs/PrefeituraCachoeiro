@@ -260,3 +260,5 @@
 
 <!-- Botão para gerar PDF -->
 <button (click)="generatePDF()" class="button-class" *ngIf="this.boletim">Gerar PDF</button>
+
+<app-loading *ngIf="this.isLoading"></app-loading>

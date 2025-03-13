@@ -61,6 +61,12 @@
               (click)="openBoletim(medicaoProjeto.numeroMedicao)">
         Boletim
       </button>
+      <button mat-button 
+            style="background-color: royalblue; color: white; width: 30%; margin-left: 8px;" 
+            [style.display]="contratoSelecionado > 0 ? '' : 'none'" 
+            (click)="openBoletimDetalhado(medicaoProjeto.numeroMedicao)">
+        Boletim Detalhado
+      </button>
     </div>
   
   </mat-card>

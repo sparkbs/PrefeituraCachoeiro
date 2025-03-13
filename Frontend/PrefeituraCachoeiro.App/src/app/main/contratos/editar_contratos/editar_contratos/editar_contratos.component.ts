@@ -121,8 +121,8 @@ async salvar(){
     this._toastService.mensagemSuccess("Contrato editado com sucesso");
     this.dialogRef.close(result);
   })
-  .catch(() => {
-    this._toastService.mensagemError("Erro ao editar contrato");
+  .catch((res) => {
+    this._toastService.mensagemError(res.error.message);
   })
   .finally(() => {
     this.isLoading = false;

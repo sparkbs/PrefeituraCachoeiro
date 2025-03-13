@@ -126,7 +126,7 @@
     font-weight: bold;
 }
 
-button {
+.button-class {
     display: block;
     margin: 0 auto;
     padding: 15px 20px;
@@ -136,11 +136,11 @@ button {
     border: none;
     cursor: pointer;
     border-radius: 5px;
-
+  
     &:hover {
-        background-color: #0056b3;
+      background-color: #0056b3;
     }
-}
+  }
 
 .item-principal {
     background-color: #F8CBAD;

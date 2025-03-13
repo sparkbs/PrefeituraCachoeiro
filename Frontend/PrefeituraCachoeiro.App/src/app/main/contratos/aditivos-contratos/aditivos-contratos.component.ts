@@ -43,15 +43,14 @@ export class AditivosContratosComponent implements AfterViewInit {
     this.requestCriarAditivo.DataAssinaturaAditivo = this.contratoBase.dataContrato;*/
     this.requestCriarAditivo.ContratoId = this.contratoBase.idContrato;
     this.requestCriarAditivo.ArquivoTemplate = this.adicionarBaseDados();
-    this._toastService.mensagemSuccess("Processamento iniciado!");
 
     await this.api.CriarAditivos(this.requestCriarAditivo)
     .then((result) => {
       this._toastService.mensagemSuccess("Aditivo criado com sucesso");
       this.dialogRef.close(result);
     })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao cadastrar aditivo");
+    .catch((res) => {
+      this._toastService.mensagemError(res.error.message);
     });
 
   }
