@@ -6,7 +6,7 @@
     <div  class="select-container">
       <mat-form-field>
         <mat-label>Selecione o Cliente:</mat-label>
-        <mat-select [(ngModel)]="prefeituraSelecionadoId" (selectionChange)="onSelectionClienteChangePrefeitura($event.value)">
+        <mat-select [(ngModel)]="prefeituraSelecionadoId" (selectionChange)="onSelectionClienteChangePrefeitura($event.value)" [disabled]="isEnabledInputs">
           <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura">
             {{ prefeitura.nome }}
           </mat-option>
@@ -14,7 +14,7 @@
       </mat-form-field>
       <mat-form-field >
         <mat-label>Selecione o Contrato:</mat-label>
-        <mat-select [(ngModel)]="contratoSelecionadoId" (selectionChange)="onSelectionChange($event.value)">
+        <mat-select [(ngModel)]="contratoSelecionadoId" (selectionChange)="onSelectionChange($event.value)"  [disabled]="isEnabledInputs || !enableContrato ">
           <mat-option *ngFor="let contrato of listaContratos" [value]="contrato.idContrato">
             {{ contrato.numeroContrato }}
           </mat-option>
@@ -22,7 +22,7 @@
       </mat-form-field>
       <mat-form-field >
         <mat-label>Selecione a Medição:</mat-label>
-        <mat-select [(ngModel)]="medicaoSelecionado" >
+        <mat-select [(ngModel)]="medicaoSelecionado" [disabled]="!enableMedicao || isEnabledInputs">
           <mat-option *ngFor="let medicao of listaMedicoesAgrupados" [value]="medicao.numeroMedicao">
             {{ medicao.numeroMedicao }}
           </mat-option>

@@ -16,6 +16,8 @@ import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarCo
 import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ActivatedRoute } from '@angular/router';
 import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
+import { AuthService } from 'src/app/services/auth.service';
+import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
 
 @Component({
   selector: 'app-boletim-detalhado',
@@ -47,6 +49,9 @@ export class BoletimDetalhadoComponent implements OnInit {
   dadosSeparadosProjeto: SubBoletim[] =[];
   listaMedicoesSelecionadasAgrupados: BoletimMedicoesResponse;
   nomePrefeitura: string = ''; // URL tratada da imagem do logotipo
+  isEnabledInputs: boolean = false;
+  enableMedicao: boolean = false;
+  enableContrato: boolean = false;
 
   // Variáveis de controle de carregamento e erros
   isLoading = false;
@@ -59,7 +64,9 @@ export class BoletimDetalhadoComponent implements OnInit {
     private route: ActivatedRoute,    
     private _toastService: ToastService,
     public _boletimControllerService: BoletimService,
-    private _prefeituraControllerService: PrefeituraService
+    private auth: AuthService, 
+    private _prefeituraControllerService: PrefeituraService,
+    private readonly aesEncryptDecript: AESEncryptDecriptService
   ) {}
 
   async ngOnInit() {
@@ -71,9 +78,23 @@ export class BoletimDetalhadoComponent implements OnInit {
       this.clienteId = params.get('clienteId')!;
     });
     
-    //this.createForm();
-    await this.buscarPrefeituras();
+    var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
 
+
+    //this.createForm();
+    var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
+    
+    if(idPrefeituraUser){
+      idPrefeituraUser = this.aesEncryptDecript.decrypt(idPrefeituraUser);
+      if(idPrefeituraUser){
+        await this.buscarPrefeitura(Number(idPrefeituraUser));
+      }
+      else{
+        await this.buscarPrefeituras();
+      }
+    }else{
+      await this.buscarPrefeituras();
+    }
     //await this.buscarListaContratos();
 
     if(this.contratoId != '0' && this.medicaoId != '0' && this.clienteId != '0'){
@@ -84,10 +105,27 @@ export class BoletimDetalhadoComponent implements OnInit {
       await this.onSelectionClienteChangePrefeitura(this.prefeituraSelecionadoId);
 
       await this.onSelectionChange(this.contratoSelecionadoId);
+      this.isEnabledInputs = true;
     }
+
+    this.enableMedicao = false;
+    this.enableContrato = false;
     this.isLoading = false;
   }
 
+  async buscarPrefeitura(id: number){
+    await this._prefeituraControllerService.BuscarPrefeitura(id)
+    .then((result) => {
+      this.listaPrefeitura = [];
+      this.listaPrefeitura.push(result);
+    })
+    .catch(() => {
+      this._toastService.mensagemError("Erro ao buscar prefeitura!");
+    })
+    .finally(() =>{
+      this.isLoading = false;
+    });
+  }
 
   async buscarPrefeituras() {
     var prefeituraRequest : PrefeituraFilter = new PrefeituraFilter();
@@ -145,9 +183,12 @@ export class BoletimDetalhadoComponent implements OnInit {
         this.groupMedicoes();
       })
       .catch((erro) => {
-        this.isLoading = false;
-        console.error(erro);
+        this.medicaoSelecionado = 0;
+        this.listaMedicoesAgrupados = [];
         this._toastService.mensagemError('Erro ao buscar medições!');
+      })
+      .finally(() =>{
+        this.isLoading = false;
       });
     }
 
@@ -174,6 +215,8 @@ export class BoletimDetalhadoComponent implements OnInit {
     }
 
   async onSelectionClienteChangePrefeitura(prefeituraId: number) {
+    this.isLoading = true;
+    this.enableContrato = true;
     await this.buscarListaContratosPrefeituraId(prefeituraId);
   }
 
@@ -186,17 +229,20 @@ export class BoletimDetalhadoComponent implements OnInit {
     .then((result) => {
       this.listaContratos = result.data.filter(x => x.prefeituraId == prefeituraId);
     })
-    .catch(() =>{
+    .finally(() =>{
       this.isLoading = false;
     });
   }
 
   async onSelectionChange(contratoId: number) {
+    this.enableMedicao = true;
+    this.isLoading = true;
     //this.form.get('medicaoId').enable();
     this.contratoSelecionado = this.listaContratos.find(res => res.idContrato == contratoId);
     console.log(this.contratoSelecionado);
     if(contratoId != undefined && contratoId != null && contratoId != 0)
       await this.buscarMedicoes(contratoId);
+    this.isLoading = false;
   }
 
   async onSelectionChangeMedicao(medicaoId: number) {
