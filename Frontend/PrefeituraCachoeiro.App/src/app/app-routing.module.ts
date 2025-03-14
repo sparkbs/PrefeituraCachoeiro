@@ -17,6 +17,7 @@ import { BoletimProjetoComponent } from './main/boletim/boletim-projeto/boletim-
 import { BoletimDetalhadoComponent } from './main/boletim/boletim-detalhado/boletim-detalhado.component';
 import { AprovacaoBoletimComponent } from './main/aprovacaoBoletim/aprovacaoBoletim.component';
 import { PowerBIComponent } from './main/relatorios/powerBI/powerBI.component';
+import { AuthGuardService } from './services/auth-guard.service';
 
 const routes: Routes = [
 
@@ -27,19 +28,19 @@ const routes: Routes = [
     component: MainComponent,
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'projetos', component: ProjetosComponent },
-      { path: 'contratos', component: ContratosComponent },
-      { path: 'configuracoes', component: ConfiguracoesComponent },
-      { path: 'perfil', component: PerfilComponent },
-      { path: 'editarCriarContratos', component: Editar_criar_contratosComponent },
-      { path: 'relatorioProjetosPorMedicao', component: RelatorioProjetosPorMedicaoComponent },
-      { path: 'prefeitura', component: PrefeituraComponent },
-      { path: 'boletim', component: BoletimComponent},
-      { path: 'boletimMedicao/:clienteId/:contratoId/:medicaoId', component: BoletimMedicaoComponent },
-      { path: 'boletimPorProjeto/:clienteId/:contratoId/:projetoId/:medicaoId', component: BoletimProjetoComponent },
-      { path: 'boletimDetalhado/:clienteId/:contratoId/:medicaoId', component: BoletimDetalhadoComponent },
-      { path: 'aprovacaoBoletim', component: AprovacaoBoletimComponent },
-      { path: 'powerBi', component: PowerBIComponent }
+      { path: 'projetos', component: ProjetosComponent, canActivate: [AuthGuardService] },
+      { path: 'contratos', component: ContratosComponent, canActivate: [AuthGuardService] },
+      { path: 'configuracoes', component: ConfiguracoesComponent, canActivate: [AuthGuardService] },
+      { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuardService] },
+      { path: 'editarCriarContratos', component: Editar_criar_contratosComponent, canActivate: [AuthGuardService] },
+      { path: 'relatorioProjetosPorMedicao', component: RelatorioProjetosPorMedicaoComponent, canActivate: [AuthGuardService] },
+      { path: 'prefeitura', component: PrefeituraComponent, canActivate: [AuthGuardService] },
+      { path: 'boletim', component: BoletimComponent, canActivate: [AuthGuardService]},
+      { path: 'boletimMedicao/:clienteId/:contratoId/:medicaoId', component: BoletimMedicaoComponent, canActivate: [AuthGuardService] },
+      { path: 'boletimPorProjeto/:clienteId/:contratoId/:projetoId/:medicaoId', component: BoletimProjetoComponent, canActivate: [AuthGuardService] },
+      { path: 'boletimDetalhado/:clienteId/:contratoId/:medicaoId', component: BoletimDetalhadoComponent, canActivate: [AuthGuardService] },
+      { path: 'aprovacaoBoletim', component: AprovacaoBoletimComponent, canActivate: [AuthGuardService] },
+      { path: 'powerBi', component: PowerBIComponent, canActivate: [AuthGuardService] }
     ]
   }
 ];
