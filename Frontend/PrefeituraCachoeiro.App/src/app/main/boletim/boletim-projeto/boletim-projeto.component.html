@@ -1,45 +1,40 @@
-<div class="boletim-projeto">
+<div class="boletim-projeto" >
   <h2>Boletim por Projeto</h2>
 
-  <!-- Container para os campos de seleção 
-  <form [formGroup]="form" class="select-container">
-
-    <mat-form-field appearance="outline">
+  <!-- Container para os campos de seleção -->
+  <div  class="select-container">
+    <mat-form-field>
+      <mat-label>Selecione o Cliente:</mat-label>
+      <mat-select [(ngModel)]="prefeituraSelecionadoId" (selectionChange)="onSelectionClienteChangePrefeitura($event.value)" [disabled]="isEnabledInputs">
+        <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura">
+          {{ prefeitura.nome }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field >
+      <mat-label>Selecione o Contrato:</mat-label>
+      <mat-select [(ngModel)]="contratoSelecionadoId" (selectionChange)="onSelectionChange($event.value)"  [disabled]="isEnabledInputs || !enableContrato ">
+        <mat-option *ngFor="let contrato of listaContratos" [value]="contrato.idContrato">
+          {{ contrato.numeroContrato }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field >
       <mat-label>Selecione o Projeto:</mat-label>
-      <mat-select formControlName="projetoId" (selectionChange)="onSelectionChange($event.value)">
+      <mat-select [(ngModel)]="projetoSelecionadoId" (selectionChange)="onSelectionProjetoChange($event.value)" [disabled]="isEnabledInputs || !enableProjeto ">
         <mat-option *ngFor="let projetoItem of listaProjetos" [value]="projetoItem.idProjeto">
           {{ projetoItem.nomeProjeto }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Selecione a Medição:</mat-label>
-      <mat-select formControlName="medicaoId" (selectionChange)="onSelectionChangeMedicao($event.value)">
-        <mat-option *ngFor="let medicao of listaMedicoes" [value]="medicao.idMedicoesProjeto">
-          {{ medicao.numeroMedicao }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </form>-->
-
-  <div class="select-container">
-    <mat-form-field appearance="outline">
-      <mat-label>Selecione o Projeto:</mat-label>
-      <mat-select [(ngModel)]="projetoSelecionadoPesquisa" (selectionChange)="onSelectionChange($event.value)" [disabled]="isEnabledInputs">
-        <mat-option *ngFor="let projetoItem of listaProjetos" [value]="projetoItem.idProjeto">
-          {{ projetoItem.nomeProjeto }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
+    <mat-form-field >
       <mat-label>Selecione a Medição:</mat-label>
       <mat-select [(ngModel)]="medicaoSelecionado" [disabled]="!enableMedicao || isEnabledInputs">
-        <mat-option *ngFor="let medicao of listaMedicoes" [value]="medicao.idMedicoesProjeto">
+        <mat-option *ngFor="let medicao of listaMedicoesAgrupados" [value]="medicao.numeroMedicao">
           {{ medicao.numeroMedicao }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-
     <div style="margin-top: auto; display: flex; justify-content: flex-end;padding: 20px;">
       <button mat-button 
       style="background-color: royalblue; color: white; " 
@@ -47,123 +42,157 @@
         Buscar
       </button>
     </div>
+  </div>
 
-    </div>
-</div>
 <div class="boletim-projeto" id="content" #content>
-  <!-- Tabela de Dados -->
-  <table class="styled-table">
-    <thead *ngIf="boletimCabecalho">
-      <!-- Linha do logotipo e título -->
-      <tr>
-        <th colspan="25" class="header-logo-title">
-          <div class="logo-title-container">
-            <img [src]="logoTipoImgUrl" alt="Logotipo" class="logo" />
-            <div class="title-container">
-              <h2>{{ boletimCabecalho.nomePrefeitura }}</h2>
-              <h4>{{ boletimCabecalho.nomeUnidade }}</h4>
-            </div>
+
+<!-- Tabela para exibir dados -->
+<table class="styled-table" *ngIf="this.boletim">
+  <thead *ngIf="boletimCabecalho">
+    <!-- Linha do logotipo e título -->
+    <tr>
+      <th colspan="25" class="header-logo-title">
+        <div class="logo-title-container">
+          <img [src]="logoTipoImgUrl" alt="Logotipo" class="logo" />
+          <div class="title-container">
+            <h2>{{ nomePrefeitura}}</h2>
+            <h4>{{ boletimCabecalho.nomeUnidade }}</h4>
           </div>
-        </th>
-      </tr>
-      <!-- Linha do título principal -->
-      <tr>
-        <th colspan="25" class="main-title">
-          {{ boletimCabecalho.tipoBoletimEmissao }}
-        </th>
-      </tr>
-      <!-- Linha do resumo -->
-      <tr>
-        <th colspan="20" rowspan="2" class="summary">
-          RESUMO:
-        </th>
-        <th colspan="5" class="consultancy-header">{{ boletimCabecalho.descontoFiscalizacao }}</th>
-      </tr>
-      <tr>
-        <th colspan="3" class="bdi">BDI: (FISCALIZAÇÃO)</th>
-        <th colspan="3" class="bdi">BDI 2 (PROJETOS)</th>
-      </tr>
-      <!-- Linha de data e contrato -->
-      <tr>
-        <th colspan="10" class="left-align">DATA DE MEDIÇÃO: {{ boletim.detalhes[0].dataMedicao | date: 'dd/MM/yyyy' }}
-        </th>
-        <th colspan="10" class="center-align">NÚMERO DA MEDIÇÃO: {{ boletim.detalhes[0].numeroMedicao }}</th>
-        <th colspan="5" class="center-align">{{ boletimCabecalho.contrato }}</th>
-      </tr>
-      <!-- Linha de projeto e valor -->
-      <tr>
-        <th colspan="20" class="left-align">{{ boletimCabecalho.nomeProjeto }}</th>
-        <th colspan="2" class="highlight">VALOR TOTAL DA MEDIÇÃO:</th>
-        <th colspan="3" class="highlight">R$ {{ valorTotalMedicao.toFixed(2) }}</th>
-      </tr>
-      <!-- Linha do rodapé do cabeçalho -->
-      <tr>
-        <th colspan="25" class="footer-header">
-          BOLETIM PROJETO: {{ boletimCabecalho.nomeBoletim }}
-        </th>
-      </tr>
-    </thead>
+        </div>
+      </th>
+    </tr>
+    <!-- Linha do título principal -->
+    <tr>
+      <th colspan="25" class="main-title">
+        {{ boletimCabecalho.tipoBoletimEmissao }}
+      </th>
+    </tr>
+    <!-- Linha do resumo -->
+    <tr>
+      <th colspan="20" rowspan="2" class="summary">
+        RESUMO:
+      </th>
+      <th colspan="5" class="consultancy-header">{{ boletimCabecalho.descontoFiscalizacao }}</th>
+    </tr>
+    <tr>
+      <th colspan="3" class="bdi">BDI: (FISCALIZAÇÃO)</th>
+      <th colspan="3" class="bdi">BDI 2 (PROJETOS)</th>
+    </tr>
+    <!-- Linha de data e contrato -->
+    <tr>
+      <th colspan="10" class="left-align">DATA DE MEDIÇÃO: {{ boletim.detalhes[0].dataMedicao | date: 'dd/MM/yyyy' }}
+      </th>
+      <th colspan="10" class="center-align">NÚMERO DA MEDIÇÃO: {{ boletim.detalhes[0].numeroMedicao }}</th>
+      <th colspan="5" class="center-align">{{ boletimCabecalho.contrato }}</th>
+    </tr>
+    <!-- Linha de projeto e valor -->
+    <tr>
+      <th colspan="20" class="left-align">{{ obterProjetoById() }}</th>
+      <th colspan="2" class="highlight">VALOR TOTAL DA MEDIÇÃO:</th>
+      <th colspan="3" class="highlight">R$ {{ calcularSomaValorTotal() }}</th>
+    </tr>
+    <!-- Linha do rodapé do cabeçalho -->
+    <tr>
+      <th colspan="25" class="footer-header">
+        BOLETIM DETALHADO: {{ boletimCabecalho.nomeBoletim }}
+      </th>
+    </tr>
+  </thead>
 
-    <tbody *ngIf=" boletimCabecalho && dataSource">
-      <tr class="body-first-head">
-        <th colspan="1">NÚMERO</th>
-        <th colspan="1">CÓDIGO EM ATA (REF.)</th>
-        <th colspan="17">DESCRIÇÃO</th>
-        <th colspan="1">QUANTIDADE</th>
-        <th colspan="1">UND</th>
-        <th colspan="1">PREÇO SEM BDI</th>
-        <th colspan="1">BDI</th>
-        <th colspan="1">PREÇO COM BDI</th>
-        <th colspan="1">VALOR TOTAL</th>
+  <tbody>
+    <tr class="body-first-head">
+      <th colspan="1">NÚMERO</th>
+      <th colspan="1">CÓDIGO EM ATA (REF.)</th>
+      <th colspan="17">DESCRIÇÃO</th>
+      <th colspan="1">QUANTIDADE</th>
+      <th colspan="1">UND</th>
+      <th colspan="1">PREÇO SEM BDI</th>
+      <th colspan="1">BDI</th>
+      <th colspan="1">PREÇO COM BDI</th>
+      <th colspan="1">VALOR TOTAL</th>
+    </tr>
+
+    <tr style="background-color: #F8CBAD;">
+      <th></th>
+      <th></th>
+      <th colspan="17">Item a medir</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+
+    <!-- Nível 1: Boletins principais -->
+    <ng-container *ngFor="let boletim of dadosSeparadosProjeto">
+      <!-- Itera sobre os itens principais -->
+      <tr [ngClass]="{'item-principal': !boletim?.quantidade}">
+        <td>{{ boletim.numero }}</td>
+        <td>{{ boletim.codigoAta }}</td>
+        <td colspan="17">{{ boletim.descricao }}</td>
+        <td>{{ boletim.unidade }}</td>
+        <td>{{ boletim?.quantidadeResponse?.nome }}</td>
+        <td>{{ boletim.precoSemBdi ? ('R$ ' + boletim.precoSemBdi) : '' }}</td>
+        <td>{{ boletim.bdi ? boletim.bdi + '%' : '' }}</td>
+        <td>{{ boletim.precoComBdi ? ('R$ ' + boletim.precoComBdi.toFixed(2)) : '' }}</td>
+        <td>{{ boletim?.valorTotal ? ('R$ ' + (calcularValorTotalItemBoletim(boletim?.unidade, boletim?.precoComBdi))) : '' }}</td>
       </tr>
 
-      <tr style="background-color: #F8CBAD;">
-        <th></th>
-        <th></th>
-        <th colspan="17">Item a medir</th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
+      <!-- Nível 2: SubBoletins -->
+      <!-- <ng-container *ngFor="let subBoletim of boletim.subBoletins"> -->
+        <!-- <tr class="sub-boletim">
+          <td>{{ subBoletim.numero }}</td>
+          <td>{{ subBoletim.codigoATA }}</td>
+          <td colspan="17">{{ subBoletim.descricao }}</td>
+          <td>{{ subBoletim.quantidade }}</td>
+          <td>{{ subBoletim.unidade }}</td>
+          <td>{{ subBoletim.precoSemBDI ? ('R$ ' + subBoletim.precoSemBDI.toFixed(2)) : '' }}</td>
+          <td>{{ subBoletim.bdi ? (subBoletim.bdi * 100).toFixed(2) + '%' : '' }}</td>
+          <td>{{ subBoletim.precoComBDI ? ('R$ ' + subBoletim.precoComBDI.toFixed(2)) : '' }}</td>
+          <td>{{ subBoletim.valorTotal ? ('R$ ' + subBoletim.valorTotal.toFixed(2)) : '' }}</td>
+        </tr> -->
 
-      <ng-container *ngFor="let item of dataSource">
-        <!-- Itera sobre os itens principais -->
-        <tr class="item-principal">
-          <td>{{ item.numero }}</td>
-          <td>{{ item.codigoAta }}</td>
-          <td colspan="17">{{ item.descricao }}</td>
-          <td>{{ item.unidade }}</td>
-          <td>{{ item.quantidadeResponse.nome }}</td>
-          <td>{{ item.precoSemBdi ? ('R$ ' + item.precoSemBdi.toFixed(2)) : '' }}</td>
-          <td>{{ item.bdi ? item.bdi + '%' : '' }}</td>
-          <td>{{ item.precoComBdi ? ('R$ ' + item.precoComBdi.toFixed(2)) : '' }}</td>
-          <td>{{ item.valorTotal ? ('R$ ' + item.valorTotal.toFixed(2)) : '' }}</td>
-        </tr>
-
-
+        <!-- Nível 3: Subitens -->
+        <!-- <ng-container *ngFor="let subItem of subBoletim.subitens">
+          <tr class="subitem">
+            <td>{{ subItem.numero }}</td>
+            <td>{{ subItem.codigoATA }}</td>
+            <td colspan="17">{{ subItem.descricao }}</td>
+            <td>{{ subItem.quantidade }}</td>
+            <td>{{ subItem.unidade }}</td>
+            <td>{{ subItem.precoSemBDI ? ('R$ ' + subItem.precoSemBDI.toFixed(2)) : '' }}</td>
+            <td>{{ subItem.bdi ? (subItem.bdi * 100).toFixed(2) + '%' : '' }}</td>
+            <td>{{ subItem.precoComBDI ? ('R$ ' + subItem.precoComBDI.toFixed(2)) : '' }}</td>
+            <td>{{ subItem.valorTotal ? ('R$ ' + subItem.valorTotal.toFixed(2)) : '' }}</td>
+          </tr>
+        </ng-container> -->
       </ng-container>
+    <!-- </ng-container> -->
 
-      <tr>
-        <td style="background-color: #ffffff;" colspan="23" class="highlight">VALOR TOTAL DA MEDIÇÃO:</td>
-        <td style="background-color: #df0101;" colspan="2" class="highlight">R$ {{ this.valorTotalMedicao.toFixed(2) }}</td>
-      </tr>
-    </tbody>
-  </table>
+    <tr>
+      <td style="background-color: #ffffff;" colspan="23" class="highlight">VALOR TOTAL DA MEDIÇÃO:</td>
+      <td style="background-color: #df0101;" colspan="2" class="highlight">R$ {{ calcularSomaValorTotal() }}</td>
+    </tr>
+  </tbody>
+</table>
+<tfoot class="signature-section" *ngIf="this.boletim">
 
-  <tfoot *ngIf="boletimCabecalho && dataSource" class="signature-section">
-      <div class="signature-contratante">
-        <p>_______________________________________</p>
-        <p> {{this.nomeUnidade}}</p>
-      </div>
-      <div class="signature-contratada">
-        <p>_______________________________________</p>
-        <p>OBJETIVA PROJETOS E SERVIÇOS LTDA</p>
-        <p>CNPJ: 12.345.678/0001-90</p>
-      </div>
-  </tfoot>
+  <div class="signature-contratante">
+    <p>_______________________________________</p>
+    <p> {{this.nomeUnidade}}</p>
+  </div>
+
+  <div class="signature-contratada">
+    <p>_______________________________________</p>
+    <p>OBJETIVA PROJETOS E SERVIÇOS LTDA</p>
+    <p>CNPJ: 12.345.678/0001-90</p>
+  </div>
+</tfoot>
 </div>
-<!-- Botão para Gerar PDF -->
-<button *ngIf="boletimCabecalho && dataSource" class="button-class" (click)="generatePDF()">Gerar PDF</button>
+</div>
+<!-- Botão para gerar PDF -->
+<button (click)="generatePDF()" class="button-class" *ngIf="this.boletim">Gerar PDF</button>
+
+
+<app-loading *ngIf="this.isLoading"></app-loading>

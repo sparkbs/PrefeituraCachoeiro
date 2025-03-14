@@ -120,9 +120,9 @@ export class AprovacaoBoletimComponent implements OnInit {
     window.open(url, '_blank');  // Abre em uma nova guia
   }
 
-  openBoletimMedicao(idProjeto, idMedicao: number) {
+  openBoletimMedicao(idCliente: number,idContrato: number,idProjeto: number, idMedicao: number) {
     const url = this.router.serializeUrl(
-      this.router.createUrlTree(['/main/boletimPorProjeto', idProjeto, idMedicao])
+      this.router.createUrlTree(['/main/boletimPorProjeto',idCliente,idContrato, idProjeto, idMedicao])
     );
     window.open(url, '_blank');  // Abre em uma nova guia
   }

@@ -36,7 +36,7 @@ const routes: Routes = [
       { path: 'prefeitura', component: PrefeituraComponent },
       { path: 'boletim', component: BoletimComponent},
       { path: 'boletimMedicao/:clienteId/:contratoId/:medicaoId', component: BoletimMedicaoComponent },
-      { path: 'boletimPorProjeto/:projetoId/:medicaoId', component: BoletimProjetoComponent },
+      { path: 'boletimPorProjeto/:clienteId/:contratoId/:projetoId/:medicaoId', component: BoletimProjetoComponent },
       { path: 'boletimDetalhado/:clienteId/:contratoId/:medicaoId', component: BoletimDetalhadoComponent },
       { path: 'aprovacaoBoletim', component: AprovacaoBoletimComponent },
       { path: 'powerBi', component: PowerBIComponent }
