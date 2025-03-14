@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from 'src/app/services/auth.service';
 import { CookieProjetaService } from 'src/app/services/AuthService/cookie-projeta.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
@@ -11,11 +12,14 @@ import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.servi
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  constructor(private _router: Router, 
-    private auth: AuthService, 
+  hasPrefeitura: boolean = false;
+
+  constructor(private _router: Router,
+    private auth: AuthService,
     private readonly cookie: CookieProjetaService,
     private readonly usuarioService: UsuariosService,
-    private readonly aesEncryptDecript: AESEncryptDecriptService){
+    private readonly aesEncryptDecript: AESEncryptDecriptService,
+    private cookieService: CookieService){
 
   }
   async ngOnInit(): Promise<void> {
@@ -28,7 +32,9 @@ export class HomeComponent implements OnInit {
       await this.usuarioService.BuscarUsuario(Number(idUsuario))
       .then(resultUser => {prefeituraId = resultUser.prefeituraId});
     }
-
-    this.cookie.setCookie("_idPrefeitura",prefeituraId?.toString());
+    if (prefeituraId) {
+      this.hasPrefeitura = true;
+      this.cookie.setCookie("_idPrefeitura",prefeituraId?.toString());
+    }
   }
 }

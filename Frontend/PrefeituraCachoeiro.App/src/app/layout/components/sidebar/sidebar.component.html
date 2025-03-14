@@ -16,28 +16,28 @@
         </span>
       </button>
 
-      <button [routerLink]="['/main/prefeitura']">
+      <button [routerLink]="['/main/prefeitura']" *ngIf="!hasPrefeitura">
         <span>
           <mat-icon>account_balance</mat-icon>
           <span>Cliente</span>
         </span>
       </button>
 
-      <button [routerLink]="['/main/contratos']">
+      <button [routerLink]="['/main/contratos']" *ngIf="!hasPrefeitura">
         <span>
           <mat-icon>description</mat-icon>
           <span>Contrato</span>
         </span>
       </button>
 
-      <button [routerLink]="['/main/projetos']">
+      <button [routerLink]="['/main/projetos']" *ngIf="!hasPrefeitura">
         <span>
           <mat-icon>build</mat-icon>
           <span>Projeto</span>
         </span>
       </button>
 
-      <button [routerLink]="['/main/relatorioProjetosPorMedicao']">
+      <button [routerLink]="['/main/relatorioProjetosPorMedicao']" *ngIf="!hasPrefeitura">
         <span>
           <mat-icon>assignment</mat-icon>
           <span>Medições</span>
@@ -58,9 +58,9 @@
       </button>
 
       <div *ngIf="relatoriosExpanded" class="submenu">
-        <button [routerLink]="['/main/boletim']">Boletins</button>
-        <button [routerLink]="['/main/aprovacaoBoletim']">Tela de Aprovações</button>
-        <button [routerLink]="['/main/powerBi']">Dashboards</button>
+        <button [routerLink]="['/main/boletim']" *ngIf="!hasPrefeitura">Boletins</button>
+        <button [routerLink]="['/main/aprovacaoBoletim']" *ngIf="hasPrefeitura">Tela de Aprovações</button>
+        <button [routerLink]="['/main/powerBi']" *ngIf="!hasPrefeitura">Dashboards</button>
       </div>
     </nav>
   </aside>

@@ -1,10 +1,10 @@
 <div class="home-body">
   <p>Bem vindo a projeta</p>
 
-  <div class="cards-group">
+  <div class="cards-group" *ngIf="!hasPrefeitura">
     <mat-grid-list cols="2" rowHeight="2:1">
       <mat-grid-tile>
-        <mat-card [routerLink]="['/main/projetos']">
+        <mat-card *ngIf="!hasPrefeitura" [routerLink]="['/main/projetos']">
           <mat-card-header>
             <mat-icon>build</mat-icon>
           </mat-card-header>
@@ -13,7 +13,7 @@
         </mat-card>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-card [routerLink]="['/main/contratos']">
+        <mat-card *ngIf="!hasPrefeitura" [routerLink]="['/main/contratos']">
           <mat-card-header>
             <mat-icon>description</mat-icon>
           </mat-card-header>
@@ -22,7 +22,7 @@
         </mat-card>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-card [routerLink]="['/main/configuracoes']">
+        <mat-card *ngIf="!hasPrefeitura" [routerLink]="['/main/configuracoes']">
           <mat-card-header>
             <mat-icon>account_balance</mat-icon>
           </mat-card-header>
@@ -31,7 +31,7 @@
         </mat-card>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-card [routerLink]="['/main/relatorioProjetosPorMedicao']">
+        <mat-card *ngIf="!hasPrefeitura" [routerLink]="['/main/relatorioProjetosPorMedicao']">
           <mat-card-header>
             <mat-icon>assignment</mat-icon>
           </mat-card-header>
@@ -40,5 +40,14 @@
         </mat-card>
       </mat-grid-tile>
     </mat-grid-list>
+  </div>
+  <div class="aprovador-content" *ngIf="hasPrefeitura">
+    <mat-card [routerLink]="['/main/relatorioProjetosPorMedicao']">
+      <mat-card-header>
+        <mat-icon>assignment</mat-icon>
+      </mat-card-header>
+      <mat-card-title>Aprovação</mat-card-title>
+      <mat-card-content>Nesta seção poderá aprovar medições</mat-card-content>
+    </mat-card>
   </div>
 </div>

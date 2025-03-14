@@ -1,6 +1,7 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { filter } from 'rxjs';
 import { ModalLevantamentoComponent } from 'src/app/main/relatorios/modalLevantamento/modalLevantamento.component';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,25 +13,24 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class SidebarComponent {
   sidenavOpened: boolean = false;
-  currentRoute: string = '';
   relatoriosExpanded = false;
+  hasPrefeitura: boolean = false;
 
   constructor(
     private authService: AuthService,
     private el: ElementRef,
     private renderer: Renderer2,
-    private _router: Router,
+    private cookieService: CookieService,
     public dialog: MatDialog) {
-      this.currentRoute = this._router.url;
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.hasPrefeitura = !!this.cookieService.get('_idPrefeitura');
+    }, 1000);
   }
 
   ngOnInit() {
-    this._router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.currentRoute = event.url;
-      }
-    });
-
   }
 
   toggleSidenav(opened: boolean) {
