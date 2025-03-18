@@ -121,9 +121,6 @@ export class BoletimMedicaoComponent implements OnInit {
     })
     .catch(() => {
       this._toastService.mensagemError("Erro ao buscar prefeitura!");
-    })
-    .finally(() =>{
-      this.isLoading = false;
     });
   }
 
@@ -139,10 +136,7 @@ export class BoletimMedicaoComponent implements OnInit {
       this.listaPrefeitura = result.data;
     })
     .catch(() => {
-      this.isLoading = false;
       this._toastService.mensagemError("Erro ao buscar prefeitura!");
-    })
-    .finally(() =>{
     });
   }
 

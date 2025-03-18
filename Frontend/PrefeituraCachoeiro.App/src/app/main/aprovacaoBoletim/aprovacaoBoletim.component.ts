@@ -47,6 +47,8 @@ export class AprovacaoBoletimComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.isLoading = true;
+
     var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
     
     if(idPrefeituraUser){
@@ -102,6 +104,7 @@ export class AprovacaoBoletimComponent implements OnInit {
   }
 
   async buscar(contratoId: number){
+    this.isLoading = true;
     await this.buscarMedicoes();
     this.showProjetos = true;
   }
@@ -145,6 +148,7 @@ export class AprovacaoBoletimComponent implements OnInit {
     }).catch(() => {
     })
     .finally(() =>{
+      this.isLoading = false;
     });;
   }
 
@@ -205,7 +209,10 @@ export class AprovacaoBoletimComponent implements OnInit {
     await this.api.BuscarTodosContratos(contratosFilter)
     .then((result) => {
       this.listaContratos = result.data.filter(x => x.prefeituraId == prefeituraId);
-    });
+    })    
+    .finally(() =>{
+      this.isLoading = false;
+     });
   }
 
    async getAllProjects(contratoId: number) {

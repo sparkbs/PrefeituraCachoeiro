@@ -11,7 +11,7 @@ export class AuthGuardService {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const idPrefeitura = this.cookieService.get('_idPrefeitura');
 
-    if (idPrefeitura && state.url !== '/main/aprovacaoBoletim') {
+    if (idPrefeitura && state.url !== '/main/aprovacaoBoletim' && !state.url.includes('/main/boletimMedicao') && !state.url.includes('/main/boletimPorProjeto') && !state.url.includes('/main/boletimDetalhado')) {
       this.router.navigate(['/main/aprovacaoBoletim']);
       return false;
     }
