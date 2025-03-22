@@ -61,7 +61,7 @@ export class EditarCriarProjetosComponent implements OnInit {
       this.completeForm();
     })
     .catch((erro) => {
-      this._toastService.mensagemError('Erro ao buscar projeto!');
+      this._toastService.mensagemError(erro.error.message);
     });
   }
 
@@ -90,7 +90,7 @@ export class EditarCriarProjetosComponent implements OnInit {
         this.dialogRef.close(true);
       })
       .catch((res) => {
-        this._toastService.mensagemError('Erro ao atualizar o projeto!');
+        this._toastService.mensagemError(res.error.message);
       });
     }
     else {
@@ -108,11 +108,11 @@ export class EditarCriarProjetosComponent implements OnInit {
         })
         .catch((erro) => {
           this._projetoControllerService.DeletarProjeto(res.idProjeto);
-          this._toastService.mensagemError('Erro ao vincular o projeto no contrato');
+          this._toastService.mensagemError(erro.error.message);
         });
       })
       .catch((erro) => {
-        this._toastService.mensagemError('Erro ao salvar o projeto');
+        this._toastService.mensagemError(erro.error.message);
       })
     }
   }
