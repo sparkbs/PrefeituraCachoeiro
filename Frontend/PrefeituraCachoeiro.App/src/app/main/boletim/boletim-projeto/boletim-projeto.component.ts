@@ -144,7 +144,7 @@ export class BoletimProjetoComponent implements OnInit {
     const projetoRequest: ProjetoRequest = {
           nome: '',
           pagina: 1,
-          itemsPorPagina: 10000
+          itemsPorPagina: 1000000
     };
 
     await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
@@ -589,7 +589,7 @@ export class BoletimProjetoComponent implements OnInit {
     const projetoRequest: ProjetoRequest = {
       nome: '',
       pagina: 1,
-      itemsPorPagina: 10000,
+      itemsPorPagina: 1000000,
       idContrato: this.contratoSelecionadoId
     };
 
