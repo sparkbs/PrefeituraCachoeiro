@@ -110,7 +110,9 @@
     <div style="font-weight: bold; font-size: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 12px;">
       <span style="margin-right: 3px;">Valor Total a Medir: {{ formatToCurrency(somarValorTotal())}}</span>
       <span style="margin-right: 3px;">Valor Saldo Total: {{ formatToCurrency(somarValorSaldoTotal())}}</span>
-      <span style="margin-right: 3px;">Valor Contratual: {{ formatToCurrency(this.medicoes.contratos.valorTotalSolicitado)}}</span>
+      <span style="margin-right: 3px;">Valor Contratual: {{ formatToCurrency(this.medicoes.contratos.valorTotalSolicitado)}}<br>
+        <span style="font-size: 13px;">Valor Total: {{ formatToCurrency(this.medicoes.contratos.valorAtualContrato)}}</span>
+      </span>
       <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="salvar()" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Salvar</button>
       <!--<button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" [ngClass]="{'disabled-btn': isDisabledBtnEnviar}"  [disabled]="isDisabledBtnEnviar" (click)="enviar(medicoes.idMedicoesProjeto)" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Enviar</button>-->
 

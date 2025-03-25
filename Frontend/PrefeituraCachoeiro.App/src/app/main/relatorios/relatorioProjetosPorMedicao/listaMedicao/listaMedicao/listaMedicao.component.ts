@@ -173,7 +173,8 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     this.alterarMedicaoProjeto = !this.alterarMedicaoProjeto;
   }
 
-  formatToCurrency(valor: number): string {
+  formatToCurrency(valor?: number): string {
+    if(valor){
     let valorFormatado = valor.toFixed(2);  // 2 casas decimais
 
     valorFormatado = valorFormatado.replace('.', ',');
@@ -181,6 +182,9 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
     return 'R$ ' + valorFormatado;
+    }else{
+      return 'R$ 0,00'
+    }
   }
 
   nomeProjeto(id:number){

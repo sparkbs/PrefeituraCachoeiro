@@ -43,6 +43,7 @@ export class ProjetoService {
     const formData = new FormData();
     formData.append('Nome', projetoRequest.nome);
     formData.append('CodigoProjeto', projetoRequest.codigoProjeto.toString());
+    formData.append('IdPrefeitura', projetoRequest.idPrefeitura.toString());
 
     return await firstValueFrom(
       this.http.post<RetornaProjetoIdResponse>(
@@ -56,6 +57,9 @@ export class ProjetoService {
     const formData = new FormData();
     formData.append('id', request.id.toString());
     formData.append('nome', request.nome);
+    formData.append('CodigoProjeto', request.codigoProjeto.toString());
+    formData.append('IdPrefeitura', request.idPrefeitura.toString());
+
     return await firstValueFrom(
       this.http.put<GenericResultResponse<RetornaProjetoIdResponse>>(
         `${Environments.APIUrl}/projetos`,

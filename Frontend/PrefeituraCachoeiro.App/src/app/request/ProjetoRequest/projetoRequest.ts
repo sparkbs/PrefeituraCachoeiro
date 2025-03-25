@@ -10,10 +10,13 @@ export class CriarProjetoRequest
 {
     nome: string = '';
     codigoProjeto: number;
+    idPrefeitura: number;
 }
 
 export class AtualizarProjetoRequest
 {
     id: number;
     nome: string;
+    idPrefeitura: number;
+    codigoProjeto: number;
 }

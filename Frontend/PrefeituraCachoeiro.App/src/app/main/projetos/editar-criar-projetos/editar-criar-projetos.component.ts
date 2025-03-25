@@ -71,18 +71,22 @@ export class EditarCriarProjetosComponent implements OnInit {
     this.form.get('nome').setValue(this.projetoEdit.nomeProjeto);
     this.form.get('contrato').setValue(this.projetoEdit.contratos[0].contratos.idContrato);
     this.form.get('prefeitura').setValue(this.projetoEdit.contratos[0].contratos.prefeituraId);
+    this.form.get('codigoProjeto').setValue(this.projetoEdit.codigoProjeto);
   }
 
   saveForm() {
     const projetoRequest: CriarProjetoRequest  = {
       nome: this.form.get('nome').value,
-      codigoProjeto: this.form.get('codigoProjeto').value
+      codigoProjeto: this.form.get('codigoProjeto').value,
+      idPrefeitura: this.form.get('prefeitura').value
     };
 
     if (this.data.edicao && this.data.id) {
       let projetoUpdate: AtualizarProjetoRequest = {
         id: this.data.id,
-        nome: this.form.get('nome').value
+        nome: this.form.get('nome').value,
+        idPrefeitura: this.form.get('prefeitura').value,
+        codigoProjeto: this.form.get('codigoProjeto').value,
       }
       this._projetoControllerService.AtualizarProjeto(projetoUpdate)
       .then((res) => {

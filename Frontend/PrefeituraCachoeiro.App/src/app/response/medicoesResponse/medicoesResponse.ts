@@ -32,6 +32,7 @@ export class MedicoesResponse {
     dataContrato: string;
     numeroContrato: string;
     valorTotalPrevisto: number;
+    valorAtualContrato?: number;
     valorTotalSolicitado: number;
     valorTotalMedido: number;
     valorSaldoRestante: number;

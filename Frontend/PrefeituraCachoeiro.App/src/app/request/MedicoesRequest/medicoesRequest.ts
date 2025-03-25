@@ -14,7 +14,8 @@ export class InserirMedicao {
     idContrato: number = 0;
     dataMedicao: Date;
     resumo: string = "";
-    IdProjeto: number = 0;
+    observacao: string = "";
+    idProjeto: number = 0;
     items: PermissoesItemsRequest[] = [];
   }
 

@@ -9,12 +9,14 @@ export class Grupo {
 }
 
 export interface ContratosResponse {
+    arquivos?: string[]
     idContrato: number;
     projeto: ProjetoResponse;
     dataContrato: Date;
     numeroContrato?: string;
     valorTotalPrevisto?: number;
     valorTotalSolicitado?: number;
+    valorAtualContrato?: number;
     valorTotalMedido?: number;
     valorSaldoRestante?: number;
     items: ItemsContratoResponse[];
