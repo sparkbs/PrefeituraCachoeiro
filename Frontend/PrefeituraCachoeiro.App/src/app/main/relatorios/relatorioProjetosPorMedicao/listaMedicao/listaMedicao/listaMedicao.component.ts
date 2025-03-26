@@ -77,7 +77,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
   async ngOnInit() {
     this.medicoes.items.forEach(item =>{
       item.unidadeSalvaMedida = item.unidade;
-      if(item?.itemsContrato != null){
+      if(item?.itemsContrato != null && item.itemsContrato.valorComBdi != null){
         this.globalService.addItem(item.itemsContrato.item.descricao, item.itemsContrato.unidade, item.idItemContrato, item.unidade)
       }
     })
@@ -120,6 +120,8 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['medicoes']) {
+      this.medicoes.items = this.medicoes.items.filter(x => x.itemsContrato.valorComBdi != null)
+
       this.dataSource.data = this.medicoes.items || [];
       this.dataSource.sort = this.sort;
     }
