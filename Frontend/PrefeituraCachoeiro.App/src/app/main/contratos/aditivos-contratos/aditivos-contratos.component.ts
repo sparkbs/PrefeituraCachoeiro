@@ -15,7 +15,7 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 export class AditivosContratosComponent implements AfterViewInit {
   lista: ContratosAditivosResponse[] = [];
-  displayedColumns: string[] = ['tipoAditivo', 'dataAssinatura', 'validadeAditivo','acoes'];
+  displayedColumns: string[] = ['tipoAditivo','valor', 'dataAssinatura', 'validadeAditivo'];
   dataSource: MatTableDataSource<ContratosAditivosResponse>;
   valorAditivo: string;
   contratoBase: ContratosResponse;
@@ -32,6 +32,16 @@ export class AditivosContratosComponent implements AfterViewInit {
     aditivoFilter.idContrato = this.data.contratobase.idContrato;
     await this.api.BuscarTodosAditivos(aditivoFilter)
     .then((result) => {
+      result.data.forEach((item) => {
+        // Soma o valorTotalComBdi de cada item
+        console.log(item);
+        item.items.forEach(x =>{
+          item.valorTotal = 0;
+          console.log(x);
+          item.valorTotal += x.valorTotalComBdi;
+        });
+      });
+
       this.lista = result.data;
       this.dataSource.data = (this.lista);         
     });

@@ -1,3 +1,5 @@
+import { Item } from "./dadosContratoResponse";
+
 export class TodosContratosResponse{
     data: ContratosResponse[] = [];
     totalRegisters: number = 0;
@@ -101,4 +103,18 @@ export interface ContratosResponse {
     dataAssinatura: Date,
     dataValidade: Date,
     tipoAditivo: string
+    valorTotal: number;
+    items: ItemsAditivosResponse[]
+  }
+
+  export interface ItemsAditivosResponse {
+    aditivoId: number,
+    idItemAditivo: number,
+    item: Item,
+    itemId: number,
+    quantidadeId: number,
+    unidade: number,
+    valorComBdi: number,
+    valorSemBdi: number,
+    valorTotalComBdi: number,
   }
