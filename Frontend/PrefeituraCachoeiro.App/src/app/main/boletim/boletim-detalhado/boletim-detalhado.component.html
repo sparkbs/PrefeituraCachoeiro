@@ -77,10 +77,10 @@
       <!-- Linha de data e contrato -->
       <tr>
         <th colspan="10" class="left-align">
-          DATA DE MEDIÇÃO: {{ boletimCabecalho.dataMedicao | date: 'dd/MM/yyyy' }}
+          DATA DE MEDIÇÃO: {{ boletim.detalhes[0].dataMedicao  | date: 'dd/MM/yyyy' }}
         </th>
         <th colspan="10" class="center-align">
-          NÚMERO DA MEDIÇÃO: {{ boletimCabecalho.numeroMedicao }}
+          NÚMERO DA MEDIÇÃO: {{ medicaoSelecionado }}
         </th>
         <th colspan="5" class="center-align">{{ boletimCabecalho.contrato }}</th>
       </tr>

@@ -34,11 +34,12 @@ export class AditivosContratosComponent implements AfterViewInit {
     .then((result) => {
       result.data.forEach((item) => {
         // Soma o valorTotalComBdi de cada item
+        item.valorTotal = 0;
         console.log(item);
         item.items.forEach(x =>{
-          item.valorTotal = 0;
           console.log(x);
-          item.valorTotal += x.valorTotalComBdi;
+          item.valorTotal += x.unidade * x.valorComBdi;
+          console.log(item.valorTotal);
         });
       });
 

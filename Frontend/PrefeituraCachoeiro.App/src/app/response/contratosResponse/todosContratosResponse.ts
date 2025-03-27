@@ -29,6 +29,7 @@ export interface ContratosResponse {
     gerente: string;
     dataTermino?: Date;
     dataInicio?: Date;
+    dataTerminoAtualizada?: Date;
     prefeituraId?: number;
     prefeitura: PrefeituraResponse;
   }
