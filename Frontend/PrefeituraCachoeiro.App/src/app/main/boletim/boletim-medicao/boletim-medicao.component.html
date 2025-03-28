@@ -160,7 +160,7 @@
             <img [src]="logoTipoImgUrl" alt="Logotipo" class="logo" />
             <div class="title-container">
               <h2>{{ nomePrefeitura }}</h2>
-              <h4>{{ boletimCabecalho.nomeUnidade }}</h4>
+              <h4>{{ boletimCabecalho.nomeUnidade.replace(" - SEMO","") }}</h4>
             </div>
           </div>
         </th>
@@ -174,13 +174,13 @@
       <!-- Linha do resumo -->
       <tr>
         <th colspan="20" rowspan="2" class="summary">
-          RESUMO: {{ boletimCabecalho.resumoBoletim }}
+          RESUMO: {{ projetosNome }}
         </th>
-        <th colspan="5" class="consultancy-header">{{ boletimCabecalho.descontoFiscalizacao }}</th>
+       <!--  <th colspan="5" class="consultancy-header">{{ boletimCabecalho.descontoFiscalizacao }}</th>-->
       </tr>
       <tr>
-        <th colspan="3" class="bdi">BDI: (FISCALIZAÇÃO)</th>
-        <th colspan="3" class="bdi">BDI 2 (PROJETOS)</th>
+        <th colspan="3" class="bdi"></th>
+        <th colspan="3" class="bdi"></th>
       </tr>
       <!-- Linha de data e contrato -->
       <tr>
@@ -246,7 +246,7 @@
   <tfoot *ngIf="boletimCabecalho && dataSource" class="signature-section">
       <div class="signature-contratante">
         <p>_______________________________________</p>
-        <p> {{this.nomeUnidade}}</p>
+        <p> {{this.nomeUnidade.replace(" - SEMO","")}}</p>
       </div>
       <div class="signature-contratada">
         <p>_______________________________________</p>

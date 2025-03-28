@@ -61,6 +61,7 @@ export class MedicoesResponse {
     quantidadeId: number;
     quantidade: Quantidade;
     unidade: number;
+    unidadeOriginal: number;
     valorSemBdi: number;
     valorComBdi: number;
     valorTotalComBdi: number;

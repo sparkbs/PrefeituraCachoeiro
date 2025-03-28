@@ -14,6 +14,7 @@ export class AprovarMedicaoComponent implements OnInit {
   listaDocumentoContrato: ListaDocumentosContrato[] = [];
   @ViewChild('documentoInput') documentoInput: any;
   aprovarMedicoes: AprovarMedicoesRequest = new AprovarMedicoesRequest();
+  isLoading = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public IdMedicoesProj: any, 
   private _toastService: ToastService, 
@@ -36,6 +37,7 @@ export class AprovarMedicaoComponent implements OnInit {
   }
 
     async criarAprovacao(){
+      this.isLoading = true;
       this.aprovarMedicoes.IdMedicoesProjeto = this.IdMedicoesProj.idMedicoesProj;
       this.listaDocumentoContrato.forEach(x => this.aprovarMedicoes.Arquivos.push(x.file));
        
@@ -52,6 +54,9 @@ export class AprovarMedicaoComponent implements OnInit {
       .catch(() =>
       {
         this._toastService.mensagemError("Erro ao aprovar uma medição.");
+      })
+      .finally(() =>{
+        this.isLoading = false;
       });
     }
 

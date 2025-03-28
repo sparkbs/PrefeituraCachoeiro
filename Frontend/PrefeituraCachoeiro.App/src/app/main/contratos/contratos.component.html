@@ -55,7 +55,7 @@
 
               <ng-container matColumnDef="valorSaldoRestante">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 13px;"> Valor Saldo</th>
-                <td mat-cell *matCellDef="let row" style="font-size: 11px;"> {{ formatCurrency((row.valorTotalPrevisto - row.valorTotalMedido).toFixed(2))}} </td>
+                <td mat-cell *matCellDef="let row" style="font-size: 11px;"> {{ formatCurrency(row.valorSaldoRestante.toFixed(2))}} </td>
               </ng-container>
 
               <ng-container matColumnDef="valorSolicitado">

@@ -21,6 +21,7 @@ export class AditivosContratosComponent implements AfterViewInit {
   contratoBase: ContratosResponse;
   requestCriarAditivo: AditivosContratoRequest = new AditivosContratoRequest();
   @ViewChild('baseDadosInput') baseDadosInput: any;
+  isLoading = false;
   
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private readonly api: ContratosService, private _toastService: ToastService,   private dialogRef: MatDialogRef<AditivosContratosComponent>, ) {
     this.dataSource = new MatTableDataSource(this.lista); 
@@ -52,6 +53,7 @@ export class AditivosContratosComponent implements AfterViewInit {
    /* this.requestCriarAditivo.TipoAditivo = this.contratoBase.dataTermino;
     this.requestCriarAditivo.DataValidadeAditivo = this.contratoBase.dataInicio;
     this.requestCriarAditivo.DataAssinaturaAditivo = this.contratoBase.dataContrato;*/
+    this.isLoading = true;
     this.requestCriarAditivo.ContratoId = this.contratoBase.idContrato;
     this.requestCriarAditivo.ArquivoTemplate = this.adicionarBaseDados();
 
@@ -62,6 +64,9 @@ export class AditivosContratosComponent implements AfterViewInit {
     })
     .catch((res) => {
       this._toastService.mensagemError(res.error.message);
+    })
+    .finally(()=>{
+      this.isLoading = false;
     });
 
   }

@@ -52,6 +52,7 @@ export class BoletimDetalhadoComponent implements OnInit {
   isEnabledInputs: boolean = false;
   enableMedicao: boolean = false;
   enableContrato: boolean = false;
+  projetosNome?: string = '';
 
   // Variáveis de controle de carregamento e erros
   isLoading = false;
@@ -246,6 +247,7 @@ export class BoletimDetalhadoComponent implements OnInit {
   }
 
   async onSelectionChangeMedicao(medicaoId: number) {
+    this.projetosNome = "";
     await this.carregarBoletinsMedicao(medicaoId);
   }
 
@@ -347,6 +349,7 @@ export class BoletimDetalhadoComponent implements OnInit {
 
           var projeto = new SubBoletim();
           projeto.descricao = dados.detalhes[0].projeto;
+          this.projetosNome += this.projetosNome == '' ? projeto.descricao :', '+projeto.descricao;
           //this.dataSource.unshift(projeto);
 
           this.dadosSeparadosProjeto = this.dadosSeparadosProjeto.concat(this.dataSource);

@@ -38,3 +38,4 @@
   <button mat-button style="border: solid 1px; border-color: black;" (click)="voltar()">Voltar</button>
   <button mat-button style="border: solid 1px; border-color: black;" (click)="criarAprovacao()">Salvar</button>
 </mat-dialog-actions>
+<app-loading *ngIf="this.isLoading"></app-loading>

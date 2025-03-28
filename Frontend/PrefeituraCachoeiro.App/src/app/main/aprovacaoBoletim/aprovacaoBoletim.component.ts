@@ -159,6 +159,7 @@ export class AprovacaoBoletimComponent implements OnInit {
   }
 
   async reprovarMedicao(idMedicao: number){
+    this.isLoading = true;
     let request = new DadosMedicoesRequest()
     request.DataRegistro = new Date().toISOString().split('T')[0]; 
     request.Resumo = "";
@@ -174,6 +175,9 @@ export class AprovacaoBoletimComponent implements OnInit {
     })
     .catch((ex) => {
       this._toastService.mensagemError(ex?.error?.message);
+    })
+    .finally(() =>{
+      this.isLoading = false;
     });
   }
   
