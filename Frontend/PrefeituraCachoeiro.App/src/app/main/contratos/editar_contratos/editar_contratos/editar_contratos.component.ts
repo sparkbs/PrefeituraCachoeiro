@@ -1,12 +1,15 @@
 import { AfterViewInit, Component, Inject, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { OrigemArquivoAnexadoEnum } from 'src/app/enums/origemArquivoAnexado';
 import { AtualizarContratoRequest } from 'src/app/request/ContratoRequest/atualizarContratoRequest';
+import { salvarDocumentoContratoRequest } from 'src/app/request/ContratoRequest/criarContratoRequest';
 import { UsuariosRequest } from 'src/app/request/UsuariosRequest/usuariosRequest';
 import { ListaDocumentosContrato } from 'src/app/response/contratosResponse/dadosContratoResponse';
-import { ContratosResponse, PrefeituraResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { ArquivosContratoResponse, ContratosResponse, PrefeituraResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { PrefeituraFilter } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { UsuariosResponse } from 'src/app/response/usuariosResponse/usuariosResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
+import { MedicoesService } from 'src/app/services/medicoes.service';
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
@@ -20,10 +23,7 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
   @ViewChild('documentoInput') documentoInput: any;
   listaPrefeitura: PrefeituraResponse[] = [];
   atualizarContrato: AtualizarContratoRequest = new AtualizarContratoRequest();
-  listaDocumentoContrato: ListaDocumentosContrato[] = [{
-    nome: 'documento.pdf',
-    file: null
-  }];
+  listaDocumentoContrato: ArquivosContratoResponse[] = [];
   dataTerminoString: string;
   dataInicioString: string;
   dataContratoString: string;
@@ -31,6 +31,7 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
   isLoading = false;
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: ContratosResponse,
+  private readonly apiMedicao: MedicoesService,
   private readonly apiPrefeitura: PrefeituraService,
    private dialogRef: MatDialogRef<Editar_contratosComponent>,
    private readonly api: ContratosService,
@@ -138,22 +139,59 @@ formatStringToDate(data: string) {
   return dataConvertidaDate;
 }
 
-adicionarDocumento(){
+  async adicionarDocumento(){
     if(this.documentoInput.nativeElement.files[0] != undefined){
+      var id = this.data.idContrato;
       const documentoFile = this.documentoInput.nativeElement.files[0] as File;
-      this.listaDocumentoContrato.push({
-        nome: documentoFile.name,
-        file: documentoFile
+      let documentoRequest: salvarDocumentoContratoRequest = new salvarDocumentoContratoRequest();
+      console.log(id);
+      documentoRequest.IdContrato = id,
+      documentoRequest.Arquivos = [documentoFile];
+      /*this.listaDocumentoContrato.push({
+        //a: documentoFile.name,
+        //file: documentoFile
       });   
       this.documentoInput.nativeElement.value = '';
+    }*/
+      this.documentoInput.nativeElement.value = '';
+      this.isLoading = true;
+      // Filtra os documentos, removendo o que for igual ao item a ser deletado
+      await this.api.AdicionarDocumentosContrato(documentoRequest)
+      .then(async (result) => {
+        this._toastService.mensagemSuccess("Documento importado com sucesso.");
+      })
+      .catch(() =>
+      {
+        this._toastService.mensagemSuccess("Erro ao importar documento.");
+      })
+      .finally(()=>{
+        this.isLoading = false;
+      });
     }
   }
 
-  deletarDocumentos(deletarDocumento: ListaDocumentosContrato): void {
+ /* deletarDocumentos(deletarDocumento: ListaDocumentosContrato): void {
     // Filtra os documentos, removendo o que for igual ao item a ser deletado
     this.listaDocumentoContrato = this.listaDocumentoContrato.filter(item => item !== deletarDocumento);
+  }*/
+  
+  async deletarDocumento(idDocumento: number) {
+    this.isLoading = true;
+    // Filtra os documentos, removendo o que for igual ao item a ser deletado
+    await this.api.DeletarArquivoContrato(idDocumento)
+    .then(async (result) => {
+      this._toastService.mensagemSuccess("Documento deletado com sucesso.");
+      this.data.arquivosContratos = this.data.arquivosContratos.filter(x => x.id != idDocumento);
+    })
+    .catch(() =>
+    {
+      this._toastService.mensagemSuccess("Erro ao deletar documento.");
+    })
+    .finally(()=>{
+      this.isLoading = false;
+    });
   }
-
+    
   handleKeyDown(event: KeyboardEvent): void {
     const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
     
@@ -175,6 +213,28 @@ adicionarDocumento(){
     value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
     value = 'R$ ' + value; 
     this.data.valor = value; 
+  }
+
+  async downloadDocumento(idDocumento: number, arquivo:string) {
+    this.isLoading = true;
+    // Filtra os documentos, removendo o que for igual ao item a ser deletado
+    await this.api.DownloadArquivoContrato(idDocumento)
+    .then((result) => {
+      const url = window.URL.createObjectURL(result);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = arquivo;  // Você pode definir o nome do arquivo
+      a.click();
+      window.URL.revokeObjectURL(url);  // Limpar a URL após o download
+      this._toastService.mensagemSuccess("Download realizado com sucesso.");
+    })
+    .catch(() =>
+    {
+      this._toastService.mensagemError("Erro ao realizar download documento.");
+    })
+    .finally(()=>{
+      this.isLoading = false;
+    });
   }
 
 }

@@ -14,3 +14,13 @@ export class CriarContratoRequest {
     Arquivos: File[] = [];
     ArquivoTemplate: File;
 }
+
+export class salvarDocumentoContratoRequest {
+    IdContrato: number;
+    Arquivos: File[] = [];
+}
+
+export class salvarDocumentoAditivoRequest {
+    IdAditivo: number;
+    Arquivos: File[] = [];
+}

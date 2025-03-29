@@ -71,3 +71,16 @@ export class ListaDocumentosContrato
     nome: string = '';
     file: File;
 }
+
+export class DocumentosRegistradosResponse
+{
+    ids: DocumentosRegistradosIdsResponse[] = [];
+    isSucesso: boolean;
+    mensagemErro: string = '';
+}
+
+export class DocumentosRegistradosIdsResponse
+{
+    id: number;
+    arquivoMedicao: string = '';
+}

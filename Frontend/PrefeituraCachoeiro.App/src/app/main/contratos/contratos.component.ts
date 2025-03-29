@@ -7,7 +7,7 @@ import { Editar_criar_contratosComponent } from './criar_contratos/editar_criar_
 import { AditivosContratosComponent } from './aditivos-contratos/aditivos-contratos.component';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
-import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { ArquivosContratoResponse, ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { Editar_contratosComponent } from './editar_contratos/editar_contratos/editar_contratos.component';
 
 export interface Item {
@@ -19,6 +19,7 @@ export interface Item {
   valorContrato: number;
   tipoContratacao: string;
   acoes: string;
+  arquivosContratos: ArquivosContratoResponse[]; 
 }
 
 @Component({

@@ -18,9 +18,11 @@ import { AditivosContratosComponent } from './aditivos-contratos/aditivos-contra
 import { MatSelectModule } from '@angular/material/select';
 import { Editar_contratosComponent } from './editar_contratos/editar_contratos/editar_contratos.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MatRadioModule } from '@angular/material/radio'; // Importar MatRadioModule
+import { VerAnexosAditivosComponent } from './ver-anexos-aditivos/ver-anexos-aditivos.component';
 
 @NgModule({
-  declarations: [ ContratosComponent, Editar_criar_contratosComponent, AditivosContratosComponent, Editar_contratosComponent ],
+  declarations: [ ContratosComponent, Editar_criar_contratosComponent, AditivosContratosComponent, Editar_contratosComponent, VerAnexosAditivosComponent ],
   imports: [
     ReactiveFormsModule,
     CommonModule,
@@ -37,7 +39,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatDialogModule,
     FormsModule ,
     SharedModule,
-    MatSelectModule
+    MatSelectModule,
+    MatRadioModule
   ]
 })
 export class ContratosModule { }

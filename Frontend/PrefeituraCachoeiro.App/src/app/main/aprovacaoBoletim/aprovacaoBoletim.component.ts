@@ -2,8 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
 import { DadosMedicoesRequest, MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
-import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
-import { ArquivosMedicoesProjetoResponse, MedicoesModel, Projeto, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { ArquivosContratoResponse, ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { ArquivosAprovacao, ArquivosMedicoesProjetoResponse, MedicoesModel, Projeto, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { MedicoesService } from 'src/app/services/medicoes.service';
@@ -35,6 +35,7 @@ export class AprovacaoBoletimComponent implements OnInit {
   listaPrefeitura: PrefeituraResponse[] = [];
   selectedPrefeitura: number | null = null; // Valor selecionado
   exibirContrato = false;
+  contrato: ContratosResponse;
 
   constructor(private readonly apiPrefeitura: PrefeituraService,
     private auth: AuthService, 
@@ -104,6 +105,8 @@ export class AprovacaoBoletimComponent implements OnInit {
   }
 
   async buscar(contratoId: number){
+    this.contrato = this.listaContratos.find(x => x.idContrato == contratoId);
+
     this.isLoading = true;
     await this.buscarMedicoes();
     this.showProjetos = true;
@@ -152,9 +155,14 @@ export class AprovacaoBoletimComponent implements OnInit {
     });;
   }
 
-  openModalVerAnexo(arquivos: ArquivosMedicoesProjetoResponse[]){
+  openModalVerAnexo(arquivos: ArquivosMedicoesProjetoResponse[], arquivosContrato: ArquivosContratoResponse[]){
+    var arquivoVisualizacao: ArquivosAprovacao = new ArquivosAprovacao();
+    arquivoVisualizacao.arquivosMedicoesProjetoResponse = arquivos;
+    console.log(this.contrato);
+    arquivoVisualizacao.arquivosContratosResponse = this.contrato.arquivosContratos;
+
     const dialogRef = this.dialog.open(VerDocumentosComponent,{
-      data: arquivos
+      data: arquivoVisualizacao
     });
   }
 
