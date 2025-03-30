@@ -12,9 +12,9 @@ import { Editar_criar_contratosComponent } from './main/contratos/criar_contrato
 import { RelatorioProjetosPorMedicaoComponent } from './main/relatorios/relatorioProjetosPorMedicao/relatorioProjetosPorMedicao.component';
 import { PrefeituraComponent } from './main/prefeitura/prefeitura/prefeitura.component';
 import { BoletimComponent } from './main/boletim/boletim.component';
-import { BoletimMedicaoComponent } from './main/boletim/boletim-medicao/boletim-medicao.component';
-import { BoletimProjetoComponent } from './main/boletim/boletim-projeto/boletim-projeto.component';
 import { BoletimDetalhadoComponent } from './main/boletim/boletim-detalhado/boletim-detalhado.component';
+import { BoletimProjetoComponent } from './main/boletim/boletim-projeto/boletim-projeto.component';
+import { BoletimGeralComponent } from './main/boletim/boletim-geral/boletim-geral.component';
 import { AprovacaoBoletimComponent } from './main/aprovacaoBoletim/aprovacaoBoletim.component';
 import { PowerBIComponent } from './main/relatorios/powerBI/powerBI.component';
 import { AuthGuardService } from './services/auth-guard.service';
@@ -36,9 +36,9 @@ const routes: Routes = [
       { path: 'relatorioProjetosPorMedicao', component: RelatorioProjetosPorMedicaoComponent, canActivate: [AuthGuardService] },
       { path: 'prefeitura', component: PrefeituraComponent, canActivate: [AuthGuardService] },
       { path: 'boletim', component: BoletimComponent, canActivate: [AuthGuardService]},
-      { path: 'boletimMedicao/:clienteId/:contratoId/:medicaoId', component: BoletimMedicaoComponent, canActivate: [AuthGuardService] },
-      { path: 'boletimPorProjeto/:clienteId/:contratoId/:projetoId/:medicaoId', component: BoletimProjetoComponent, canActivate: [AuthGuardService] },
       { path: 'boletimDetalhado/:clienteId/:contratoId/:medicaoId', component: BoletimDetalhadoComponent, canActivate: [AuthGuardService] },
+      { path: 'boletimPorProjeto/:clienteId/:contratoId/:projetoId/:medicaoId', component: BoletimProjetoComponent, canActivate: [AuthGuardService] },
+      { path: 'boletimGeral/:clienteId/:contratoId/:medicaoId', component: BoletimGeralComponent, canActivate: [AuthGuardService] },
       { path: 'aprovacaoBoletim', component: AprovacaoBoletimComponent, canActivate: [AuthGuardService] },
       { path: 'powerBi', component: PowerBIComponent, canActivate: [AuthGuardService] }
     ]
