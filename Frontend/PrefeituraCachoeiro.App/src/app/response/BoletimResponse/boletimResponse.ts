@@ -49,7 +49,7 @@ export class BoletimDetalhadoResponse {
 }
 
 export class BoletimMedicaoDetalhadoResponse {
-  boletimGeralCabecalho: BoletimProjetoCabecalho;
+  boletimDetalhadoCabecalho: BoletimProjetoCabecalho;
   detalhes: Detalhe[];
   valorTotalMedicao: number;
 }

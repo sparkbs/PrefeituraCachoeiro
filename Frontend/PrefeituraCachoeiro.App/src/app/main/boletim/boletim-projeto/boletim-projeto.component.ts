@@ -395,9 +395,9 @@ export class BoletimProjetoComponent implements OnInit {
          if (dados.detalhes.length != 0) {
            this.boletim = dados;
            //Se tornou boletim geral
-           this.boletimCabecalho = dados.boletimGeralCabecalho;
+           this.boletimCabecalho = dados.boletimDetalhadoCabecalho;
  
-           console.log(this.contratoSelecionado);
+           console.log(this.boletimCabecalho);
            // Verificar o tipo do campo logoTipoImg
            await this.RetornarLogoCliente(this.contratoSelecionado.prefeituraId);
  
@@ -416,15 +416,14 @@ export class BoletimProjetoComponent implements OnInit {
            this.projetosNome += this.projetosNome == '' ? projeto.descricao :', '+projeto.descricao;
 
            //this.dataSource.unshift(projeto);
- 
-           this.dadosSeparadosProjeto = this.dadosSeparadosProjeto.concat(this.dataSource);
- 
+
+          this.dadosSeparadosProjeto = this.dadosSeparadosProjeto.concat(this.dataSource);
+          
            this.agruparEDistribuirQuantidades();
- 
+
            this.dadosSeparadosProjeto.sort((a, b) => this.compareVersions(a.numero, b.numero));
- 
-           this.agruparPorDigitoInicial();
- 
+
+           //this.agruparPorDigitoInicial();
            this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
            this.valorTotalMedicao = dados.valorTotalMedicao || 0;
          }

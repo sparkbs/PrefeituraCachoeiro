@@ -330,7 +330,7 @@ export class BoletimGeralComponent implements OnInit {
       .then(async (dados) => {
         if (dados.detalhes.length != 0) {
           this.boletim = dados;
-          this.boletimCabecalho = dados.boletimGeralCabecalho;
+          this.boletimCabecalho = dados.boletimDetalhadoCabecalho;
 
           console.log(this.contratoSelecionado);
           // Verificar o tipo do campo logoTipoImg
