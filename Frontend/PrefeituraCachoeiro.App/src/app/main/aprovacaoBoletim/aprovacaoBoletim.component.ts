@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
+import { BuscarAditivosContrato, BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
 import { DadosMedicoesRequest, MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ArquivosContratoResponse, ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
@@ -155,11 +155,24 @@ export class AprovacaoBoletimComponent implements OnInit {
     });;
   }
 
-  openModalVerAnexo(arquivos: ArquivosMedicoesProjetoResponse[], arquivosContrato: ArquivosContratoResponse[]){
+  async openModalVerAnexo(arquivos: ArquivosMedicoesProjetoResponse[], arquivosContrato: ArquivosContratoResponse[]){    
+    this.isLoading = true
     var arquivoVisualizacao: ArquivosAprovacao = new ArquivosAprovacao();
     arquivoVisualizacao.arquivosMedicoesProjetoResponse = arquivos;
-    console.log(this.contrato);
     arquivoVisualizacao.arquivosContratosResponse = this.contrato.arquivosContratos;
+
+    var aditivoFilter : BuscarAditivosContrato = new BuscarAditivosContrato();
+    aditivoFilter.idContrato = this.contratoSelecionado;
+    await this.api.BuscarTodosAditivos(aditivoFilter).then((result) => {
+      result.data.forEach((item) => {
+        // Soma o valorTotalComBdi de cada item
+        arquivoVisualizacao.arquivosAditivosResponse.push(...item.arquivosAditivos);
+      });
+    })
+    .catch(() =>{})
+    .finally(() =>{
+      this.isLoading = false
+    });
 
     const dialogRef = this.dialog.open(VerDocumentosComponent,{
       data: arquivoVisualizacao
