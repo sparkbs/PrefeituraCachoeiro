@@ -80,28 +80,6 @@ export class VerAnexosAditivosComponent {
     this.dialogRef.close();
   }
 
-  async criarAditivo(){
-   /* this.requestCriarAditivo.TipoAditivo = this.contratoBase.dataTermino;
-    this.requestCriarAditivo.DataValidadeAditivo = this.contratoBase.dataInicio;
-    this.requestCriarAditivo.DataAssinaturaAditivo = this.contratoBase.dataContrato;*/
-    this.isLoading = true;
-    this.requestCriarAditivo.ContratoId = this.contratoBase.idContrato;
-    this.requestCriarAditivo.ArquivoTemplate = this.adicionarBaseDados();
-
-    await this.api.CriarAditivos(this.requestCriarAditivo)
-    .then((result) => {
-      this._toastService.mensagemSuccess("Aditivo criado com sucesso");
-      this.dialogRef.close(result);
-    })
-    .catch((res) => {
-      this._toastService.mensagemError(res.error.message);
-    })
-    .finally(()=>{
-      this.isLoading = false;
-    });
-
-  }
-
   adicionarBaseDados(){
     if(this.baseDadosInput.nativeElement.files[0] != undefined){
       const documentoFile = this.baseDadosInput.nativeElement.files[0] as File;
@@ -201,6 +179,7 @@ export class VerAnexosAditivosComponent {
       // Filtra os documentos, removendo o que for igual ao item a ser deletado
       await this.api.AdicionarDocumentosAditivo(documentoRequest)
       .then(async (result) => {
+        this.lista.arquivosAditivos.push(...result.ids);
         this._toastService.mensagemSuccess("Documento importado com sucesso.");
       })
       .catch(() =>

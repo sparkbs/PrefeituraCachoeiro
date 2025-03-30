@@ -20,6 +20,18 @@
       </span>
     </div>
   </div> 
+
+  <h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Documentos Anexados No Aditivos:</h1>
+
+  <div *ngFor="let item of data.arquivosAditivosResponse">
+    <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
+      {{item.arquivo}}
+      <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumentosAditivos(item.id, item.arquivo)">
+        <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
+      </span>
+    </div>
+  </div> 
 </mat-dialog-content>
 <mat-dialog-actions >
 </mat-dialog-actions>
+<app-loading *ngIf="this.isLoading"></app-loading>

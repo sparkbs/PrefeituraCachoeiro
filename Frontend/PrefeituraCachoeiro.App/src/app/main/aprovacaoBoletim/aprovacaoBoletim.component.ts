@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
+import { BuscarAditivosContrato, BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
 import { DadosMedicoesRequest, MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ArquivosContratoResponse, ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
@@ -155,11 +155,26 @@ export class AprovacaoBoletimComponent implements OnInit {
     });;
   }
 
-  openModalVerAnexo(arquivos: ArquivosMedicoesProjetoResponse[], arquivosContrato: ArquivosContratoResponse[]){
+  async openModalVerAnexo(arquivos: ArquivosMedicoesProjetoResponse[], arquivosContrato: ArquivosContratoResponse[]){    
+    this.isLoading = true
     var arquivoVisualizacao: ArquivosAprovacao = new ArquivosAprovacao();
     arquivoVisualizacao.arquivosMedicoesProjetoResponse = arquivos;
-    console.log(this.contrato);
     arquivoVisualizacao.arquivosContratosResponse = this.contrato.arquivosContratos;
+
+    var aditivoFilter : BuscarAditivosContrato = new BuscarAditivosContrato();
+    aditivoFilter.idContrato = this.contratoSelecionado;
+    await this.api.BuscarTodosAditivos(aditivoFilter).then((result) => {
+      result.data.forEach((item) => {
+        // Soma o valorTotalComBdi de cada item
+        arquivoVisualizacao.arquivosAditivosResponse.push(...item.arquivosAditivos);
+      });
+    })
+    .catch((res) =>{
+      this._toastService.mensagemError(res.error.message);
+    })
+    .finally(() =>{
+      this.isLoading = false
+    });
 
     const dialogRef = this.dialog.open(VerDocumentosComponent,{
       data: arquivoVisualizacao
@@ -173,9 +188,19 @@ export class AprovacaoBoletimComponent implements OnInit {
     request.Resumo = "";
     request.IdMedicoesProjeto = idMedicao;
     await this.apiMedicoes.ReprovarMedicoes(request)
-    .then((result) => {     
+    .then(async (result) => {     
       if(result.isSucesso){
         this._toastService.mensagemSuccess("Sucesso ao reprovar medição.");
+        await this.buscar(this.contratoSelecionado)
+        .then(() =>{
+          this._toastService.mensagemSuccess("Medições atualizadas com sucesso!");
+        })
+        .catch((res) =>{
+          this._toastService.mensagemError(res.error.message);
+        })
+        .finally(() =>{
+          this.isLoading = false;
+        });
       }
       else{
         this._toastService.mensagemError(result.mensagemErro);
@@ -191,6 +216,20 @@ export class AprovacaoBoletimComponent implements OnInit {
   
   aprovarMedicao(idMedicao: number){
     this.dialog.open(AprovarMedicaoComponent,{data:{idMedicoesProj: idMedicao}});
+    this.dialog.afterAllClosed.subscribe(async () => {
+      this._toastService.mensagemSuccess("Aguarde, atualizando as medições!");
+      this.isLoading = true;
+      await this.buscar(this.contratoSelecionado)
+      .then(() =>{
+        this._toastService.mensagemSuccess("Atualizado com sucesso!");
+      })
+      .catch((res) =>{
+        this._toastService.mensagemError(res.error.message);
+      })
+      .finally(() =>{
+        this.isLoading = false;
+      });
+    });
   }
 
   nomeProjeto(id:number, projetos: Projeto[]){

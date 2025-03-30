@@ -1,4 +1,4 @@
-import { ArquivosContratoResponse } from "../contratosResponse/todosContratosResponse";
+import { ArquivosAditivos, ArquivosContratoResponse } from "../contratosResponse/todosContratosResponse";
 
 export class MedicoesResponse {
     idMedicoesProjeto: number;
@@ -28,8 +28,9 @@ export class MedicoesResponse {
   }
 
   export class ArquivosAprovacao {
-    arquivosMedicoesProjetoResponse: ArquivosMedicoesProjetoResponse[];
-    arquivosContratosResponse: ArquivosContratoResponse[];
+    arquivosMedicoesProjetoResponse: ArquivosMedicoesProjetoResponse[]=[];
+    arquivosContratosResponse: ArquivosContratoResponse[] =[];
+    arquivosAditivosResponse: ArquivosAditivos[] = [];
   }
 
   export class Contrato {
