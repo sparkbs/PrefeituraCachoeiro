@@ -285,6 +285,9 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
         arqMed.id = result.ids[0].id;
         arqMed.arquivoMedicao = result.ids[0].arquivoMedicao;
         arqMed.arquivo = documentoFile.name;
+        arqMed.idOrigemArquivo = 1;
+
+        this.arquivosAnexadosTelaMedicao.push(arqMed);
 
         this.medicoes.arquivosMedicoesProjeto.push(arqMed);
       })

@@ -269,6 +269,17 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
           await this.apiMedicoes.EnviarMedicaoCliente(req)
           .then((result) => {
             if(result.isSucesso){        
+              var medicaoFiltrada = this.medicaoProjetos.filter(x => x.numeroMedicao == numeroMedicao);
+              console.log(medicaoFiltrada);
+
+              medicaoFiltrada.forEach((x) => {
+                x.data.forEach((item) =>{
+                  item.statusMedicao.idStatusMedicao = 4;
+                  item.statusMedicao.nome = "Enviada";
+                })
+              });
+              console.log(medicaoFiltrada);
+
               this._toastService.mensagemSuccess("Medição enviada com sucesso");
             }
             else{

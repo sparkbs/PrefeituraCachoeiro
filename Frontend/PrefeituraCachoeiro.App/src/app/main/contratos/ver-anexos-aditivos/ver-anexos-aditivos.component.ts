@@ -179,6 +179,7 @@ export class VerAnexosAditivosComponent {
       // Filtra os documentos, removendo o que for igual ao item a ser deletado
       await this.api.AdicionarDocumentosAditivo(documentoRequest)
       .then(async (result) => {
+        this.lista.arquivosAditivos.push(...result.ids);
         this._toastService.mensagemSuccess("Documento importado com sucesso.");
       })
       .catch(() =>

@@ -1,3 +1,5 @@
+import { ArquivosAditivos } from "./todosContratosResponse";
+
 export class Origem {
     idOrigem: number = 0;
     nome: string = '';
@@ -74,7 +76,7 @@ export class ListaDocumentosContrato
 
 export class DocumentosRegistradosResponse
 {
-    ids: DocumentosRegistradosIdsResponse[] = [];
+    ids: ArquivosAditivos[] = [];
     isSucesso: boolean;
     mensagemErro: string = '';
 }

@@ -169,7 +169,9 @@ export class AprovacaoBoletimComponent implements OnInit {
         arquivoVisualizacao.arquivosAditivosResponse.push(...item.arquivosAditivos);
       });
     })
-    .catch(() =>{})
+    .catch((res) =>{
+      this._toastService.mensagemError(res.error.message);
+    })
     .finally(() =>{
       this.isLoading = false
     });
@@ -186,9 +188,19 @@ export class AprovacaoBoletimComponent implements OnInit {
     request.Resumo = "";
     request.IdMedicoesProjeto = idMedicao;
     await this.apiMedicoes.ReprovarMedicoes(request)
-    .then((result) => {     
+    .then(async (result) => {     
       if(result.isSucesso){
         this._toastService.mensagemSuccess("Sucesso ao reprovar medição.");
+        await this.buscar(this.contratoSelecionado)
+        .then(() =>{
+          this._toastService.mensagemSuccess("Medições atualizadas com sucesso!");
+        })
+        .catch((res) =>{
+          this._toastService.mensagemError(res.error.message);
+        })
+        .finally(() =>{
+          this.isLoading = false;
+        });
       }
       else{
         this._toastService.mensagemError(result.mensagemErro);
@@ -204,6 +216,20 @@ export class AprovacaoBoletimComponent implements OnInit {
   
   aprovarMedicao(idMedicao: number){
     this.dialog.open(AprovarMedicaoComponent,{data:{idMedicoesProj: idMedicao}});
+    this.dialog.afterAllClosed.subscribe(async () => {
+      this._toastService.mensagemSuccess("Aguarde, atualizando as medições!");
+      this.isLoading = true;
+      await this.buscar(this.contratoSelecionado)
+      .then(() =>{
+        this._toastService.mensagemSuccess("Atualizado com sucesso!");
+      })
+      .catch((res) =>{
+        this._toastService.mensagemError(res.error.message);
+      })
+      .finally(() =>{
+        this.isLoading = false;
+      });
+    });
   }
 
   nomeProjeto(id:number, projetos: Projeto[]){
