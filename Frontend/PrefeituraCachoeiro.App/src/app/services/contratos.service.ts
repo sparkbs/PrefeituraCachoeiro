@@ -85,7 +85,22 @@ export class ContratosService {
   public async CriarAditivos(request: AditivosContratoRequest): Promise<GenericResultResponse<CriarAditivoResponse>> {
     const formData = new FormData();
     Object.keys(request).forEach(key => {
-      formData.append(key, request[key]);
+      if (key === 'Arquivos' || key === 'ArquivoTemplate') {
+        const arquivos = request[key];
+        
+        // Verifica se arquivos é um array (File[]) ou um único arquivo (File)
+        if (Array.isArray(arquivos)) {
+          // Se for um array de arquivos, usamos forEach
+          arquivos.forEach((file: File) => {
+            formData.append(key, file, file.name);
+          });
+        } else if (arquivos instanceof File) {
+          // Se for um único arquivo, apenas adiciona diretamente
+          formData.append(key, arquivos, arquivos.name);
+        }
+      } else {
+        formData.append(key, request[key]);
+      }
     });
 
     return await firstValueFrom(
