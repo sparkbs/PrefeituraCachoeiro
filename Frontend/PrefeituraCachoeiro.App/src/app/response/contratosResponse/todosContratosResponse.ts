@@ -11,7 +11,6 @@ export class Grupo {
 }
 
 export interface ContratosResponse {
-    arquivos?: string[]
     idContrato: number;
     projeto: ProjetoResponse;
     dataContrato: Date;
@@ -32,8 +31,23 @@ export interface ContratosResponse {
     dataTerminoAtualizada?: Date;
     prefeituraId?: number;
     prefeitura: PrefeituraResponse;
+    arquivosContratos: ArquivosContratoResponse[]; 
   }
   
+  export class ArquivosContratoResponse {
+    id: number;
+    arquivoContrato: string;
+    arquivo: string;
+    idContratos: number;
+  }
+
+  export class ArquivosAditivos {
+    id: number;
+    arquivoAditivo: string;
+    arquivo: string;
+    idAditivo: number;
+  }
+
   export interface ProjetoResponse {
     idProjeto: number;
     nomeProjeto?: string;
@@ -103,9 +117,11 @@ export interface ContratosResponse {
     contratoId: number,
     dataAssinatura: Date,
     dataValidade: Date,
-    tipoAditivo: string
-    valorTotal: number;
+    tipoAditivo: string,
+    valorTotal: number,
+    descricao: string,
     items: ItemsAditivosResponse[]
+    arquivosAditivos: ArquivosAditivos[];
   }
 
   export interface ItemsAditivosResponse {

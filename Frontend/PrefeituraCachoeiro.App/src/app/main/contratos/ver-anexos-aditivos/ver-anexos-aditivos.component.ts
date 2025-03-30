@@ -1,23 +1,21 @@
-import { AfterViewInit, Component, inject, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { AditivosContratoRequest } from 'src/app/request/ContratoRequest/aditivosContratoRequest';
 import { BuscarAditivosContrato } from 'src/app/request/ContratoRequest/buscarContratosRequest';
-import { CriarContratoRequest } from 'src/app/request/ContratoRequest/criarContratoRequest';
+import { CriarContratoRequest, salvarDocumentoAditivoRequest } from 'src/app/request/ContratoRequest/criarContratoRequest';
 import { ListaDocumentosContrato } from 'src/app/response/contratosResponse/dadosContratoResponse';
 import { ContratosAditivosResponse, ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { ToastService } from 'src/app/services/toast.service';
-import { VerAnexosAditivosComponent } from '../ver-anexos-aditivos/ver-anexos-aditivos.component';
 
 @Component({
-  selector: 'app-aditivos-contratos',
-  templateUrl: './aditivos-contratos.component.html',
-  styleUrls: ['./aditivos-contratos.component.scss']
+  selector: 'app-ver-anexos-aditivos',
+  templateUrl: './ver-anexos-aditivos.component.html',
+  styleUrls: ['./ver-anexos-aditivos.component.scss']
 })
-export class AditivosContratosComponent implements AfterViewInit {
-  readonly dialog = inject(MatDialog);
-  lista: ContratosAditivosResponse[] = [];
+export class VerAnexosAditivosComponent {
+  lista: ContratosAditivosResponse;
   displayedColumns: string[] = ['tipoAditivo', 'descricao', 'valor', 'dataAssinatura', 'validadeAditivo', 'acoes'];
   dataSource: MatTableDataSource<ContratosAditivosResponse>;
   valorAditivo: string;
@@ -29,11 +27,12 @@ export class AditivosContratosComponent implements AfterViewInit {
   isLoading = false;
   isAditivoQuantidade = false;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private readonly api: ContratosService, private _toastService: ToastService,   private dialogRef: MatDialogRef<AditivosContratosComponent>, ) {
-    this.dataSource = new MatTableDataSource(this.lista); 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: ContratosAditivosResponse, private readonly api: ContratosService, private _toastService: ToastService,   private dialogRef: MatDialogRef<VerAnexosAditivosComponent>, ) {
+    console.log(this.data.arquivosAditivos);
+    this.lista = this.data; 
   }
 
-  async ngAfterViewInit() {
+  /*async ngAfterViewInit() {
     this.contratoBase = this.data.contratobase;
     var aditivoFilter : BuscarAditivosContrato = new BuscarAditivosContrato();
     aditivoFilter.idContrato = this.data.contratobase.idContrato;
@@ -50,7 +49,7 @@ export class AditivosContratosComponent implements AfterViewInit {
       this.lista = result.data;
       this.dataSource.data = (this.lista);         
     });
-  }
+  }*/
 
   onTipoAditivoChange(){
     if(this.requestCriarAditivo.TipoAditivo == "Aditivo de Quantidades"){
@@ -77,11 +76,8 @@ export class AditivosContratosComponent implements AfterViewInit {
     }
   }
 
-  verAnexos(data: ContratosAditivosResponse){
-    const dialogRef = this.dialog.open(VerAnexosAditivosComponent, {data});
-
-    dialogRef.afterClosed().subscribe(result => {
-    });
+  fechar(){
+    this.dialogRef.close();
   }
 
   async criarAditivo(){
@@ -90,11 +86,7 @@ export class AditivosContratosComponent implements AfterViewInit {
     this.requestCriarAditivo.DataAssinaturaAditivo = this.contratoBase.dataContrato;*/
     this.isLoading = true;
     this.requestCriarAditivo.ContratoId = this.contratoBase.idContrato;
-    if(this.isAditivoQuantidade){
-      this.requestCriarAditivo.ArquivoTemplate = this.adicionarBaseDados();
-    }
-    this.listaDocumentoContrato.forEach(x => this.requestCriarAditivo.Arquivos.push(x.file));
-
+    this.requestCriarAditivo.ArquivoTemplate = this.adicionarBaseDados();
 
     await this.api.CriarAditivos(this.requestCriarAditivo)
     .then((result) => {
@@ -153,19 +145,72 @@ export class AditivosContratosComponent implements AfterViewInit {
     return 'R$ ' + valorFormatado;
   }
 
-  async deletarAditivo(id: number){
-    this._toastService.mensagemSuccess("Processando a deleção do aditivo");
-    await this.api.DeletarAditivo(id)  
+  async downloadDocumentosAditivos(idDocumento: number, arquivo:string) {    // Filtra os documentos, removendo o que for igual ao item a ser deletado
+    await this.api.DownloadArquivoAditivo(idDocumento)
     .then((result) => {
-      var index = this.lista.findIndex(item => item.idAditivo == id);
-      this.lista.splice(index, 1);
-  
-      this.dataSource.data = this.lista;
-      this._toastService.mensagemSuccess("Aditivo deletado com sucesso");
+      const url = window.URL.createObjectURL(result);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = arquivo;  // Você pode definir o nome do arquivo
+      a.click();
+      window.URL.revokeObjectURL(url);  // Limpar a URL após o download
+      this._toastService.mensagemSuccess("Download realizado com sucesso.");
     })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao deletar aditivo");
+    .catch(() =>
+    {
+      this._toastService.mensagemError("Erro ao realizar download documento.");
+    })
+    .finally(()=>{
     });
   }
+
+  async deletarDocumento(idDocumento: number) {
+    // Filtra os documentos, removendo o que for igual ao item a ser deletado
+    await this.api.DeletarArquivoAditivo(idDocumento)
+    .then(async (result) => {
+      this._toastService.mensagemSuccess("Documento deletado com sucesso.");
+      this.lista.arquivosAditivos = this.lista.arquivosAditivos.filter(x => x.id != idDocumento);
+    })
+    .catch(() =>
+    {
+      this._toastService.mensagemSuccess("Erro ao deletar documento.");
+    })
+    .finally(()=>{
+    });
+  }
+
+  async adicionarAditivo(){
+    if(this.documentoInput.nativeElement.files[0] != undefined){
+      var id = this.data.idAditivo;
+      const documentoFile = this.documentoInput.nativeElement.files[0] as File;
+      let documentoRequest: salvarDocumentoAditivoRequest = new salvarDocumentoAditivoRequest();
+      documentoRequest.IdAditivo = id,
+      documentoRequest.Arquivos = [documentoFile];
+      this.listaDocumentoContrato.push({
+        nome: documentoFile.name,
+        file: documentoFile
+      }); 
+      /*this.listaDocumentoContrato.push({
+        //a: documentoFile.name,
+        //file: documentoFile
+      });   
+      this.documentoInput.nativeElement.value = '';
+    }*/
+      this.documentoInput.nativeElement.value = '';
+      this.isLoading = true;
+      // Filtra os documentos, removendo o que for igual ao item a ser deletado
+      await this.api.AdicionarDocumentosAditivo(documentoRequest)
+      .then(async (result) => {
+        this._toastService.mensagemSuccess("Documento importado com sucesso.");
+      })
+      .catch(() =>
+      {
+        this._toastService.mensagemSuccess("Erro ao importar documento.");
+      })
+      .finally(()=>{
+        this.isLoading = false;
+      });
+    }
+  }  
 
 }

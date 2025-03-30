@@ -47,9 +47,9 @@
         <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;">
           <mat-icon style="font-size: 15px;height: auto; width: auto;" (click)="openBoletimDetalhado(selectedPrefeitura, contratoSelecionado ,projeto.idProjeto, medicaoProjeto.numeroMedicao)">cloud_download</mat-icon >
         </span>
-       <!-- <span matTooltip="Ver anexos" style="cursor: pointer;margin-left: 5px;">
-          <mat-icon style="font-size: 15px;height: auto; width: auto;" (click)="openModalVerAnexo(medicaoProjeto.data[0].arquivosMedicoesProjeto)">find_in_page</mat-icon >
-        </span>-->
+       <span matTooltip="Ver anexos" style="cursor: pointer;margin-left: 5px;">
+          <mat-icon style="font-size: 15px;height: auto; width: auto;" (click)="openModalVerAnexo(medicaoProjeto.data[0].arquivosMedicoesProjeto, medicaoProjeto.data[0].contratos.arquivosContratos)">find_in_page</mat-icon >
+        </span>
       </li>
     </ul>
   

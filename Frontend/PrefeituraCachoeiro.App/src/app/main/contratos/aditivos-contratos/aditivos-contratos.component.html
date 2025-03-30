@@ -3,8 +3,8 @@
   <div style="margin-top: 20px;">
     <div style="width: 100%; display: flex; align-items: center;">
       <mat-form-field style="width: 33%;">
-        <mat-label>Tipo Aditivo</mat-label>
-        <input matInput [(ngModel)]="requestCriarAditivo.TipoAditivo" >
+        <mat-label>Descrição Aditivo</mat-label>
+        <input matInput [(ngModel)]="requestCriarAditivo.Descricao" >
       </mat-form-field>
       <mat-form-field style="width: 33%; margin-left: 5px">
         <mat-label>Data Assinatura</mat-label>
@@ -16,28 +16,73 @@
       </mat-form-field>     
     </div>
 
-    <div style="width: 100%; display: flex; align-items: center;">      
-      <div style="width: 45%; margin-left: 5px; margin-top: -22px;">
+    <div style="width: 100%; display: flex; align-items: center;">     
+      <div style="width: 33%;">  
+        <mat-radio-group [(ngModel)]="requestCriarAditivo.TipoAditivo" (change)="onTipoAditivoChange()">
+          <mat-radio-button value="Aditivo de Prazo" style="font-size: 12px;">Aditivo de Prazo</mat-radio-button>
+          <mat-radio-button value="Aditivo de Quantidades" style="font-size: 12px;">Aditivo de Quantidades</mat-radio-button>
+        </mat-radio-group>
+      </div> 
+
+      <div style="display: flex; flex-direction: column; gap: 10px;" *ngIf="isAditivoQuantidade">
+        <!-- Label Base de dados -->
         <div>
-          Documentos:
+          Base de dados:
         </div>
+        
+        <!-- Input -->
         <div>
           <input #baseDadosInput type="file" style="width: 100%" />
         </div>
       </div>
+          
+    </div>
+
+    <div style="width: 100%; display: flex; align-items: center; margin-top: 10px;">     
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div>
+          Documentos:
+        </div>
       
+        <!-- Wrapper para o input e ícone lado a lado -->
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <input #documentoInput type="file" style="flex: 1;" />
+          
+          <!-- Ícone ao lado do input -->
+          <span matTooltip="Exibir Todos" style="cursor: pointer;" (click)="adicionarDocumento()">
+            <mat-icon>playlist_add</mat-icon>
+          </span>
+        </div>
+      </div>      
+
       <button mat-button mat-stroked-button style="background-color:royalblue; color: white; margin-left: 10px; margin-top: -8px;" (click)="criarAditivo()">
         <span>Criar Aditivo</span>
         <mat-icon>add</mat-icon>
       </button>
     </div>
-    
+
+    <div>     
+      <div *ngFor="let item of listaDocumentoContrato">
+        <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
+          {{item.nome}}
+          <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarDocumentos(item)">
+            <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
+          </span>
+        </div>
+      </div>  
+    </div>
+
     <table mat-table [dataSource]="dataSource" matSort>          
       <ng-container matColumnDef="tipoAditivo">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo do Aditivo </th>
         <td mat-cell *matCellDef="let row"> {{row.tipoAditivo}} </td>
       </ng-container>
-  
+        
+      <ng-container matColumnDef="descricao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
+        <td mat-cell *matCellDef="let row"> {{row.descricao}} </td>
+      </ng-container>
+
      <!-- <ng-container matColumnDef="planilha">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Planilha </th>
         <td mat-cell *matCellDef="let row"> <a>{{row.planilha}}</a> </td>
@@ -58,18 +103,14 @@
         <td mat-cell *matCellDef="let row"> {{row.dataValidade | date:'dd/MM/yyyy' :'UTC' }} </td>
       </ng-container>
 
-
-     <!-- <ng-container matColumnDef="acoes">
-        <th mat-header-cell *matHeaderCellDef></th>
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
         <td mat-cell *matCellDef="let row">
-            <button (click)="deletarAditivo(row.idAditivo)">
-            <span>
-              <mat-icon>delete</mat-icon>
-            </span>
-          </button>         
+          <span style="margin-left: 5px;" matTooltip="Ver Anexos" (click)="verAnexos(row)" class="hoverMouse">
+            <mat-icon>search</mat-icon>
+          </span>
         </td>
-        
-    </ng-container>-->
+      </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

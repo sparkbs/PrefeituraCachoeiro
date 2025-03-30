@@ -4,10 +4,10 @@ import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
 import { ContratoModel, ContratosAditivosResponse, ContratosResponse, TodosContratosResponse } from '../response/contratosResponse/todosContratosResponse';
-import { CriarAditivoResponse, CriarContratoResponse, DadosContratoResponse } from '../response/contratosResponse/dadosContratoResponse';
+import { CriarAditivoResponse, CriarContratoResponse, DadosContratoResponse, DocumentosRegistradosResponse } from '../response/contratosResponse/dadosContratoResponse';
 import { AtualizarContratoRequest } from '../request/ContratoRequest/atualizarContratoRequest';
 import { BuscarAditivosContrato, BuscarContratosRequest } from '../request/ContratoRequest/buscarContratosRequest';
-import { CriarContratoRequest } from '../request/ContratoRequest/criarContratoRequest';
+import { CriarContratoRequest, salvarDocumentoAditivoRequest, salvarDocumentoContratoRequest } from '../request/ContratoRequest/criarContratoRequest';
 import { VinculoProjetoContratoRequest } from '../request/ContratoRequest/vincularProjetoContrato';
 import { AditivosContratoRequest } from '../request/ContratoRequest/aditivosContratoRequest';
 
@@ -138,6 +138,90 @@ export class ContratosService {
     return await firstValueFrom(
       this.http.delete<GenericResultResponse<string>>(
         `${Environments.APIUrl}/aditivos/${id}`
+      )
+    );
+  }
+
+  public async DownloadArquivoContrato(id: number) : Promise<Blob>{
+    return await firstValueFrom(
+      this.http.get<Blob>(
+        `${Environments.APIUrl}contratos/downloadarquivocontrato/${id}`,
+        {responseType: 'blob' as 'json'}
+      )
+    );
+  }
+
+  public async DownloadArquivoAditivo(id: number) : Promise<Blob>{
+    return await firstValueFrom(
+      this.http.get<Blob>(
+        `${Environments.APIUrl}aditivos/downloadarquivoaditivo/${id}`,
+        {responseType: 'blob' as 'json'}
+      )
+    );
+  }
+
+  public async AdicionarDocumentosContrato(request: salvarDocumentoContratoRequest): Promise<DocumentosRegistradosResponse> {
+    const formData = new FormData();
+
+    // Adiciona os arquivos ao FormData
+    if (request.Arquivos && Array.isArray(request.Arquivos)) {
+      request.Arquivos.forEach((file: File) => {
+        formData.append('Arquivos', file, file.name); // Adicionando o arquivo
+      });
+    }
+  
+    // Adiciona os outros campos de dados (não arquivos)
+    Object.keys(request).forEach(key => {
+      if (key !== 'Arquivos') { // Ignorar os arquivos, pois já foram adicionados
+        formData.append(key, request[key]);
+      }
+    });
+    
+    return await firstValueFrom(
+      this.http.post<DocumentosRegistradosResponse>(
+        `${Environments.APIUrl}contratos/registrardocumentos`,
+        formData
+      )
+    );
+  }
+
+  public async AdicionarDocumentosAditivo(request: salvarDocumentoAditivoRequest): Promise<DocumentosRegistradosResponse> {
+    const formData = new FormData();
+
+    // Adiciona os arquivos ao FormData
+    if (request.Arquivos && Array.isArray(request.Arquivos)) {
+      request.Arquivos.forEach((file: File) => {
+        formData.append('Arquivos', file, file.name); // Adicionando o arquivo
+      });
+    }
+  
+    // Adiciona os outros campos de dados (não arquivos)
+    Object.keys(request).forEach(key => {
+      if (key !== 'Arquivos') { // Ignorar os arquivos, pois já foram adicionados
+        formData.append(key, request[key]);
+      }
+    });
+    
+    return await firstValueFrom(
+      this.http.post<DocumentosRegistradosResponse>(
+        `${Environments.APIUrl}aditivos/registrardocumentos`,
+        formData
+      )
+    );
+  }
+
+  public async DeletarArquivoContrato(id: number): Promise<GenericResultResponse<string>> {
+    return await firstValueFrom(
+      this.http.delete<GenericResultResponse<string>>(
+        `${Environments.APIUrl}/contratos/apagararquivocontrato/${id}`
+      )
+    );
+  }
+
+  public async DeletarArquivoAditivo(id: number): Promise<GenericResultResponse<string>> {
+    return await firstValueFrom(
+      this.http.delete<GenericResultResponse<string>>(
+        `${Environments.APIUrl}/aditivos/apagararquivoaditivo/${id}`
       )
     );
   }

@@ -4,4 +4,6 @@ export class AditivosContratoRequest {
     DataValidadeAditivo?: Date;
     ContratoId: Number;
     ArquivoTemplate: File;
+    Descricao: string = '';
+    Arquivos: File[] = [];
 }

@@ -60,11 +60,14 @@
         <mat-icon>playlist_add</mat-icon>
       </span>     
     </div>
-    <div *ngFor="let item of listaDocumentoContrato">
+    <div *ngFor="let item of data.arquivosContratos">
       <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
-        {{item.nome}}
-        <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarDocumentos(item)">
+        {{item.arquivo}}
+        <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarDocumento(item.id)">
           <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
+        </span>
+        <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumento(item.id, item.arquivo)">
+          <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
         </span>
       </div>
     </div>

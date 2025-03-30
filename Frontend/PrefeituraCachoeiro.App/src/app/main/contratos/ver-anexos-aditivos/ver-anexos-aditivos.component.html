@@ -1,0 +1,40 @@
+<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Anexos dos aditivos</h1>
+<mat-dialog-content class="mat-typography">
+  <div style="width: 100%; display: flex; align-items: center; margin-top: 10px;">     
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div>
+        Documentos:
+      </div>
+    
+      <!-- Wrapper para o input e ícone lado a lado -->
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <input #documentoInput type="file" style="flex: 1;" />
+        
+        <!-- Ícone ao lado do input -->
+        <span matTooltip="Exibir Todos" style="cursor: pointer;" (click)="adicionarAditivo()">
+          <mat-icon>playlist_add</mat-icon>
+        </span>
+      </div>
+    </div>  
+  </div>
+
+  <div>     
+    <div *ngFor="let item of this.lista.arquivosAditivos">
+      <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
+        {{item.arquivo}}
+        <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarDocumento(item.id)">
+          <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
+        </span>
+        <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumentosAditivos(item.id, item.arquivo)">
+          <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
+        </span>
+      </div>
+    </div>  
+  </div>
+
+  <button mat-raised-button color="primary" class="btn-save" style="margin-top: 20px;" (click)="fechar()">Fechar</button>
+
+</mat-dialog-content>
+<mat-dialog-actions >
+</mat-dialog-actions>
+<app-loading *ngIf="this.isLoading"></app-loading>

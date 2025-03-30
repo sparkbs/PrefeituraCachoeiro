@@ -1,3 +1,5 @@
+import { ArquivosContratoResponse } from "../contratosResponse/todosContratosResponse";
+
 export class MedicoesResponse {
     idMedicoesProjeto: number;
     numeroMedicao: number;
@@ -25,6 +27,11 @@ export class MedicoesResponse {
     idOrigemArquivo: number;
   }
 
+  export class ArquivosAprovacao {
+    arquivosMedicoesProjetoResponse: ArquivosMedicoesProjetoResponse[];
+    arquivosContratosResponse: ArquivosContratoResponse[];
+  }
+
   export class Contrato {
     idContrato: number;
     idProjeto: number;
@@ -46,6 +53,7 @@ export class MedicoesResponse {
     dataInicio: string;
     prefeituraId: number;
     prefeitura: Prefeitura;
+    arquivosContratos: ArquivosContratoResponse[]; 
   }
 
   export class Projeto {
