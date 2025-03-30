@@ -42,14 +42,14 @@ export class SubBoletim {
   valorTotal: number;
 }
 
-export class BoletimMedicaoResponse {
+export class BoletimDetalhadoResponse {
   boletimMedicaoCabecalho: BoletimProjetoCabecalho;
   detalhes: Detalhe[];
   valorTotalMedicao: number;
 }
 
 export class BoletimMedicaoDetalhadoResponse {
-  boletimDetalhadoCabecalho: BoletimProjetoCabecalho;
+  boletimGeralCabecalho: BoletimProjetoCabecalho;
   detalhes: Detalhe[];
   valorTotalMedicao: number;
 }

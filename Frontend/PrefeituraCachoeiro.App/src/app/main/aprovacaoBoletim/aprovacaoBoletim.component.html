@@ -45,7 +45,7 @@
           <mat-icon style="font-size: 15px;height: auto; width: auto;">highlight_off</mat-icon>
         </span>
         <span matTooltip="Recusar Medição" style="cursor: pointer;margin-left: 5px;">
-          <mat-icon style="font-size: 15px;height: auto; width: auto;" (click)="openBoletimMedicao(selectedPrefeitura, contratoSelecionado ,projeto.idProjeto, medicaoProjeto.numeroMedicao)">cloud_download</mat-icon >
+          <mat-icon style="font-size: 15px;height: auto; width: auto;" (click)="openBoletimDetalhado(selectedPrefeitura, contratoSelecionado ,projeto.idProjeto, medicaoProjeto.numeroMedicao)">cloud_download</mat-icon >
         </span>
        <!-- <span matTooltip="Ver anexos" style="cursor: pointer;margin-left: 5px;">
           <mat-icon style="font-size: 15px;height: auto; width: auto;" (click)="openModalVerAnexo(medicaoProjeto.data[0].arquivosMedicoesProjeto)">find_in_page</mat-icon >
@@ -64,8 +64,8 @@
       <button mat-button 
             style="background-color: royalblue; color: white; width: 30%; margin-left: 8px;" 
             [style.display]="contratoSelecionado > 0 ? '' : 'none'" 
-            (click)="openBoletimDetalhado(medicaoProjeto.numeroMedicao)">
-        Boletim Detalhado
+            (click)="openBoletimGeral(medicaoProjeto.numeroMedicao)">
+        Boletim Geral
       </button>
     </div>
   

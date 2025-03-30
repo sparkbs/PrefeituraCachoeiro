@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BoletimMedicaoModel } from 'src/app/modelsBoletim/boletim-models/boletim-medicao.model';
-import { BoletimDetalhadoModel } from 'src/app/modelsBoletim/boletim-models/boletim-detalhado.model';
+import { BoletimDetalhadoModel } from 'src/app/modelsBoletim/boletim-models/boletim-detalhado';
+import { BoletimGeralModel } from 'src/app/modelsBoletim/boletim-models/boletim-geral.model';
 import { BoletimProjetoModel } from 'src/app/modelsBoletim/boletim-models/boletim-projeto.model';
 import { ProjetoBaseModel } from 'src/app/modelsBoletim/projeto-models/projeto-base.model';
 
@@ -14,9 +14,9 @@ export class BoletimService {
 
   constructor(private http: HttpClient) {}
 
-  getBoletinsMedicao(): Observable<BoletimMedicaoModel> {
+  getBoletinsMedicao(): Observable<BoletimDetalhadoModel> {
     const url = `${this.apiUrl}/boletinsMedicao`;
-    return this.http.get<BoletimMedicaoModel>(url);
+    return this.http.get<BoletimDetalhadoModel>(url);
   }
 
   getBuscarProjetos(): Observable<ProjetoBaseModel[]>{
@@ -28,9 +28,10 @@ export class BoletimService {
     const url = `${this.apiUrl}/boletinsPorProjetoId/${projetoId}`;
     return this.http.get<BoletimProjetoModel>(url);
   }
-
-  getBoletinsDetalhados(): Observable<BoletimDetalhadoModel> {
+  
+  //Atualmente não usado
+  getBoletinsDetalhados(): Observable<BoletimGeralModel> {
     const url = `${this.apiUrl}/boletinsDetalhados`;
-    return this.http.get<BoletimDetalhadoModel>(url);
+    return this.http.get<BoletimGeralModel>(url);
   }
 }

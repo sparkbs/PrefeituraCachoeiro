@@ -15,7 +15,7 @@ import { ContratosService } from 'src/app/services/contratos.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
 import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
-import { BuscarBoletimMedicaoRequest } from 'src/app/request/BoletimRequest/boletimMedicaoRequest';
+import { BuscarBoletimDetalhadoRequest } from 'src/app/request/BoletimRequest/boletimDetalhadoRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ProjetoService } from 'src/app/services/projeto.service';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
@@ -386,15 +386,16 @@ export class BoletimProjetoComponent implements OnInit {
      this.listaMedicoesSelecionadasAgrupados = this.listaMedicoesAgrupados.filter(x => x.numeroMedicao == this.medicaoSelecionado)[0];
      
      this.listaMedicoesSelecionadasAgrupados.medicaoResponse.forEach(async element => {    
-       var boletimMedicaoRequest: BuscarBoletimMedicaoRequest = {
+       var boletimDetalhadoRequest: BuscarBoletimDetalhadoRequest = {
          idMedicao: element.idMedicoesProjeto
        }
-       
-       await this._boletimControllerService.BuscarBoletimDetalhado(boletimMedicaoRequest)
+       //Se tornou boletim geral
+       await this._boletimControllerService.BuscarBoletimGeral(boletimDetalhadoRequest)
        .then(async (dados) => {
          if (dados.detalhes.length != 0) {
            this.boletim = dados;
-           this.boletimCabecalho = dados.boletimDetalhadoCabecalho;
+           //Se tornou boletim geral
+           this.boletimCabecalho = dados.boletimGeralCabecalho;
  
            console.log(this.contratoSelecionado);
            // Verificar o tipo do campo logoTipoImg
@@ -529,7 +530,7 @@ export class BoletimProjetoComponent implements OnInit {
      const pdf = new jsPDF('landscape', 'pt', 'a4');
      pdf.html(this.element.nativeElement, {
        callback: (doc) => {
-         doc.save('boletim-detalhado.pdf');
+         doc.save('boletim-geral.pdf');
        },
        x: 15,
        y: 13,

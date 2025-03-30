@@ -5,9 +5,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { BoletimMedicaoComponent } from './boletim-medicao/boletim-medicao.component';
-import { BoletimProjetoComponent } from './boletim-projeto/boletim-projeto.component';
 import { BoletimDetalhadoComponent } from './boletim-detalhado/boletim-detalhado.component';
+import { BoletimProjetoComponent } from './boletim-projeto/boletim-projeto.component';
+import { BoletimGeralComponent } from './boletim-geral/boletim-geral.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,7 +25,7 @@ import { VerDocumentosComponent } from '../aprovacaoBoletim/verDocumentos/verDoc
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-  declarations: [ BoletimComponent, BoletimMedicaoComponent, BoletimProjetoComponent, BoletimDetalhadoComponent, AprovacaoBoletimComponent, AprovarMedicaoComponent, VerDocumentosComponent ],
+  declarations: [ BoletimComponent, BoletimDetalhadoComponent, BoletimProjetoComponent, BoletimGeralComponent, AprovacaoBoletimComponent, AprovarMedicaoComponent, VerDocumentosComponent ],
   imports: [
     CommonModule,
     MatGridListModule,
