@@ -68,8 +68,8 @@ export class BoletimDetalhadoComponent implements OnInit {
     private _toastService: ToastService,
     public _boletimControllerService: BoletimService,
     private _prefeituraControllerService: PrefeituraService,
-    private route: ActivatedRoute,    
-    private auth: AuthService, 
+    private route: ActivatedRoute,
+    private auth: AuthService,
     private readonly aesEncryptDecript: AESEncryptDecriptService
   ) {}
 
@@ -81,10 +81,10 @@ export class BoletimDetalhadoComponent implements OnInit {
       this.contratoId = params.get('contratoId')!;
       this.medicaoId = params.get('medicaoId')!;
     });
-    
+
 
     var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
-    
+
     if(idPrefeituraUser){
       idPrefeituraUser = this.aesEncryptDecript.decrypt(idPrefeituraUser);
       if(idPrefeituraUser){
@@ -254,12 +254,12 @@ export class BoletimDetalhadoComponent implements OnInit {
     // });
     this.dadosSeparadosProjeto = [];
     this.listaMedicoesSelecionadasAgrupados = this.listaMedicoesAgrupados.filter(x => x.numeroMedicao == this.medicaoSelecionado)[0];
-    
-    this.listaMedicoesSelecionadasAgrupados.medicaoResponse.forEach(async element => {    
+
+    this.listaMedicoesSelecionadasAgrupados.medicaoResponse.forEach(async element => {
       var boletimDetalhadoRequest: BuscarBoletimDetalhadoRequest = {
         idMedicao: element.idMedicoesProjeto
       }
-      
+
       await this._boletimControllerService.BuscarBoletimDetalhado(boletimDetalhadoRequest)
       .then(async (dados) => {
         if (dados.detalhes.length != 0) {
@@ -278,13 +278,23 @@ export class BoletimDetalhadoComponent implements OnInit {
           }*/
           dados.detalhes[0].subBoletins = (dados.detalhes[0].subBoletins.filter(x => parseFloat(x.unidade) != 0));
           this.dataSource = dados.detalhes.length == 0 ? [] : dados.detalhes[0].subBoletins;
-
+          debugger
           var projeto = new SubBoletim();
           projeto.descricao = dados.detalhes[0].projeto;
+          projeto.precoComBdi = 0.0;
+          projeto.valorTotal = 0.0;
+
+          dados.detalhes[0].subBoletins.forEach(subBoletim => {
+            var quantidadeItem = parseFloat(subBoletim.unidade);
+            projeto.precoComBdi += subBoletim.precoComBdi;
+            projeto.valorTotal += (subBoletim.precoComBdi * quantidadeItem);
+          });
+
           this.projetosNome += this.projetosNome == '' ? projeto.descricao :', '+projeto.descricao;
           this.dataSource.unshift(projeto);
 
           this.dadosSeparadosProjeto = this.dadosSeparadosProjeto.concat(this.dataSource);
+          console.log(this.dadosSeparadosProjeto);
 
           this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
           this.valorTotalMedicao = dados.valorTotalMedicao || 0;
@@ -315,7 +325,10 @@ export class BoletimDetalhadoComponent implements OnInit {
     });
   }
 
-  calcularValorTotalItemBoletim(unidade: string, precoComBdi: number){
+  calcularValorTotalItemBoletim(unidade: string, precoComBdi: number, valorTotal: number){
+    if (!unidade) {
+      return valorTotal.toFixed(2);
+    }
     var quantidadeItem = parseFloat(unidade);
     return (precoComBdi * quantidadeItem).toFixed(2);
   }

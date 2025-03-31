@@ -36,8 +36,8 @@
       </mat-select>
     </mat-form-field>
     <div style="margin-top: auto; display: flex; justify-content: flex-end;padding: 20px;">
-      <button mat-button 
-      style="background-color: royalblue; color: white; " 
+      <button mat-button
+      style="background-color: royalblue; color: white; "
       (click)="onSelectionChangeMedicao(medicaoSelecionado)">
         Buscar
       </button>
@@ -119,18 +119,6 @@
       <th colspan="1">VALOR TOTAL</th>
     </tr>
 
-    <tr style="background-color: #F8CBAD;">
-      <th></th>
-      <th></th>
-      <th colspan="17">Item a medir</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-
     <!-- Nível 1: Boletins principais -->
     <ng-container *ngFor="let boletim of dadosSeparadosProjeto">
       <!-- Itera sobre os itens principais -->
@@ -180,7 +168,7 @@
     <tr>
       <td style="background-color: #ffffff;" colspan="24" class="highlight">VALOR TOTAL DA MEDIÇÃO:</td>
       <td style="background-color: #df0101; display: flex; justify-content: space-between;" colspan="1" class="highlight">
-        <span>R$</span> 
+        <span>R$</span>
         <span>{{ calcularSomaValorTotal() }}</span>
       </td>
     </tr>
