@@ -47,19 +47,34 @@
                 </mat-panel-description>
               </mat-expansion-panel-header>
               
-              <button mat-button mat-stroked-button style="background-color:white; color: black; margin-left: 10px;margin-top: -10px;border: solid 1px; border-color: black; " (click)="openDialogAssociate(medicoes.numeroMedicao, medicoes.data)">
-                <span>Associar Projeto</span>
-                <mat-icon>add</mat-icon>
-              </button>
-
-              <button mat-button mat-stroked-button style="background-color:white; color: black; margin-left: 10px;margin-top: -10px;border: solid 1px; border-color: black; " (click)="enviar(medicoes.numeroMedicao)">
-                <span>Enviar Medição</span>
-                <mat-icon>send</mat-icon>
-              </button>
+              <div style="display: flex; align-items: center;">
+                <button mat-button mat-stroked-button style="background-color:white; color: black; margin-left: 10px; margin-top: -10px; border: solid 1px; border-color: black;" (click)="openDialogAssociate(medicoes.numeroMedicao, medicoes.data)">
+                  <span>Associar Projeto</span>
+                  <mat-icon>add</mat-icon>
+                </button>
+              
+                <button mat-button mat-stroked-button style="background-color:white; color: black; margin-left: 10px; margin-top: -10px; border: solid 1px; border-color: black;" (click)="enviar(medicoes.numeroMedicao)">
+                  <span>Enviar Medição</span>
+                  <mat-icon>send</mat-icon>
+                </button>
+              
+                <div style="width: 20px;"></div>
+              
+                <div style="margin-left: 10px;">
+                  <div>Documentos:</div>
+                  <div style="display: flex; align-items: center;">
+                    <input #documentoInput type="file" style="width: 350px; margin-right: 10px;" />
+                    <span matTooltip="Exibir Todos" style="cursor: pointer;">
+                      <mat-icon>playlist_add</mat-icon>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
               <div *ngFor="let medicao of medicoes.data">
                 <app-listaMedicao [medicoes]="medicao"></app-listaMedicao>              
               </div>
-
+            
             </mat-expansion-panel>         
           </mat-accordion>
         </div>

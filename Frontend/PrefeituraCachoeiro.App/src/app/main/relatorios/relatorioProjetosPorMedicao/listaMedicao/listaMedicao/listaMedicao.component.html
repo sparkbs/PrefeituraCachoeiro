@@ -1,4 +1,4 @@
-<div style="margin-bottom: 35px;">
+<div >
   <div class="container rounded-shadow-div" style="margin-top: 10px; width: 98%;"  >
     <!-- <h3 class="texto"> Pegar nome projeto</h3> -->
      <div (click)="toggleDiv()" style="width: 88%;     padding: 10px;">
@@ -107,6 +107,7 @@
     </table>
     </div>
 
+    <!--
     <div style="font-weight: bold; font-size: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 12px;">
       <span style="margin-right: 3px;">Valor Total a Medir: {{ formatToCurrency(somarValorTotal())}}</span>
       <span style="margin-right: 3px;">Valor Saldo Total: {{ formatToCurrency(somarValorSaldoTotal())}}</span>
@@ -114,10 +115,9 @@
         <span style="font-size: 13px;">Valor Total do Contrato + Aditivo : {{ formatToCurrency(this.medicoes.contratos.valorAtualContrato)}}</span>
       </span>
       <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="salvar()" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Salvar</button>
-      <!--<button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" [ngClass]="{'disabled-btn': isDisabledBtnEnviar}"  [disabled]="isDisabledBtnEnviar" (click)="enviar(medicoes.idMedicoesProjeto)" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Enviar</button>-->
+      <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" [ngClass]="{'disabled-btn': isDisabledBtnEnviar}"  [disabled]="isDisabledBtnEnviar" (click)="enviar(medicoes.idMedicoesProjeto)" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Enviar</button>
 
     </div>
-      <!-- Parte de Anexar Documento -->
       <div style="font-weight: bold; font-size: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 17px;">
       <div style=" flex-wrap: wrap; gap: 10px;" >
           <div>
@@ -162,11 +162,70 @@
           </div> 
         </div>  
       
-        <!-- Botão de Salvar -->
       </div>
-
+    -->
        <!-- Lista de Documentos Anexados -->
   </div>
 </div>
 
+
+<div *ngIf="isDivVisible">
+<div style="font-weight: bold; font-size: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 12px;">
+  <span style="margin-right: 3px;">Valor Total a Medir: {{ formatToCurrency(somarValorTotal())}}</span>
+  <span style="margin-right: 3px;">Valor Saldo Total: {{ formatToCurrency(somarValorSaldoTotal())}}</span>
+  <span style="margin-right: 3px;">Valor Contratual: {{ formatToCurrency(this.medicoes.contratos.valor)}}<br>
+    <span style="font-size: 13px;">Valor Total do Contrato + Aditivo : {{ formatToCurrency(this.medicoes.contratos.valorAtualContrato)}}</span>
+  </span>
+  <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="salvar()" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Salvar</button>
+  <!--<button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" [ngClass]="{'disabled-btn': isDisabledBtnEnviar}"  [disabled]="isDisabledBtnEnviar" (click)="enviar(medicoes.idMedicoesProjeto)" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Enviar</button>-->
+
+</div>
+  <!-- Parte de Anexar Documento -->
+  <div style="font-weight: bold; font-size: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 17px;">
+  <div style=" flex-wrap: wrap; gap: 10px;" >
+      <div>
+        Documentos:
+      </div>
+      <div  [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" >
+        <input #documentoInput type="file" style="width: 100%" />
+        <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;" (click)="adicionarDocumento()">
+          <mat-icon>playlist_add</mat-icon>
+        </span>  
+      </div>
+       
+
+      <div *ngFor="let item of arquivosAnexadosTelaMedicao">
+        <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
+          {{item.arquivo}}
+          <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" (click)="deletarDocumentoMedicao(item.id)">
+            <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
+          </span>
+          <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumento(item.id, item.arquivo)">
+            <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
+          </span>
+        </div>
+      </div> 
+    </div>    
+  
+    <div style=" flex-wrap: wrap; gap: 10px;" >
+      <div>
+        Documentos Anexados Pelo Aprovador:
+      </div>                     
+
+      <div *ngFor="let item of arquivosAnexadosTelaAprovacao">
+        <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
+          {{item.arquivo}}
+          <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" (click)="deletarDocumentoAprovacao(item.id)">
+            <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
+          </span>
+          <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumento(item.id, item.arquivo)">
+            <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
+          </span>
+        </div>
+      </div> 
+    </div>  
+  
+    <!-- Botão de Salvar -->
+  </div>
+</div>
 <app-loading *ngIf="this.isLoading"></app-loading>

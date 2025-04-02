@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Editar_criar_prefeituraComponent } from '../editar_criar_prefeitura/editar_criar_prefeitura.component';
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { PrefeituraDataResponse, PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
+import { ConfirmaExclusaoComponent } from 'src/app/shared/confirma-exclusao/confirma-exclusao.component';
 
 export interface ItemPrefeitura {
   id: number;
@@ -65,12 +66,18 @@ export class PrefeituraComponent implements OnInit {
   }
 
   async deletePrefeitura(id: number){
-    await this.api.DeletarPrefeitura(id)
-    .then((result) => {
-      var index = this.lista.findIndex(item => item.idPrefeitura == id);
-      this.lista.splice(index, 1);
-  
-      this.dataSource.data = this.lista;
+    const dialogRef = this.dialog.open(ConfirmaExclusaoComponent);
+    
+    dialogRef.afterClosed().subscribe(async result => {
+      if(result){
+        await this.api.DeletarPrefeitura(id)
+        .then((result) => {
+          var index = this.lista.findIndex(item => item.idPrefeitura == id);
+          this.lista.splice(index, 1);
+      
+          this.dataSource.data = this.lista;
+        });
+      }
     });
   }
 

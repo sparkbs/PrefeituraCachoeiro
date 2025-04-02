@@ -13,6 +13,11 @@
           <mat-option *ngFor="let projeto of listaProjetos" [value]="projeto.idProjeto" >{{projeto.nomeProjeto}}</mat-option>
         </mat-select>
       </mat-form-field>
+      <br>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Secretaria</mat-label>
+        <input  type="text" matInput/>
+      </mat-form-field>
     </div>
   </div>
 </mat-dialog-content>

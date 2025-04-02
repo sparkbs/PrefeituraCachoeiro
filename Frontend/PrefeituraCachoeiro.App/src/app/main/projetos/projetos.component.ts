@@ -12,6 +12,7 @@ import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeitur
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { VinculoProjetoContratoRequest } from 'src/app/request/ContratoRequest/vincularProjetoContrato';
+import { ConfirmaExclusaoComponent } from 'src/app/shared/confirma-exclusao/confirma-exclusao.component';
 
 @Component({
   selector: 'app-projetos',
@@ -115,25 +116,14 @@ export class ProjetosComponent implements OnInit {
   }
 
   async deleteProject(id: number) {
-    let projeto = this.listaProjetos.find(res => res.idProjeto == id);
+    const dialogRef = this.dialog.open(ConfirmaExclusaoComponent);
 
-    if (projeto.contratos.length == 0) {
-      this._projetoControllerService.DeletarProjeto(id)
-      .then((res) => {
-        this.getAllProjects();
-        this._toastService.mensagemSuccess("Sucesso ao deletar projeto!");
-      })
-      .catch((erro) => {
-        this._toastService.mensagemError('Erro ao deletar projeto!');
-      });
-    }
-    else {
-      let vinculoProjetoContrato: VinculoProjetoContratoRequest = {
-        idProjeto: id,
-        idContrato: projeto.contratos[0].idContrato
-      };
-      await this._contratoControllerService.removerProjetoContrato(vinculoProjetoContrato)
-      .then((res) => {
+    dialogRef.afterClosed().subscribe(async result => {
+
+      if(result){
+        let projeto = this.listaProjetos.find(res => res.idProjeto == id);
+
+      if (projeto.contratos.length == 0) {
         this._projetoControllerService.DeletarProjeto(id)
         .then((res) => {
           this.getAllProjects();
@@ -142,12 +132,29 @@ export class ProjetosComponent implements OnInit {
         .catch((erro) => {
           this._toastService.mensagemError('Erro ao deletar projeto!');
         });
-      })
-      .catch((res) => {
-        this._toastService.mensagemError('Erro ao deletar vinculo projeto!');
-        console.error(res);
-      });
+      }
+      else {
+        let vinculoProjetoContrato: VinculoProjetoContratoRequest = {
+          idProjeto: id,
+          idContrato: projeto.contratos[0].idContrato
+        };
+        await this._contratoControllerService.removerProjetoContrato(vinculoProjetoContrato)
+        .then((res) => {
+          this._projetoControllerService.DeletarProjeto(id)
+          .then((res) => {
+            this.getAllProjects();
+            this._toastService.mensagemSuccess("Sucesso ao deletar projeto!");
+          })
+          .catch((erro) => {
+            this._toastService.mensagemError('Erro ao deletar projeto!');
+          });
+        })
+        .catch((res) => {
+          this._toastService.mensagemError('Erro ao deletar vinculo projeto!');
+          console.error(res);
+        });
+      }
     }
-    
+  });
   }
 }

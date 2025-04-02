@@ -9,6 +9,7 @@ import { ContratosService } from 'src/app/services/contratos.service';
 import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
 import { ArquivosContratoResponse, ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { Editar_contratosComponent } from './editar_contratos/editar_contratos/editar_contratos.component';
+import { ConfirmaExclusaoComponent } from 'src/app/shared/confirma-exclusao/confirma-exclusao.component';
 
 export interface Item {
   id:number;
@@ -77,12 +78,18 @@ export class ContratosComponent implements AfterViewInit, OnInit {
   }
 
   async deleteContrato(id: any){
-    await this.api.DeletarContrato(id)  
-    .then((result) => {
-      var index = this.lista.findIndex(item => item.idContrato == id);
-      this.lista.splice(index, 1);
-  
-      this.dataSource.data = this.lista;
+    const dialogRef = this.dialog.open(ConfirmaExclusaoComponent);
+    dialogRef.afterClosed().subscribe(async result => {
+      if(result){
+
+        await this.api.DeletarContrato(id)  
+        .then((result) => {
+          var index = this.lista.findIndex(item => item.idContrato == id);
+          this.lista.splice(index, 1);
+      
+          this.dataSource.data = this.lista;
+        });
+      }
     });
   }
 
