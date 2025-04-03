@@ -24,6 +24,8 @@ import { LoadingComponent } from 'src/app/shared/loading/loading.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MatOptionModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [ RelatorioProjetosPorMedicaoComponent, CadastrarMedicaoComponent, ListaMedicaoComponent, ResumoMedicaoComponent],
@@ -48,7 +50,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatTooltipModule,
     SharedModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatAutocompleteModule,
+    MatOptionModule
   ]
 })
 export class RelatorioProjetosPorMedicaoModule { }

@@ -4,21 +4,27 @@
       <mat-card-content>  
         <div >
           <h3>Informe um contrato para exibir as medições</h3>    
-          <mat-form-field>
+          <mat-form-field style="display: inline-block; vertical-align: top; ">
             <mat-label>Selecione o cliente</mat-label>
-            <mat-select [(ngModel)]="selectedPrefeitura" disableRipple (selectionChange)="onSelectionChange($event.value)">
-              <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura" >{{prefeitura.nome}}</mat-option>
-            </mat-select>
-          </mat-form-field>   
-          <mat-form-field style="margin-left: 5px;" [style.display]="exibirContrato ? '' : 'none'">
+            <input matInput [matAutocomplete]="auto" [(ngModel)]="selectedPrefeitura" (ngModelChange)="filtrarPrefeitura($event)">
+            
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChange($event.option.value)">
+              <mat-option *ngFor="let prefeitura of listaFiltrada" [value]="prefeitura.nome">
+                {{ prefeitura.nome }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          
+           
+          <mat-form-field style="margin-left: 5px;display: inline-block; vertical-align: top; " [style.display]="exibirContrato ? '' : 'none'">
             <mat-label>Selecione o contrato</mat-label>
             <mat-select disableRipple [(ngModel)]="contratoSelecionado">
               <mat-option *ngFor="let contrato of listaContratos" [value]="contrato.idContrato" >{{contrato.numeroContrato}}</mat-option>
             </mat-select>
           </mat-form-field>  
           
-            <button mat-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: -10px; " [style.display]="contratoSelecionado > 0 ? '' : 'none'" (click)="buscar()">Buscar</button>
-            <button mat-button style="background-color:white; color: black; margin-left: 10px;margin-top: -10px;border: solid 1px; border-color: black; " [style.display]="contratoSelecionado > 0 ? '' : 'none'" (click)="limpar()">Limpar</button>
+            <button mat-button style="background-color:royalblue; color: white; margin-left: 10px;margin-top: 10px; " [style.display]="contratoSelecionado > 0 ? '' : 'none'" (click)="buscar()">Buscar</button>
+            <button mat-button style="background-color:white; color: black; margin-left: 10px;margin-top: 10px;border: solid 1px; border-color: black; " [style.display]="contratoSelecionado > 0 ? '' : 'none'" (click)="limpar()">Limpar</button>
         </div>    
         <div class="mat-elevation-z8" [style.display]="exibir ? 'block' : 'none'">
           <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px;">

@@ -24,7 +24,7 @@ export class CadastrarMedicaoComponent implements OnInit {
 
   constructor(private readonly api: MedicoesService,
     @Inject(MAT_DIALOG_DATA) public data: {medicoes: Contrato, numeroMedicao?:
-      number, projetosMedidos: MedicoesResponse[] },
+      number, projetosMedidos: MedicoesResponse[], associarMedicao: boolean },
      public _projetoControllerService: ProjetoService,
      private _toastService: ToastService,
      public dialogRef: MatDialogRef<CadastrarMedicaoComponent> // Referência ao diálogo
@@ -83,6 +83,7 @@ export class CadastrarMedicaoComponent implements OnInit {
   }
 
   async getAllProjects() {
+    console.log(this.data);
     const projetoRequest: ProjetoRequest = {
       nome: '',
       itemsPorPagina: 1000000,
@@ -93,7 +94,14 @@ export class CadastrarMedicaoComponent implements OnInit {
     try {
       await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
       .then((res) => {
-        this.listaProjetos = (res.data);
+        if(this.data.associarMedicao){
+          this.listaProjetos = res.data.filter(item => 
+            !this.data.projetosMedidos.some(projeto => projeto.idProjeto === item.idProjeto)
+          );
+        }
+        else{
+          this.listaProjetos = res.data;
+        }
       });
 
     } catch (error) {

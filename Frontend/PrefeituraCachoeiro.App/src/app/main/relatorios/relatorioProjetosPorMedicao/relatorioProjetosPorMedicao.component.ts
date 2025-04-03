@@ -37,6 +37,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   selectedPrefeitura: number | null = null; // Valor selecionado
   medicaoProjetos : MedicoesModel[] = [];
   isLoading = false;
+  listaFiltrada: any[] = [];
 
   constructor(private cdr: ChangeDetectorRef, 
     private readonly apiPrefeitura: PrefeituraService,
@@ -64,6 +65,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     }else{
       await this.buscarListaPrefeituras();
     }
+    this.listaFiltrada = [...this.listaPrefeitura];
   }
 
   async buscarPrefeitura(id: number){
@@ -131,7 +133,8 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     });
   }
 
-  async onSelectionChange(prefeituraId: number){
+  async onSelectionChange(nome: string){
+    var prefeituraId = this.listaPrefeitura.find(x => x.nome === nome).idPrefeitura;
     this.exibirContrato = true;
     this.isLoading = true;
     await this.buscarListaContratos(prefeituraId);
@@ -173,7 +176,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   openDialog() {
     if(this.todasMedicaoProjetoResponse?.data == undefined){
       var contrato = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
-      const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: contrato, numeroMedicao :1}});
+      const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: contrato, numeroMedicao :1, associarMedicao: false}});
 
       dialogRef.afterClosed().subscribe(async result => {
         if(result){
@@ -237,7 +240,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       })
     }
 
-    const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao, projetosMedidos: projetosMedidos}});    
+    const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao, projetosMedidos: projetosMedidos, associarMedicao: true}});    
     dialogRef.afterClosed().subscribe(async result => {
       if(result){
         await this.apiMedicoes.BuscarMedicoes(result)
@@ -252,6 +255,17 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     });
   }
 
+  filtrarPrefeitura(valor: string) {
+    // Filtra a lista com base no valor digitado
+    this.listaFiltrada = this.listaPrefeitura.filter(prefeitura => 
+      prefeitura.nome.toLowerCase().includes(valor.toLowerCase())
+    );
+  }
+
+  // Função chamada quando o valor do campo de entrada mudar
+  onOptionSelected(value: any) {
+    console.log('Prefeitura selecionada:', value);
+  }
 
   async enviar(numeroMedicao: number){
     const result = window.confirm('Você deseja enviar a medição?');
