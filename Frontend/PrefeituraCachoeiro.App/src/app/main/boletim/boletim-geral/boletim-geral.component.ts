@@ -61,10 +61,10 @@ export class BoletimGeralComponent implements OnInit {
     private _medicaoControllerService: MedicoesService,
     private _contratoControllerService: ContratosService,
     private fb: FormBuilder,
-    private route: ActivatedRoute,    
+    private route: ActivatedRoute,
     private _toastService: ToastService,
     public _boletimControllerService: BoletimService,
-    private auth: AuthService, 
+    private auth: AuthService,
     private _prefeituraControllerService: PrefeituraService,
     private readonly aesEncryptDecript: AESEncryptDecriptService
   ) {}
@@ -77,13 +77,13 @@ export class BoletimGeralComponent implements OnInit {
       this.medicaoId = params.get('medicaoId')!;
       this.clienteId = params.get('clienteId')!;
     });
-    
+
     var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
 
 
     //this.createForm();
     var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
-    
+
     if(idPrefeituraUser){
       idPrefeituraUser = this.aesEncryptDecript.decrypt(idPrefeituraUser);
       if(idPrefeituraUser){
@@ -175,11 +175,11 @@ export class BoletimGeralComponent implements OnInit {
       medicoesRequest.idContrato = contratoId;
       medicoesRequest.itemsPorPagina = 1000000;
       medicoesRequest.pagina = 1;
-  
+
       await this._medicaoControllerService.BuscarTodasMedicoes(medicoesRequest)
       .then((res) => {
         this.listaMedicoes = res.data;
-  
+
         this.groupMedicoes();
       })
       .catch((erro) => {
@@ -195,7 +195,7 @@ export class BoletimGeralComponent implements OnInit {
     groupMedicoes() {
       const grouped = this.listaMedicoes.reduce((acc, current) => {
         const numeroMedicao = current.numeroMedicao;
-  
+
         // Se ainda não existir um grupo para esse numeroMedicao, cria um novo
         if (!acc[numeroMedicao]) {
           acc[numeroMedicao] = {
@@ -203,15 +203,15 @@ export class BoletimGeralComponent implements OnInit {
             medicaoResponse: []
           };
         }
-  
+
         // Adiciona o MedicoesResponse ao grupo correspondente
         acc[numeroMedicao].medicaoResponse.push(current);
         return acc;
       }, {});
-  
+
       // Agora, agrupamos os dados em um array de BoletimMedicoesResponse
       this.listaMedicoesAgrupados = Object.values(grouped);
-  
+
     }
 
   async onSelectionClienteChangePrefeitura(prefeituraId: number) {
@@ -320,12 +320,12 @@ export class BoletimGeralComponent implements OnInit {
     // });
     this.dadosSeparadosProjeto = [];
     this.listaMedicoesSelecionadasAgrupados = this.listaMedicoesAgrupados.filter(x => x.numeroMedicao == this.medicaoSelecionado)[0];
-    
-    this.listaMedicoesSelecionadasAgrupados.medicaoResponse.forEach(async element => {    
+
+    this.listaMedicoesSelecionadasAgrupados.medicaoResponse.forEach(async element => {
       var boletimDetalhadoRequest: BuscarBoletimDetalhadoRequest = {
         idMedicao: element.idMedicoesProjeto
       }
-      
+
       await this._boletimControllerService.BuscarBoletimGeral(boletimDetalhadoRequest)
       .then(async (dados) => {
         if (dados.detalhes.length != 0) {
@@ -357,7 +357,7 @@ export class BoletimGeralComponent implements OnInit {
 
           this.dadosSeparadosProjeto.sort((a, b) => this.compareVersions(a.numero, b.numero));
 
-          this.agruparPorDigitoInicial();
+          //this.agruparPorDigitoInicial();
 
           this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
           this.valorTotalMedicao = dados.valorTotalMedicao || 0;
@@ -475,7 +475,7 @@ export class BoletimGeralComponent implements OnInit {
   }
 
   compareVersions(v1: string, v2: string): number {
-  
+
     if(v2 && v1){
       const parts1 = v1.split('.').map(Number);
       const parts2 = v2.split('.').map(Number);
