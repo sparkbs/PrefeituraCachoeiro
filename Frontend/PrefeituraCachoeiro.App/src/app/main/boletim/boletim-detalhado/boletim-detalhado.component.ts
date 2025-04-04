@@ -49,6 +49,7 @@ export class BoletimDetalhadoComponent implements OnInit {
   dadosSeparadosProjeto: SubBoletim[] =[];
   listaPrefeitura: PrefeituraResponse[] = [];
   projetosNome?: string = '';
+  imageUrl: string | null = null;
 
   // Variável para gerenciar estado de carregamento e erros
   isLoading = false;
@@ -313,10 +314,16 @@ export class BoletimDetalhadoComponent implements OnInit {
 
   async RetornarLogoCliente(clienteId: number): Promise<void> {
     await this._prefeituraControllerService.BuscarPrefeitura(clienteId)
-    .then((res) => {
+    .then(async (res) => {
       if (res) {
         this.logoTipoImgUrl = res.logo;
         this.nomePrefeitura = res.nome;
+        
+        await this._prefeituraControllerService.BuscarLogoPrefeitura(clienteId)
+        .then((blob) =>{
+            // Converte o blob em uma URL
+            this.imageUrl = URL.createObjectURL(blob);
+        });
       }
     })
     .catch((erro) => {

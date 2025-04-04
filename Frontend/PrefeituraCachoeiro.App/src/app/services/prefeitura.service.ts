@@ -22,6 +22,15 @@ export class PrefeituraService {
     );
   }
 
+  public async BuscarLogoPrefeitura(id: number) : Promise<Blob>{
+    return await firstValueFrom(
+      this.http.get<Blob>(
+        `${Environments.APIUrl}/prefeitura/downloadarquivologo/${id}`,
+        {responseType: 'blob' as 'json'}
+      )
+    );
+  }
+
   public async BuscarTodasPrefeituras(filter: PrefeituraFilter): Promise<PrefeituraDataResponse> {
     return await firstValueFrom(
       this.http.post<PrefeituraDataResponse>(

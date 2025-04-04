@@ -52,6 +52,7 @@ export class BoletimGeralComponent implements OnInit {
   enableMedicao: boolean = false;
   enableContrato: boolean = false;
   projetosNome?: string = '';
+  imageUrl: string | null = null;
 
   // Variáveis de controle de carregamento e erros
   isLoading = false;
@@ -444,10 +445,15 @@ export class BoletimGeralComponent implements OnInit {
 
   async RetornarLogoCliente(clienteId: number): Promise<void> {
     await this._prefeituraControllerService.BuscarPrefeitura(clienteId)
-    .then((res) => {
+    .then(async (res) => {
       if (res) {
         this.logoTipoImgUrl = res.logo;
         this.nomePrefeitura = res.nome;
+        await this._prefeituraControllerService.BuscarLogoPrefeitura(clienteId)
+        .then((blob) =>{
+            // Converte o blob em uma URL
+            this.imageUrl = URL.createObjectURL(blob);
+        });
       }
     })
     .catch((erro) => {
