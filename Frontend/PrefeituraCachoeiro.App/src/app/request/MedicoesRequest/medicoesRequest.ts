@@ -17,6 +17,7 @@ export class InserirMedicao {
     observacao: string = "";
     idProjeto: number = 0;
     items: PermissoesItemsRequest[] = [];
+    secretaria: string;
   }
 
   export class ItemMedicao {
@@ -46,6 +47,7 @@ export class AlterarMedicaoProjetoRequest {
     items: ItemMedicao[];
     idMedicoesProjeto: number;
     idProjeto: number;
+    secretaria: string;
   }
 
   export class RegistroDocumentosMedicoesRequest{

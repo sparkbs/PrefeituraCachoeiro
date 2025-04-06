@@ -60,6 +60,7 @@ export class Editar_criar_prefeituraComponent {
 
     this.atualizarPrefeitura.IdPrefeitura = this.data.idPrefeitura;
     this.atualizarPrefeitura.Nome = this.data.nome;
+    this.atualizarPrefeitura.Email = this.data.email;
 
     await this.api.AtualizarPrefeitura(this.atualizarPrefeitura)
     .then((result) => {

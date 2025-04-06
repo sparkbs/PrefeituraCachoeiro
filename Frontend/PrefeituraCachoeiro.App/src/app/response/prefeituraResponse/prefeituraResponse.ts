@@ -4,6 +4,7 @@ export class PrefeituraResponse{
     idPrefeitura: number = 0;
     nome: string = '';
     logo: string = '';
+    email: string = '';
 }
 
 export class PrefeituraDataResponse

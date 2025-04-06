@@ -16,6 +16,7 @@ import { MatSort } from '@angular/material/sort';
 import { StatusOrdenacao } from 'src/app/enums/statusOrdenacao';
 import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { OrigemArquivoAnexadoEnum } from 'src/app/enums/origemArquivoAnexado';
+import { ConfirmaExclusaoComponent } from 'src/app/shared/confirma-exclusao/confirma-exclusao.component';
 
 @Component({
   selector: 'app-listaMedicao',
@@ -57,6 +58,19 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       this.statusOrdem = StatusOrdenacao.SemOrdem;
     }
    }
+
+     async deleteContrato(id: any){
+       const dialogRef = this.dialog.open(ConfirmaExclusaoComponent);
+       dialogRef.afterClosed().subscribe(async result => {
+         if(result){
+   
+           await this.apiMedicao.DeletarMedicao(id)  
+           .then((result) => {
+             this.medicoes = null;
+           });
+         }
+       });
+     }
 
    ordemItens() {
     this.definirOrdem();
@@ -222,6 +236,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       let alterarMedicaoRequest = new AlterarMedicaoProjetoRequest();
       alterarMedicaoRequest.dataMedicao = this.medicoes.dataMedicao;
       alterarMedicaoRequest.idContrato = this.medicoes.idContrato;
+      alterarMedicaoRequest.secretaria = this.medicoes.secretaria;
       alterarMedicaoRequest.idMedicoesProjeto = this.medicoes.idMedicoesProjeto;
       alterarMedicaoRequest.idProjeto = this.medicoes.idProjeto;
       const novaLista = this.medicoes.items.map(item => ({

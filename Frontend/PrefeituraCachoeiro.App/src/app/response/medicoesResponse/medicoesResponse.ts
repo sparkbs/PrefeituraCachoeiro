@@ -13,6 +13,7 @@ export class MedicoesResponse {
     idProjeto: number;
     arquivosMedicoesProjeto: ArquivosMedicoesProjetoResponse[]; 
     observacao: string;
+    secretaria: string;
   }
 
   export class BoletimMedicoesResponse {

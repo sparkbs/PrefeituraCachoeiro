@@ -144,4 +144,12 @@ export class MedicoesService {
       )
     );
   }
+
+  public async DeletarMedicao(id: number): Promise<GenericResultResponse<string>> {
+    return await firstValueFrom(
+      this.http.delete<GenericResultResponse<string>>(
+        `${Environments.APIUrl}medicoes/${id}`
+      )
+    );
+  }
 }

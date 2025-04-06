@@ -21,6 +21,7 @@ export class CadastrarMedicaoComponent implements OnInit {
   listaProjetos: ProjetoResponse[] = [];
   disabledNomeMedicao = false;
   isLoading = false;
+  secretaria = "";
 
   constructor(private readonly api: MedicoesService,
     @Inject(MAT_DIALOG_DATA) public data: {medicoes: Contrato, numeroMedicao?:
@@ -56,6 +57,7 @@ export class CadastrarMedicaoComponent implements OnInit {
     medicaoRequest.dataMedicao = new Date();
     medicaoRequest.idContrato = this.data.medicoes.idContrato;
     medicaoRequest.idProjeto = this.projetoSelecionado;
+    medicaoRequest.secretaria = this.secretaria;
     medicaoRequest.items = this.data.medicoes.items.map(item => ({
       idItemContrato: item.idItemContrato,
       unidade: 0

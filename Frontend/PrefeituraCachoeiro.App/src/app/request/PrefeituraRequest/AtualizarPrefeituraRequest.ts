@@ -7,5 +7,6 @@ export class AtualizarPrefeituraRequest extends BasePrefeituraRequest {
 export class DadosEnviadosAtualizarPrefeitura {
     IdPrefeitura: number = 0;
     Nome: string = '';
+    Email: string = '';
     Url: string = '';
 }
