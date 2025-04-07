@@ -641,4 +641,18 @@ export class BoletimProjetoComponent implements OnInit {
   obterProjetoById(){
     return this.listaProjetos.find(x => x.idProjeto == this.projetoSelecionadoId).nomeProjeto;
   }
+
+  formatCurrency(event: string): string { 
+    let value = event.toString();
+    value = value.replace(/\D/g, ''); 
+    if (value === '') {
+      return ''; // Ou você pode definir um valor padrão
+    }
+    value = (parseInt(value) || 0).toString(); 
+    value = value.padStart(3, '0'); 
+    value = value.slice(0, -2) + ',' + value.slice(-2); 
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
+    value = 'R$ ' + value; 
+    return value; 
+  }
 }

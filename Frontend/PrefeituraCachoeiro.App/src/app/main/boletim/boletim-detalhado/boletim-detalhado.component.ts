@@ -279,7 +279,6 @@ export class BoletimDetalhadoComponent implements OnInit {
           }*/
           dados.detalhes[0].subBoletins = (dados.detalhes[0].subBoletins.filter(x => parseFloat(x.unidade) != 0));
           this.dataSource = dados.detalhes.length == 0 ? [] : dados.detalhes[0].subBoletins;
-          debugger
           var projeto = new SubBoletim();
           projeto.descricao = dados.detalhes[0].projeto;
           projeto.precoComBdi = 0.0;
@@ -387,6 +386,21 @@ export class BoletimDetalhadoComponent implements OnInit {
     .catch(() =>{
       this.isLoading = false;
     });
+  }
+
+
+  formatCurrency(event: string): string { 
+    let value = event.toString();
+    value = value.replace(/\D/g, ''); 
+    if (value === '') {
+      return ''; // Ou você pode definir um valor padrão
+    }
+    value = (parseInt(value) || 0).toString(); 
+    value = value.padStart(3, '0'); 
+    value = value.slice(0, -2) + ',' + value.slice(-2); 
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
+    value = 'R$ ' + value; 
+    return value; 
   }
 
 }

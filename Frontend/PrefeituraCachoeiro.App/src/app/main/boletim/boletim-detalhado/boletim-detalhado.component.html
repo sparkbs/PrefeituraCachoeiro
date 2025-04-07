@@ -195,8 +195,7 @@
         <th colspan="20" class="left-align">{{ boletimCabecalho.nomeProjeto }}</th>
         <th colspan="20" class="highlight">
           <span>VALOR TOTAL DA MEDIÇÃO: </span>
-          <span>R$</span>
-          <span>{{ calcularSomaValorTotal() }}</span>
+          <span>{{ formatCurrency(calcularSomaValorTotal()) }}</span>
         </th>
       </tr>
       <!-- Linha do rodapé do cabeçalho -->
@@ -235,14 +234,14 @@
           <td colspan="17">{{ item?.descricao }}</td>
           <td>{{ item?.unidade }}</td>
           <td>{{ item?.quantidadeResponse?.nome }}</td>
-          <td>{{ item?.precoComBdi ? ('R$ ' + item?.precoComBdi.toFixed(2)) : '' }}</td>
-          <td colspan="2">{{ item?.valorTotal ? ('R$ ' + (calcularValorTotalItemBoletim(item?.unidade, item?.precoComBdi, item?.valorTotal))) : '' }}</td>
+          <td>{{ item?.precoComBdi && item?.numero ? (formatCurrency(item?.precoComBdi.toFixed(2))) : '' }}</td>
+          <td colspan="2">{{ item?.valorTotal && item?.numero? (formatCurrency((calcularValorTotalItemBoletim(item?.unidade, item?.precoComBdi, item?.valorTotal)))) : '' }}</td>
         </tr>
       </ng-container>
 
       <tr>
         <td style="background-color: #ffffff;" colspan="22" class="highlight">VALOR TOTAL DA MEDIÇÃO:</td>
-        <td style="background-color: #df0101;" colspan="2" class="highlight">R$ {{ calcularSomaValorTotal() }}</td>
+        <td style="background-color: #df0101;" colspan="2" class="highlight"> {{ formatCurrency(calcularSomaValorTotal()) }}</td>
       </tr>
     </tbody>
   </table>

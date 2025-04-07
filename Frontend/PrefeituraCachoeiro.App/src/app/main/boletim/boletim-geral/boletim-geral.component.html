@@ -90,8 +90,7 @@
         <th colspan="20" class="left-align">{{ boletimCabecalho.nomeProjeto }}</th>
         <th colspan="20" class="highlight">
           <span style="text-align: start !important;">VALOR TOTAL DA MEDIÇÃO: </span>
-          <span>R$ </span>
-          <span style="margin-left: 7%;">{{ calcularSomaValorTotal() }}</span>
+          <span style="margin-left: 7%;">{{ formatCurrency(calcularSomaValorTotal()) }}</span>
         </th>
       </tr>
       <!-- Linha do rodapé do cabeçalho -->
@@ -136,10 +135,10 @@
           <td colspan="17">{{ boletim.descricao }}</td>
           <td>{{ boletim.unidade }}</td>
           <td>{{ boletim?.quantidadeResponse?.nome }}</td>
-          <td>{{ boletim.precoSemBdi ? ('R$ ' + boletim.precoSemBdi) : '' }}</td>
+          <td>{{ boletim.precoSemBdi && boletim?.numero ? (formatCurrency(boletim.precoSemBdi.toString())) : '' }}</td>
           <td>{{ boletim.bdi ? boletim.bdi + '%' : '' }}</td>
-          <td>{{ boletim.precoComBdi ? ('R$ ' + boletim.precoComBdi.toFixed(2)) : '' }}</td>
-          <td>{{ boletim?.valorTotal ? ('R$ ' + (calcularValorTotalItemBoletim(boletim?.unidade, boletim?.precoComBdi))) : '' }}</td>
+          <td>{{ boletim.precoComBdi && boletim?.numero ? (formatCurrency(boletim.precoComBdi.toFixed(2))) : '' }}</td>
+          <td>{{ boletim?.valorTotal && boletim?.numero? (formatCurrency(calcularValorTotalItemBoletim(boletim?.unidade, boletim?.precoComBdi))) : '' }}</td>
         </tr>
 
         <!-- Nível 2: SubBoletins -->
@@ -176,8 +175,7 @@
       <tr>
         <td style="background-color: #ffffff;" colspan="24" class="highlight">VALOR TOTAL DA MEDIÇÃO:</td>
         <td style="background-color: #df0101; display: flex; justify-content: space-between;" colspan="1" class="highlight">
-          <span>R$</span>
-          <span>{{ calcularSomaValorTotal() }}</span>
+          <span>{{ formatCurrency(calcularSomaValorTotal()) }}</span>
         </td>
       </tr>
     </tbody>
