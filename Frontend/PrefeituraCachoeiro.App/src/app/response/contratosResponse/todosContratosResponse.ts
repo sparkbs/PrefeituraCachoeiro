@@ -93,6 +93,12 @@ export interface ContratosResponse {
     nome?: string;
   }
   
+  export class EmpresaDataResponse
+  {
+      data?: EmpresaResponse[] = [];
+      totalRegisters: number = 0;
+  }
+
   export interface EmpresaResponse {
     empresaId: number;
     nome: string;

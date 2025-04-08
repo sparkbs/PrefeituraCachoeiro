@@ -15,6 +15,7 @@ import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.ser
 import { ToastService } from 'src/app/services/toast.service';
 import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { EmpresaService } from 'src/app/services/empresa.service';
 
 @Component({
   selector: 'app-relatorioProjetosPorMedicao',
@@ -38,6 +39,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   medicaoProjetos : MedicoesModel[] = [];
   isLoading = false;
   listaFiltrada: any[] = [];
+  contratoSelecionadoEstrutura: ContratosResponse = null;
 
   constructor(private cdr: ChangeDetectorRef, 
     private readonly apiPrefeitura: PrefeituraService,
@@ -45,6 +47,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     private readonly apiMedicoes: MedicoesService,
     private globalService: GlobalServicesService,
     private _toastService: ToastService,
+    private readonly apiEmpresa: EmpresaService,
     private auth: AuthService, 
     private readonly aesEncryptDecript: AESEncryptDecriptService) {
      }
@@ -159,6 +162,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
 
   async buscar(){
     this.isLoading = true;
+    this.contratoSelecionadoEstrutura = this.listaContratos.find(x => x.idContrato = this.contratoSelecionado);
     await this.buscarMedicoes();
     this.exibir = true;
     this.globalService.resetItems();

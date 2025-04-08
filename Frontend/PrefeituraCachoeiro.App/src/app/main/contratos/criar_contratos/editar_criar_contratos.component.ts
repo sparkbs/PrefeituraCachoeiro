@@ -11,6 +11,8 @@ import { UsuariosResponse } from 'src/app/response/usuariosResponse/usuariosResp
 import { ListaDocumentosContrato } from 'src/app/response/contratosResponse/dadosContratoResponse';
 import { ToastService } from 'src/app/services/toast.service';
 import { AbstractControl, FormControl, ValidationErrors, Validators } from '@angular/forms';
+import { EmpresaResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { EmpresaService } from 'src/app/services/empresa.service';
 
 @Component({
   selector: 'app-editar_criar_contratos',
@@ -23,6 +25,7 @@ export class Editar_criar_contratosComponent implements OnInit {
 
   listaPrefeitura: PrefeituraResponse[] = [];
   listaGerentes: UsuariosResponse[] = [];
+  listaEmpresa: EmpresaResponse[] = [];
   criarContrato: CriarContratoRequest = new CriarContratoRequest();
   listaDocumentoContrato: ListaDocumentosContrato[] = [];
   valorContrato: string;
@@ -31,6 +34,7 @@ export class Editar_criar_contratosComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: Item, 
   private dialogRef: MatDialogRef<Editar_criar_contratosComponent>,
   private readonly apiPrefeitura: PrefeituraService,
+  private readonly apiEmpresa: EmpresaService,
   private readonly api: ContratosService,
   private readonly apiUsuarios: UsuariosService,
   private _toastService: ToastService
@@ -40,6 +44,18 @@ export class Editar_criar_contratosComponent implements OnInit {
   async ngOnInit() {
     await this.buscarListaGerentes();
     await this.buscarListaPrefeituras();
+    await this.buscarListaempresas();
+  }
+
+  async buscarListaempresas(){
+    var prefeituraFilter : PrefeituraFilter = new PrefeituraFilter();
+    prefeituraFilter.nome = "";
+    prefeituraFilter.itemsPorPagina = 1000000;
+    prefeituraFilter.pagina = 1;
+    await this.apiEmpresa.BuscarTodasEmpresas(prefeituraFilter)
+    .then((result) => {
+      this.listaEmpresa = result.data;
+    });
   }
 
   async buscarListaPrefeituras(){
@@ -85,7 +101,7 @@ export class Editar_criar_contratosComponent implements OnInit {
 
     if (this.dateControl.status != "INVALID" && this.dateInicioControl.status != "INVALID" && this.dateTerminoControl.status != "INVALID") {
 
-    this.criarContrato.EmpresaId = 2;
+    //this.criarContrato.EmpresaId = 2;
     //retirar o valor
     this.criarContrato.ArquivoTemplate = this.adicionarBaseDados();
 

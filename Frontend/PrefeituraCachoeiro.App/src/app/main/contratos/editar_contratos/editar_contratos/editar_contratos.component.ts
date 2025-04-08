@@ -5,10 +5,11 @@ import { AtualizarContratoRequest } from 'src/app/request/ContratoRequest/atuali
 import { salvarDocumentoContratoRequest } from 'src/app/request/ContratoRequest/criarContratoRequest';
 import { UsuariosRequest } from 'src/app/request/UsuariosRequest/usuariosRequest';
 import { ListaDocumentosContrato } from 'src/app/response/contratosResponse/dadosContratoResponse';
-import { ArquivosContratoResponse, ContratosResponse, PrefeituraResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { ArquivosContratoResponse, ContratosResponse, EmpresaResponse, PrefeituraResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { PrefeituraFilter } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { UsuariosResponse } from 'src/app/response/usuariosResponse/usuariosResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
+import { EmpresaService } from 'src/app/services/empresa.service';
 import { MedicoesService } from 'src/app/services/medicoes.service';
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -29,6 +30,7 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
   dataContratoString: string;
   listaGerentes: UsuariosResponse[] = [];
   isLoading = false;
+  listaEmpresa: EmpresaResponse[] = [];
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: ContratosResponse,
   private readonly apiMedicao: MedicoesService,
@@ -36,6 +38,7 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
    private dialogRef: MatDialogRef<Editar_contratosComponent>,
    private readonly api: ContratosService,
   private readonly apiUsuarios: UsuariosService,
+    private readonly apiEmpresa: EmpresaService,
   private _toastService: ToastService
   ) { }
 
@@ -47,6 +50,7 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
     }
 
   async ngOnInit() {
+    await this.buscarListaempresas();
     await this.buscarListaPrefeituras();
   }
 
@@ -100,6 +104,17 @@ formatDateToString(date: Date): string {
     console.error('Data inválida fornecida');
     return '';
   }
+}
+
+async buscarListaempresas(){
+  var prefeituraFilter : PrefeituraFilter = new PrefeituraFilter();
+  prefeituraFilter.nome = "";
+  prefeituraFilter.itemsPorPagina = 1000000;
+  prefeituraFilter.pagina = 1;
+  await this.apiEmpresa.BuscarTodasEmpresas(prefeituraFilter)
+  .then((result) => {
+    this.listaEmpresa = result.data;
+  });
 }
 
 
