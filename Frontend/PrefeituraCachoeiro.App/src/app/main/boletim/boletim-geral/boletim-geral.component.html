@@ -50,7 +50,7 @@
             <img [src]="imageUrl" alt="Logotipo" class="logo" />
             <div class="title-container">
               <h2>{{ nomePrefeitura}}</h2>
-              <h4>{{ boletimCabecalho.nomeUnidade.replace(" - SEMO","") }}</h4>
+              <h4>{{ boletim?.detalhes[0]?.secretaria }}</h4>
             </div>
             <img src="/assets/images/logos/logo_projeta_branca_290.png" alt="LogoProjeta" class="logo"/>
           </div>
@@ -114,7 +114,7 @@
         <th colspan="1">VALOR TOTAL</th>
       </tr>
 
-      <tr>
+     <!-- <tr>
         <th></th>
         <th></th>
         <th colspan="17">Item a medir</th>
@@ -124,7 +124,7 @@
         <th></th>
         <th></th>
         <th></th>
-      </tr>
+      </tr>-->
 
       <!-- Nível 1: Boletins principais -->
       <ng-container *ngFor="let boletim of dadosSeparadosProjeto">
@@ -133,12 +133,12 @@
           <td>{{ boletim.numero }}</td>
           <td>{{ boletim.codigoAta }}</td>
           <td colspan="17">{{ boletim.descricao }}</td>
-          <td>{{ boletim.unidade }}</td>
+          <td>{{ boletim.unidade.replace('.', ',') }}</td>
           <td>{{ boletim?.quantidadeResponse?.nome }}</td>
           <td>{{ boletim.precoSemBdi && boletim?.numero ? (formatCurrency(boletim.precoSemBdi.toString())) : '' }}</td>
           <td>{{ boletim.bdi ? boletim.bdi + '%' : '' }}</td>
           <td>{{ boletim.precoComBdi && boletim?.numero ? (formatCurrency(boletim.precoComBdi.toFixed(2))) : '' }}</td>
-          <td>{{ boletim?.valorTotal && boletim?.numero? (formatCurrency(calcularValorTotalItemBoletim(boletim?.unidade, boletim?.precoComBdi))) : '' }}</td>
+          <td>{{ boletim?.valorTotal ? (formatCurrency(calcularValorTotalItemBoletim(boletim?.unidade, boletim?.precoComBdi))) : '' }}</td>
         </tr>
 
         <!-- Nível 2: SubBoletins -->
@@ -188,6 +188,7 @@
 
     <div class="signature-contratada">
       <p>_______________________________________</p>
+      <p>{{boletim?.detalhes[0]?.empresa}}</p>
     </div>
   </tfoot>
 </div>

@@ -18,6 +18,11 @@
           <div class="mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" matSort>
           
+              <ng-container matColumnDef="empresa">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 13px;"> Empresa </th>
+                <td mat-cell *matCellDef="let row" style="font-size: 11px;"> {{row.empresa.nome}} </td>
+              </ng-container>
+
               <ng-container matColumnDef="numeroContrato">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header style="font-size: 13px;"> Contrato </th>
                 <td mat-cell *matCellDef="let row" style="font-size: 11px;"> {{row.numeroContrato}} </td>

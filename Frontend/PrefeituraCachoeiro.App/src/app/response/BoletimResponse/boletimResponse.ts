@@ -22,6 +22,9 @@ export class BoletimProjetoCabecalho {
 }
 
 export class Detalhe {
+  empresa: string;
+  secretaria: string;
+  idEmpresa: number;
   dataMedicao: string;
   numeroMedicao: number;
   projeto: string;
