@@ -85,6 +85,37 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     });
   }
 
+  somarValorTotalMedicao(medicao: MedicoesResponse[], numero: number){
+    let valorSomado = 0;
+
+    var itemsMedidos = medicao.filter(x => x.numeroMedicao == numero);
+
+    itemsMedidos.forEach( x => {
+      if(x){
+        x.items.forEach(y => {
+          if(y)
+            valorSomado += y?.unidade * y?.itemsContrato?.item?.valorComBdi
+        })
+      }
+    })
+
+    return valorSomado
+  }
+
+  formatToCurrency(valor?: number): string {
+    if(valor){
+    let valorFormatado = valor.toFixed(2);  // 2 casas decimais
+
+    valorFormatado = valorFormatado.replace('.', ',');
+
+    valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    return 'R$ ' + valorFormatado;
+    }else{
+      return 'R$ 0,00'
+    }
+  }
+
   async buscarMedicoes(){
     this.medicaoProjetos = [];
     var medicoesRequest : MedicoesRequest = new MedicoesRequest();

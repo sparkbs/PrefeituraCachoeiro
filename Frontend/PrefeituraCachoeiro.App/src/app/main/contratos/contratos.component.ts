@@ -59,7 +59,29 @@ export class ContratosComponent implements AfterViewInit, OnInit {
     await this.api.BuscarTodosContratos(contratosFilter)
     .then((result) => {
       this.lista = result.data;
-      this.dataSource.data = (this.lista);         
+      this.dataSource.data = this.lista;
+      
+      // Filtro personalizado
+      this.dataSource.filterPredicate = (data: ContratosResponse, filter: string): boolean => {
+        const dataStr = `
+          ${data.empresa?.nome || ''}
+          ${data.numeroContrato || ''}
+          ${data.prefeitura?.nome || ''}
+          ${data.dataInicio || ''}
+          ${data.dataTerminoAtualizada || data.dataTermino || ''}
+          ${data.gerente || ''}
+          ${data.valorTotalPrevisto?.toString() || ''}
+          ${data.valorTotalMedido?.toString() || ''}
+          ${data.valorSaldoRestante?.toString() || ''}
+          ${data.valorTotalSolicitado?.toString() || ''}
+          ${data.tipoContratacao === 1 ? 'Adesão' : 'Licitação'}
+        `.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
+      
+        const filterNormalized = filter.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
+      
+        return dataStr.includes(filterNormalized);
+      };
+           
     });
   }
 

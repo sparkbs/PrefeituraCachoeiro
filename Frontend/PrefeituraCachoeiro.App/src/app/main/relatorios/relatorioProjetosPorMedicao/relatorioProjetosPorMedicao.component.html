@@ -50,7 +50,8 @@
               <mat-expansion-panel-header>
                 <mat-panel-title> Medição {{medicoes.numeroMedicao}} </mat-panel-title>
                 <mat-panel-description>
-                  Ao expandir, devem ser exibidos todos os projetos medidos na medição {{medicoes.numeroMedicao}}
+                  <!--Ao expandir, devem ser exibidos todos os projetos medidos na medição {{medicoes.numeroMedicao}}-->
+                  <span> Valor Total: <strong style="color: black;">{{formatToCurrency(somarValorTotalMedicao(medicoes.data, medicoes.numeroMedicao))}}</strong></span>
                 </mat-panel-description>
               </mat-expansion-panel-header>
               
