@@ -1,12 +1,14 @@
-import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { PrefeituraService } from 'src/app/services/prefeitura.service';
-import { PrefeituraDataResponse, PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
+import { PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { ConfirmaExclusaoComponent } from 'src/app/shared/confirma-exclusao/confirma-exclusao.component';
 import { Editar_criar_empresaComponent } from '../editar_criar_empresa/editar_criar_empresa.component';
+import { EmpresaService } from 'src/app/services/empresa.service';
+import { EmpresaFilter } from 'src/app/response/empresaResponse/empresaResponse';
+import { EmpresaResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 
 @Component({
   selector: 'app-empresa',
@@ -16,28 +18,28 @@ import { Editar_criar_empresaComponent } from '../editar_criar_empresa/editar_cr
 export class EmpresaComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
-  lista: PrefeituraResponse[] = [];
+  lista: EmpresaResponse[] = [];
   displayedColumns: string[] = ['idPrefeitura', 'nome', 'logo','acoes'];
   
-  dataSource: MatTableDataSource<PrefeituraResponse>;
+  dataSource: MatTableDataSource<EmpresaResponse>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private readonly api: PrefeituraService
+  constructor(private readonly api: EmpresaService
   ) { 
     this.dataSource = new MatTableDataSource(this.lista);    
   }
 
   async ngOnInit() {
-    await this.buscarListaPrefeituras();
+    await this.buscarListaEmpresas();
   }
 
-  async buscarListaPrefeituras(){
-    var prefeituraFilter : PrefeituraFilter = new PrefeituraFilter();
+  async buscarListaEmpresas(){
+    var prefeituraFilter : EmpresaFilter = new EmpresaFilter();
     prefeituraFilter.nome = "";
     prefeituraFilter.itemsPorPagina = 1000000;
     prefeituraFilter.pagina = 1;
-    await this.api.BuscarTodasPrefeituras(prefeituraFilter)
+    await this.api.BuscarTodasEmpresas(prefeituraFilter)
     .then((result) => {
       this.lista = result.data;
       this.dataSource.data = (this.lista); 
@@ -63,10 +65,10 @@ export class EmpresaComponent implements OnInit {
     
     dialogRef.afterClosed().subscribe(async result => {
       if(result){
-        await this.api.DeletarPrefeitura(id)
+        await this.api.DeletarEmpresa(id)
         .then((result) => {
-          var index = this.lista.findIndex(item => item.idPrefeitura == id);
-          this.lista.splice(index, 1);
+          //var index = this.lista.findIndex(item => item.idPrefeitura == id);
+         // this.lista.splice(index, 1);
       
           this.dataSource.data = this.lista;
         });
@@ -78,7 +80,7 @@ export class EmpresaComponent implements OnInit {
     const dialogRef = this.dialog.open(Editar_criar_empresaComponent);
 
     dialogRef.afterClosed().subscribe(async result => {
-      await this.buscarListaPrefeituras();
+      await this.buscarListaEmpresas();
     });
 
   }
@@ -89,7 +91,7 @@ export class EmpresaComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async result => {
-      await this.buscarListaPrefeituras();
+      await this.buscarListaEmpresas();
     });
   }
 
