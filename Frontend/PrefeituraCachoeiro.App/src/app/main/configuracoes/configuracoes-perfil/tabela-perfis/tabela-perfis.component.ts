@@ -8,6 +8,8 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 import { UsuariosRequest } from 'src/app/request/UsuariosRequest/usuariosRequest';
 import { ToastService } from 'src/app/services/toast.service';
 import { UsuariosResponse } from 'src/app/response/usuariosResponse/usuariosResponse';
+import { PrefeituraService } from 'src/app/services/prefeitura.service';
+import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 
 @Component({
   selector: 'app-tabela-perfis',
@@ -16,6 +18,7 @@ import { UsuariosResponse } from 'src/app/response/usuariosResponse/usuariosResp
 })
 export class TabelaPerfisComponent implements OnInit {
   listaPerfis: UsuariosResponse[] = [];
+  listaPrefeituras: PrefeituraResponse[] =[];
   displayedColumns: string[] = ['login', 'nome', 'cliente', 'acoes'];
 
   dataSource = new MatTableDataSource<UsuariosResponse>(this.listaPerfis);
@@ -26,10 +29,12 @@ export class TabelaPerfisComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     public _usuarioControllerService: UsuariosService,
+    public _prefeituraControllerService: PrefeituraService,
     private _toastService: ToastService
   ){}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.buscarTodasPrefeituras();
     this.getAllUsers();
   }
 
@@ -41,10 +46,35 @@ export class TabelaPerfisComponent implements OnInit {
     await this._usuarioControllerService.BuscarTodosUsuarios(usuario)
     .then((res) => {
       this.listaPerfis = res.data;
+
+      this.listaPerfis.forEach(res => {
+        this.listaPrefeituras.forEach(pf => {
+          if (res.prefeituraId == pf.idPrefeitura) {
+            res.nomePrefeitura = pf.nome;
+          }
+        })
+      });
+
       this.dataSource.data = this.listaPerfis;
     })
     .catch((erro) => {
       this._toastService.mensagemError('Erro ao buscar usuários!');
+    });
+  }
+
+  async buscarTodasPrefeituras() {
+    const filter: PrefeituraFilter = {
+      itemsPorPagina: 10000,
+      pagina: 1,
+      nome: ""
+    };
+
+    await this._prefeituraControllerService.BuscarTodasPrefeituras(filter)
+    .then((res) => {
+      this.listaPrefeituras = res.data;
+    })
+    .catch((error) => {
+      this._toastService.mensagemError('Erro ao buscar prefeituras!');
     });
   }
 

@@ -93,7 +93,7 @@
     <tr>
       <th colspan="20" class="left-align"></th>
       <th colspan="20" class="highlight">
-        <span style="text-align: start !important;">VALOR TOTAL DA MEDIÇÃO: </span>        
+        <span style="text-align: start !important;">VALOR TOTAL DA MEDIÇÃO: </span>
         <span style="margin-left: 7%;">{{ formatCurrency(calcularSomaValorTotal()) }}</span>
       </th>
     </tr>
@@ -176,6 +176,7 @@
 
   <div class="signature-contratante">
     <p>_______________________________________</p>
+    <p>SECRETARIA {{ boletim?.detalhes[0]?.secretaria.toUpperCase() }}</p>
   </div>
 
   <div class="signature-contratada">

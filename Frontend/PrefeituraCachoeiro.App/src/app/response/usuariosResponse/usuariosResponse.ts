@@ -3,6 +3,7 @@ export class UsuariosResponse {
   login: string;
   nome: string;
   prefeituraId: number;
+  nomePrefeitura?: string;
   grupo: string;
   acoes?: string;
 }

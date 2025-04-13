@@ -41,13 +41,26 @@
       </mat-grid-tile>
     </mat-grid-list>
   </div>
-  <div class="aprovador-content" *ngIf="hasPrefeitura">
-    <mat-card [routerLink]="['/main/relatorioProjetosPorMedicao']">
-      <mat-card-header>
-        <mat-icon>assignment</mat-icon>
-      </mat-card-header>
-      <mat-card-title>Aprovação</mat-card-title>
-      <mat-card-content>Nesta seção poderá aprovar medições</mat-card-content>
-    </mat-card>
+  <div class="cards-group" *ngIf="hasPrefeitura">
+    <mat-grid-list cols="2" rowHeight="2:1">
+      <mat-grid-tile>
+        <mat-card [routerLink]="['/main/relatorioProjetosPorMedicao']">
+          <mat-card-header>
+            <mat-icon>assignment</mat-icon>
+          </mat-card-header>
+          <mat-card-title>Aprovação</mat-card-title>
+          <mat-card-content>Nesta seção poderá aprovar medições</mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-card [routerLink]="['/main/relatorioProjetosPorMedicao']">
+          <mat-card-header>
+            <mat-icon>assignment</mat-icon>
+          </mat-card-header>
+          <mat-card-title>Histórico de Aprovações</mat-card-title>
+          <mat-card-content>Nesta opção você pode ver as medições já aprovadas</mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
   </div>
 </div>
