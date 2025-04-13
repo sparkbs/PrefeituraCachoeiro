@@ -38,26 +38,57 @@ export class AprovarMedicaoComponent implements OnInit {
 
     async criarAprovacao(){
       this.isLoading = true;
-      this.aprovarMedicoes.IdMedicoesProjeto = this.IdMedicoesProj.idMedicoesProj;
-      this.listaDocumentoContrato.forEach(x => this.aprovarMedicoes.Arquivos.push(x.file));
-       
-      await this.api.AprovarMedicoes(this.aprovarMedicoes)
-      .then((result) => {     
-        if(result.isSucesso){
-          this._toastService.mensagemSuccess("Aprovação realizada com sucesso.");
+
+      if(this.IdMedicoesProj.idMedicoesProj){
+        this.aprovarMedicoes.IdMedicoesProjeto = this.IdMedicoesProj.idMedicoesProj;
+        this.listaDocumentoContrato.forEach(x => this.aprovarMedicoes.Arquivos.push(x.file));
+        
+        await this.api.AprovarMedicoes(this.aprovarMedicoes)
+        .then((result) => {     
+          if(result.isSucesso){
+            this._toastService.mensagemSuccess("Aprovação realizada com sucesso.");
+          }
+          else{
+            this._toastService.mensagemError(result.mensagemErro);
+          }
+          this.dialogRef.close();
+        })
+        .catch(() =>
+        {
+          this._toastService.mensagemError("Erro ao aprovar uma medição.");
+        })
+        .finally(() =>{
+          this.isLoading = false;
+        });
+      }
+      else{
+        if(this.IdMedicoesProj.todasMedicoes){
+          this.IdMedicoesProj.todasMedicoes.forEach(async y => {
+            
+            this.aprovarMedicoes.IdMedicoesProjeto = y.idMedicoesProjeto;
+            this.listaDocumentoContrato.forEach(x => this.aprovarMedicoes.Arquivos.push(x.file));    
+
+              await this.api.AprovarMedicoes(this.aprovarMedicoes)
+              .then((result) => {     
+                if(result.isSucesso){
+                  this._toastService.mensagemSuccess("Aprovação realizada com sucesso.");
+                }
+                else{
+                  this._toastService.mensagemError(result.mensagemErro);
+                }
+                this.dialogRef.close();
+              })
+              .catch(() =>
+              {
+                this._toastService.mensagemError("Erro ao aprovar uma medição.");
+                this.isLoading = false;
+              })
+              .finally(() =>{
+              })
+          });          
         }
-        else{
-          this._toastService.mensagemError(result.mensagemErro);
-        }
-        this.dialogRef.close();
-      })
-      .catch(() =>
-      {
-        this._toastService.mensagemError("Erro ao aprovar uma medição.");
-      })
-      .finally(() =>{
         this.isLoading = false;
-      });
+      }
     }
 
   deletarDocumentos(deletarDocumento: ListaDocumentosContrato): void {

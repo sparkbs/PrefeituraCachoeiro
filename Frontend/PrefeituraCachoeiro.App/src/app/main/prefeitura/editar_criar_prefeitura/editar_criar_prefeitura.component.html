@@ -12,7 +12,19 @@
         <mat-label>Email</mat-label>
         <input matInput [(ngModel)]="criarPrefeitura.Email" />
       </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 16px;" *ngIf="!this.data">
+      <mat-form-field style="flex: 1;">
+        <mat-label>CNPJ</mat-label>
+        <input matInput [(ngModel)]="criarPrefeitura.Cnpj" />
+      </mat-form-field>
 
+      <mat-form-field style="flex: 1;">
+        <mat-label>Observacao</mat-label>
+        <input matInput [(ngModel)]="criarPrefeitura.Observacao" />
+      </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 16px;" *ngIf="!this.data">
       <!-- Campo Logo -->
       <div style="flex: 1;">
         <label for="logo-upload" style="display: block;">Logo:</label>
@@ -31,7 +43,19 @@
         <mat-label>Email</mat-label>
         <input matInput [(ngModel)]="data.email" />
       </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 16px;" *ngIf="this.data">
+      <mat-form-field style="flex: 1; height: 100%;">
+        <mat-label>CNPJ</mat-label>
+        <input matInput [(ngModel)]="data.cnpj" />
+      </mat-form-field>
 
+      <mat-form-field style="flex: 1;">
+        <mat-label>Observacao</mat-label>
+        <input matInput [(ngModel)]="data.observacao" />
+      </mat-form-field>
+    </div>
+    <div style="display: flex; gap: 16px;" *ngIf="this.data">
       <!-- Campo Logo -->
       <div style="flex: 1;">
         <label for="logo-upload" style="display: block;">Logo:</label>
@@ -43,7 +67,6 @@
         <br>
         <img src="{{data.logo}}" width="150"/>
       </div>
-
     </div>
   </div>
 </mat-dialog-content>

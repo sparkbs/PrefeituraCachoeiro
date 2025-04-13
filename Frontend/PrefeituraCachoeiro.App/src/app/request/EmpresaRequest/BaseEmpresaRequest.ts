@@ -1,4 +1,4 @@
 export class BaseEmpresaRequest {
-    Nome: string = '';
+    Nome: string;
     Logo: File;
 }

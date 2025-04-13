@@ -37,4 +37,4 @@ import { Editar_criar_empresaComponent } from '../editar_criar_empresa/editar_cr
     SharedModule
   ]
 })
-export class PrefeituraModule { }
+export class EmpresaModule { }

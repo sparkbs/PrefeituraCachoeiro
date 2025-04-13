@@ -5,6 +5,10 @@ import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { AtualizarPrefeituraRequest, DadosEnviadosAtualizarPrefeitura } from 'src/app/request/PrefeituraRequest/AtualizarPrefeituraRequest';
 import { ToastService } from 'src/app/services/toast.service';
+import { BaseEmpresaRequest } from 'src/app/request/EmpresaRequest/BaseEmpresaRequest';
+import { EmpresaService } from 'src/app/services/empresa.service';
+import { AtualizarEmpresaRequest } from 'src/app/request/EmpresaRequest/AtualizarEmpresaRequest';
+import { EmpresaResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 
 @Component({
   selector: 'app-editar_criar_empresa',
@@ -12,13 +16,13 @@ import { ToastService } from 'src/app/services/toast.service';
   styleUrls: ['./editar_criar_empresa.component.scss']
 })
 export class Editar_criar_empresaComponent {
-  criarPrefeitura: BasePrefeituraRequest = new BasePrefeituraRequest();
-  atualizarPrefeitura: AtualizarPrefeituraRequest = new AtualizarPrefeituraRequest();
+  criarEmpresa: BaseEmpresaRequest = new BaseEmpresaRequest();
+  atualizarEmpresa: AtualizarEmpresaRequest = new AtualizarEmpresaRequest();
   isLoading = false;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: PrefeituraResponse,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: EmpresaResponse,
   private _toastService: ToastService,
-  private readonly api: PrefeituraService,
+  private readonly api: EmpresaService,
   private dialogRef: MatDialogRef<Editar_criar_empresaComponent>
 ) { 
 
@@ -26,13 +30,14 @@ export class Editar_criar_empresaComponent {
 
   async cadastrar(){
     this.isLoading = true;
-    await this.api.CriarPrefeitura(this.criarPrefeitura)
+    console.log(this.criarEmpresa);
+    await this.api.CriarEmpresa(this.criarEmpresa)
     .then((result) => {
-      this._toastService.mensagemSuccess("Cliente criado com sucesso");
+      this._toastService.mensagemSuccess("Emrpesa criado com sucesso");
       this.dialogRef.close(result);
     })
     .catch(() => {
-      this._toastService.mensagemError("Erro ao criar cliente");
+      this._toastService.mensagemError("Erro ao criar empresa");
     })
     .finally(() => {
       this.isLoading = false
@@ -43,31 +48,30 @@ export class Editar_criar_empresaComponent {
   onFileChange(event: any) {
     const file = event.target.files[0];  // Pega o primeiro arquivo selecionado
     if (file) {
-      this.criarPrefeitura.Logo = file;  // Armazena o arquivo na variável 'logo'
+      this.criarEmpresa.Logo = file;  // Armazena o arquivo na variável 'logo'
     }
   }
 
   onFileChangeUpdate(event: any) {
     const file = event.target.files[0];  // Pega o primeiro arquivo selecionado
     if (file) {
-      this.atualizarPrefeitura.Logo = file;  // Armazena o arquivo na variável 'logo'
+      this.atualizarEmpresa.Logo = file;  // Armazena o arquivo na variável 'logo'
     }
   }
 
   async salvar(){
     this.isLoading = true;
 
-    this.atualizarPrefeitura.IdPrefeitura = this.data.idPrefeitura;
-    this.atualizarPrefeitura.Nome = this.data.nome;
-    this.atualizarPrefeitura.Email = this.data.email;
+    this.atualizarEmpresa.EmpresaId = this.data.empresaId;
+    this.atualizarEmpresa.Nome = this.data.nome;
 
-    await this.api.AtualizarPrefeitura(this.atualizarPrefeitura)
+    await this.api.AtualizarEmpresa(this.atualizarEmpresa)
     .then((result) => {
-      this._toastService.mensagemSuccess("Cliente editado com sucesso!");
+      this._toastService.mensagemSuccess("Empresa editado com sucesso!");
       this.dialogRef.close(result);
     })
     .catch(() => {
-      this._toastService.mensagemError("Erro ao editar cliente!");
+      this._toastService.mensagemError("Erro ao editar empresa!");
     })
     .finally(() => {
       this.isLoading = false

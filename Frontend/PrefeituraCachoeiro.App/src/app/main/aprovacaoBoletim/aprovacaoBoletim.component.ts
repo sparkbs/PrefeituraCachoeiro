@@ -3,7 +3,7 @@ import { BuscarAditivosContrato, BuscarContratosRequest } from 'src/app/request/
 import { DadosMedicoesRequest, MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ArquivosContratoResponse, ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
-import { ArquivosAprovacao, ArquivosMedicoesProjetoResponse, MedicoesModel, Projeto, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { ArquivosAprovacao, ArquivosMedicoesProjetoResponse, MedicoesModel, MedicoesResponse, Projeto, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { MedicoesService } from 'src/app/services/medicoes.service';
@@ -232,8 +232,27 @@ export class AprovacaoBoletimComponent implements OnInit {
     });
   }
 
+  aprovarTodasMedicoes(todasMedicoes: MedicoesResponse[]){
+    console.log(todasMedicoes);
+    this.dialog.open(AprovarMedicaoComponent,{data:{idMedicoesProj: 0, todasMedicoes: todasMedicoes}});
+    this.dialog.afterAllClosed.subscribe(async () => {
+      this._toastService.mensagemSuccess("Aguarde, atualizando as medições!");
+      this.isLoading = true;
+      await this.buscar(this.contratoSelecionado)
+      .then(() =>{
+        this._toastService.mensagemSuccess("Atualizado com sucesso!");
+      })
+      .catch((res) =>{
+        this._toastService.mensagemError(res.error.message);
+      })
+      .finally(() =>{
+        this.isLoading = false;
+      });
+    });
+  }
+
   nomeProjeto(id:number, projetos: Projeto[]){
-    return id == null ? "": projetos.find(x => x.idProjeto == id ).nomeProjeto;
+    return id == null ? "": projetos?.find(x => x.idProjeto == id )?.nomeProjeto;
   }
 
   popularMedicao(result: TodasMedicaoProjetoResponse){

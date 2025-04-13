@@ -19,7 +19,7 @@ export class EmpresaComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   lista: EmpresaResponse[] = [];
-  displayedColumns: string[] = ['idPrefeitura', 'nome', 'logo','acoes'];
+  displayedColumns: string[] = ['empresaId', 'nome', 'logo','acoes'];
   
   dataSource: MatTableDataSource<EmpresaResponse>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -60,15 +60,15 @@ export class EmpresaComponent implements OnInit {
     }
   }
 
-  async deletePrefeitura(id: number){
+  async deleteEmpresa(id: number){
     const dialogRef = this.dialog.open(ConfirmaExclusaoComponent);
     
     dialogRef.afterClosed().subscribe(async result => {
       if(result){
         await this.api.DeletarEmpresa(id)
         .then((result) => {
-          //var index = this.lista.findIndex(item => item.idPrefeitura == id);
-         // this.lista.splice(index, 1);
+          var index = this.lista.findIndex(item => item.empresaId == id);
+          this.lista.splice(index, 1);
       
           this.dataSource.data = this.lista;
         });
@@ -85,7 +85,7 @@ export class EmpresaComponent implements OnInit {
 
   }
 
-  async editPrefeitura(row: PrefeituraResponse){
+  async editEmpresa(row: EmpresaResponse){
     const dialogRef = this.dialog.open(Editar_criar_empresaComponent,{
       data: row
     });

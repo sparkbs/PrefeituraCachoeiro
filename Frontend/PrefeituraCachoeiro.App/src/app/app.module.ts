@@ -26,6 +26,7 @@ import { AESEncryptDecriptService } from './shared/aesEncryptDecript.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BoletimModule } from './main/boletim/boletim.module';
 import { ModalLevantamentoModule } from './main/relatorios/modalLevantamento/modalLevantamento.module';
+import { EmpresaModule } from './main/empresa/empresa/empresa.module';
 
 @NgModule({
   declarations: [ AppComponent, MainComponent, SidebarComponent, NavbarComponent ],
@@ -50,7 +51,8 @@ import { ModalLevantamentoModule } from './main/relatorios/modalLevantamento/mod
     RelatorioProjetosPorMedicaoModule,
     PrefeituraModule,
     MatSnackBarModule,
-    BoletimModule
+    BoletimModule,
+    EmpresaModule
   ],
   providers: [
     AuthService,

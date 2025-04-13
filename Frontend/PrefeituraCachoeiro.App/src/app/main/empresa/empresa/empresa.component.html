@@ -18,19 +18,14 @@
         <div class="mat-elevation-z8">
           <table mat-table [dataSource]="dataSource" matSort>
         
-            <ng-container matColumnDef="idPrefeitura">
+            <ng-container matColumnDef="empresaId">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
-              <td mat-cell *matCellDef="let row"> {{row.idPrefeitura}} </td>
+              <td mat-cell *matCellDef="let row"> {{row.empresaId}} </td>
             </ng-container>
         
             <ng-container matColumnDef="nome">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Empresa </th>
               <td mat-cell *matCellDef="let row"> {{row.nome}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="Email">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-              <td mat-cell *matCellDef="let row"> {{row.email}} </td>
             </ng-container>
         
             <ng-container matColumnDef="logo">
@@ -43,10 +38,10 @@
             <ng-container matColumnDef="acoes">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let row">
-                  <span matTooltip="Remover" (click)="deletePrefeitura(row.idPrefeitura)" class="hoverMouse">
+                  <span matTooltip="Remover" (click)="deleteEmpresa(row.empresaId)" class="hoverMouse">
                     <mat-icon>delete</mat-icon>
                   </span>
-                  <span style="margin-left: 5px;" matTooltip="Editar" (click)="editPrefeitura(row)" class="hoverMouse">
+                  <span style="margin-left: 5px;" matTooltip="Editar" (click)="editEmpresa(row)" class="hoverMouse">
                     <mat-icon>edit</mat-icon>
                   </span>
               </td>

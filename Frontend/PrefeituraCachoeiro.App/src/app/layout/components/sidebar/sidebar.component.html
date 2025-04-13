@@ -16,6 +16,13 @@
         </span>
       </button>
 
+      <button [routerLink]="['/main/empresa']" *ngIf="!hasPrefeitura">
+        <span>
+          <mat-icon>business</mat-icon>
+          <span>Empresa</span>
+        </span>
+      </button>
+
       <button [routerLink]="['/main/prefeitura']" *ngIf="!hasPrefeitura">
         <span>
           <mat-icon>account_balance</mat-icon>

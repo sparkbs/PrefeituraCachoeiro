@@ -18,6 +18,7 @@ import { BoletimGeralComponent } from './main/boletim/boletim-geral/boletim-gera
 import { AprovacaoBoletimComponent } from './main/aprovacaoBoletim/aprovacaoBoletim.component';
 import { PowerBIComponent } from './main/relatorios/powerBI/powerBI.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { EmpresaComponent } from './main/empresa/empresa/empresa.component';
 
 const routes: Routes = [
 
@@ -40,7 +41,8 @@ const routes: Routes = [
       { path: 'boletimPorProjeto/:clienteId/:contratoId/:projetoId/:medicaoId', component: BoletimProjetoComponent, canActivate: [AuthGuardService] },
       { path: 'boletimGeral/:clienteId/:contratoId/:medicaoId', component: BoletimGeralComponent, canActivate: [AuthGuardService] },
       { path: 'aprovacaoBoletim', component: AprovacaoBoletimComponent, canActivate: [AuthGuardService] },
-      { path: 'powerBi', component: PowerBIComponent, canActivate: [AuthGuardService] }
+      { path: 'powerBi', component: PowerBIComponent, canActivate: [AuthGuardService] },
+      { path: 'empresa', component: EmpresaComponent, canActivate: [AuthGuardService] },
     ]
   }
 ];
