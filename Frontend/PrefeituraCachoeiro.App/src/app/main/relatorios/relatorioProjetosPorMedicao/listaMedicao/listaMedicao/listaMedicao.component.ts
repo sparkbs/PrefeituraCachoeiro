@@ -72,22 +72,20 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
        });
      }
 
-   ordemItens() {
-    this.definirOrdem();
-
-    if(this.statusOrdem == StatusOrdenacao.Decrescente){
-      this.dataSource.data = this.dataSource.data.sort((a, b) => {
-        return -1 * a.itemsContrato.item.identificador.localeCompare(b.itemsContrato.item.identificador);
-      });
+     ordemItens() {
+      this.definirOrdem();
+    
+      if (this.statusOrdem == StatusOrdenacao.Decrescente) {
+        this.dataSource.data = this.dataSource.data.sort((a, b) => {
+          return Number(b.itemsContrato.item.identificador) - Number(a.itemsContrato.item.identificador);
+        });
+      } else if (this.statusOrdem == StatusOrdenacao.Crescente) {
+        this.dataSource.data = this.dataSource.data.sort((a, b) => {
+          return Number(a.itemsContrato.item.identificador) - Number(b.itemsContrato.item.identificador);
+        });
+      }
     }
-
-    else if(this.statusOrdem == StatusOrdenacao.Crescente){
-      this.dataSource.data = this.dataSource.data.sort((a, b) => {
-        return a.itemsContrato.item.identificador.localeCompare(b.itemsContrato.item.identificador);
-      });
-    }
-  }
-
+    
   async ngOnInit() {
     this.medicoes.items.forEach(item =>{
       item.unidadeSalvaMedida = item.unidade;
@@ -204,7 +202,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   nomeProjeto(id:number){
-    return this.medicoes.contratos.projetos.find(x => x.idProjeto == id ).nomeProjeto;
+    return this.medicoes?.contratos?.projetos?.find(x => x.idProjeto == id )?.nomeProjeto;
   }
 
   somarValorTotal(){
