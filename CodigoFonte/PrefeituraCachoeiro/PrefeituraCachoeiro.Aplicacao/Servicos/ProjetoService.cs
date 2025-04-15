@@ -4,6 +4,7 @@ using PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.Validacoes;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Respostas;
 using PrefeituraCachoeiro.Aplicacao.Interfaces;
+using PrefeituraCachoeiro.Aplicacao.Utils;
 using PrefeituraCachoeiro.Dados.Filtros;
 using PrefeituraCachoeiro.Dados.Interfaces;
 using PrefeituraCachoeiro.Dominio.Entidades;
@@ -21,9 +22,14 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
         private readonly IPrefeituraRepository _prefeituraRepository;
         private readonly IEmpresaRepository _empresaRepository;
         private readonly IOrigemRepository _origemRepository;
+        private readonly IMedicoesProjetoRepository _medicoesProjetoRepository;
+        private readonly IApplicationUser _applicationUser;
+        private readonly IUsuariosRepository _usuariosRepository;
 
         public ProjetoService(IMapper mapper, ILoggerFactory loggerFactory, IProjetoRepository projetoRepository, IQuantidadeRepository quantidadeRepository
-            , IPrefeituraRepository prefeituraRepository, IEmpresaRepository empresaRepository, IOrigemRepository origemRepository)
+            , IPrefeituraRepository prefeituraRepository, IEmpresaRepository empresaRepository, IOrigemRepository origemRepository,
+            IMedicoesProjetoRepository medicoesProjetoRepository, IApplicationUser applicationUser,
+            IUsuariosRepository usuariosRepository)
         {
             _mapper = mapper;
             _logger = loggerFactory.CreateLogger<ProjetoService>();
@@ -32,6 +38,9 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             _prefeituraRepository = prefeituraRepository;
             _empresaRepository = empresaRepository;
             _origemRepository = origemRepository;
+            _medicoesProjetoRepository = medicoesProjetoRepository;
+            _applicationUser = applicationUser;
+            _usuariosRepository = usuariosRepository;
         }
 
         public async Task<Result<ProjetoResponse>> BuscarPorIdAsync(int id, CancellationToken cancellationToken)
@@ -74,14 +83,16 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                     return Result<CriarProjetoResponse>.Failure(new ValidationError(validation.Errors));
 
                 //Verifica se o código do projeto informado já existe
-                var _codigoProjetoExistente = await this._projetoRepository.BuscarPorCodigoProjetoAsync(requisicao.CodigoProjeto, cancellationToken);
+                var _codigoProjetoExistente = await this._projetoRepository.BuscarPorCodigoProjetoAndIdPrefeituraAsync(
+                    requisicao.CodigoProjeto, requisicao.IdPrefeitura, cancellationToken);
 
                 if (_codigoProjetoExistente != null)
                     return Result<CriarProjetoResponse>.Failure(new CodigoProjetoExistenteError(Compartilhado.Projetos.CodigoProjetoExistente));
 
                 var projeto = new ProjetoEntidade(requisicao.Nome)
                 {
-                    CodigoProjeto = requisicao.CodigoProjeto
+                    CodigoProjeto = requisicao.CodigoProjeto,
+                    IdPrefeitura = requisicao.IdPrefeitura
                 };
 
                 projeto = await _projetoRepository.InserirAsync(projeto, cancellationToken);
@@ -108,7 +119,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                     return Result<AtualizarProjetoResponse>.Failure(new ValidationError(validation.Errors));
 
                 //Verifica se o código do projeto informado já existe
-                var _codigoProjetoExistente = await this._projetoRepository.BuscarPorCodigoProjetoAsync(requisicao.CodigoProjeto,requisicao.Id, cancellationToken);
+                var _codigoProjetoExistente = await this._projetoRepository.BuscarPorCodigoProjetoAndIdPrefeituraAsync(
+                    requisicao.CodigoProjeto, requisicao.Id, requisicao.IdPrefeitura, cancellationToken);
 
                 if (_codigoProjetoExistente != null)
                     return Result<AtualizarProjetoResponse>.Failure(new CodigoProjetoExistenteError(Compartilhado.Projetos.CodigoProjetoExistente));
@@ -120,6 +132,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
                 projetoFound.NomeProjeto = requisicao.Nome;
                 projetoFound.CodigoProjeto = requisicao.CodigoProjeto;
+                projetoFound.IdPrefeitura = requisicao.IdPrefeitura;
 
                 await _projetoRepository.AtualizarAsync(projetoFound, cancellationToken);
                 var result = _mapper.Map<AtualizarProjetoResponse>(projetoFound);
@@ -134,10 +147,20 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             }
         }
 
+        private async Task<UsuariosEntidade?> GetUsuarioLogado(CancellationToken cancellationToken)
+        {
+            var _userId = _applicationUser.UserId;
+            var _usuario = await this._usuariosRepository.BuscarPorIdAsync(_userId, cancellationToken);
+
+            return (_usuario);
+        }
+
         public async Task<Result<DeletarProjetoResponse>> DeletarAsync(int id, CancellationToken cancellationToken)
         {
             try
             {
+                //Obtém o usuário logado 
+                var _usuarioLogado = await this.GetUsuarioLogado(cancellationToken);
                 var projetoFound = await _projetoRepository.BuscarPorIdAsync(id, cancellationToken);
 
                 if (projetoFound is null)
@@ -145,6 +168,19 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
                 if (projetoFound.Contratos.Count() > 0)
                     return Result<DeletarProjetoResponse>.Failure(new ProjetoTemContratoAssociadoError(Compartilhado.Projetos.ProjetoTemContratoAssociado));
+
+                //Verifica se existe medição associada ao projeto
+                var _medicoesFiltro = new MedicoesProjetoFilter()
+                {
+                    IdProjeto = id,
+                    ItemsPorPagina = 100000,
+                    Pagina = 1
+                };
+
+                var _medicoes = await this._medicoesProjetoRepository.BuscarTodosAsync(_medicoesFiltro, _usuarioLogado, cancellationToken);
+
+                if (_medicoes.Items.Count() > 0)
+                    return Result<DeletarProjetoResponse>.Failure(new ProjetoJaTemMedicaoExistenteError(Compartilhado.Projetos.ProjetoTemMedicaoAssociada));
 
                 projetoFound.Delete();
                 await _projetoRepository.DeletarAsync(projetoFound, cancellationToken);

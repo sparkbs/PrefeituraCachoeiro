@@ -19,6 +19,7 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.DataDelecao).HasColumnName("datadelecao");
             builder.Property(x => x.IdProjeto).HasColumnName("idprojeto");
             builder.Property(x => x.Observacao).HasColumnName("observacao").IsRequired(false).HasColumnType("varchar(5000)");
+            builder.Property(x => x.Secretaria).HasColumnName("secretaria").IsRequired(false).HasColumnType("varchar(500)");
 
             builder.HasOne(x => x.Contratos)
                    .WithMany(x => x.MedicoesProjeto)

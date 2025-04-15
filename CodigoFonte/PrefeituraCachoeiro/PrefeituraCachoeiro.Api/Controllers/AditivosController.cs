@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Respostas;
 using PrefeituraCachoeiro.Aplicacao.Interfaces;
-using PrefeituraCachoeiro.Aplicacao.Servicos;
 using PrefeituraCachoeiro.Dados.Filtros;
 using PrefeituraCachoeiro.Dominio.Extensoes;
 using System.Data;
@@ -40,20 +39,20 @@ namespace PrefeituraCachoeiro.Api.Controllers
         public async Task<IActionResult> InserirAsync([FromForm] CriarAditivoRequest requisicao, CancellationToken cancellationToken)
         {
             // Verificar se o arquivo foi enviado
-            if (requisicao.ArquivoTemplate == null)
-                return BadRequest("A propriedade ArquivoTemplate deve ser preenchida");
+            if (requisicao.ArquivoTemplate != null)
+            {
+                // Verificar se o arquivo é um arquivo Excel (extensão .xlsx)
+                var fileExtension = Path.GetExtension(requisicao.ArquivoTemplate.FileName).ToLower();
+                if (fileExtension != ".xlsx" && fileExtension != ".xlsb")
+                    return BadRequest("Deve ser enviado um arquivo excel");
 
-            // Verificar se o arquivo é um arquivo Excel (extensão .xlsx)
-            var fileExtension = Path.GetExtension(requisicao.ArquivoTemplate.FileName).ToLower();
-            if (fileExtension != ".xlsx" && fileExtension != ".xlsb")
-                return BadRequest("Deve ser enviado um arquivo excel");
+                //Verificar se o arquivo de template está no formato esperado
+                var _formato = await this.VerificarArquivoTemplateProjeto(requisicao);
+                var _resultado = (_formato as OkResult);
 
-            //Verificar se o arquivo de template está no formato esperado
-            var _formato = await this.VerificarArquivoTemplateProjeto(requisicao);
-            var _resultado = (_formato as OkResult);
-
-            if (_resultado != null && _resultado.StatusCode != 200)
-                return (_formato);
+                if (_resultado != null && _resultado.StatusCode != 200)
+                    return (_formato);
+            }
 
             var response = await _aditivosService.InserirAsync(requisicao, cancellationToken);
 
@@ -136,6 +135,67 @@ namespace PrefeituraCachoeiro.Api.Controllers
             return response.Match(
               onSuccess: Ok,
               onFailure: error => error.ToHttpResponseError());
+        }
+
+        /// <summary>
+        /// Apagar um arquivo de aditivo
+        /// </summary>
+        /// <response code="200">Retorna uma mensagem de confirmação</response>
+        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        [HttpDelete("apagararquivoaditivo/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeletarContratoResponse))]
+        [Authorize]
+        public async Task<IActionResult> DeletarArquivoAditivoAsync(int id, CancellationToken cancellationToken)
+        {
+            var response = await _aditivosService.DeletarArquivoAnexadoAsync(id, cancellationToken);
+
+            return response.Match(
+              onSuccess: Ok,
+              onFailure: error => error.ToHttpResponseError());
+        }
+
+        /// <summary>
+        /// Registrar um ou mais arquivos a um aditivo
+        /// </summary>
+        /// <response code="200">Retorna sucesso ou a mensagem de erro</response>
+        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        [HttpPost("registrardocumentos")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrarDocumentosAditivoResponse))]
+        [Authorize]
+        public async Task<IActionResult> RegistrarDocumentosAsync([FromForm] RegistrarDocumentosAditivoRequest requisicao, CancellationToken cancellationToken)
+        {
+            var response = await _aditivosService.RegistrarDocumentosAsync(requisicao, cancellationToken);
+
+            return response.Match(
+              onSuccess: Ok,
+              onFailure: error => error.ToHttpResponseError());
+        }
+
+        /// <summary>
+        /// Método responsável por realizar o download de um determinado arquivo do aditivo
+        /// </summary>
+        /// <param name="id">Identificador do arquivo</param>
+        /// <param name="cancellationToken">Token de cancelamento</param>
+        /// <returns>Retorna um stream contendo as informações do arquivo</returns>
+        [HttpGet("downloadarquivoaditivo/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DownloadArquivoAditivoAsync(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var _stream = await this._aditivosService.DownloadArquivoAditivo(id, cancellationToken);
+
+                return File(_stream, "application/octet-stream", this.CriarNomeArquivoAleatorio());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao processar o download: {ex.Message}");
+            }
+        }
+
+        private string CriarNomeArquivoAleatorio()
+        {
+            return ($"Arquivo_{DateTime.Now.ToString("ddMMyyyyhhmms")}");
         }
     }
 }

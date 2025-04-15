@@ -24,6 +24,8 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
         public async Task<List<AditivosEntidade>> BuscarTodosAsync(int idContrato, CancellationToken cancellationToken)
         {
             return await _context.Aditivos
+                                 .Include(i=> i.Items)
+                                 .Include(i=> i.ArquivosAditivos)
                                  .Where(i => i.ContratoId == idContrato && i.DataDelecao == null)
                                  .OrderByDescending(i=> i.IdAditivo)
                                  .ToListAsync();
@@ -31,7 +33,10 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
 
         public async Task<AditivosEntidade?> BuscarPorIdAsync(int idAditivo, CancellationToken cancellationToken)
         {
-            return await _context.Aditivos.FirstOrDefaultAsync(x => x.IdAditivo == idAditivo && x.DataDelecao == null, cancellationToken);
+            return await _context.Aditivos
+                                 .Include(i=> i.Items)
+                                 .Include(i=> i.ArquivosAditivos)
+                                 .FirstOrDefaultAsync(x => x.IdAditivo == idAditivo && x.DataDelecao == null, cancellationToken);
         }
 
         public async Task<AditivosEntidade> DeletarAsync(AditivosEntidade aditivo, CancellationToken cancellationToken)

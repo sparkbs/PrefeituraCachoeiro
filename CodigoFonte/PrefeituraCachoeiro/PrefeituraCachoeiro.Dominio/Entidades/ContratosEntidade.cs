@@ -27,6 +27,8 @@
         public DateTime? DataAssinaturaAditivo { get; set; }
         public DateTime? DataValidadeAditivo { get; set; }
         public int? IdTemplate { get; set; }
+        public DateTime? DataTerminoAtualizada { get; set; }
+        public decimal? ValorAtualContrato { get; set; }
 
         public ContratosEntidade(): base()
         {

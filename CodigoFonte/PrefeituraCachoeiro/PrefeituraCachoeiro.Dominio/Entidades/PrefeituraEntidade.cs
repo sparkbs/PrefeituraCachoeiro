@@ -6,6 +6,7 @@
         public string Nome { get; set; }
         public string Logo { get; set; }
         public List<ContratosEntidade> Contratos { get; set; }
+        public string Email { get; set; }
 
         public PrefeituraEntidade() : base()
         {

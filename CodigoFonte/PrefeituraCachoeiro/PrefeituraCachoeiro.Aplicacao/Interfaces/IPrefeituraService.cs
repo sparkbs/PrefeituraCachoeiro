@@ -12,5 +12,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Interfaces
         Task<Result<CriarPrefeituraResponse>> InserirAsync(CriarPrefeituraRequest requisicao, CancellationToken cancellationToken);
         Task<Result<AtualizarPrefeituraResponse>> AtualizarAsync(AtualizarPrefeituraRequest requisicao, CancellationToken cancellationToken);
         Task<Result<DeletarPrefeituraResponse>> DeletarAsync(int idPrefeitura, CancellationToken cancellationToken);
+        Task<MemoryStream> DownloadArquivoLogo(int prefeituraid, CancellationToken cancellationToken);
     }
 }

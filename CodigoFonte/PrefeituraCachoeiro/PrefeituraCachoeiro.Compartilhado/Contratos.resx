@@ -156,4 +156,10 @@
   <data name="ContratoExpirado" xml:space="preserve">
     <value>O contrato informado expirou</value>
   </data>
+  <data name="ArquivoContatoNaoEncontrado" xml:space="preserve">
+    <value>O arquivo de contrato informado não foi encontrado</value>
+  </data>
+  <data name="ArquivoContratoDeletado" xml:space="preserve">
+    <value>O arquivo de contrato foi apagado</value>
+  </data>
 </root>

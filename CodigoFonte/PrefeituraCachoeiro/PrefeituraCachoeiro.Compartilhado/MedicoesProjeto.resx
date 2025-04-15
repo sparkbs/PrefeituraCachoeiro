@@ -144,4 +144,16 @@
   <data name="MedicaoNaoPodeSerEnviadaAoCliente" xml:space="preserve">
     <value>Só é possível enviar para o cliente uma medição que esteja no status de Criada</value>
   </data>
+  <data name="MedicaoProjetoIdExcluida" xml:space="preserve">
+    <value>A medição de projeto foi excluída</value>
+  </data>
+  <data name="MedicaoEnviadaNaoPodeSerExcluida" xml:space="preserve">
+    <value>Não é possível excluir uma medição que já tenha sido enviada</value>
+  </data>
+  <data name="MedicaoAprovadaNaoPodeSerExcluida" xml:space="preserve">
+    <value>Não é possível excluir uma medição que já tenha sido aprovada</value>
+  </data>
+  <data name="MedicaoReprovadaNaoPodeSerExcluida" xml:space="preserve">
+    <value>Não é possível excluir uma medição que tenha sido reprovada</value>
+  </data>
 </root>

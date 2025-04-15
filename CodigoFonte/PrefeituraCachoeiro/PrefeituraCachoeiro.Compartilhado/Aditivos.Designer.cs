@@ -88,6 +88,15 @@ namespace PrefeituraCachoeiro.Compartilhado {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O arquivo foi apagado.
+        /// </summary>
+        public static string ArquivoAditivoApagado {
+            get {
+                return ResourceManager.GetString("ArquivoAditivoApagado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a A data de validade informada para o aditivo é inferior a data de término do contrato. A data de validade do aditivo deve ser superior a data de término do contrato..
         /// </summary>
         public static string DataValidadeAditivoInferiorADataTerminoContrato {
@@ -102,6 +111,15 @@ namespace PrefeituraCachoeiro.Compartilhado {
         public static string IdAditivoNaoEncontrado {
             get {
                 return ResourceManager.GetString("IdAditivoNaoEncontrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi encontrado nenhum arquivo de Aditivo com o Id informado.
+        /// </summary>
+        public static string IdArquivoAditivoNaoEncontrado {
+            get {
+                return ResourceManager.GetString("IdArquivoAditivoNaoEncontrado", resourceCulture);
             }
         }
         

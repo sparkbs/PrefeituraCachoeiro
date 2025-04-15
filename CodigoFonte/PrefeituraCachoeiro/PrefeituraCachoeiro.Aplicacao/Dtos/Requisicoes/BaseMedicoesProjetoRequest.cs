@@ -12,5 +12,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes
         public List<ItemMedicoesProjetoRequest>? Items { get; set; }
         public int? IdProjeto { get; set; }
         public string? Observacao { get; set; }
+        public string Secretaria { get; set; }
     }
 }

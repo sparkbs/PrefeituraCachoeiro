@@ -28,8 +28,8 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
                                 .Include(i => i.Contratos).ThenInclude(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Quantidade)
                                 .Include(i => i.Contratos).ThenInclude(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Origem)
                                 .Include(i => i.Contratos).ThenInclude(i => i.Projetos)
+                                .Include(i => i.Contratos).ThenInclude(i => i.Empresa)
                                 .Include(i => i.Items).ThenInclude(i => i.ItemsContrato).ThenInclude(i => i.Item)
-                                .Include(i => i.StatusMedicao)
                                 .Include(i => i.Projeto)
                                 .AsQueryable();
 
@@ -49,8 +49,8 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
                                 .Include(i => i.Contratos).ThenInclude(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Quantidade)
                                 .Include(i => i.Contratos).ThenInclude(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Origem)
                                 .Include(i => i.Contratos).ThenInclude(i => i.Projetos)
+                                .Include(i => i.Contratos).ThenInclude(i => i.Empresa)
                                 .Include(i => i.Items).ThenInclude(i => i.ItemsContrato).ThenInclude(i => i.Item)
-                                .Include(i => i.StatusMedicao)
                                 .Include(i => i.Projeto)
                                 .AsQueryable();
 
@@ -70,8 +70,8 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
                                 .Include(i => i.Contratos).ThenInclude(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Quantidade)
                                 .Include(i => i.Contratos).ThenInclude(i => i.Items).ThenInclude(i => i.Item).ThenInclude(i => i.Origem)
                                 .Include(i => i.Contratos).ThenInclude(i => i.Projetos)
+                                .Include(i => i.Contratos).ThenInclude(i => i.Empresa)
                                 .Include(i => i.Items).ThenInclude(i => i.ItemsContrato).ThenInclude(i => i.Item)
-                                .Include(i => i.StatusMedicao)
                                 .Include(i => i.Projeto)
                                 .AsQueryable();
 
@@ -193,6 +193,14 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
             query = query.OrderByDescending(i => i.IdMedicoesProjeto);
 
             return (await query.FirstOrDefaultAsync());
+        }
+
+        public async Task<MedicoesProjetoEntidade> DeletarAsync(MedicoesProjetoEntidade medicao, CancellationToken cancellationToken)
+        {
+            _context.MedicoesProjetoEntidade.Update(medicao);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return medicao;
         }
     }
 }

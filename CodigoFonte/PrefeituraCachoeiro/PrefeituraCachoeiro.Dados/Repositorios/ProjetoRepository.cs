@@ -82,13 +82,29 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
         public async Task<ProjetoEntidade?> BuscarPorCodigoProjetoAsync(int codigoProjeto, CancellationToken cancellationToken)
         {
             return await _context.ProjetoEntidade
-                                 .FirstOrDefaultAsync(x => x.CodigoProjeto == codigoProjeto, cancellationToken);
+                                 .FirstOrDefaultAsync(x => x.CodigoProjeto == codigoProjeto && x.DataDelecao == null, cancellationToken);
+        }
+
+        public async Task<ProjetoEntidade?> BuscarPorCodigoProjetoAndIdPrefeituraAsync(int codigoProjeto, int idPrefeitura, CancellationToken cancellationToken)
+        {
+            return await _context.ProjetoEntidade
+                                 .FirstOrDefaultAsync(x => x.CodigoProjeto == codigoProjeto & x.IdPrefeitura == idPrefeitura && x.DataDelecao == null, cancellationToken);
         }
 
         public async Task<ProjetoEntidade?> BuscarPorCodigoProjetoAsync(int codigoProjeto, int idProjeto, CancellationToken cancellationToken)
         {
             return await _context.ProjetoEntidade
-                                 .FirstOrDefaultAsync(x => x.CodigoProjeto == codigoProjeto && x.IdProjeto != idProjeto, cancellationToken);
+                                 .FirstOrDefaultAsync(x => x.CodigoProjeto == codigoProjeto && x.IdProjeto != idProjeto && x.DataDelecao == null, cancellationToken);
+        }
+
+        public async Task<ProjetoEntidade?> BuscarPorCodigoProjetoAndIdPrefeituraAsync(int codigoProjeto, int idProjeto, 
+            int idPrefeituraAtual, CancellationToken cancellationToken)
+        {
+            return await _context.ProjetoEntidade
+                                 .FirstOrDefaultAsync(x => x.CodigoProjeto == codigoProjeto && 
+                                                           x.IdProjeto != idProjeto &&
+                                                           x.IdPrefeitura == idPrefeituraAtual &&
+                                                           x.DataDelecao == null, cancellationToken);
         }
     }
 }

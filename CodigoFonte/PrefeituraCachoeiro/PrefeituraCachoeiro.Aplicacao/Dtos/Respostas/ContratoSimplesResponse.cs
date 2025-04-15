@@ -27,5 +27,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
         public string TipoAditivo { get; set; }
         public DateTime? DataAssinaturaAditivo { get; set; }
         public DateTime? DataValidadeAditivo { get; set; }
+        public DateTime? DataTerminoAtualizada { get; set; }
+        public decimal? ValorAtualContrato { get; set; }
     }
 }

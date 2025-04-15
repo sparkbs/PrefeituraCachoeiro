@@ -126,11 +126,17 @@
   <data name="AditivoNaoPodeSerExcluido" xml:space="preserve">
     <value>O aditivo não pode ser excluído porque já tem medições de projeto associadas a ele</value>
   </data>
+  <data name="ArquivoAditivoApagado" xml:space="preserve">
+    <value>O arquivo foi apagado</value>
+  </data>
   <data name="DataValidadeAditivoInferiorADataTerminoContrato" xml:space="preserve">
     <value>A data de validade informada para o aditivo é inferior a data de término do contrato. A data de validade do aditivo deve ser superior a data de término do contrato.</value>
   </data>
   <data name="IdAditivoNaoEncontrado" xml:space="preserve">
     <value>O Identificador do aditivo informado não foi encontrado</value>
+  </data>
+  <data name="IdArquivoAditivoNaoEncontrado" xml:space="preserve">
+    <value>Não foi encontrado nenhum arquivo de Aditivo com o Id informado</value>
   </data>
   <data name="NenhumAditivoEncontradoParaoContratoInformado" xml:space="preserve">
     <value>Não foi encontrado nenhum aditivo para o contrato informado</value>

@@ -19,6 +19,10 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes.Validacoes
             RuleFor(x => x.CodigoProjeto)
                 .NotEmpty()
                 .WithMessage("O código do projeto não pode ser vazio");
+
+            RuleFor(x => x.IdPrefeitura)
+                .NotEmpty()
+                .WithMessage("O código do prefeitura não pode ser vazio");
         }
     }
 }

@@ -113,5 +113,14 @@ namespace PrefeituraCachoeiro.Compartilhado {
                 return ResourceManager.GetString("ProjetoTemContratoAssociado", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O projeto não pode ser excluído porque tem medição associada.
+        /// </summary>
+        public static string ProjetoTemMedicaoAssociada {
+            get {
+                return ResourceManager.GetString("ProjetoTemMedicaoAssociada", resourceCulture);
+            }
+        }
     }
 }

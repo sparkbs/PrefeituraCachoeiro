@@ -29,6 +29,8 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.DataAssinaturaAditivo).HasColumnName("dataassinaturaaditivo").IsRequired(false);
             builder.Property(x => x.DataValidadeAditivo).HasColumnName("datavalidadeaditivo").IsRequired(false);
             builder.Property(x => x.IdTemplate).HasColumnName("idtemplate").IsRequired(false);
+            builder.Property(x => x.DataTerminoAtualizada).HasColumnName("dataterminoatualizada").IsRequired(false);
+            builder.Property(x => x.ValorAtualContrato).HasColumnName("valoratualcontrato").IsRequired(false);
 
             builder.Property(x => x.IdContrato)
                    .HasColumnName("idcontrato")

@@ -4,6 +4,7 @@
     {
         public int IdItemAditivo { get; set; }
         public int AditivoId { get; set; }
+        public AditivosEntidade Aditivo { get; set; }
         public int ItemId { get; set; }
         public ItemEntidade Item { get; set; }
         public int QuantidadeId { get; set; }

@@ -85,6 +85,7 @@ namespace PrefeituraCachoeiro.Ioc
             services.AddScoped<IAditivosRepository, AditivosRepository>();
             services.AddScoped<IAditivosService, AditivosService>();
             services.AddScoped<IItemsAditivoRepository, ItemsAditivoRepository>();
+            services.AddScoped<IArquivosAditivoRepository, ArquivosAditivoRepository>();
         }
     }
 }

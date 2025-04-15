@@ -12,11 +12,11 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.IdItemContrato).HasColumnName("iditemcontrato").IsRequired();
             builder.Property(x => x.ContratosId).HasColumnName("IdContrato").IsRequired();
             builder.Property(x => x.ItemId).HasColumnName("ItemIdItem").IsRequired();
-            builder.Property(x => x.QuantidadeId).HasColumnName("QuantidadeIdQuantidade").IsRequired();
-            builder.Property(x => x.Unidade).HasColumnName("unidade").IsRequired();
-            builder.Property(x => x.ValorSemBdi).HasColumnName("valorsembdi").IsRequired();
-            builder.Property(x => x.ValorComBdi).HasColumnName("valorcombdi").IsRequired();
-            builder.Property(x => x.ValorTotalComBdi).HasColumnName("valortotalcombdi").IsRequired();
+            builder.Property(x => x.QuantidadeId).HasColumnName("QuantidadeIdQuantidade").IsRequired(false);
+            builder.Property(x => x.Unidade).HasColumnName("unidade").IsRequired(false);
+            builder.Property(x => x.ValorSemBdi).HasColumnName("valorsembdi").IsRequired(false);
+            builder.Property(x => x.ValorComBdi).HasColumnName("valorcombdi").IsRequired(false);
+            builder.Property(x => x.ValorTotalComBdi).HasColumnName("valortotalcombdi").IsRequired(false);
             builder.Property(x => x.DataCriacao).HasColumnName("datacriacao").IsRequired();
             builder.Property(x => x.DataDelecao).HasColumnName("datadelecao");
             builder.Property(x => x.UnidadeOriginal).HasColumnName("unidadeoriginal").IsRequired(false);

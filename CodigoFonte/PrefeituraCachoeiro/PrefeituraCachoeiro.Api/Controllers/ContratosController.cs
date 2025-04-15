@@ -1,5 +1,4 @@
-﻿using Amazon.S3.Model.Internal.MarshallTransformations;
-using ExcelDataReader;
+﻿using ExcelDataReader;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes;
@@ -206,6 +205,67 @@ namespace PrefeituraCachoeiro.Api.Controllers
             }
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Apagar um arquivo de contrato
+        /// </summary>
+        /// <response code="200">Retorna uma mensagem de confirmação</response>
+        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        [HttpDelete("apagararquivocontrato/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeletarContratoResponse))]
+        [Authorize]
+        public async Task<IActionResult> DeletarArquivoContratoAsync(int id, CancellationToken cancellationToken)
+        {
+            var response = await _contratosService.DeletarArquivoAnexadoAsync(id, cancellationToken);
+
+            return response.Match(
+              onSuccess: Ok,
+              onFailure: error => error.ToHttpResponseError());
+        }
+
+        /// <summary>
+        /// Registrar um ou mais arquivos a um contrato
+        /// </summary>
+        /// <response code="200">Retorna sucesso ou a mensagem de erro</response>
+        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        [HttpPost("registrardocumentos")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegistrarDocumentosContratoResponse))]
+        [Authorize]
+        public async Task<IActionResult> RegistrarDocumentosAsync([FromForm] RegistrarDocumentosContratoRequest requisicao, CancellationToken cancellationToken)
+        {
+            var response = await _contratosService.RegistrarDocumentosAsync(requisicao, cancellationToken);
+
+            return response.Match(
+              onSuccess: Ok,
+              onFailure: error => error.ToHttpResponseError());
+        }
+
+        /// <summary>
+        /// Método responsável por realizar o download de um determinado arquivo do contrato
+        /// </summary>
+        /// <param name="id">Identificador do arquivo</param>
+        /// <param name="cancellationToken">Token de cancelamento</param>
+        /// <returns>Retorna um stream contendo as informações do arquivo</returns>
+        [HttpGet("downloadarquivocontrato/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DownloadArquivoContratoAsync(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var _stream = await this._contratosService.DownloadArquivoContrato(id, cancellationToken);
+
+                return File(_stream, "application/octet-stream", this.CriarNomeArquivoAleatorio());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao processar o download: {ex.Message}");
+            }
+        }
+
+        private string CriarNomeArquivoAleatorio()
+        {
+            return ($"Arquivo_{DateTime.Now.ToString("ddMMyyyyhhmms")}");
         }
     }
 }

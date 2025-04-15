@@ -70,6 +70,24 @@ namespace PrefeituraCachoeiro.Compartilhado {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O arquivo de contrato informado não foi encontrado.
+        /// </summary>
+        public static string ArquivoContatoNaoEncontrado {
+            get {
+                return ResourceManager.GetString("ArquivoContatoNaoEncontrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O arquivo de contrato foi apagado.
+        /// </summary>
+        public static string ArquivoContratoDeletado {
+            get {
+                return ResourceManager.GetString("ArquivoContratoDeletado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a O contrato foi deletado.
         /// </summary>
         public static string ContratoDeletado {

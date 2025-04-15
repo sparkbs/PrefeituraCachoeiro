@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string ArquivoMedicao { get; set; }
+        public string Arquivo { get; set; }
 
         public IdDocumentoRegistradoResponse()
         {

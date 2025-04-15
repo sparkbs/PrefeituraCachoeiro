@@ -29,7 +29,7 @@ namespace PrefeituraCachoeiro.Compartilhado {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal MedicoesProjeto() {
+        public MedicoesProjeto() {
         }
         
         /// <summary>
@@ -79,6 +79,24 @@ namespace PrefeituraCachoeiro.Compartilhado {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não é possível excluir uma medição que já tenha sido aprovada.
+        /// </summary>
+        public static string MedicaoAprovadaNaoPodeSerExcluida {
+            get {
+                return ResourceManager.GetString("MedicaoAprovadaNaoPodeSerExcluida", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não é possível excluir uma medição que já tenha sido enviada.
+        /// </summary>
+        public static string MedicaoEnviadaNaoPodeSerExcluida {
+            get {
+                return ResourceManager.GetString("MedicaoEnviadaNaoPodeSerExcluida", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Só é possível alterar uma medição que esteja no status de criada..
         /// </summary>
         public static string MedicaoNaoPodeSerAlterada {
@@ -111,6 +129,24 @@ namespace PrefeituraCachoeiro.Compartilhado {
         public static string MedicaoNaoPodeSerReprovada {
             get {
                 return ResourceManager.GetString("MedicaoNaoPodeSerReprovada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a A medição de projeto foi excluída.
+        /// </summary>
+        public static string MedicaoProjetoIdExcluida {
+            get {
+                return ResourceManager.GetString("MedicaoProjetoIdExcluida", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não é possível excluir uma medição que tenha sido reprovada.
+        /// </summary>
+        public static string MedicaoReprovadaNaoPodeSerExcluida {
+            get {
+                return ResourceManager.GetString("MedicaoReprovadaNaoPodeSerExcluida", resourceCulture);
             }
         }
         

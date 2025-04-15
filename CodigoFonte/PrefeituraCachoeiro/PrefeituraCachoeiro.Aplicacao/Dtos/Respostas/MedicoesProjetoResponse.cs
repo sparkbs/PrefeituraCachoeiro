@@ -18,5 +18,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
         public List<ArquivosMedicoesProjetoResponse> ArquivosMedicoesProjeto { get; set; }
         public int? IdProjeto { get; set; }
         public string Observacao { get; set; }
+        public string Secretaria { get; set; }
     }
 }

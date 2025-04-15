@@ -34,15 +34,16 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
         private readonly IMedicoesProjetoRepository _medicoesProjetoRepository;
         private readonly IApplicationUser _applicationUser;
         private readonly IUsuariosRepository _usuariosRepository;
+        private readonly IArquivosAditivoRepository _arquivosAditivoRepository;
 
         public AditivosService(IMapper mapper, ILoggerFactory loggerFactory,
             IContratosRepository contratosRepository, IItemRepository itemRepository,
             ISequenceService sequenceService, IS3Service s3Service,
             IOrigemRepository origemRepository, IQuantidadeRepository quantidadeRepository,
-            ITemplateRepository templateRepository, IItemsAditivoRepository itemsAditivoRepository, 
-            IAditivosRepository aditivosRepository, IItemsContratoRepository itemsContratoRepository, 
+            ITemplateRepository templateRepository, IItemsAditivoRepository itemsAditivoRepository,
+            IAditivosRepository aditivosRepository, IItemsContratoRepository itemsContratoRepository,
             IMedicoesProjetoRepository medicoesProjetoRepository, IUsuariosRepository usuariosRepository,
-            IApplicationUser applicationUser)
+            IApplicationUser applicationUser, IArquivosAditivoRepository arquivosAditivoRepository)
         {
             _mapper = mapper;
             _logger = loggerFactory.CreateLogger<ContratosService>();
@@ -59,6 +60,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             _medicoesProjetoRepository = medicoesProjetoRepository;
             _usuariosRepository = usuariosRepository;
             _applicationUser = applicationUser;
+            _arquivosAditivoRepository = arquivosAditivoRepository;
         }
 
         public async Task<Result<CriarAditivoResponse>> InserirAsync(CriarAditivoRequest requisicao, CancellationToken cancellationToken)
@@ -66,12 +68,15 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             try
             {
                 var validation = await new CriarAditivoValidacao().ValidateAsync(requisicao, cancellationToken);
+                var _itemsContratoOriginal = new List<ItemsContratoEntidade>();
 
                 if (!validation.IsValid)
                     return Result<CriarAditivoResponse>.Failure(new ValidationError(validation.Errors));
 
                 try
                 {
+                    var _listaItems = new List<ModeloTemplate>();
+
                     //Busca o contrato original
                     var _contratoOriginal = await this._contratosRepository.BuscarPorIdAsync(requisicao.ContratoId, cancellationToken);
 
@@ -79,49 +84,80 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                     if (_contratoOriginal == null)
                         return Result<CriarAditivoResponse>.Failure(new NumeroContratoNaoEncontradoError(Contratos.IdContratoNaoEncontrado));
 
+                    //Verifica se o contrato tem data de termino atualizada
+                    var _dataTerminoAtualizada = _contratoOriginal.DataTermino.Value;
+
+                    if (_contratoOriginal.DataTerminoAtualizada.HasValue)
+                        _dataTerminoAtualizada = _contratoOriginal.DataTerminoAtualizada.Value;
+
                     //Verifica se a data de validade do aditivo é superior a data final do contrato
-                    if (requisicao.DataValidadeAditivo <= _contratoOriginal.DataTermino.Value)
+                    if (requisicao.DataValidadeAditivo <= _dataTerminoAtualizada)
                         return Result<CriarAditivoResponse>.Failure(new DataValidadeAditivoNaoValidaError(Aditivos.DataValidadeAditivoInferiorADataTerminoContrato));
 
-                    //Faz a leitura do arquivo excel associado ao projeto que está sendo criado
-                    var _listaItems = await ProcessarArquivoTemplateProjeto(requisicao);
-
-                    //Realizar a preparação de dados para poder realizar a importação do aditivo
-                    await this.PrepararDadosImportacaoAditivo(_listaItems, cancellationToken);
-
-                    //Busca todos os items do contrato original
-                    var _itemsContratoOriginal = await this._itemsContratoRepository.BuscarTodosItemsContratosAsync(requisicao.ContratoId, cancellationToken);
-
-                    decimal _totalComBdiPlanilha = 0;
-
-                    //Faz a verificação para verificar se todos os items que foram extraídos da planilha existem no contrato original
-                    foreach (var _itemPlanilha in _listaItems)
+                    //Verifica se o arquivo de template foi informado
+                    if (requisicao.ArquivoTemplate != null)
                     {
-                        //Verifica se o item da planilha dever ser considerado para ser procurado
-                        if (!string.IsNullOrEmpty(_itemPlanilha.Un) && !string.IsNullOrWhiteSpace(_itemPlanilha.Un) &&
-                            !string.IsNullOrEmpty(_itemPlanilha.Qntd) && !string.IsNullOrWhiteSpace(_itemPlanilha.Qntd))
+                        //Faz a leitura do arquivo excel associado ao projeto que está sendo criado
+                        _listaItems = await ProcessarArquivoTemplateProjeto(requisicao);
+
+                        //Realizar a preparação de dados para poder realizar a importação do aditivo
+                        await this.PrepararDadosImportacaoAditivo(_listaItems, cancellationToken);
+
+                        //Busca todos os items do contrato original
+                        _itemsContratoOriginal = await this._itemsContratoRepository.BuscarTodosItemsContratosAsync(requisicao.ContratoId, cancellationToken);
+
+                        decimal _totalComBdiPlanilha = 0;
+
+                        //Faz a verificação para verificar se todos os items que foram extraídos da planilha existem no contrato original
+                        foreach (var _itemPlanilha in _listaItems)
                         {
-                            //Verifica se o item existe na lista de items do contrato
-                            var _itemExistente = _itemsContratoOriginal.Where(i => i.Item.Identificador == _itemPlanilha.Item).FirstOrDefault();
+                            //Verifica se o item da planilha dever ser considerado para ser procurado
+                            if (!string.IsNullOrEmpty(_itemPlanilha.Un) && !string.IsNullOrWhiteSpace(_itemPlanilha.Un) &&
+                                !string.IsNullOrEmpty(_itemPlanilha.Qntd) && !string.IsNullOrWhiteSpace(_itemPlanilha.Qntd))
+                            {
+                                //Verifica se o item existe na lista de items do contrato
+                                var _itemExistente = _itemsContratoOriginal.Where(i => i.Item.Identificador == _itemPlanilha.Item).FirstOrDefault();
 
-                            if (_itemExistente == null)
-                                return Result<CriarAditivoResponse>.Failure(
-                                    new ItemPlanilhaImportadorNaoEncontadoContratoOriginalError(
-                                        string.Format(Compartilhado.Contratos.ItemImportadorNaPlanilhaNaoExistemItemsContratoOriginal, _itemPlanilha.Item)));
+                                if (_itemExistente == null)
+                                    return Result<CriarAditivoResponse>.Failure(
+                                        new ItemPlanilhaImportadorNaoEncontadoContratoOriginalError(
+                                            string.Format(Compartilhado.Contratos.ItemImportadorNaPlanilhaNaoExistemItemsContratoOriginal, _itemPlanilha.Item)));
 
-                            //Soma o valor total com bdi do item
-                            _totalComBdiPlanilha += Convert.ToDecimal(_itemPlanilha.ValorCBdi) * Convert.ToDecimal(_itemPlanilha.Un);
+                                //Soma o valor total com bdi do item
+                                _totalComBdiPlanilha = Convert.ToDecimal(_itemPlanilha.ValorCBdi) * Convert.ToDecimal(_itemPlanilha.Un);
+                                _itemExistente.Unidade += Convert.ToDecimal(_itemPlanilha.Un);
+                                _itemExistente.ValorTotalComBdi += _totalComBdiPlanilha;
+
+                                await this._itemsContratoRepository.AtualizarAsync(_itemExistente, cancellationToken);
+                            }
                         }
-                    }
 
-                    //Verifica se todos os items somados do aditivo superam 25% do valor total do contrato
-                    decimal _valorMaximo = Convert.ToDecimal((_contratoOriginal.ValorTotalPrevisto * 25) / 100);
+                        //Verifica se todos os items somados do aditivo superam 25% do valor total do contrato
+                        decimal _valorMaximo = Convert.ToDecimal((_contratoOriginal.ValorTotalPrevisto * 25) / 100);
 
-                    if (_totalComBdiPlanilha > _valorMaximo)
-                    {
-                        return Result<CriarAditivoResponse>.Failure(
-                            new QuantidadeItemPlanilhaSuperiorMaximoPermitidoImportacaoAditivoError(
-                                string.Format(Aditivos.AditivoExtrapolouLimite,_valorMaximo)));
+                        //Busca a lista de aditivos associados ao contrato
+                        var _listaAditivos = await this._aditivosRepository.BuscarTodosAsync(requisicao.ContratoId, cancellationToken);
+
+                        //Processa a lista de aditivos
+                        foreach (var _itemaditivo in _listaAditivos)
+                        {
+                            //Busca a lista de items do aditivo
+                            var _listaItemsAditivo = await this._itemsAditivoRepository.BuscarTodosItemsAditivosAsync(_itemaditivo.IdAditivo, cancellationToken);
+
+                            //Processa a lista de items do aditivo para totalizar o valor total
+                            foreach (var _itemAditivo in _listaItemsAditivo)
+                            {
+                                //Adiciona ao total que está sendo importado o total referente aos aditivos anteriores que já foram importados
+                                _totalComBdiPlanilha += Convert.ToDecimal(_itemAditivo.ValorComBdi) * Convert.ToDecimal(_itemAditivo.Unidade);
+                            }
+                        }
+
+                        if (_totalComBdiPlanilha > _valorMaximo)
+                        {
+                            return Result<CriarAditivoResponse>.Failure(
+                                new QuantidadeItemPlanilhaSuperiorMaximoPermitidoImportacaoAditivoError(
+                                    string.Format(Aditivos.AditivoExtrapolouLimite, _valorMaximo)));
+                        }
                     }
 
                     //Insere o aditivo na tabela para históricos de aditivos
@@ -130,7 +166,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                         ContratoId = requisicao.ContratoId,
                         DataAssinatura = requisicao.DataAssinaturaAditivo.ToUniversalTime(),
                         DataValidade = requisicao.DataValidadeAditivo.ToUniversalTime(),
-                        TipoAditivo = requisicao.TipoAditivo
+                        TipoAditivo = requisicao.TipoAditivo,
+                        Descricao = requisicao.Descricao
                     };
 
                     _aditivo = await this._aditivosRepository.InserirAsync(_aditivo, cancellationToken);
@@ -140,118 +177,137 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                     _contratoOriginal.TipoAditivo = requisicao.TipoAditivo;
                     _contratoOriginal.DataAssinaturaAditivo = requisicao.DataAssinaturaAditivo.ToUniversalTime();
                     _contratoOriginal.DataValidadeAditivo = requisicao.DataValidadeAditivo.ToUniversalTime();
-                    _contratoOriginal.DataTermino = requisicao.DataValidadeAditivo.ToUniversalTime();
+                    _contratoOriginal.DataTerminoAtualizada = requisicao.DataValidadeAditivo.ToUniversalTime();
 
                     //Atualiza o contrato no banco de dados
                     await this._contratosRepository.AtualizarAsync(_contratoOriginal, cancellationToken);
 
-                    //Processa todos os items e atualiza os valores do contrato original
-                    foreach (var _itemPlanilha in _listaItems)
+                    if (requisicao.ArquivoTemplate != null)
                     {
-                        //Busca item do contrato original
-                        var _itemExistente = _itemsContratoOriginal.Where(i => i.Item.Identificador == _itemPlanilha.Item).FirstOrDefault();
-
-                        if (_itemExistente != null)
+                        //Processa todos os items e atualiza os valores do contrato original
+                        foreach (var _itemPlanilha in _listaItems)
                         {
-                            //Atualiza a quantidade do contrato original com a quantidade que está sendo aditivada
-                            _itemExistente.Unidade += Convert.ToDecimal(_itemPlanilha.Un);
+                            //Busca item do contrato original
+                            var _itemExistente = _itemsContratoOriginal.Where(i => i.Item.Identificador == _itemPlanilha.Item).FirstOrDefault();
 
-                            //Armazena numa variável o valor original do valor total com bdi
-                            var _valorTotalComBdiOriginal = _itemExistente.ValorTotalComBdi;
-
-                            //Recalcula o valor total com bdi
-                            _itemExistente.ValorTotalComBdi = _itemExistente.ValorComBdi * _itemExistente.Unidade;
-
-                            //Atualiza o valor do item do contrato
-                            await this._itemsContratoRepository.AtualizarAsync(_itemExistente, cancellationToken);
-
-                            //Obtém a diferença sobre o valor total com bdi
-                            var _diferencaValorTotalComBdi = _itemExistente.ValorTotalComBdi - _valorTotalComBdiOriginal;
-
-                            //Atualiza o saldo do contrato com a diferença que foi aditivada
-                            _contratoOriginal.ValorSaldoRestante += _diferencaValorTotalComBdi;
-                            _contratoOriginal.ValorTotalSolicitado += _diferencaValorTotalComBdi;
-                            _contratoOriginal.ValorTotalPrevisto += _diferencaValorTotalComBdi;
-                            _contratoOriginal.Valor += _diferencaValorTotalComBdi;
-
-                            //Atualiza o contrato
-                            await this._contratosRepository.AtualizarAsync(_contratoOriginal, cancellationToken);
-                        }
-                    }
-
-                    //Cria um template para o aditivo
-                    var _novoTemplate = new TemplateEntidade()
-                    {
-                        Nome = $"Template do Aditivo Número {_aditivo.IdAditivo}"
-                    };
-
-                    //Inseri o novo template no banco de dados
-                    _novoTemplate = await this._templateRepository.InserirAsync(_novoTemplate, cancellationToken);
-
-                    //Processa agora a lista de items para serem inseridos no banco de dados associados ao novo template
-                    var _contador = 0;
-                    ModeloTemplate _item;
-
-                    while (_contador <= _listaItems.Count() - 1)
-                    {
-                        _item = _listaItems[_contador];
-
-                        //Verifica se a origem obtida existe no banco de dados
-                        var _origemBancoDeDados = await this._origemRepository.BuscarPorNomeAsync(_item.Origem, cancellationToken);
-
-                        QuantidadeEntidade _quantidadeBancoDeDados = null;
-
-                        //Verifica se a quantidade foi informada
-                        if (!string.IsNullOrWhiteSpace(_item.Qntd))
-                        {
-                            //Verifica se a quantidade obtida existe no banco de dados
-                            _quantidadeBancoDeDados = await this._quantidadeRepository.BuscarPorNomeAsync(_item.Qntd, cancellationToken);
-                        }
-
-                        //Cria uma variável local para acessar o item temporário que está sendo lido no momento
-                        var _localItemTemp = _listaItems[_contador];
-
-                        //Criar o item a ser inserido na tabela de items
-                        var _itemPai = await CriarItemEntidade(_localItemTemp, _origemBancoDeDados, 1, _novoTemplate.IdTemplate, new Nullable<int>(), cancellationToken);
-                        var _ordemFilho = 0;
-
-                        while (++_contador <= _listaItems.Count() - 1 && _listaItems[_contador].Item.StartsWith(_item.Item))
-                        {
-                            //Realiza a criação dos items filhos
-                            var _novoItemFilho = await this.ProcessarItemFilho(_listaItems[_contador], ++_ordemFilho, _novoTemplate.IdTemplate, _itemPai.IdItem, cancellationToken);
-                        }
-                    }
-
-                    //Preenche a tabela de items do aditivo
-                    var _itemsAditivo = await this._itemRepository.BuscarTodosAsync(_novoTemplate.IdTemplate, cancellationToken);
-
-                    //Processa todos os items e associa ao aditivo
-                    foreach (var _itemAditivo in _itemsAditivo)
-                    {
-                        if (_itemAditivo.QuantidadeId.HasValue)
-                        {
-                            var _novoItemAditivo = new ItemsAditivoEntidade()
+                            if (_itemExistente != null)
                             {
-                                AditivoId = _aditivo.IdAditivo,
-                                ItemId = _itemAditivo.IdItem,
+                                //Verifica se o item possui unidade a ser considerada
+                                if (!string.IsNullOrEmpty(_itemPlanilha.Un))
+                                {
+                                    //Armazena o valor total da planilha
+                                    var _valorTotalComBdiPlanilha = Convert.ToDecimal(_itemPlanilha.ValorCBdi) * Convert.ToDecimal(_itemPlanilha.Un);
+
+                                    //Atualiza o saldo do contrato com a diferença que foi aditivada
+                                    _contratoOriginal.ValorSaldoRestante += _valorTotalComBdiPlanilha;
+
+                                    if (!_contratoOriginal.ValorAtualContrato.HasValue)
+                                        _contratoOriginal.ValorAtualContrato = 0;
+
+                                    _contratoOriginal.ValorAtualContrato += _valorTotalComBdiPlanilha;
+
+                                    //Atualiza o contrato
+                                    await this._contratosRepository.AtualizarAsync(_contratoOriginal, cancellationToken);
+                                }
+                            }
+                        }
+
+                        //Cria um template para o aditivo
+                        var _novoTemplate = new TemplateEntidade()
+                        {
+                            Nome = $"Template do Aditivo Número {_aditivo.IdAditivo}"
+                        };
+
+                        //Inseri o novo template no banco de dados
+                        _novoTemplate = await this._templateRepository.InserirAsync(_novoTemplate, cancellationToken);
+
+                        //Processa agora a lista de items para serem inseridos no banco de dados associados ao novo template
+                        var _contador = 0;
+                        ModeloTemplate _item;
+
+                        while (_contador <= _listaItems.Count() - 1)
+                        {
+                            _item = _listaItems[_contador];
+
+                            //Verifica se a origem obtida existe no banco de dados
+                            var _origemBancoDeDados = await this._origemRepository.BuscarPorNomeAsync(_item.Origem, cancellationToken);
+
+                            QuantidadeEntidade _quantidadeBancoDeDados = null;
+
+                            //Verifica se a quantidade foi informada
+                            if (!string.IsNullOrWhiteSpace(_item.Qntd))
+                            {
+                                //Verifica se a quantidade obtida existe no banco de dados
+                                _quantidadeBancoDeDados = await this._quantidadeRepository.BuscarPorNomeAsync(_item.Qntd, cancellationToken);
+                            }
+
+                            //Cria uma variável local para acessar o item temporário que está sendo lido no momento
+                            var _localItemTemp = _listaItems[_contador];
+
+                            //Criar o item a ser inserido na tabela de items
+                            var _itemPai = await CriarItemEntidade(_localItemTemp, _origemBancoDeDados, 1, _novoTemplate.IdTemplate, new Nullable<int>(), cancellationToken);
+                            var _ordemFilho = 0;
+
+                            while (++_contador <= _listaItems.Count() - 1 && _listaItems[_contador].Item.StartsWith(_item.Item))
+                            {
+                                //Realiza a criação dos items filhos
+                                var _novoItemFilho = await this.ProcessarItemFilho(_listaItems[_contador], ++_ordemFilho, _novoTemplate.IdTemplate, _itemPai.IdItem, cancellationToken);
+                            }
+                        }
+
+                        //Preenche a tabela de items do aditivo
+                        var _itemsAditivo = await this._itemRepository.BuscarTodosAsync(_novoTemplate.IdTemplate, cancellationToken);
+
+                        //Processa todos os items e associa ao aditivo
+                        foreach (var _itemAditivo in _itemsAditivo)
+                        {
+                            if (_itemAditivo.QuantidadeId.HasValue)
+                            {
+                                var _novoItemAditivo = new ItemsAditivoEntidade()
+                                {
+                                    AditivoId = _aditivo.IdAditivo,
+                                    ItemId = _itemAditivo.IdItem,
+                                };
+
+                                if (_itemAditivo.QuantidadeId.HasValue)
+                                    _novoItemAditivo.QuantidadeId = _itemAditivo.QuantidadeId.Value;
+
+                                if (_itemAditivo.Unidade.HasValue)
+                                    _novoItemAditivo.Unidade = _itemAditivo.Unidade.Value;
+
+                                if (_itemAditivo.ValorComBdi.HasValue)
+                                    _novoItemAditivo.ValorComBdi = _itemAditivo.ValorComBdi.Value;
+
+                                if (_itemAditivo.ValorSemBdi.HasValue)
+                                    _novoItemAditivo.ValorSemBdi = _itemAditivo.ValorSemBdi.Value;
+
+                                if (_itemAditivo.ValorTotalComBdi.HasValue)
+                                    _novoItemAditivo.ValorTotalComBdi = _itemAditivo.ValorTotalComBdi.Value;
+
+                                await this._itemsAditivoRepository.InserirAsync(_novoItemAditivo, cancellationToken);
+                            }
+                        }
+                    }
+
+                    //Verifica se foram informados arquivos junto com o contrato
+                    if (requisicao.Arquivos != null)
+                    {
+                        foreach (var _arquivo in requisicao.Arquivos)
+                        {
+                            //Faz primeiro o upload do arquivo de aditivo
+                            var _upload = await _s3Service.UploadLogoAsync(_arquivo);
+
+                            //Cria um objeto de arquivo do aditivo para ser gravado junto com o aditivo
+                            var _arquivoAditivo = new ArquivosAditivoEntidade()
+                            {
+                                ArquivoAditivo = _upload,
+                                IdAditivo = _aditivo.IdAditivo
                             };
 
-                            if (_itemAditivo.QuantidadeId.HasValue)
-                                _novoItemAditivo.QuantidadeId = _itemAditivo.QuantidadeId.Value;
+                            if (_aditivo.ArquivosAditivos == null)
+                                _aditivo.ArquivosAditivos = new List<ArquivosAditivoEntidade>();
 
-                            if (_itemAditivo.Unidade.HasValue)
-                                _novoItemAditivo.Unidade = _itemAditivo.Unidade.Value;
-
-                            if (_itemAditivo.ValorComBdi.HasValue)
-                                _novoItemAditivo.ValorComBdi = _itemAditivo.ValorComBdi.Value;
-
-                            if (_itemAditivo.ValorSemBdi.HasValue)
-                                _novoItemAditivo.ValorSemBdi = _itemAditivo.ValorSemBdi.Value;
-
-                            if (_itemAditivo.ValorTotalComBdi.HasValue)
-                                _novoItemAditivo.ValorTotalComBdi = _itemAditivo.ValorTotalComBdi.Value;
-                            
-                            await this._itemsAditivoRepository.InserirAsync(_novoItemAditivo, cancellationToken);
+                            await _arquivosAditivoRepository.InserirAsync(_arquivoAditivo, cancellationToken);
                         }
                     }
 
@@ -548,12 +604,11 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                         await this._itemsContratoRepository.AtualizarAsync(_itemExistente, cancellationToken);
 
                         //Obtém a diferença sobre o valor total com bdi
-                        var _diferencaValorTotalComBdi = _valorTotalComBdiOriginal - _itemExistente.ValorTotalComBdi ;
+                        var _diferencaValorTotalComBdi = _valorTotalComBdiOriginal - _itemExistente.ValorTotalComBdi;
 
                         //Atualiza o saldo do contrato com a diferença que foi aditivada
-                        _contratoOriginal.ValorSaldoRestante = _contratoOriginal.ValorSaldoRestante -  _diferencaValorTotalComBdi;
-                        _contratoOriginal.ValorTotalSolicitado = _contratoOriginal.ValorTotalSolicitado - _diferencaValorTotalComBdi;
-                        _contratoOriginal.ValorTotalPrevisto = _contratoOriginal.ValorTotalPrevisto - _diferencaValorTotalComBdi;
+                        _contratoOriginal.ValorSaldoRestante = _contratoOriginal.ValorSaldoRestante - _diferencaValorTotalComBdi;
+                        _contratoOriginal.ValorAtualContrato -= _diferencaValorTotalComBdi;
 
                         //Atualiza o contrato
                         await this._contratosRepository.AtualizarAsync(_contratoOriginal, cancellationToken);
@@ -582,6 +637,103 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             var _usuario = await this._usuariosRepository.BuscarPorIdAsync(_userId, cancellationToken);
 
             return (_usuario);
+        }
+
+        public async Task<MemoryStream> DownloadArquivoAditivo(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var _arquivo = await _arquivosAditivoRepository.BuscarPorIdAsync(id, cancellationToken);
+                var _nomeArquivo = this._s3Service.ExtractFileNameFromUrl(_arquivo.ArquivoAditivo);
+                var _stream = await this._s3Service.DownloadFileFromS3Async(_nomeArquivo);
+
+                return (_stream);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<Result<DeletarArquivoAditivoResponse>> DeletarArquivoAnexadoAsync(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                //Busca o arquivo de aditivo associado ao id
+                var _arquivoAditivo = await this._arquivosAditivoRepository.BuscarPorIdAsync(id, cancellationToken);
+
+                if (_arquivoAditivo == null)
+                    return Result<DeletarArquivoAditivoResponse>.Failure(new NoRecordsError(Aditivos.IdArquivoAditivoNaoEncontrado));
+
+                await _arquivosAditivoRepository.DeletarAsync(_arquivoAditivo, cancellationToken);
+
+                //Apaga primeira o arquivo no bucket na aws
+                await this._s3Service.ApagarLogo(_arquivoAditivo.ArquivoAditivo);
+
+                var result = new DeletarArquivoAditivoResponse { Mensagem = Aditivos.ArquivoAditivoApagado };
+
+                return Result<DeletarArquivoAditivoResponse>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+                return Result<DeletarArquivoAditivoResponse>.Failure(new UnknownError(ex.Message));
+            }
+        }
+
+        public async Task<Result<RegistrarDocumentosAditivoResponse>> RegistrarDocumentosAsync(RegistrarDocumentosAditivoRequest requisicao, CancellationToken cancellationToken)
+        {
+            try
+            {
+                //Busca o aditivo original
+                var _aditivoOriginal = await this._aditivosRepository.BuscarPorIdAsync(requisicao.IdAditivo, cancellationToken);
+
+                if (_aditivoOriginal == null)
+                    return Result<RegistrarDocumentosAditivoResponse>.Failure(new NoRecordsError(Aditivos.IdAditivoNaoEncontrado));
+
+                var _listaIds = new List<IdDocumentoAditivoRegistradoResponse>();
+
+                try
+                {
+                    //Verifica se foram informados arquivos no momento da aprovação
+                    if (requisicao.Arquivos != null)
+                    {
+                        foreach (var _arquivo in requisicao.Arquivos)
+                        {
+                            //Faz primeiro o upload do contrato
+                            var _upload = await _s3Service.UploadLogoAsync(_arquivo);
+
+                            //Registra no banco de dados que o arquivo foi feito o download junto com o aditivo
+                            var _arquivoAditivo = new ArquivosAditivoEntidade(requisicao.IdAditivo, _upload);
+
+                            _arquivoAditivo = await this._arquivosAditivoRepository.InserirAsync(_arquivoAditivo, cancellationToken);
+
+                            _listaIds.Add(new IdDocumentoAditivoRegistradoResponse(_arquivoAditivo.Id, _arquivoAditivo.ArquivoAditivo)
+                            {
+                                Arquivo = Path.GetFileName(_arquivoAditivo.ArquivoAditivo)
+                            });
+                        }
+                    }
+
+                    var result = new RegistrarDocumentosAditivoResponse(true, string.Empty)
+                    {
+                        Ids = _listaIds
+                    };
+
+                    return Result<RegistrarDocumentosAditivoResponse>.Success(result);
+                }
+                catch (Exception Ex)
+                {
+                    throw Ex;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+                return Result<RegistrarDocumentosAditivoResponse>.Failure(new UnknownError(ex.Message));
+            }
         }
     }
 }

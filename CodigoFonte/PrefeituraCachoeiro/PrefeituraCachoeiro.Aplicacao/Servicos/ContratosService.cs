@@ -36,13 +36,15 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
         private readonly IItemsContratoRepository _itemsContratoRepository;
         private readonly IArquivosContratoRepository _arquivosContratoRepository;
         private readonly IAditivosRepository _aditivosRepository;
+        private readonly IApplicationUser _applicationUser;
+        private readonly IUsuariosRepository _usuariosRepository;
 
         public ContratosService(IMapper mapper, ILoggerFactory loggerFactory,
             IContratosRepository contratosRepository, IItemRepository itemRepository,
             IUnitOfWork unitOfWork, ISequenceService sequenceService, IS3Service s3Service,
             IProjetoRepository projetoRepository, IOrigemRepository origemRepository, IQuantidadeRepository quantidadeRepository,
             ITemplateRepository templateRepository, IItemsContratoRepository itemsContratoRepository, IArquivosContratoRepository arquivosContratoRepository,
-            IAditivosRepository aditivosRepository)
+            IAditivosRepository aditivosRepository, IApplicationUser applicationUser, IUsuariosRepository usuariosRepository)
         {
             _mapper = mapper;
             _logger = loggerFactory.CreateLogger<ContratosService>();
@@ -58,6 +60,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             _itemsContratoRepository = itemsContratoRepository;
             _arquivosContratoRepository = arquivosContratoRepository;
             _aditivosRepository = aditivosRepository;
+            _applicationUser = applicationUser;
+            _usuariosRepository = usuariosRepository;
         }
 
         public async Task<Result<ContratosDataResponse>> BuscarTodosAsync(ContratosFilter filter, CancellationToken cancellationToken)
@@ -68,6 +72,9 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 return Result<ContratosDataResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.ContratosNaoEncontrados));
 
             var mapped = _mapper.Map<List<ContratosResponse>>(gruposFound.Items);
+
+
+
             var result = new ContratosDataResponse
             {
                 Data = mapped,
@@ -227,7 +234,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                         PrefeituraId = requisicao.PrefeituraId,
                         TipoContratacao = requisicao.TipoContratacao,
                         IdTemplate = _novoTemplate.IdTemplate,
-                        Valor = 0
+                        Valor = 0,
+                        DataTerminoAtualizada = requisicao.DataTermino.ToUniversalTime()
                     };
 
                     _contrato = await _contratosRepository.InserirAsync(_contrato, cancellationToken);
@@ -238,34 +246,31 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                     //Processa todos os items e associa ao contrato
                     foreach (var _itemContrato in _itemsContrato)
                     {
-                        if (_itemContrato.QuantidadeId.HasValue)
+                        var _novoItemContrato = new ItemsContratoEntidade()
                         {
-                            var _novoItemContrato = new ItemsContratoEntidade()
-                            {
-                                ContratosId = _contrato.IdContrato,
-                                ItemId = _itemContrato.IdItem,
-                            };
+                            ContratosId = _contrato.IdContrato,
+                            ItemId = _itemContrato.IdItem,
+                        };
 
-                            if (_itemContrato.QuantidadeId.HasValue)
-                                _novoItemContrato.QuantidadeId = _itemContrato.QuantidadeId.Value;
+                        if (_itemContrato.QuantidadeId.HasValue)
+                            _novoItemContrato.QuantidadeId = _itemContrato.QuantidadeId.Value;
 
-                            if (_itemContrato.Unidade.HasValue)
-                            {
-                                _novoItemContrato.Unidade = _itemContrato.Unidade.Value;
-                                _novoItemContrato.UnidadeOriginal = _novoItemContrato.Unidade;
-                            }
-
-                            if (_itemContrato.ValorComBdi.HasValue)
-                                _novoItemContrato.ValorComBdi = _itemContrato.ValorComBdi.Value;
-
-                            if (_itemContrato.ValorSemBdi.HasValue)
-                                _novoItemContrato.ValorSemBdi = _itemContrato.ValorSemBdi.Value;
-
-                            if (_itemContrato.ValorTotalComBdi.HasValue)
-                                _novoItemContrato.ValorTotalComBdi = _itemContrato.ValorTotalComBdi.Value;
-
-                            await this._itemsContratoRepository.InserirAsync(_novoItemContrato, cancellationToken);
+                        if (_itemContrato.Unidade.HasValue)
+                        {
+                            _novoItemContrato.Unidade = _itemContrato.Unidade.Value;
+                            _novoItemContrato.UnidadeOriginal = _novoItemContrato.Unidade;
                         }
+
+                        if (_itemContrato.ValorComBdi.HasValue)
+                            _novoItemContrato.ValorComBdi = _itemContrato.ValorComBdi.Value;
+
+                        if (_itemContrato.ValorSemBdi.HasValue)
+                            _novoItemContrato.ValorSemBdi = _itemContrato.ValorSemBdi.Value;
+
+                        if (_itemContrato.ValorTotalComBdi.HasValue)
+                            _novoItemContrato.ValorTotalComBdi = _itemContrato.ValorTotalComBdi.Value;
+
+                        await this._itemsContratoRepository.InserirAsync(_novoItemContrato, cancellationToken);
                     }
 
                     //Verifica se foram informados arquivos junto com o contrato
@@ -423,18 +428,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             }
         }
 
-        private async Task<List<ModeloTemplate>> ProcessarArquivoTemplateProjeto(CriarAditivoRequest requisicao)
-        {
-            try
-            {
-                return (await this.ProcessarArquivoTemplateProjeto(requisicao.ArquivoTemplate));
-            }
-            catch (Exception Ex)
-            {
-                throw new Exception($"Ocorreu o seguinte erro ao tentar processar o arquivo.Erro: {Ex.Message}");
-            }
-        }
-
         public async Task<Result<AtualizarContratosResponse>> AtualizarAsync(AtualizarContratosRequest requisicao, CancellationToken cancellationToken)
         {
             try
@@ -585,6 +578,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 _contratoBancoDeDados.ValorTotalPrevisto += _totalPrevisto;
                 _contratoBancoDeDados.ValorTotalSolicitado = _totalSolicitado;
                 _contratoBancoDeDados.ValorSaldoRestante += _totalRestante;
+                _contratoBancoDeDados.ValorAtualContrato = 0;
+                _contratoBancoDeDados.ValorAtualContrato += _totalPrevisto;
 
                 //Atualizar o contrato no banco de dados
                 await this._contratosRepository.AtualizarAsync(_contratoBancoDeDados, cancellationToken);
@@ -609,6 +604,118 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
             var _novoItemFilho = await CriarItemEntidade(itemFilho, _origemBancoDeDadosFilho, ordemFilho, idTemplate, idItemPai, cancellationToken);
 
             return (_novoItemFilho);
+        }
+
+        public async Task<Result<DeletarArquivoContratoResponse>> DeletarArquivoAnexadoAsync(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                //Busca o arquivo de contrato associado ao id
+                var _arquivoContrato = await this._arquivosContratoRepository.BuscarPorIdAsync(id, cancellationToken);
+
+                if (_arquivoContrato == null)
+                    return Result<DeletarArquivoContratoResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.ArquivoContatoNaoEncontrado));
+
+                await _arquivosContratoRepository.DeletarAsync(_arquivoContrato, cancellationToken);
+
+                //Apaga primeira o arquivo no bucket na aws
+                await this._s3Service.ApagarLogo(_arquivoContrato.ArquivoContrato);
+
+                var result = new DeletarArquivoContratoResponse { Mensagem = Compartilhado.Contratos.ArquivoContratoDeletado };
+
+                return Result<DeletarArquivoContratoResponse>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+                return Result<DeletarArquivoContratoResponse>.Failure(new UnknownError(ex.Message));
+            }
+        }
+
+        public async Task<Result<RegistrarDocumentosContratoResponse>> RegistrarDocumentosAsync(RegistrarDocumentosContratoRequest requisicao, CancellationToken cancellationToken)
+        {
+            try
+            {
+                //Busca o contrato original
+                var _contratoOriginal = await this._contratosRepository.BuscarPorIdAsync(requisicao.IdContrato,cancellationToken);
+
+                if (_contratoOriginal == null)
+                    return Result<RegistrarDocumentosContratoResponse>.Failure(new NoRecordsError(Compartilhado.Contratos.IdContratoNaoEncontrado));
+
+                //Obtém o usuário logado
+                var _usuarioLogado = await this.GetUsuarioLogado(cancellationToken);
+
+                //Verifica se o contrato informado pertence a mesma prefeitura do usuário logado
+                if (_usuarioLogado.PrefeituraId != null && _contratoOriginal.PrefeituraId != _usuarioLogado.PrefeituraId)
+                    return Result<RegistrarDocumentosContratoResponse>.Failure(new AcessoInvalidoUsuarioError(Compartilhado.Contratos.ContratoNaoPertenceAMesmaPrefeituraDoUsuarioLogado));
+
+                var _listaIds = new List<IdDocumentoContratoRegistradoResponse>();
+
+                try
+                {
+                    //Verifica se foram informados arquivos no momento da aprovação
+                    if (requisicao.Arquivos != null)
+                    {
+                        foreach (var _arquivo in requisicao.Arquivos)
+                        {
+                            //Faz primeiro o upload do contrato
+                            var _upload = await _s3Service.UploadLogoAsync(_arquivo);
+
+                            //Registra no banco de dados que o arquivo foi feito o download junto com o contrato
+                            var _arquivoContrato = new ArquivosContratosEntidade(requisicao.IdContrato, _upload);
+
+                            _arquivoContrato = await this._arquivosContratoRepository.InserirAsync(_arquivoContrato, cancellationToken);
+
+                            _listaIds.Add(new IdDocumentoContratoRegistradoResponse(_arquivoContrato.Id, _arquivoContrato.ArquivoContrato)
+                            {
+                                 Arquivo = Path.GetFileName(_arquivoContrato.ArquivoContrato)
+                            });
+                        }
+                    }
+
+                    var result = new RegistrarDocumentosContratoResponse(true, string.Empty)
+                    {
+                        Ids = _listaIds
+                    };
+
+                    return Result<RegistrarDocumentosContratoResponse>.Success(result);
+                }
+                catch (Exception Ex)
+                {
+                    throw Ex;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+                return Result<RegistrarDocumentosContratoResponse>.Failure(new UnknownError(ex.Message));
+            }
+        }
+
+        private async Task<UsuariosEntidade?> GetUsuarioLogado(CancellationToken cancellationToken)
+        {
+            var _userId = _applicationUser.UserId;
+            var _usuario = await this._usuariosRepository.BuscarPorIdAsync(_userId, cancellationToken);
+
+            return (_usuario);
+        }
+
+        public async Task<MemoryStream> DownloadArquivoContrato(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var _arquivo = await _arquivosContratoRepository.BuscarPorIdAsync(id, cancellationToken);
+                var _nomeArquivo = this._s3Service.ExtractFileNameFromUrl(_arquivo.ArquivoContrato);
+                var _stream = await this._s3Service.DownloadFileFromS3Async(_nomeArquivo);
+
+                return (_stream);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

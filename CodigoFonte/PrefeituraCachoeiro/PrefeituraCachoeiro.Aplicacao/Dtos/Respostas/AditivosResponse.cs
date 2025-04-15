@@ -10,5 +10,8 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Respostas
         public DateTime DataAssinatura { get; set; }
         public DateTime DataValidade { get; set; }
         public string TipoAditivo { get; set; }
+        public List<ItemsAditivoSimpleResponse> Items { get; set; }
+        public List<ArquivoAditivoResponse> ArquivosAditivos { get; set; }
+        public string Descricao { get; set; }
     }
 }

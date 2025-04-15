@@ -207,5 +207,22 @@ namespace PrefeituraCachoeiro.Api.Controllers
         {
             return ($"Arquivo_{DateTime.Now.ToString("ddMMyyyyhhmms")}");
         }
+
+        /// <summary>
+        /// Deleta uma medição
+        /// </summary>
+        /// <response code="200">Retorna uma mensagem de sucesso ou erro</response>
+        /// <response code="401">O usuário não possui acesso autorizado pelo token informado.</response>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeletarMedicaoResponse))]
+        [Authorize]
+        public async Task<IActionResult> DeletarAsync(int id, CancellationToken cancellationToken)
+        {
+            var response = await _medicoesProjetoService.DeletarAsync(id, cancellationToken);
+
+            return response.Match(
+              onSuccess: Ok,
+              onFailure: error => error.ToHttpResponseError());
+        }
     }
 }

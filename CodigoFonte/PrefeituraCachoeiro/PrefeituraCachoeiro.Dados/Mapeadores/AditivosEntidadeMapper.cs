@@ -15,10 +15,16 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.DataValidade).HasColumnName("datavalidadeaditivo").IsRequired();
             builder.Property(x => x.DataCriacao).HasColumnName("datacriacao").IsRequired();
             builder.Property(x => x.DataDelecao).HasColumnName("datadelecao").IsRequired(false);
+            builder.Property(x => x.Descricao).HasColumnName("descricao").IsRequired(false).HasColumnType("varchar(5000)");
             builder.Property(x => x.IdAditivo)
                    .HasColumnName("idaditivo")
                    .ValueGeneratedOnAdd()
                    .IsRequired();
+
+            builder.HasMany(x => x.Items)
+                   .WithOne(x => x.Aditivo)
+                   .HasForeignKey(x => x.AditivoId)
+                   .HasConstraintName("fk_aditivo_items");
         }
     }
 }

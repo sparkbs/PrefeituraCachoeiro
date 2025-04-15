@@ -56,9 +56,7 @@ namespace PrefeituraCachoeiro.Aplicacao.AutoMapper
                 {
                     IdProjeto = cp.Projetos.IdProjeto,
                     NomeProjeto = cp.Projetos.NomeProjeto
-                })))
-                .ForMember(dest => dest.Arquivos, opt => opt.MapFrom(src => src.ArquivosContratos.Select(cp => cp.ArquivoContrato)));
-
+                })));
             CreateMap<ContratosEntidade, CriarContratoResponse>();
             CreateMap<ContratosEntidade, AtualizarContratosResponse>();
             CreateMap<ItemsContratoEntidade, ItemsContratoResponse>();
@@ -85,6 +83,11 @@ namespace PrefeituraCachoeiro.Aplicacao.AutoMapper
                .ForPath(i => i.Arquivo, x => x.MapFrom(i => Path.GetFileName(i.ArquivoMedicao)));
             CreateMap<AditivosEntidade, CriarAditivoResponse>();
             CreateMap<AditivosEntidade, AditivosResponse>();
+            CreateMap<ItemsAditivoEntidade, ItemsAditivoSimpleResponse>();
+            CreateMap<ArquivosContratosEntidade, ArquivoContratoResponse>()
+               .ForPath(i => i.Arquivo, x => x.MapFrom(i => Path.GetFileName(i.ArquivoContrato)));
+            CreateMap<ArquivosAditivoEntidade, ArquivoAditivoResponse>()
+               .ForPath(i => i.Arquivo, x => x.MapFrom(i => Path.GetFileName(i.ArquivoAditivo)));
         }
     }
 }

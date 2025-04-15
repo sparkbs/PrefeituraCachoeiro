@@ -8,5 +8,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes
     {
         public string Nome { get; set; }
         public IFormFile? Logo { get; set; }
+        public string? Email { get; set; }
     }
 }

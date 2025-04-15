@@ -16,6 +16,7 @@
         public int? IdProjeto { get; set; }
         public ProjetoEntidade Projeto { get; set; }
         public string Observacao { get; set; }
+        public string Secretaria { get; set; }
 
         public MedicoesProjetoEntidade(): base()
         {

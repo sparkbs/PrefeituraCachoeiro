@@ -67,7 +67,10 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
 
                 //Faz primeiro o upload do logo da prefeitura.
                 var _upload = await _s3Service.UploadLogoAsync(requisicao.Logo);
-                var prefeitura = new PrefeituraEntidade(requisicao.Nome, _upload);
+                var prefeitura = new PrefeituraEntidade(requisicao.Nome, _upload)
+                {
+                    Email = requisicao.Email
+                };
 
                 prefeitura = await _prefeituraRepository.InserirAsync(prefeitura, cancellationToken);
                 var result = _mapper.Map<CriarPrefeituraResponse>(prefeitura);
@@ -112,6 +115,7 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 }
 
                 prefeituraFound.Nome = requisicao.Nome;
+                prefeituraFound.Email = requisicao.Email;
 
                 await _prefeituraRepository.AtualizarAsync(prefeituraFound, cancellationToken);
                 var result = _mapper.Map<AtualizarPrefeituraResponse>(prefeituraFound);
@@ -147,6 +151,31 @@ namespace PrefeituraCachoeiro.Aplicacao.Servicos
                 _logger.LogError(ex.Message);
 
                 return Result<DeletarPrefeituraResponse>.Failure(new UnknownError(ex.Message));
+            }
+        }
+
+        public async Task<MemoryStream> DownloadArquivoLogo(int prefeituraid, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var _prefeituraFound = await _prefeituraRepository.BuscarPorIdAsync(prefeituraid, cancellationToken);
+
+                if (_prefeituraFound != null)
+                {
+                    if (!string.IsNullOrEmpty(_prefeituraFound.Logo))
+                    {
+                        var _nomeArquivo = this._s3Service.ExtractFileNameFromUrl(_prefeituraFound.Logo);
+                        var _stream = await this._s3Service.DownloadFileFromS3Async(_nomeArquivo);
+
+                        return (_stream);
+                    }
+                }
+
+                return (null);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

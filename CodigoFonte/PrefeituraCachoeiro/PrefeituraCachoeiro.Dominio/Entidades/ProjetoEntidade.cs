@@ -5,6 +5,7 @@
         public int IdProjeto { get; set; }
         public string? NomeProjeto { get; set; }
         public int? CodigoProjeto { get; set; }
+        public int? IdPrefeitura { get; set; }
         public List<ContratosProjetosEntidade> Contratos { get; set; }
         public List<MedicoesProjetoEntidade> MedicoesProjeto { get; set; }
 

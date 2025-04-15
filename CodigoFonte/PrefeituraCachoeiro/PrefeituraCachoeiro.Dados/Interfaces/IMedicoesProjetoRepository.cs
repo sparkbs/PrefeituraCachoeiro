@@ -13,5 +13,6 @@ namespace PrefeituraCachoeiro.Dados.Interfaces
         Task<List<MedicoesProjetoEntidade>> BuscarBoletimProjetoAsync(int idMedicao, int idProjeto, UsuariosEntidade? usuarioLogado, CancellationToken cancellationToken);
         Task<List<MedicoesProjetoEntidade>> BuscarBoletimMedicaoDetalhadoAsync(int idMedicao, UsuariosEntidade? usuarioLogado, CancellationToken cancellationToken);
         Task<MedicoesProjetoEntidade?> BuscarUltimaMedicaoPorContratoIdAsync(int idContrato, UsuariosEntidade? usuarioLogado, CancellationToken cancellationToken);
+        Task<MedicoesProjetoEntidade> DeletarAsync(MedicoesProjetoEntidade medicao, CancellationToken cancellationToken);
     }
 }

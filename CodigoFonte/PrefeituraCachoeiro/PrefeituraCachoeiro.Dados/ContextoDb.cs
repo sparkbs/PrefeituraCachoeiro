@@ -31,6 +31,7 @@ namespace PrefeituraCachoeiro.Dados
         public DbSet<TemplateEntidade> TemplateEntidade { get; set; }
         public DbSet<AditivosEntidade> Aditivos { get; set; }
         public DbSet<ItemsAditivoEntidade> ItemsAditivoEntidade { get; set; }
+        public DbSet<ArquivosAditivoEntidade> ArquivosAditivos { get; set; }
 
         public ContextoDb(DbContextOptions<ContextoDb> options) : base(options)
         {

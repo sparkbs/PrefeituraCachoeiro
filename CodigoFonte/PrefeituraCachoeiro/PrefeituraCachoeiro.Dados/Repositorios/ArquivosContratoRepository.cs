@@ -1,4 +1,5 @@
-﻿using PrefeituraCachoeiro.Dados.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PrefeituraCachoeiro.Dados.Interfaces;
 using PrefeituraCachoeiro.Dominio.Entidades;
 
 namespace PrefeituraCachoeiro.Dados.Repositorios
@@ -18,6 +19,17 @@ namespace PrefeituraCachoeiro.Dados.Repositorios
             await _context.SaveChangesAsync(cancellationToken);
 
             return arquivos;
+        }
+
+        public async Task DeletarAsync(ArquivosContratosEntidade arquivo, CancellationToken cancellationToken)
+        {
+            _context.ArquivosContratos.Remove(arquivo);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<ArquivosContratosEntidade?> BuscarPorIdAsync(int id, CancellationToken cancellationToken)
+        {
+            return await _context.ArquivosContratos.FirstOrDefaultAsync(x => x.Id == id && x.DataDelecao == null, cancellationToken);
         }
     }
 }

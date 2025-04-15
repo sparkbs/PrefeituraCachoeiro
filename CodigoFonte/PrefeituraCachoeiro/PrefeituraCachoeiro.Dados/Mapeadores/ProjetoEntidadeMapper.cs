@@ -14,6 +14,7 @@ namespace PrefeituraCachoeiro.Dados.Mapeadores
             builder.Property(x => x.DataCriacao).HasColumnName("datacriacao").IsRequired();
             builder.Property(x => x.DataDelecao).HasColumnName("datadelecao");
             builder.Property(x => x.CodigoProjeto).HasColumnName("codigoprojeto").IsRequired(false);
+            builder.Property(x => x.IdPrefeitura).HasColumnName("idprefeitura").IsRequired(false);
 
             builder.HasMany(x => x.Contratos)
                    .WithOne(x => x.Projetos)

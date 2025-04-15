@@ -7,9 +7,11 @@ namespace PrefeituraCachoeiro.Aplicacao.Dtos.Requisicoes
     public class CriarAditivoRequest
     {
         public int ContratoId { get; set; }
-        public IFormFile ArquivoTemplate { get; set; }
+        public IFormFile? ArquivoTemplate { get; set; }
         public string TipoAditivo { get; set; }
         public DateTime DataAssinaturaAditivo { get; set; }
         public DateTime DataValidadeAditivo { get; set; }
+        public List<IFormFile>? Arquivos { get; set; }
+        public string? Descricao { get; set; }
     }
 }

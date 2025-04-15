@@ -8,5 +8,8 @@
         public int IdProjeto { get; set; }
         public string SubCabecalho { get; set; }
         public List<BoletimMedicaoDetalheResponse> SubBoletins { get; set; }
+        public string Secretaria { get; set; }
+        public int IdEmpresa { get; set; }
+        public string Empresa { get; set; }
     }
 }

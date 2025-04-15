@@ -110,5 +110,35 @@ namespace PrefeituraCachoeiro.Api.Controllers
               onSuccess: Ok,
               onFailure: error => error.ToHttpResponseError());
         }
+
+        /// <summary>
+        /// Método responsável por realizar o download do arquivo de logo
+        /// </summary>
+        /// <param name="id">Identificador da prefeitura</param>
+        /// <param name="cancellationToken">Token de cancelamento</param>
+        /// <returns>Retorna um stream contendo as informações do arquivo</returns>
+        [HttpGet("downloadarquivologo/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DownloadArquivoMedicaoAsync(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var _stream = await this._prefeituraService.DownloadArquivoLogo(id, cancellationToken);
+
+                if (_stream != null)
+                    return File(_stream, "application/octet-stream", this.CriarNomeArquivoAleatorio());
+
+                return NotFound("Prefeitura não tem logo associado");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao processar o download: {ex.Message}");
+            }
+        }
+
+        private string CriarNomeArquivoAleatorio()
+        {
+            return ($"Arquivo_{DateTime.Now.ToString("ddMMyyyyhhmms")}");
+        }
     }
 }

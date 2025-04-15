@@ -135,4 +135,7 @@
   <data name="CodigoProjetoExistente" xml:space="preserve">
     <value>O código do projeto informado já existe.</value>
   </data>
+  <data name="ProjetoTemMedicaoAssociada" xml:space="preserve">
+    <value>O projeto não pode ser excluído porque tem medição associada</value>
+  </data>
 </root>

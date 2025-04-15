@@ -20,6 +20,6 @@ namespace PrefeituraCachoeiro.Aplicacao.Interfaces
         Task<Result<MedicoesProjetoResponse>> BuscarUltimaMedicaoPorContratoIdAsync(int idContrato, CancellationToken cancellationToken);
         Task<Result<RegistrarDocumentosMedicaoResponse>> RegistrarDocumentosAsync(RegistrarDocumentosMedicaoRequest requisicao, CancellationToken cancellationToken);
         Task<Result<ResultadoRegistrarEnvioMedicaoClienteResponse>> RegistrarEnvioMedicaoClienteAsync(RegistrarEnvioMedicaoClienteRequest requisicao, CancellationToken cancellationToken);
-
+        Task<Result<DeletarMedicaoResponse>> DeletarAsync(int id, CancellationToken cancellationToken);
     }
 }
