@@ -4,10 +4,14 @@
     <div>
 
       <mat-form-field>
-        <mat-label>Selecione o Cliente</mat-label>
-        <mat-select disableRipple [(ngModel)]="criarContrato.PrefeituraId">
-          <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura" >{{prefeitura.nome}}</mat-option>
-        </mat-select>
+        <mat-label>Selecione o cliente</mat-label>
+        <input matInput [matAutocomplete]="auto" [(ngModel)]="selectedPrefeitura" (ngModelChange)="filtrarPrefeitura($event)">
+        
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChange($event.option.value)">
+          <mat-option *ngFor="let prefeitura of listaFiltrada" [value]="prefeitura.nome">
+            {{ prefeitura.nome }}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
 
       <mat-form-field style="margin-left: 10px;">

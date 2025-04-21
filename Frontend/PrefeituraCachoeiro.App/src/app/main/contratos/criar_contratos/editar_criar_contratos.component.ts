@@ -30,6 +30,8 @@ export class Editar_criar_contratosComponent implements OnInit {
   listaDocumentoContrato: ListaDocumentosContrato[] = [];
   valorContrato: string;
   isLoading = false;
+  listaFiltrada: any[] = [];
+  selectedPrefeitura: number | null = null; // Valor selecionado
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Item, 
   private dialogRef: MatDialogRef<Editar_criar_contratosComponent>,
@@ -45,6 +47,12 @@ export class Editar_criar_contratosComponent implements OnInit {
     await this.buscarListaGerentes();
     await this.buscarListaPrefeituras();
     await this.buscarListaempresas();
+    this.listaFiltrada = [...this.listaPrefeitura];
+  }
+
+  async onSelectionChange(nome: string){
+    var prefeituraId = this.listaPrefeitura.find(x => x.nome === nome).idPrefeitura;
+    this.criarContrato.PrefeituraId = prefeituraId;
   }
 
   async buscarListaempresas(){
@@ -94,6 +102,13 @@ export class Editar_criar_contratosComponent implements OnInit {
   deletarDocumentos(deletarDocumento: ListaDocumentosContrato): void {
     // Filtra os documentos, removendo o que for igual ao item a ser deletado
     this.listaDocumentoContrato = this.listaDocumentoContrato.filter(item => item !== deletarDocumento);
+  }
+
+  filtrarPrefeitura(valor: string) {
+    // Filtra a lista com base no valor digitado
+    this.listaFiltrada = this.listaPrefeitura.filter(prefeitura => 
+      prefeitura.nome.toLowerCase().includes(valor.toLowerCase())
+    );
   }
 
   async salvar(){

@@ -20,6 +20,8 @@ import { Editar_contratosComponent } from './editar_contratos/editar_contratos/e
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MatRadioModule } from '@angular/material/radio'; // Importar MatRadioModule
 import { VerAnexosAditivosComponent } from './ver-anexos-aditivos/ver-anexos-aditivos.component';
+import { MatOptionModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [ ContratosComponent, Editar_criar_contratosComponent, AditivosContratosComponent, Editar_contratosComponent, VerAnexosAditivosComponent ],
@@ -40,7 +42,9 @@ import { VerAnexosAditivosComponent } from './ver-anexos-aditivos/ver-anexos-adi
     FormsModule ,
     SharedModule,
     MatSelectModule,
-    MatRadioModule
+    MatRadioModule,
+    MatAutocompleteModule,
+    MatOptionModule
   ]
 })
 export class ContratosModule { }
