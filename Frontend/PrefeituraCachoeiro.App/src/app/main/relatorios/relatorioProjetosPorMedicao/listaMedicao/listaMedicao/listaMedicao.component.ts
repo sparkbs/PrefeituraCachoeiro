@@ -234,7 +234,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       let alterarMedicaoRequest = new AlterarMedicaoProjetoRequest();
       alterarMedicaoRequest.dataMedicao = this.medicoes.dataMedicao;
       alterarMedicaoRequest.idContrato = this.medicoes.idContrato;
-      alterarMedicaoRequest.secretaria = this.medicoes.secretaria;
+      alterarMedicaoRequest.secretaria = this.medicoes?.secretaria ?? "";
       alterarMedicaoRequest.idMedicoesProjeto = this.medicoes.idMedicoesProjeto;
       alterarMedicaoRequest.idProjeto = this.medicoes.idProjeto;
       const novaLista = this.medicoes.items.map(item => ({
@@ -244,6 +244,12 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       alterarMedicaoRequest.items = novaLista;
       alterarMedicaoRequest.numeroMedicao = this.medicoes.numeroMedicao;
       alterarMedicaoRequest.observacao = this.medicoes.observacao;
+
+      if(this.medicoes.statusMedicao.idStatusMedicao == this.StatusEnum.Recusada){
+        this.medicoes.statusMedicao.nome = "Em Edição"
+        this.medicoes.statusMedicao.idStatusMedicao = this.StatusEnum.EmEdicao
+      }
+
 
       await this.apiMedicao.AlterarMedicoes(alterarMedicaoRequest)
       .then((result) => {

@@ -16,6 +16,8 @@ import { ToastService } from 'src/app/services/toast.service';
 import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
+import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
+import { ModalReaproveitarMedicaoComponent } from '../modalReaproveitarMedicao/modalReaproveitarMedicao.component';
 
 @Component({
   selector: 'app-relatorioProjetosPorMedicao',
@@ -302,6 +304,49 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     console.log('Prefeitura selecionada:', value);
   }
 
+  associarProjetoOutraMedicao(numeroMedicao: number, medicoes: MedicoesModel){
+    const dialogRef = this.dialog.open(ModalReaproveitarMedicaoComponent, {
+      data: {
+        medicoesProjetos: this.medicaoProjetos,
+        numeroMedicao: numeroMedicao,
+        projetos: medicoes.data // Substitua pelo ID do contrato atual
+      },
+      width: '600px'
+    });
+
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        await this.buscar()
+      }
+    });
+  }
+
+  async deletarMedicao(medicoes: MedicoesModel){
+    this.medicaoProjetos = [];
+    var existeMedicaoAprovada = medicoes.data.some(x => x.idStatusMedicao == StatusMedicaoEnum.Aprovada);
+
+    if(!existeMedicaoAprovada){
+      this.isLoading = true;
+      medicoes.data.forEach(async x => {
+      await this.apiMedicoes.DeletarMedicao(x.idMedicoesProjeto)  
+        .then(async (result) => {
+          if(result){
+            await this.buscar();
+          }
+        })
+        .catch(() => {
+          this.isLoading = false;
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+      })
+    }
+    else{
+      this._toastService.mensagemError("Não pode deletar medição que possui projetos com status aprovados.");
+    }
+  }
+
   async enviar(numeroMedicao: number){
     const result = window.confirm('Você deseja enviar a medição?');
     if (result) {
@@ -312,36 +357,39 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       projetosPorMedicao.forEach(async (item) => {
 
         item.data.forEach(async (data) =>{
-          var req = new BuscarArquivosMedicaoIdProjRequest();
-          req.IdMedicoesProjeto = data.idMedicoesProjeto;
-    
-          await this.apiMedicoes.EnviarMedicaoCliente(req)
-          .then((result) => {
-            if(result.isSucesso){        
-              var medicaoFiltrada = this.medicaoProjetos.filter(x => x.numeroMedicao == numeroMedicao);
-              console.log(medicaoFiltrada);
-
-              medicaoFiltrada.forEach((x) => {
-                x.data.forEach((item) =>{
-                  item.statusMedicao.idStatusMedicao = 4;
-                  item.statusMedicao.nome = "Enviada";
-                })
-              });
-              console.log(medicaoFiltrada);
-
-              this._toastService.mensagemSuccess("Medição enviada com sucesso");
-            }
-            else{
-              this._toastService.mensagemSuccess(result.mensagemErro);
-            }
-          })
-          .catch(() => 
+          if(data.idStatusMedicao != StatusMedicaoEnum.Aprovada)
           {
-            this._toastService.mensagemError("Erro ao enviar medição");
-          })
-          .finally(()=>{
-            this.isLoading = false;
-          });
+            var req = new BuscarArquivosMedicaoIdProjRequest();
+            req.IdMedicoesProjeto = data.idMedicoesProjeto;
+      
+            await this.apiMedicoes.EnviarMedicaoCliente(req)
+            .then((result) => {
+              if(result.isSucesso){        
+                var medicaoFiltrada = this.medicaoProjetos.filter(x => x.numeroMedicao == numeroMedicao);
+                console.log(medicaoFiltrada);
+
+                medicaoFiltrada.forEach((x) => {
+                  x.data.forEach((item) =>{
+                    item.statusMedicao.idStatusMedicao = 4;
+                    item.statusMedicao.nome = "Enviada";
+                  })
+                });
+                console.log(medicaoFiltrada);
+
+                this._toastService.mensagemSuccess("Medição enviada com sucesso");
+              }
+              else{
+                this._toastService.mensagemSuccess(result.mensagemErro);
+              }
+            })
+            .catch(() => 
+            {
+              this._toastService.mensagemError("Erro ao enviar medição");
+            })
+            .finally(()=>{
+              this.isLoading = false;
+            });
+          }
         })      
       })
     } 

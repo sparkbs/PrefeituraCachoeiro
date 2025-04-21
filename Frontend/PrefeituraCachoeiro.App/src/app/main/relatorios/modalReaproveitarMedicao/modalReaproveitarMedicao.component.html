@@ -1,0 +1,24 @@
+<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Projetos Serem Reaproveitados</h1>
+<mat-dialog-content class="mat-typography">
+  <div style="margin-top: 20px;">
+    <div class="cadastrarMedicao">
+      <ul>
+        <li *ngFor="let medicao of medicoesReaproveitadas">
+          <input 
+            type="checkbox" 
+            [(ngModel)]="medicao.selecionado" 
+          />
+          <span>Projeto: {{ medicao.nomeProjeto }}</span> |
+          <span>Medição: {{ medicao.numeroMedicao }}</span> |
+          <span>Status: {{ medicao.statusMedicao.nome }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions >
+  <button mat-button style="border: solid 1px; border-color: black;" (click)="voltar()" >Voltar</button>
+  <button mat-button style="border: solid 1px; border-color: black;"  (click)="salvar()">Salvar</button>
+</mat-dialog-actions>
+
+<app-loading *ngIf="this.isLoading"></app-loading>

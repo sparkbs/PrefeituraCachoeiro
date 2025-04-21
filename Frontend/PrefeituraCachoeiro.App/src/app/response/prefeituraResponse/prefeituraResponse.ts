@@ -5,8 +5,6 @@ export class PrefeituraResponse{
     nome: string = '';
     logo: string = '';
     email: string = '';
-    cnpj: string = '';
-    observacao: string = '';
 }
 
 export class PrefeituraDataResponse

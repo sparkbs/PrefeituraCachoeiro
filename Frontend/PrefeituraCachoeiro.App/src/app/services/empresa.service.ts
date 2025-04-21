@@ -47,6 +47,7 @@ export class EmpresaService {
     const formData = new FormData();
     console.log(request);
     formData.append('Nome', request.Nome);
+    formData.append('Cnpj', request.Cnpj);
 
     if (request.Logo) {
       formData.append('Logo', request.Logo);
@@ -65,6 +66,7 @@ export class EmpresaService {
     const formData = new FormData();
     formData.append('Nome', request.Nome);
     formData.append('EmpresaId', request.EmpresaId.toString());
+    formData.append('Cnpj', request.Cnpj);
 
     if (request.Logo) {
       formData.append('Logo', request.Logo);

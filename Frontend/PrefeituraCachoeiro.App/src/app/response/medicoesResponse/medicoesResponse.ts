@@ -1,6 +1,7 @@
 import { ArquivosAditivos, ArquivosContratoResponse } from "../contratosResponse/todosContratosResponse";
 
 export class MedicoesResponse {
+    selecionado: boolean = false;
     idMedicoesProjeto: number;
     numeroMedicao: number;
     idContrato: number;
@@ -11,6 +12,7 @@ export class MedicoesResponse {
     statusMedicao: StatusMedicao;
     items: ItemMedicao[];
     idProjeto: number;
+    nomeProjeto: string = null;
     arquivosMedicoesProjeto: ArquivosMedicoesProjetoResponse[]; 
     observacao: string;
     secretaria: string;

@@ -24,7 +24,7 @@ export class PrefeituraComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   lista: PrefeituraResponse[] = [];
-  displayedColumns: string[] = ['idPrefeitura', 'nome', 'cnpj','observacao','logo','acoes'];
+  displayedColumns: string[] = ['idPrefeitura', 'nome', 'logo','acoes'];
   
   dataSource: MatTableDataSource<PrefeituraResponse>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;

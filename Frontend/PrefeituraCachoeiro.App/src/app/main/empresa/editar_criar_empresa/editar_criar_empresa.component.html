@@ -8,6 +8,11 @@
         <input matInput [(ngModel)]="criarEmpresa.Nome" />
       </mat-form-field>
 
+      <mat-form-field style="flex: 1;">
+        <mat-label>CNPJ</mat-label>
+        <input matInput [(ngModel)]="criarEmpresa.Cnpj" />
+      </mat-form-field>
+
       <!-- Campo Logo -->
       <div style="flex: 1;">
         <label for="logo-upload" style="display: block;">Logo:</label>
@@ -22,7 +27,17 @@
         <input matInput [(ngModel)]="data.nome" />
       </mat-form-field>
 
+      <mat-form-field style="flex: 1;">
+        <mat-label>CNPJ</mat-label>
+        <input matInput [(ngModel)]="data.cnpj" />
+      </mat-form-field>
+
       <!-- Campo Logo -->
+      
+
+    </div>
+    <div style="display: flex; gap: 16px;" *ngIf="this.data">
+
       <div style="flex: 1;">
         <label for="logo-upload" style="display: block;">Logo:</label>
         <input type="file" id="logo-upload" (change)="onFileChangeUpdate($event)" />
@@ -33,7 +48,6 @@
         <br>
         <img src="{{data.logo}}" width="150"/>
       </div>
-
     </div>
   </div>
 </mat-dialog-content>

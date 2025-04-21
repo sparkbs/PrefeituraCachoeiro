@@ -19,7 +19,7 @@ export class EmpresaComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   lista: EmpresaResponse[] = [];
-  displayedColumns: string[] = ['empresaId', 'nome', 'logo','acoes'];
+  displayedColumns: string[] = ['empresaId', 'nome', 'cnpj', 'logo','acoes'];
   
   dataSource: MatTableDataSource<EmpresaResponse>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;

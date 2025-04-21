@@ -103,6 +103,7 @@ export interface ContratosResponse {
     empresaId: number;
     nome: string;
     logo: string;
+    cnpj: string;
   }
   
   export interface PrefeituraResponse {
