@@ -469,7 +469,7 @@ export class BoletimGeralComponent implements OnInit {
       callback: (doc) => {
         doc.save('boletim-geral.pdf');
       },
-      x: 15,
+      x: -28,
       y: 13,
       html2canvas: {
         scale: 0.55,
@@ -525,19 +525,19 @@ export class BoletimGeralComponent implements OnInit {
 
     return valorSaldoSomado.toFixed(2);
   }
-  
-  formatCurrency(event: string): string { 
+
+  formatCurrency(event: string): string {
     let value = event.toString();
-    value = value.replace(/\D/g, ''); 
+    value = value.replace(/\D/g, '');
     if (value === '') {
       return ''; // Ou você pode definir um valor padrão
     }
-    value = (parseInt(value) || 0).toString(); 
-    value = value.padStart(3, '0'); 
-    value = value.slice(0, -2) + ',' + value.slice(-2); 
-    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
-    value = 'R$ ' + value; 
-    return value; 
+    value = (parseInt(value) || 0).toString();
+    value = value.padStart(3, '0');
+    value = value.slice(0, -2) + ',' + value.slice(-2);
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    value = 'R$ ' + value;
+    return value;
   }
 
 }

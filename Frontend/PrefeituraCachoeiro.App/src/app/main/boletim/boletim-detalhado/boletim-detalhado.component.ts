@@ -317,7 +317,7 @@ export class BoletimDetalhadoComponent implements OnInit {
       if (res) {
         this.logoTipoImgUrl = res.logo;
         this.nomePrefeitura = res.nome;
-        
+
         await this._prefeituraControllerService.BuscarLogoPrefeitura(clienteId)
         .then((blob) =>{
             // Converte o blob em uma URL
@@ -358,7 +358,7 @@ export class BoletimDetalhadoComponent implements OnInit {
       callback: (doc) => {
         doc.save(`boletim-medicao.pdf`);
       },
-      x: 15,
+      x: -28,
       y: 13,
       html2canvas: {
         scale: 0.55,
@@ -389,18 +389,18 @@ export class BoletimDetalhadoComponent implements OnInit {
   }
 
 
-  formatCurrency(event: string): string { 
+  formatCurrency(event: string): string {
     let value = event.toString();
-    value = value.replace(/\D/g, ''); 
+    value = value.replace(/\D/g, '');
     if (value === '') {
       return ''; // Ou você pode definir um valor padrão
     }
-    value = (parseInt(value) || 0).toString(); 
-    value = value.padStart(3, '0'); 
-    value = value.slice(0, -2) + ',' + value.slice(-2); 
-    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); 
-    value = 'R$ ' + value; 
-    return value; 
+    value = (parseInt(value) || 0).toString();
+    value = value.padStart(3, '0');
+    value = value.slice(0, -2) + ',' + value.slice(-2);
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    value = 'R$ ' + value;
+    return value;
   }
 
 }
