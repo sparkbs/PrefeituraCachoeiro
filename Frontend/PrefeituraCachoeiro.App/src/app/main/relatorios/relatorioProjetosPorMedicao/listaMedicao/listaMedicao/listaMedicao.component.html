@@ -93,7 +93,7 @@
       <ng-container matColumnDef="qtdMedicaoItem">
         <th mat-header-cell *matHeaderCellDef  style="font-size: 13px;"  > Qtd Medida </th>
         <td mat-cell *matCellDef="let item" style="width: 10%;">
-          <input matInput type="number" (change)="onChange(item)" style="width: 65%;" [(ngModel)]="item.unidade" [style.display]="alterarMedicaoProjeto ? 'block' : 'none'">
+          <input matInput type="number" (change)="onChange(item)" style="width: 100%;" [(ngModel)]="item.unidade" [style.display]="alterarMedicaoProjeto ? 'block' : 'none'">
           <span style="font-size: 12px;" [style.display]="!alterarMedicaoProjeto ? 'block' : 'none'">{{item.unidade}}</span>
         </td>
       </ng-container>

@@ -33,6 +33,9 @@ export class CadastrarMedicaoComponent implements OnInit {
   {
     if(data.numeroMedicao != null || data.numeroMedicao != undefined){
       this.nomeMedicao = data.numeroMedicao;
+      if(data.associarMedicao){
+        this.secretaria = data.projetosMedidos[0].secretaria;
+      }
       this.disabledNomeMedicao = true;
     }
   }

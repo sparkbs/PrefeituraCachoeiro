@@ -54,6 +54,7 @@ export class ProjetosComponent implements OnInit {
 
   openEditarCriar(edicao: boolean = false, id?: number) {
     const dialogRef = this.dialog.open(EditarCriarProjetosComponent, {
+      autoFocus: false,
       width: window.innerWidth >= 1450 ? '50%' : '50%',
       data: { edicao, id }
     }).afterClosed().subscribe(

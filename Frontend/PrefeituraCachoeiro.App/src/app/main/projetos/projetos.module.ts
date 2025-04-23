@@ -15,6 +15,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EditarCriarProjetosComponent } from './editar-criar-projetos/editar-criar-projetos.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatOptionModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [ ProjetosComponent, EditarCriarProjetosComponent ],
@@ -32,7 +34,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatPaginatorModule,
     MatSelectModule,
     MatTooltipModule,
-    SharedModule
+    SharedModule,
+    MatAutocompleteModule,
+    MatOptionModule
   ]
 })
 export class ProjetosModule { }

@@ -24,6 +24,8 @@ export class EditarCriarProjetosComponent implements OnInit {
   projetoEdit: ProjetoResponse = new ProjetoResponse();
   listaPrefeitura: PrefeituraResponse[] = [];
   listaContratos: ContratosResponse[] = [];
+  listaFiltrada: any[] = [];
+  selectedPrefeitura: number | null = null; // Valor selecionado
 
   constructor(
     public dialogRef: MatDialogRef<EditarCriarProjetosComponent>,
@@ -35,20 +37,28 @@ export class EditarCriarProjetosComponent implements OnInit {
     private _toastService: ToastService,
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.createForm();
-    this.buscarListaPrefeituras();
+    await this.buscarListaPrefeituras();
+    this.listaFiltrada = [...this.listaPrefeitura];
 
     if (this.data.edicao && this.data.id) {
       this.getProjectById(this.data.id);
     }
   }
 
+  filtrarPrefeitura(valor: string) {
+    // Filtra a lista com base no valor digitado
+    this.listaFiltrada = this.listaPrefeitura.filter(prefeitura => 
+      prefeitura.nome.toLowerCase().includes(valor.toLowerCase())
+    );
+  }
+
   createForm() {
     this.form = this.fb.group({
       nome: [{ value: '', disabled: true }, Validators.required],
       contrato: [{ value: 0, disabled: true }, Validators.required],
-      prefeitura: [0, [Validators.required]],
+      prefeitura: ['', [Validators.required]],
       codigoProjeto: [{ value: 0, disabled: true }, Validators.required]
     });
   }
@@ -66,26 +76,30 @@ export class EditarCriarProjetosComponent implements OnInit {
   }
 
   completeForm() {
+    var nomePrefeitura = this.listaPrefeitura.find(x => x.idPrefeitura == this.projetoEdit.contratos[0].contratos.prefeituraId).nome
     this.form.get('prefeitura').disable();
     this.form.get('nome').enable();
     this.form.get('nome').setValue(this.projetoEdit.nomeProjeto);
     this.form.get('contrato').setValue(this.projetoEdit.contratos[0].contratos.idContrato);
-    this.form.get('prefeitura').setValue(this.projetoEdit.contratos[0].contratos.prefeituraId);
+    this.form.get('prefeitura').setValue(nomePrefeitura);
     this.form.get('codigoProjeto').setValue(this.projetoEdit.codigoProjeto);
   }
 
   saveForm() {
+    var nome = this.form.get('prefeitura').value;
+    var prefeituraId = this.listaPrefeitura.find(x => x.nome == nome).idPrefeitura
+
     const projetoRequest: CriarProjetoRequest  = {
       nome: this.form.get('nome').value,
       codigoProjeto: this.form.get('codigoProjeto').value,
-      idPrefeitura: this.form.get('prefeitura').value
+      idPrefeitura: prefeituraId
     };
 
     if (this.data.edicao && this.data.id) {
       let projetoUpdate: AtualizarProjetoRequest = {
         id: this.data.id,
         nome: this.form.get('nome').value,
-        idPrefeitura: this.form.get('prefeitura').value,
+        idPrefeitura: prefeituraId,
         codigoProjeto: this.form.get('codigoProjeto').value,
       }
       this._projetoControllerService.AtualizarProjeto(projetoUpdate)
@@ -132,13 +146,14 @@ export class EditarCriarProjetosComponent implements OnInit {
       });
     }
   
-    async onSelectionChange(prefeituraId: number){
+    async onSelectionChange(prefeituraNome: string){
       if (this.listaContratos.length != 0) {
         this.listaContratos = [];
         this.form.get('nome').setValue('');
         this.form.get('contrato').disable();
       }
 
+      var prefeituraId = this.listaFiltrada.find(x => x.nome == prefeituraNome).idPrefeitura;
       this.form.get('contrato').enable();
       await this.buscarListaContratos(prefeituraId);
     }
@@ -156,7 +171,6 @@ export class EditarCriarProjetosComponent implements OnInit {
       await this._contratoControllerService.BuscarTodosContratos(contratosFilter)
       .then((result) => {
         this.listaContratos = result.data.filter(x => x.prefeituraId == prefeituraId);
-
         if (this.listaContratos.length == 0) {
           this.form.get('nome').setValue('');
           this.form.get('nome').disable();

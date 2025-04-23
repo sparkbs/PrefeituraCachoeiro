@@ -6,12 +6,14 @@
 
   <form [formGroup]="form">
       <mat-form-field>
-        <mat-label>Cliente</mat-label>
-        <mat-select formControlName="prefeitura" (selectionChange)="onSelectionChange($event.value)">
-          <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura">
-            {{prefeitura.nome}}
+        <mat-label>Selecione o cliente</mat-label>
+        <input matInput [matAutocomplete]="auto" formControlName="prefeitura"(ngModelChange)="filtrarPrefeitura($event)">
+        
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChange($event.option.value)">
+          <mat-option *ngFor="let prefeitura of listaFiltrada" [value]="prefeitura.nome">
+            {{ prefeitura.nome }}
           </mat-option>
-        </mat-select>
+        </mat-autocomplete>
         <mat-error *ngIf="form.get('prefeitura').hasError('required')">Campo obrigatório!</mat-error>
       </mat-form-field>
 
