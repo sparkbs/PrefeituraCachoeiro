@@ -35,7 +35,7 @@ export class LoginComponent {
       this._toastService.mensagemSuccess("Logado com sucesso!");
     })
     .catch((erro) => {
-      this._toastService.mensagemError("Erro ao logar!");
+      this._toastService.mensagemError(erro.error.message);
     })
     .finally(() => {
       this.isLoading = false;

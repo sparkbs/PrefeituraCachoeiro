@@ -53,9 +53,9 @@ export class AprovarMedicaoComponent implements OnInit {
           }
           this.dialogRef.close();
         })
-        .catch(() =>
+        .catch((erro) =>
         {
-          this._toastService.mensagemError("Erro ao aprovar uma medição.");
+          this._toastService.mensagemError(erro.error.message);
         })
         .finally(() =>{
           this.isLoading = false;
@@ -78,9 +78,9 @@ export class AprovarMedicaoComponent implements OnInit {
                 }
                 this.dialogRef.close();
               })
-              .catch(() =>
+              .catch((erro) =>
               {
-                this._toastService.mensagemError("Erro ao aprovar uma medição.");
+                this._toastService.mensagemError(erro.error.message);
                 this.isLoading = false;
               })
               .finally(() =>{

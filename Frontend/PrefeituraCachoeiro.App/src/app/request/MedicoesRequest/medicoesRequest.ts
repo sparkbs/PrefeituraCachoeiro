@@ -18,6 +18,7 @@ export class InserirMedicao {
     idProjeto: number = 0;
     items: PermissoesItemsRequest[] = [];
     secretaria: string;
+    projetoMedicao: string;
   }
 
   export class ItemMedicao {

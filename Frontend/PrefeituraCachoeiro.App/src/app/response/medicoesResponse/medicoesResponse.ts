@@ -16,6 +16,7 @@ export class MedicoesResponse {
     arquivosMedicoesProjeto: ArquivosMedicoesProjetoResponse[]; 
     observacao: string;
     secretaria: string;
+    projetoMedicao: string;
   }
 
   export class BoletimMedicoesResponse {

@@ -96,8 +96,7 @@ export class ProjetosComponent implements OnInit {
       this.dataSource.data = this.listaProjetos;
     })
     .catch((erro) => {
-      console.error(erro);
-      this._toastService.mensagemError('Erro ao buscar projetos!');
+      this._toastService.mensagemError(erro.error.message);
     });
   }
 
@@ -131,7 +130,7 @@ export class ProjetosComponent implements OnInit {
           this._toastService.mensagemSuccess("Sucesso ao deletar projeto!");
         })
         .catch((erro) => {
-          this._toastService.mensagemError('Erro ao deletar projeto!');
+          this._toastService.mensagemError(erro.error.message);
         });
       }
       else {
@@ -147,12 +146,11 @@ export class ProjetosComponent implements OnInit {
             this._toastService.mensagemSuccess("Sucesso ao deletar projeto!");
           })
           .catch((erro) => {
-            this._toastService.mensagemError('Erro ao deletar projeto!');
+            this._toastService.mensagemError(erro.error.message);
           });
         })
-        .catch((res) => {
-          this._toastService.mensagemError('Erro ao deletar vinculo projeto!');
-          console.error(res);
+        .catch((erro) => {
+          this._toastService.mensagemError(erro.error.message);
         });
       }
     }

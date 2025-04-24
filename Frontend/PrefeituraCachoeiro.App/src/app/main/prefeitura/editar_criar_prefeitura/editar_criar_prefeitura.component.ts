@@ -32,8 +32,8 @@ export class Editar_criar_prefeituraComponent {
       this._toastService.mensagemSuccess("Cliente criado com sucesso");
       this.dialogRef.close(result);
     })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao criar cliente");
+    .catch((erro) => {
+      this._toastService.mensagemError(erro.error.message);
     })
     .finally(() => {
       this.isLoading = false
@@ -67,8 +67,8 @@ export class Editar_criar_prefeituraComponent {
       this._toastService.mensagemSuccess("Cliente editado com sucesso!");
       this.dialogRef.close(result);
     })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao editar cliente!");
+    .catch((erro) => {
+      this._toastService.mensagemError(erro.error.message);
     })
     .finally(() => {
       this.isLoading = false

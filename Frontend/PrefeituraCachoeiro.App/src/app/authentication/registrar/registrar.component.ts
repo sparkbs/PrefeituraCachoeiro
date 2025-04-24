@@ -51,7 +51,7 @@ export class RegistrarComponent {
         this.listaPerfis = res.data;
       })
       .catch((erro) => {
-        this._toastService.mensagemError('Login inexistente informado!');
+        this._toastService.mensagemError(erro.error.message);
       });
   }
 
@@ -79,7 +79,7 @@ export class RegistrarComponent {
         this._router.navigate(['']);
       })
       .catch((erro) => {
-        this._toastService.mensagemError('Erro ao atualizar usuário!');
+        this._toastService.mensagemError(erro.error.message);
       });
     }
   }
@@ -102,7 +102,7 @@ export class RegistrarComponent {
           resolve(true);
         })
         .catch((erro) => {
-          this._toastService.mensagemError("Senha atual incorreta!");
+          this._toastService.mensagemError(erro.error.message);
           resolve(false);
         });
     });

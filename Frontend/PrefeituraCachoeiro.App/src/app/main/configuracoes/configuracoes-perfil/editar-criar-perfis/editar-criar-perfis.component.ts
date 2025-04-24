@@ -80,7 +80,7 @@ export class EditarCriarPerfisComponent implements OnInit {
       this.listaGrupos = res.data;
     })
     .catch((erro) => {
-      this._toastService.mensagemError("Erro ao buscar grupos!");
+      this._toastService.mensagemError(erro.error.message);
     })
   }
 
@@ -91,7 +91,7 @@ export class EditarCriarPerfisComponent implements OnInit {
       this.completeProfile();
     })
     .catch((erro) => {
-      this._toastService.mensagemError("Erro ao buscar perfil!");
+      this._toastService.mensagemError(erro.error.message);
     });
   }
 
@@ -122,15 +122,15 @@ export class EditarCriarPerfisComponent implements OnInit {
         .then((res) => {
 
         })
-        .catch((err) => {
-          this._toastService.mensagemError("Erro ao vincular usuario com grupo!");
+        .catch((erro) => {
+          this._toastService.mensagemError(erro.error.message);
         });
         this._toastService.mensagemSuccess("Perfil criado com sucesso!");
         this.dialogRef.close(true);
       })
       .catch((erro) => {
-        console.error(erro);
-        this._toastService.mensagemError("Erro ao criar perfil!");
+        this._toastService.mensagemError(erro.error.message);
+
       });
     }
     else {
@@ -147,8 +147,8 @@ export class EditarCriarPerfisComponent implements OnInit {
         this._toastService.mensagemSuccess("Perfil atualizado com sucesso!");
         this.dialogRef.close(true);
       })
-      .catch((err) => {
-        this._toastService.mensagemError("Erro ao atualizar cliente!");
+      .catch((erro) => {
+        this._toastService.mensagemError(erro.error.message);
       });
     }
   }

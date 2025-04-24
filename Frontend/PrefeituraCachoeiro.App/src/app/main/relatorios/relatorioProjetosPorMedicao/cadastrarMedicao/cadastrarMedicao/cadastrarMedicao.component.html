@@ -13,10 +13,17 @@
           <mat-option *ngFor="let projeto of listaProjetos" [value]="projeto.idProjeto" >{{projeto.nomeProjeto}}</mat-option>
         </mat-select>
       </mat-form-field>
+
       <br>
-      <mat-form-field style="width: 100%;">
+      
+      <mat-form-field style="width: 49%;">
         <mat-label>Secretaria</mat-label>
         <input [(ngModel)]="secretaria" type="text" [disabled]="data.associarMedicao" matInput/>
+      </mat-form-field>
+
+      <mat-form-field style="width: 49%;margin-left: 8px;">
+        <mat-label>Período Medição</mat-label>
+        <input [(ngModel)]="projetoMedicao" type="text" [disabled]="data.associarMedicao" matInput/>
       </mat-form-field>
     </div>
   </div>

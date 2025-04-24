@@ -256,8 +256,8 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
         this._toastService.mensagemSuccess("Sucesso ao salvar medição.");
         this.isDisabledBtnEnviar = false;
       })
-      .catch(() => {
-        this._toastService.mensagemError("Erro ao salvar medição.");
+      .catch((erro) => {
+        this._toastService.mensagemError(erro.error.message);
       })
       .finally(()=>{
         this.isLoading = false;
@@ -369,9 +369,9 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       window.URL.revokeObjectURL(url);  // Limpar a URL após o download
       this._toastService.mensagemSuccess("Download realizado com sucesso.");
     })
-    .catch(() =>
+    .catch((erro) =>
     {
-      this._toastService.mensagemError("Erro ao realizar download documento.");
+      this._toastService.mensagemError(erro.error.message);
     })
     .finally(()=>{
       this.isLoading = false;
@@ -398,9 +398,9 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
           this._toastService.mensagemSuccess(result.mensagemErro);
         }
       })
-      .catch(() =>
+      .catch((erro) =>
       {
-        this._toastService.mensagemError("Erro ao enviar medição");
+        this._toastService.mensagemError(erro.error.message);
       })
       .finally(()=>{
         this.isLoading = false;

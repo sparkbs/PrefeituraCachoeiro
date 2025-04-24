@@ -48,7 +48,7 @@ export class TabelaGruposPermissoesComponent implements OnInit {
         this.dataSource.data = this.listaGrupos;
       })
       .catch((erro) => {
-        this._toastService.mensagemError("Erro ao buscar grupos!");
+        this._toastService.mensagemError(erro.error.message);
       })
   }
 

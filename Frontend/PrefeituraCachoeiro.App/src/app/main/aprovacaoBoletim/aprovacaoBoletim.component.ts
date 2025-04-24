@@ -82,8 +82,8 @@ export class AprovacaoBoletimComponent implements OnInit {
     .then((result) => {
       this.listaPrefeitura = result.data;
     })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao buscar prefeitura!");
+    .catch((erro) => {
+      this._toastService.mensagemError(erro.error.message);
     })
     .finally(() =>{
       this.isLoading = false;
@@ -96,8 +96,8 @@ export class AprovacaoBoletimComponent implements OnInit {
       this.listaPrefeitura = [];
       this.listaPrefeitura.push(result);
     })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao buscar prefeitura!");
+    .catch((erro) => {
+      this._toastService.mensagemError(erro.error.message);
     })
     .finally(() =>{
       this.isLoading = false;
@@ -148,7 +148,8 @@ export class AprovacaoBoletimComponent implements OnInit {
       }else{
         this._toastService.mensagemError("Não existe medição para avaliação!");
       }
-    }).catch(() => {
+    }).catch((erro) => {
+      this._toastService.mensagemError(erro.error.message);
     })
     .finally(() =>{
       this.isLoading = false;

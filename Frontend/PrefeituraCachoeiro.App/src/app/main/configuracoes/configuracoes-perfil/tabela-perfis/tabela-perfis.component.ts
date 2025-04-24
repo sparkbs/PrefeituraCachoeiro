@@ -58,7 +58,7 @@ export class TabelaPerfisComponent implements OnInit {
       this.dataSource.data = this.listaPerfis;
     })
     .catch((erro) => {
-      this._toastService.mensagemError('Erro ao buscar usuários!');
+      this._toastService.mensagemError(erro.error.message);
     });
   }
 
@@ -73,8 +73,8 @@ export class TabelaPerfisComponent implements OnInit {
     .then((res) => {
       this.listaPrefeituras = res.data;
     })
-    .catch((error) => {
-      this._toastService.mensagemError('Erro ao buscar prefeituras!');
+    .catch((erro) => {
+      this._toastService.mensagemError(erro.error.message);
     });
   }
 
@@ -113,7 +113,7 @@ export class TabelaPerfisComponent implements OnInit {
       this._toastService.mensagemSuccess("Sucesso ao deletar usuário!");
     })
     .catch((erro) => {
-      this._toastService.mensagemError("Erro ao deletar usuário!");
+      this._toastService.mensagemError(erro.error.message);
     })
   }
 }

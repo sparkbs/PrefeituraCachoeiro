@@ -84,8 +84,7 @@ export class ModalLevantamentoComponent implements OnInit {
         this.listaProjetos = listaProjetosFilter;
       })
       .catch((erro) => {
-        console.error(erro);
-        this._toastService.mensagemError('Erro ao buscar projetos!');
+        this._toastService.mensagemError(erro.error.message);
       });
   }
 
@@ -139,8 +138,7 @@ export class ModalLevantamentoComponent implements OnInit {
       }
     })
     .catch((erro) => {
-      console.error(erro);
-      this._toastService.mensagemError('Erro ao buscar medições!');
+      this._toastService.mensagemError(erro.error.message);
     });
   }
 

@@ -22,6 +22,7 @@ export class CadastrarMedicaoComponent implements OnInit {
   disabledNomeMedicao = false;
   isLoading = false;
   secretaria = "";
+  projetoMedicao = "";
 
   constructor(private readonly api: MedicoesService,
     @Inject(MAT_DIALOG_DATA) public data: {medicoes: Contrato, numeroMedicao?:
@@ -35,6 +36,7 @@ export class CadastrarMedicaoComponent implements OnInit {
       this.nomeMedicao = data.numeroMedicao;
       if(data.associarMedicao){
         this.secretaria = data.projetosMedidos[0].secretaria;
+        this.projetoMedicao = data.projetosMedidos[0].projetoMedicao;
       }
       this.disabledNomeMedicao = true;
     }
@@ -61,6 +63,8 @@ export class CadastrarMedicaoComponent implements OnInit {
     medicaoRequest.idContrato = this.data.medicoes.idContrato;
     medicaoRequest.idProjeto = this.projetoSelecionado;
     medicaoRequest.secretaria = this.secretaria;
+    medicaoRequest.projetoMedicao = this.projetoMedicao;
+
     medicaoRequest.items = this.data.medicoes.items.map(item => ({
       idItemContrato: item.idItemContrato,
       unidade: 0

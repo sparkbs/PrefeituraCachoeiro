@@ -243,9 +243,9 @@ formatStringToDate(data: string) {
       window.URL.revokeObjectURL(url);  // Limpar a URL após o download
       this._toastService.mensagemSuccess("Download realizado com sucesso.");
     })
-    .catch(() =>
+    .catch((erro) =>
     {
-      this._toastService.mensagemError("Erro ao realizar download documento.");
+      this._toastService.mensagemError(erro.error.message);
     })
     .finally(()=>{
       this.isLoading = false;

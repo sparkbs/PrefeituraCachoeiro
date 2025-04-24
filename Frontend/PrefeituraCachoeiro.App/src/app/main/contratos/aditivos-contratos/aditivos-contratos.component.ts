@@ -164,8 +164,8 @@ export class AditivosContratosComponent implements AfterViewInit {
       this.dataSource.data = this.lista;
       this._toastService.mensagemSuccess("Aditivo deletado com sucesso");
     })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao deletar aditivo");
+    .catch((erro) => {
+      this._toastService.mensagemError(erro.error.message);
     });
   }
 

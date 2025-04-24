@@ -36,8 +36,8 @@ export class Editar_criar_empresaComponent {
       this._toastService.mensagemSuccess("Emrpesa criado com sucesso");
       this.dialogRef.close(result);
     })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao criar empresa");
+    .catch((erro) => {
+      this._toastService.mensagemError(erro.error.message);
     })
     .finally(() => {
       this.isLoading = false
@@ -70,8 +70,8 @@ export class Editar_criar_empresaComponent {
       this._toastService.mensagemSuccess("Empresa editado com sucesso!");
       this.dialogRef.close(result);
     })
-    .catch(() => {
-      this._toastService.mensagemError("Erro ao editar empresa!");
+    .catch((erro) => {
+      this._toastService.mensagemError(erro.error.message);
     })
     .finally(() => {
       this.isLoading = false

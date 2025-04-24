@@ -102,16 +102,16 @@ export class EditarCriarGruposPermissoesComponent implements OnInit {
           this._permissaoControllerService.CriarPermissoes(permissaoRequest)
           .then((resPermissaoRetorno) => {
           })
-          .catch((err) => {
-            this._toastService.mensagemError("Erro ao vincular permissao: " + resPermissao.nome);
+          .catch((erro) => {
+            this._toastService.mensagemError(erro.error.message);
           });
         });
 
         this._toastService.mensagemSuccess("Grupo criado com sucesso!");
         this.dialogRef.close(true);
       })
-      .catch((err) => {
-        this._toastService.mensagemError("Erro ao criar grupo!");
+      .catch((erro) => {
+        this._toastService.mensagemError(erro.error.message);
       });
     }
   }
