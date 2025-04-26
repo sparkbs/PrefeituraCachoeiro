@@ -128,8 +128,8 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     .then((result) => {      
       this.todasMedicaoProjetoResponse = result;
       this.popularMedicao(result);
-    }).catch(() => {
-      this._toastService.mensagemError("Erro ao buscar medições!");
+    }).catch((erro) => {
+      this._toastService.mensagemError(erro.error.message);
     })
     .finally(() =>{
       this.isLoading = false;
@@ -270,8 +270,8 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       await this.apiMedicoes.BuscarTodasMedicoes(medicoesRequest)
       .then((result) => {      
         this.todasMedicaoProjetoResponse = result;
-      }).catch(() => {
-        this._toastService.mensagemError("Erro ao buscar medições!");
+      }).catch((erro) => {
+        this._toastService.mensagemError(erro.error.message);
       }).finally(() =>{
         this.isLoading = false;
       })
@@ -334,8 +334,9 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
             await this.buscar();
           }
         })
-        .catch(() => {
+        .catch((erro) => {
           this.isLoading = false;
+          this._toastService.mensagemError(erro.error.message);
         })
         .finally(() => {
           this.isLoading = false;
@@ -382,9 +383,9 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
                 this._toastService.mensagemSuccess(result.mensagemErro);
               }
             })
-            .catch(() => 
+            .catch((erro) => 
             {
-              this._toastService.mensagemError("Erro ao enviar medição");
+              this._toastService.mensagemError(erro.error.message);
             })
             .finally(()=>{
               this.isLoading = false;
@@ -395,7 +396,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     } 
   }
 
-  openDialogConsolidado(medicao: MedicoesResponse){
+  openDialogConsolidado(medicao: MedicoesModel[]){
     this.dialog.open(ResumoMedicaoComponent,{data:
       medicao
     });    
