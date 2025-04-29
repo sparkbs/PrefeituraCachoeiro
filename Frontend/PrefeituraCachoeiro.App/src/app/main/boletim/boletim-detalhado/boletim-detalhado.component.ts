@@ -20,6 +20,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { AuthService } from 'src/app/services/auth.service';
 import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
+import { EmpresaService } from 'src/app/services/empresa.service';
 
 @Component({
   selector: 'app-boletim-detalhado',
@@ -50,6 +51,7 @@ export class BoletimDetalhadoComponent implements OnInit {
   listaPrefeitura: PrefeituraResponse[] = [];
   projetosNome?: string = '';
   imageUrl: string | null = null;
+  imageUrlEmpresa: string | null = null;
 
   // Variável para gerenciar estado de carregamento e erros
   isLoading = false;
@@ -69,6 +71,7 @@ export class BoletimDetalhadoComponent implements OnInit {
     private _toastService: ToastService,
     public _boletimControllerService: BoletimService,
     private _prefeituraControllerService: PrefeituraService,
+    private empresaControllerService: EmpresaService,
     private route: ActivatedRoute,
     private auth: AuthService,
     private readonly aesEncryptDecript: AESEncryptDecriptService
@@ -269,6 +272,7 @@ export class BoletimDetalhadoComponent implements OnInit {
 
           // Verificar o tipo do campo logoTipoImg
           await this.RetornarLogoCliente(this.contratoSelecionado.prefeituraId);
+          await this.RetornarLogoEmpresa(this.contratoSelecionado.empresaId);
 
           /*if (logoTipoImg instanceof File) {
             // Se for um arquivo, converte para URL acessível
@@ -328,6 +332,23 @@ export class BoletimDetalhadoComponent implements OnInit {
     .catch((erro) => {
       console.error(erro);
       this._toastService.mensagemError('Erro ao buscar logo cliente!');
+    });
+  }
+
+  async RetornarLogoEmpresa(empresaId: number): Promise<void> {
+    await this.empresaControllerService.BuscarEmpresa(empresaId)
+    .then(async (res) => {
+      if (res) {
+        await this.empresaControllerService.BuscarLogoEmpresa(empresaId)
+        .then((blob) =>{
+            // Converte o blob em uma URL
+            this.imageUrlEmpresa = URL.createObjectURL(blob);
+        });
+      }
+    })
+    .catch((erro) => {
+      console.error(erro);
+      this._toastService.mensagemError('Erro ao buscar logo Empresa!');
     });
   }
 

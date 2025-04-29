@@ -27,6 +27,15 @@ export class EmpresaService {
     );
   }
 
+  public async BuscarLogoEmpresa(id: number) : Promise<Blob>{
+    return await firstValueFrom(
+      this.http.get<Blob>(
+        `${Environments.APIUrl}/empresa/downloadarquivologo/${id}`,
+        {responseType: 'blob' as 'json'}
+      )
+    );
+  }
+
   public async BuscarEmpresa(id: number) : Promise<EmpresaResponse>{
     return await firstValueFrom(
       this.http.get<EmpresaResponse>(

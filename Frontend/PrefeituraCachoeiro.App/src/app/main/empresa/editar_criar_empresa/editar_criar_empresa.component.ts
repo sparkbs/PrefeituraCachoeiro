@@ -64,6 +64,7 @@ export class Editar_criar_empresaComponent {
 
     this.atualizarEmpresa.EmpresaId = this.data.empresaId;
     this.atualizarEmpresa.Nome = this.data.nome;
+    this.atualizarEmpresa.CNPJ = this.data.cnpj;
 
     await this.api.AtualizarEmpresa(this.atualizarEmpresa)
     .then((result) => {

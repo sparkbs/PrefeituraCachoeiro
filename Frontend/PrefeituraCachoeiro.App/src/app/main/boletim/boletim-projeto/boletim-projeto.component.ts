@@ -19,6 +19,7 @@ import { BuscarBoletimDetalhadoRequest } from 'src/app/request/BoletimRequest/bo
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ProjetoService } from 'src/app/services/projeto.service';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
+import { EmpresaService } from 'src/app/services/empresa.service';
 
 
 @Component({
@@ -61,6 +62,7 @@ export class BoletimProjetoComponent implements OnInit {
    projetoSelecionado: ProjetoResponse;
    projetosNome?: string = '';
    imageUrl: string | null = null;
+   imageUrlEmpresa: string | null = null;
 
    // Variáveis de controle de carregamento e erros
    isLoading = false;
@@ -73,6 +75,7 @@ export class BoletimProjetoComponent implements OnInit {
      private route: ActivatedRoute,
      private _toastService: ToastService,
      public _boletimControllerService: BoletimService,
+     private empresaControllerService: EmpresaService,
      private auth: AuthService,
      private _prefeituraControllerService: PrefeituraService,
      private readonly aesEncryptDecript: AESEncryptDecriptService,
@@ -156,6 +159,23 @@ export class BoletimProjetoComponent implements OnInit {
     .catch((erro) => {
       console.error(erro);
       this._toastService.mensagemError('Erro ao buscar projetos!');
+    });
+  }
+
+  async RetornarLogoEmpresa(empresaId: number): Promise<void> {
+    await this.empresaControllerService.BuscarEmpresa(empresaId)
+    .then(async (res) => {
+      if (res) {
+        await this.empresaControllerService.BuscarLogoEmpresa(empresaId)
+        .then((blob) =>{
+            // Converte o blob em uma URL
+            this.imageUrlEmpresa = URL.createObjectURL(blob);
+        });
+      }
+    })
+    .catch((erro) => {
+      console.error(erro);
+      this._toastService.mensagemError('Erro ao buscar logo Empresa!');
     });
   }
 
@@ -401,6 +421,7 @@ export class BoletimProjetoComponent implements OnInit {
            console.log(this.boletimCabecalho);
            // Verificar o tipo do campo logoTipoImg
            await this.RetornarLogoCliente(this.contratoSelecionado.prefeituraId);
+           await this.RetornarLogoEmpresa(this.contratoSelecionado.empresaId);
 
            /*if (logoTipoImg instanceof File) {
              // Se for um arquivo, converte para URL acessível
