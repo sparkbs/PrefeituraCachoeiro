@@ -59,6 +59,7 @@ export class MedicoesResponse {
     prefeituraId: number;
     prefeitura: Prefeitura;
     arquivosContratos: ArquivosContratoResponse[]; 
+    isContratoGlobal: boolean;
   }
 
   export class Projeto {
@@ -173,3 +174,11 @@ export class MedicoesResponse {
     isSucesso: boolean;
     mensagemErro: string;
   }
+
+  export interface ItemResumo {
+    nome: string;
+    valorComBdi: number;
+    unidadeTotal: number;
+    unidadeTotalMedida: number;
+  }
+  

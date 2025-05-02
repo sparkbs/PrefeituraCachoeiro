@@ -86,7 +86,7 @@
       <th colspan="15" style="text-align: start;">
         <span>NÚMERO DA MEDIÇÃO: {{ boletim.detalhes[0].numeroMedicao }} </span>
       </th>
-      <th colspan="5" class="center-align">CONTRATO {{ this.contratoSelecionado.numeroContrato }}</th>
+      <th colspan="5" class="center-align">CONTRATO: {{ this.contratoSelecionado.numeroContrato }}</th>
     </tr>
     <!-- Linha de projeto e valor -->
     <tr>
@@ -175,12 +175,13 @@
 
   <div class="signature-contratante">
     <p>_______________________________________</p>
-    <p>{{ boletim?.detalhes[0]?.secretaria.toUpperCase() }}</p>
+    <p>SECRETARIA {{ boletim?.detalhes[0]?.secretaria?.toUpperCase() }}</p>
   </div>
 
   <div class="signature-contratada">
     <p>_______________________________________</p>
-    <p>{{boletim?.detalhes[0]?.empresa}}</p>
+    <p>{{empresaSelecionada?.nome}}</p>
+    <p>{{empresaSelecionada?.cnpj}}</p>
   </div>
 </tfoot>
 </div>

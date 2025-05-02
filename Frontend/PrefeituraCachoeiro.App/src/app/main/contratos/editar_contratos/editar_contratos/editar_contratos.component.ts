@@ -26,6 +26,7 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
   atualizarContrato: AtualizarContratoRequest = new AtualizarContratoRequest();
   listaDocumentoContrato: ArquivosContratoResponse[] = [];
   dataTerminoString: string;
+  dataTerminoAtualizadaString: string;
   dataInicioString: string;
   dataContratoString: string;
   listaGerentes: UsuariosResponse[] = [];
@@ -45,6 +46,7 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
   async ngAfterViewInit() {
     await this.buscarListaGerentes();
     this.dataInicioString = this.exibirData(this.data.dataInicio)
+    this.dataTerminoAtualizadaString = this.exibirData(this.data.dataTerminoAtualizada)
     this.dataTerminoString = this.exibirData(this.data.dataTermino)
     this.dataContratoString = this.exibirData(this.data.dataContrato)
     }
@@ -123,6 +125,7 @@ async salvar(){
 
   this.atualizarContrato.DataContrato = (this.dataContratoString);
   this.atualizarContrato.DataInicio = (this.dataInicioString);
+  this.atualizarContrato.DataTerminoAtualizada = (this.dataTerminoAtualizadaString);
   this.atualizarContrato.DataTermino = (this.dataTerminoString);
   this.atualizarContrato.EmpresaId = this.data.empresaId;
   this.atualizarContrato.Gerente = this.data.gerente;

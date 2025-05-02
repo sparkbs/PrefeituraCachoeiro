@@ -90,7 +90,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     this.medicoes.items.forEach(item =>{
       item.unidadeSalvaMedida = item.unidade;
       if(item?.itemsContrato != null && item.itemsContrato.valorComBdi != null){
-        this.globalService.addItem(item.itemsContrato.item.descricao, item.itemsContrato.unidade, item.idItemContrato, item.unidade)
+        this.globalService.addItem(item.itemsContrato.item.descricao, item.itemsContrato.unidade, item.idItemContrato, item.unidade, this.medicoes.contratos.isContratoGlobal)
       }
     })
 
@@ -151,7 +151,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     }
     else{
       let quantidade = item.unidade - item.unidadeSalvaMedida;
-      this.globalService.addItem("",0, item.idItemContrato,quantidade)
+      this.globalService.addItem("",0, item.idItemContrato,quantidade, this.medicoes.contratos.isContratoGlobal)
       if(this.globalService.itemInvalido){
         item.unidade = item.unidadeSalvaMedida;
         item.itemInvalido = false;

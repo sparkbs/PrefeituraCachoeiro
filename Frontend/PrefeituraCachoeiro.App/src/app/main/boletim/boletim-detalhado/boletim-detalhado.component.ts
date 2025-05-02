@@ -7,7 +7,7 @@ import { MedicoesService } from 'src/app/services/medicoes.service';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
 import { ToastService } from 'src/app/services/toast.service';
-import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { ContratosResponse, EmpresaResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { BoletimMedicoesResponse, MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
@@ -52,7 +52,7 @@ export class BoletimDetalhadoComponent implements OnInit {
   projetosNome?: string = '';
   imageUrl: string | null = null;
   imageUrlEmpresa: string | null = null;
-
+  empresaSelecionada: EmpresaResponse = null;
   // Variável para gerenciar estado de carregamento e erros
   isLoading = false;
   errorMessage = '';
@@ -339,6 +339,7 @@ export class BoletimDetalhadoComponent implements OnInit {
     await this.empresaControllerService.BuscarEmpresa(empresaId)
     .then(async (res) => {
       if (res) {
+        this.empresaSelecionada = res;
         await this.empresaControllerService.BuscarLogoEmpresa(empresaId)
         .then((blob) =>{
             // Converte o blob em uma URL

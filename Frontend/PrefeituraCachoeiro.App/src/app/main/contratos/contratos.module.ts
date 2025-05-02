@@ -22,6 +22,7 @@ import { MatRadioModule } from '@angular/material/radio'; // Importar MatRadioMo
 import { VerAnexosAditivosComponent } from './ver-anexos-aditivos/ver-anexos-aditivos.component';
 import { MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [ ContratosComponent, Editar_criar_contratosComponent, AditivosContratosComponent, Editar_contratosComponent, VerAnexosAditivosComponent ],
@@ -44,7 +45,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatSelectModule,
     MatRadioModule,
     MatAutocompleteModule,
-    MatOptionModule
+    MatOptionModule,
+    MatCheckboxModule
   ]
 })
 export class ContratosModule { }

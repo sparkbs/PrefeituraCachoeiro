@@ -71,6 +71,9 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       await this.buscarListaPrefeituras();
     }
     this.listaFiltrada = [...this.listaPrefeitura];
+
+    console.log(this.listaContratos)
+    console.log("ngOnInit");
   }
 
   async buscarPrefeitura(id: number){
@@ -174,6 +177,8 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     this.exibirContrato = true;
     this.isLoading = true;
     await this.buscarListaContratos(prefeituraId);
+    console.log(this.listaContratos)
+    console.log("onSelectionChange");
   }
 
   async buscarListaContratos(prefeituraId: number){
@@ -195,7 +200,9 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
 
   async buscar(){
     this.isLoading = true;
-    this.contratoSelecionadoEstrutura = this.listaContratos.find(x => x.idContrato = this.contratoSelecionado);
+    console.log(this.contratoSelecionado);
+    console.log(this.listaContratos);
+    this.contratoSelecionadoEstrutura = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
     await this.buscarMedicoes();
     this.exibir = true;
     this.globalService.resetItems();
@@ -322,8 +329,8 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   }
 
   async deletarMedicao(medicoes: MedicoesModel){
-    this.medicaoProjetos = [];
     var existeMedicaoAprovada = medicoes.data.some(x => x.idStatusMedicao == StatusMedicaoEnum.Aprovada);
+    var medicaoDeletada = false;
 
     if(!existeMedicaoAprovada){
       this.isLoading = true;
@@ -331,7 +338,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       await this.apiMedicoes.DeletarMedicao(x.idMedicoesProjeto)  
         .then(async (result) => {
           if(result){
-            await this.buscar();
+            medicaoDeletada = true;
           }
         })
         .catch((erro) => {
@@ -342,6 +349,11 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
           this.isLoading = false;
         });
       })
+      
+      if(medicaoDeletada){
+        this.medicaoProjetos = [];
+        await this.buscar();
+      }
     }
     else{
       this._toastService.mensagemError("Não pode deletar medição que possui projetos com status aprovados.");

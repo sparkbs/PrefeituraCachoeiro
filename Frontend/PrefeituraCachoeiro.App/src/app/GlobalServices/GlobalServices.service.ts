@@ -10,11 +10,11 @@ export class GlobalServicesService {
 
   constructor(private _toastService: ToastService) { }
 
-  addItem(nome: string, quantidade: number, idItemContrato:number, quantidadeMedida:number) {
+  addItem(nome: string, quantidade: number, idItemContrato:number, quantidadeMedida:number, isContratoGlobal:boolean) {
     let itemExiste = this.itensMedidos.findIndex(x => x.idItemContrato == idItemContrato);
     if(itemExiste == -1){
       var restante = quantidade - quantidadeMedida;
-      if(restante < 0){
+      if(restante < 0 && !isContratoGlobal){
         this.itemInvalido = true;
         this._toastService.mensagemError("Não é permitido a quantidade restante de cada item ser menor que 0!");
       }
@@ -29,7 +29,7 @@ export class GlobalServicesService {
     }
     else{
       var restante = this.itensMedidos[itemExiste].quantidades - quantidadeMedida;
-      if(restante < 0){
+      if(restante < 0 && !isContratoGlobal){
         this.itemInvalido = true;
         this._toastService.mensagemError("Não é permitido a quantidade restante de cada item ser menor que 0!");
       }

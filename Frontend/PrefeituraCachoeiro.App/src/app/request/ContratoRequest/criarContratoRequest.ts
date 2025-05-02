@@ -13,6 +13,7 @@ export class CriarContratoRequest {
     DataValidadeAditivo?: Date;
     Arquivos: File[] = [];
     ArquivoTemplate: File;
+    IsContratoGlobal: boolean;
 }
 
 export class salvarDocumentoContratoRequest {

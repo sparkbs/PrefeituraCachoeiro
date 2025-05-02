@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ElementRef, ViewChild } from '@angular/core';
 import { jsPDF } from 'jspdf';
 import { BoletimMedicaoDetalhadoResponse, BoletimDetalhadoResponse, BoletimProjetoCabecalho, BoletimResponse, SubBoletim } from 'src/app/response/BoletimResponse/boletimResponse';
-import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { ContratosResponse, EmpresaResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { BoletimMedicoesResponse, MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MedicoesService } from 'src/app/services/medicoes.service';
@@ -55,6 +55,7 @@ export class BoletimGeralComponent implements OnInit {
   projetosNome?: string = '';
   imageUrl: string | null = null;
   imageUrlEmpresa: string | null = null;
+  empresaSelecionada: EmpresaResponse = null;
 
   // Variáveis de controle de carregamento e erros
   isLoading = false;
@@ -383,6 +384,7 @@ export class BoletimGeralComponent implements OnInit {
     await this.empresaControllerService.BuscarEmpresa(empresaId)
     .then(async (res) => {
       if (res) {
+        this.empresaSelecionada = res;
         await this.empresaControllerService.BuscarLogoEmpresa(empresaId)
         .then((blob) =>{
             // Converte o blob em uma URL

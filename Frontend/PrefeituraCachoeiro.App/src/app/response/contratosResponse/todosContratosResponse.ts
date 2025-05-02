@@ -32,6 +32,7 @@ export interface ContratosResponse {
     prefeituraId?: number;
     prefeitura: PrefeituraResponse;
     arquivosContratos: ArquivosContratoResponse[]; 
+    isContratoGlobal: boolean;
   }
   
   export class ArquivosContratoResponse {

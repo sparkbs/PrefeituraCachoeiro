@@ -8,5 +8,6 @@ export class AtualizarContratoRequest {
     Gerente: string = '';
     DataInicio: string;
     DataTermino: string;
+    DataTerminoAtualizada: string;
     PrefeituraId: number;
 }

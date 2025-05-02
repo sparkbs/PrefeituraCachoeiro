@@ -9,7 +9,7 @@ import { BoletimService } from 'src/app/services/boletim.service';
 import { BoletimMedicaoDetalhadoResponse, BoletimProjetoCabecalho, SubBoletim } from 'src/app/response/BoletimResponse/boletimResponse';
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { ActivatedRoute } from '@angular/router';
-import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
+import { ContratosResponse, EmpresaResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -63,6 +63,7 @@ export class BoletimProjetoComponent implements OnInit {
    projetosNome?: string = '';
    imageUrl: string | null = null;
    imageUrlEmpresa: string | null = null;
+   empresaSelecionada: EmpresaResponse = null;
 
    // Variáveis de controle de carregamento e erros
    isLoading = false;
@@ -166,6 +167,7 @@ export class BoletimProjetoComponent implements OnInit {
     await this.empresaControllerService.BuscarEmpresa(empresaId)
     .then(async (res) => {
       if (res) {
+        this.empresaSelecionada = res;
         await this.empresaControllerService.BuscarLogoEmpresa(empresaId)
         .then((blob) =>{
             // Converte o blob em uma URL
