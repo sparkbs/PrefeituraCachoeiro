@@ -49,6 +49,11 @@ export class EditarCriarPerfisComponent implements OnInit {
     }
   }
 
+  isEmailValid(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
   createForm() {
     this.form = this.fb.group({
       nome: ['', [Validators.required]],
@@ -111,27 +116,33 @@ export class EditarCriarPerfisComponent implements OnInit {
         prefeituraId: this.form.get('prefeitura').value ? this.form.get('prefeitura').value : undefined
       };
 
-      this._usuarioControllerService.CriarUsuarios(usuarioRequest)
-      .then((res) => {
-        var usuarioGrupoRequest: UsuariosGruposRequest = {
-          usuarioId: res.idUsuario,
-          grupoId: this.form.get('grupo').value
-        };
-
-        this._UsuariosGruposControllerService.InserirUsuariosGrupos(usuarioGrupoRequest)
+      if(!this.isEmailValid(usuarioRequest.login))
+      {
+        this._toastService.mensagemError("Email invalido");
+      }
+      else
+      {
+        this._usuarioControllerService.CriarUsuarios(usuarioRequest)
         .then((res) => {
+          var usuarioGrupoRequest: UsuariosGruposRequest = {
+            usuarioId: res.idUsuario,
+            grupoId: this.form.get('grupo').value
+          };
 
+          this._UsuariosGruposControllerService.InserirUsuariosGrupos(usuarioGrupoRequest)
+          .then((res) => {
+
+          })
+          .catch((erro) => {
+            this._toastService.mensagemError(erro.error.message);
+          });
+          this._toastService.mensagemSuccess("Perfil criado com sucesso!");
+          this.dialogRef.close(true);
         })
         .catch((erro) => {
           this._toastService.mensagemError(erro.error.message);
         });
-        this._toastService.mensagemSuccess("Perfil criado com sucesso!");
-        this.dialogRef.close(true);
-      })
-      .catch((erro) => {
-        this._toastService.mensagemError(erro.error.message);
-
-      });
+      }
     }
     else {
       var usuarioUpdateRequest: AtualizarUsuariosRequest = {
@@ -142,14 +153,20 @@ export class EditarCriarPerfisComponent implements OnInit {
         prefeituraId: this.form.get('prefeitura').value
       };
 
-      this._usuarioControllerService.AtualizarUsuarios(usuarioUpdateRequest)
-      .then((res) => {
-        this._toastService.mensagemSuccess("Perfil atualizado com sucesso!");
-        this.dialogRef.close(true);
-      })
-      .catch((erro) => {
-        this._toastService.mensagemError(erro.error.message);
-      });
+      if(!this.isEmailValid(usuarioUpdateRequest.login))
+      {
+        this._toastService.mensagemError("Email invalido");
+      }
+      else{
+        this._usuarioControllerService.AtualizarUsuarios(usuarioUpdateRequest)
+        .then((res) => {
+          this._toastService.mensagemSuccess("Perfil atualizado com sucesso!");
+          this.dialogRef.close(true);
+        })
+        .catch((erro) => {
+          this._toastService.mensagemError(erro.error.message);
+        });
+      }
     }
   }
 }

@@ -57,6 +57,7 @@ export class EmpresaService {
     console.log(request);
     formData.append('Nome', request.Nome);
     formData.append('CNPJ', request.CNPJ);
+    formData.append('Email', request.Email);
 
     if (request.Logo) {
       formData.append('Logo', request.Logo);
@@ -76,6 +77,7 @@ export class EmpresaService {
     formData.append('Nome', request.Nome);
     formData.append('EmpresaId', request.EmpresaId.toString());
     formData.append('CNPJ', request.CNPJ);
+    formData.append('Email', request.Email);
 
     if (request.Logo) {
       formData.append('Logo', request.Logo);

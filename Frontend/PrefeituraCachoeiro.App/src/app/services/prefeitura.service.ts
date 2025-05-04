@@ -43,6 +43,7 @@ export class PrefeituraService {
   public async CriarPrefeitura(request: BasePrefeituraRequest): Promise<GenericResultResponse<AtualizarPrefeituraResponse>> {
     const formData = new FormData();
     formData.append('Nome', request.Nome);
+    formData.append('Email', request.Email);
 
     if (request.Logo) {
       formData.append('Logo', request.Logo);
@@ -60,6 +61,7 @@ export class PrefeituraService {
     const formData = new FormData();
     formData.append('Nome', request.Nome);
     formData.append('IdPrefeitura', request.IdPrefeitura.toString());
+    formData.append('Email', request.Email);
 
     if (request.Logo) {
       formData.append('Logo', request.Logo);

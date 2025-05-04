@@ -151,21 +151,40 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     }
     else{
       let quantidade = item.unidade - item.unidadeSalvaMedida;
-      this.globalService.addItem("",0, item.idItemContrato,quantidade, this.medicoes.contratos.isContratoGlobal)
-      if(this.globalService.itemInvalido){
+      console.log(item.unidade);
+      console.log(item.unidadeSalvaMedida);
+      console.log(quantidade);
+      console.log(this.somarValorTotal());
+      let somaTotal = this.somarValorTotal();
+
+      if(somaTotal > this.medicoes.contratos.valorAtualContrato){
+        this._toastService.mensagemError("O valor total a medir é superior ao valor total contrato + aditivo.");
         item.unidade = item.unidadeSalvaMedida;
-        item.itemInvalido = false;
       }
-      else{
-        item.unidadeSalvaMedida = item.unidade;
-        item.itemInvalido = false;
+      else
+      {
+        this.globalService.addItem("",0, item.idItemContrato,quantidade, this.medicoes.contratos.isContratoGlobal)
+        if(this.globalService.itemInvalido){
+          item.unidade = item.unidadeSalvaMedida;
+          item.itemInvalido = false;
+        }
+        else{
+          item.unidadeSalvaMedida = item.unidade;
+          item.itemInvalido = false;
+        }
       }
     }
     this.dataSource.sort = this.sort;
   }
 
   buscarItemMedicao(idItemContrato: number){
-    return this.globalService.getItems(idItemContrato).quantidades;
+    if(this.globalService.getItems(idItemContrato).quantidades < 0 && this.medicoes.contratos.isContratoGlobal)
+    {
+      return 0;
+    }
+    else{
+      return this.globalService.getItems(idItemContrato).quantidades;
+    }
   }
 
 

@@ -228,6 +228,8 @@ export class BoletimDetalhadoComponent implements OnInit {
 
   // Método para carregar os dados do boletim de medição
   async carregarBoletinsMedicao(medicaoId: number) {
+    this.isLoading = true;
+
     // this.boletimService.getBoletinsMedicao().subscribe({
     //   next: (dados) => {
     //     if (dados) {
@@ -302,18 +304,29 @@ export class BoletimDetalhadoComponent implements OnInit {
 
           this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
           this.valorTotalMedicao = dados.valorTotalMedicao || 0;
+          this.isLoading = false;
         }
         else {
+          this.isLoading = false;
           this._toastService.messageWarning('Sem medição para apresentar!');
         }
       })
       .catch((erro) => {
         console.error(erro);
+        this.isLoading = false;
         this._toastService.mensagemError('Erro ao buscar boletins!');
       });
 
     });
   }
+
+  formatarCNPJ(cnpj: string): string {
+    // Remove tudo que não é número
+    cnpj = cnpj.replace(/\D/g, '');
+  
+    // Aplica a máscara: 00.000.000/0000-00
+    return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+  }  
 
   async RetornarLogoCliente(clienteId: number): Promise<void> {
     await this._prefeituraControllerService.BuscarPrefeitura(clienteId)

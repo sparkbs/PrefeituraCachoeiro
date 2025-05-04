@@ -12,10 +12,12 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './editar_criar_prefeitura.component.html',
   styleUrls: ['./editar_criar_prefeitura.component.scss']
 })
-export class Editar_criar_prefeituraComponent {
+export class Editar_criar_prefeituraComponent implements OnInit{
   criarPrefeitura: BasePrefeituraRequest = new BasePrefeituraRequest();
   atualizarPrefeitura: AtualizarPrefeituraRequest = new AtualizarPrefeituraRequest();
   isLoading = false;
+  emails: string[] = [];
+  emailSerCadastrado: string;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: PrefeituraResponse,
   private _toastService: ToastService,
@@ -25,8 +27,16 @@ export class Editar_criar_prefeituraComponent {
 
   }
 
+  ngOnInit(){
+    if(this.data.email){
+      let emailsCadastrados = this.data.email.split("; ");
+      this.emails = emailsCadastrados;
+    }
+  }
+
   async cadastrar(){
     this.isLoading = true;
+    this.criarPrefeitura.Email = this.emails.join("; ");
     await this.api.CriarPrefeitura(this.criarPrefeitura)
     .then((result) => {
       this._toastService.mensagemSuccess("Cliente criado com sucesso");
@@ -39,6 +49,27 @@ export class Editar_criar_prefeituraComponent {
       this.isLoading = false
     })
     ;
+  }
+  
+  deletarEmail(item: string){
+    this.emails = this.emails.filter(x => x !== item);
+  }
+
+  adicionarEmail(){
+    let isValid = this.isEmailValid(this.emailSerCadastrado)
+    console.log(isValid);
+    console.log(!this.emails.some(x => x == this.emailSerCadastrado))
+    if(isValid && !this.emails.some(x => x == this.emailSerCadastrado)){
+      this.emails.push(this.emailSerCadastrado);
+    }
+    else{
+      this._toastService.mensagemError("Email inválido ou ja existe");
+    }
+  }
+  
+  isEmailValid(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 
   onFileChange(event: any) {
@@ -60,7 +91,7 @@ export class Editar_criar_prefeituraComponent {
 
     this.atualizarPrefeitura.IdPrefeitura = this.data.idPrefeitura;
     this.atualizarPrefeitura.Nome = this.data.nome;
-    this.atualizarPrefeitura.Email = this.data.email;
+    this.atualizarPrefeitura.Email = this.emails.join("; ");
 
     await this.api.AtualizarPrefeitura(this.atualizarPrefeitura)
     .then((result) => {

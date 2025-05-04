@@ -19,7 +19,7 @@ export class EmpresaComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   lista: EmpresaResponse[] = [];
-  displayedColumns: string[] = ['empresaId', 'nome', 'cnpj', 'logo','acoes'];
+  displayedColumns: string[] = ['empresaId', 'nome', 'cnpj', 'email','logo','acoes'];
   
   dataSource: MatTableDataSource<EmpresaResponse>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -32,6 +32,19 @@ export class EmpresaComponent implements OnInit {
 
   async ngOnInit() {
     await this.buscarListaEmpresas();
+  }
+
+  formatarCNPJ(cnpj: string): string {
+    if(cnpj){
+    cnpj = cnpj.replace(/\D/g, '');
+  
+    cnpj = cnpj.substring(0, 14);
+  
+    return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})$/, '$1.$2.$3/$4-$5');
+    }
+    else{
+      return '';
+    }
   }
 
   async buscarListaEmpresas(){

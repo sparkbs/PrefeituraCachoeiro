@@ -323,6 +323,8 @@ export class BoletimGeralComponent implements OnInit {
     //     this.isLoading = false;
     //   }
     // });
+    this.isLoading = true;
+
     this.dadosSeparadosProjeto = [];
     this.listaMedicoesSelecionadasAgrupados = this.listaMedicoesAgrupados.filter(x => x.numeroMedicao == this.medicaoSelecionado)[0];
 
@@ -367,18 +369,29 @@ export class BoletimGeralComponent implements OnInit {
 
           this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
           this.valorTotalMedicao = dados.valorTotalMedicao || 0;
+          this.isLoading = false;
         }
         else {
+          this.isLoading = false;
           this._toastService.messageWarning('Sem medição para apresentar!');
         }
       })
       .catch((erro) => {
+        this.isLoading = false;
         console.error(erro);
         this._toastService.mensagemError('Erro ao buscar boletins!');
       });
 
     });
   }
+
+  formatarCNPJ(cnpj: string): string {
+    // Remove tudo que não é número
+    cnpj = cnpj.replace(/\D/g, '');
+  
+    // Aplica a máscara: 00.000.000/0000-00
+    return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+  }  
 
   async RetornarLogoEmpresa(empresaId: number): Promise<void> {
     await this.empresaControllerService.BuscarEmpresa(empresaId)

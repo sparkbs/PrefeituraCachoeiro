@@ -299,6 +299,14 @@ export class BoletimProjetoComponent implements OnInit {
      this.isLoading = false;
    }
 
+   formatarCNPJ(cnpj: string): string {
+    // Remove tudo que não é número
+    cnpj = cnpj.replace(/\D/g, '');
+  
+    // Aplica a máscara: 00.000.000/0000-00
+    return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+  }  
+  
    async onSelectionChangeMedicao(medicaoId: number) {
       this.isLoading = true;
       this.projetosNome = "";

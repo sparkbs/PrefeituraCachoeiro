@@ -10,10 +10,25 @@
 
       <mat-form-field style="flex: 1;">
         <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="criarPrefeitura.Email" />
+        <input matInput [(ngModel)]="emailSerCadastrado" />
       </mat-form-field>
+      <span style="margin-left: 5px; margin-top: 15px;" matTooltip="Editar" (click)="adicionarEmail()" class="hoverMouse">
+        <mat-icon>save</mat-icon>
+      </span>
     </div>
-    <div style="display: flex; gap: 16px;" *ngIf="!this.data">
+    
+    <div style="display: flex; flex-direction: column;" *ngIf="!this.data">
+      <div *ngFor="let item of emails">
+        <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
+          {{item}}
+          <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarEmail(item)">
+            <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
+          </span>
+        </div>
+      </div> 
+    </div>
+    
+    <div style="display: flex; gap: 16px;margin-top: 10px;" *ngIf="!this.data">
       <!-- Campo Logo -->
       <div style="flex: 1;">
         <label for="logo-upload" style="display: block;">Logo:</label>
@@ -30,10 +45,23 @@
 
       <mat-form-field style="flex: 1;">
         <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="data.email" />
+        <input matInput [(ngModel)]="emailSerCadastrado" />
       </mat-form-field>
+      <span style="margin-left: 5px; margin-top: 15px;" matTooltip="Editar" (click)="adicionarEmail()" class="hoverMouse">
+        <mat-icon>save</mat-icon>
+      </span>
     </div>
-    <div style="display: flex; gap: 16px;" *ngIf="this.data">
+    <div style="display: flex; flex-direction: column;" *ngIf="this.data">
+      <div *ngFor="let item of emails">
+        <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
+          {{item}}
+          <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarEmail(item)">
+            <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
+          </span>
+        </div>
+      </div> 
+    </div>
+    <div style="display: flex; gap: 16px; margin-top: 10px;" *ngIf="this.data">
       <!-- Campo Logo -->
       <div style="flex: 1;">
         <label for="logo-upload" style="display: block;">Logo:</label>
