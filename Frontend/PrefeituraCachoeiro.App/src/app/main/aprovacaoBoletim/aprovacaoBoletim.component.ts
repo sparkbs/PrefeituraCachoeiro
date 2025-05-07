@@ -165,14 +165,12 @@ export class AprovacaoBoletimComponent implements OnInit {
     var aditivoFilter : BuscarAditivosContrato = new BuscarAditivosContrato();
     aditivoFilter.idContrato = this.contratoSelecionado;
     await this.api.BuscarTodosAditivos(aditivoFilter).then((result) => {
-      result.data.forEach((item) => {
+      result?.data?.forEach((item) => {
         // Soma o valorTotalComBdi de cada item
         arquivoVisualizacao.arquivosAditivosResponse.push(...item.arquivosAditivos);
       });
     })
-    .catch((res) =>{
-      this._toastService.mensagemError(res.error.message);
-    })
+
     .finally(() =>{
       this.isLoading = false
     });
@@ -215,7 +213,7 @@ export class AprovacaoBoletimComponent implements OnInit {
     });
   }
   
-  aprovarMedicao(idMedicao: number){
+  async aprovarMedicao(idMedicao: number){
     this.dialog.open(AprovarMedicaoComponent,{data:{idMedicoesProj: idMedicao}});
     this.dialog.afterAllClosed.subscribe(async () => {
       this._toastService.mensagemSuccess("Aguarde, atualizando as medições!");
@@ -233,7 +231,7 @@ export class AprovacaoBoletimComponent implements OnInit {
     });
   }
 
-  aprovarTodasMedicoes(todasMedicoes: MedicoesResponse[]){
+  async aprovarTodasMedicoes(todasMedicoes: MedicoesResponse[]){
     console.log(todasMedicoes);
     this.dialog.open(AprovarMedicaoComponent,{data:{idMedicoesProj: 0, todasMedicoes: todasMedicoes}});
     this.dialog.afterAllClosed.subscribe(async () => {

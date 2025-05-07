@@ -11,7 +11,7 @@ import { MedicoesService } from 'src/app/services/medicoes.service';
 import { BuscarArquivosMedicaoIdProjRequest, MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesModel, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ResumoMedicaoComponent } from './resumoMedicao/resumoMedicao/resumoMedicao.component';
-import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
+import { GlobalServicesService, ItensMedidos } from 'src/app/GlobalServices/GlobalServices.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -105,6 +105,17 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     })
 
     return valorSomado
+  }
+
+  periodoMedicao(medicao: MedicoesResponse[], numero: number){
+    var itemsMedidos = medicao.filter(x => x.numeroMedicao == numero);
+
+    if(itemsMedidos[0]?.resumo){
+      return itemsMedidos[0]?.resumo;
+    }
+    else{
+      return ""
+    }
   }
 
   formatToCurrency(valor?: number): string {
@@ -328,37 +339,39 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     });
   }
 
-  async deletarMedicao(medicoes: MedicoesModel){
-    var existeMedicaoAprovada = medicoes.data.some(x => x.idStatusMedicao == StatusMedicaoEnum.Aprovada);
-    var medicaoDeletada = false;
-
-    if(!existeMedicaoAprovada){
+  async deletarMedicao(medicoes: MedicoesModel) {
+    const existeMedicaoAprovada = medicoes.data.some(x => x.idStatusMedicao == StatusMedicaoEnum.Aprovada);
+    let medicaoDeletada = false;
+  
+    if (!existeMedicaoAprovada) {
       this.isLoading = true;
-      medicoes.data.forEach(async x => {
-      await this.apiMedicoes.DeletarMedicao(x.idMedicoesProjeto)  
-        .then(async (result) => {
-          if(result){
+  
+      for (const x of medicoes.data) {
+        try {
+          const result = await this.apiMedicoes.DeletarMedicao(x.idMedicoesProjeto);
+          if (result) {
+            console.log(result);
             medicaoDeletada = true;
           }
-        })
-        .catch((erro) => {
-          this.isLoading = false;
+        } catch (erro) {
           this._toastService.mensagemError(erro.error.message);
-        })
-        .finally(() => {
           this.isLoading = false;
-        });
-      })
-      
-      if(medicaoDeletada){
+          return;
+        }
+      }
+  
+      if (medicaoDeletada) {
+        this._toastService.mensagemSuccess("Sucesso ao deletar medições de projetos com status diferentes de aprovadas");
         this.medicaoProjetos = [];
         await this.buscar();
       }
-    }
-    else{
+  
+      this.isLoading = false;
+    } else {
       this._toastService.mensagemError("Não pode deletar medição que possui projetos com status aprovados.");
     }
   }
+  
 
   async enviar(numeroMedicao: number){
     const result = window.confirm('Você deseja enviar a medição?');
@@ -370,8 +383,11 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       projetosPorMedicao.forEach(async (item) => {
 
         item.data.forEach(async (data) =>{
-          if(data.idStatusMedicao != StatusMedicaoEnum.Aprovada)
+          console.log(data);
+          if(data.idStatusMedicao == StatusMedicaoEnum.Recusada || data.idStatusMedicao == StatusMedicaoEnum.EmEdicao || data.idStatusMedicao == StatusMedicaoEnum.Criada)
           {
+            this.isLoading = true;
+
             var req = new BuscarArquivosMedicaoIdProjRequest();
             req.IdMedicoesProjeto = data.idMedicoesProjeto;
       
@@ -402,6 +418,10 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
             .finally(()=>{
               this.isLoading = false;
             });
+          }
+          else{
+            this.isLoading = false;
+            this._toastService.mensagemSuccess("Foram enviados somente casos com status de editados e criados");
           }
         })      
       })

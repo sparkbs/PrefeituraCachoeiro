@@ -27,47 +27,39 @@ export class ResumoMedicaoComponent implements OnInit {
       .flatMap(model => model.data || [])
       .flatMap(inner => inner.items || []);
   
-    const itensFiltrados = todosItens.filter(item => 
+    const itensFiltrados = todosItens.filter(item =>
       item.unidade && item.unidade !== 0
     );
   
-    const agrupadosComSoma = itensFiltrados.reduce((acc, item) => {
-      const key = item.unidade;
-  
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-  
+    const agrupadosPorNome = itensFiltrados.reduce((acc, item) => {
       const nome = item.itemsContrato.item.descricao || 'Sem nome';
       const valorComBdi = item.itemsContrato.item.valorComBdi || 0;
-      const unidadeSalvaMedida = Number(item.unidadeSalvaMedida) || 0;
       const unidadeTotal = Number(item.itemsContrato.unidadeOriginal) || 0;
+      const unidadeTotalMedida = Number(item.unidadeSalvaMedida) || 0;
   
-      const itemExistente = acc[key].find(i => 
-        i.nome === nome && i.valorComBdi === valorComBdi
-      );
+      const key = `${nome}-${valorComBdi}`;
   
-      if (itemExistente) {
-        itemExistente.unidadeTotalMedida += unidadeSalvaMedida;
-      } else {
-        acc[key].push({
+      if (!acc[key]) {
+        acc[key] = {
           nome,
           valorComBdi,
           unidadeTotal,
-          unidadeTotalMedida: unidadeSalvaMedida
-        });
+          unidadeTotalMedida: 0
+        };
       }
   
-      return acc;
-    }, {} as { [unidade: number]: ItemResumo[] });
+      acc[key].unidadeTotalMedida += unidadeTotalMedida;
   
-    const resumoPorUnidade = Object.values(agrupadosComSoma).flat();
-    this.lista = resumoPorUnidade;
+      return acc;
+    }, {} as { [key: string]: ItemResumo });
+  
+    this.lista = Object.values(agrupadosPorNome);
     console.log(this.lista);
-
+  
     this.dataSource = new MatTableDataSource(this.lista);
     console.log(this.dataSource);
   }
+  
   
   calcularValorTotalItem(unidade: string, precoComBdi: number){
     if (!unidade) {

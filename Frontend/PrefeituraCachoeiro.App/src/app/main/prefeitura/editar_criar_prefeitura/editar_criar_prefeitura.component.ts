@@ -73,18 +73,33 @@ export class Editar_criar_prefeituraComponent implements OnInit{
   }
 
   onFileChange(event: any) {
-    const file = event.target.files[0];  // Pega o primeiro arquivo selecionado
+    const fileInput = event.target;
+    const file = fileInput.files[0];
+  
     if (file) {
-      this.criarPrefeitura.Logo = file;  // Armazena o arquivo na variável 'logo'
+      if (file.type.startsWith('image/')) {
+        this.criarPrefeitura.Logo = file;
+      } else {
+        this._toastService.mensagemError("Você deve informar arquivos do tipo de imagem");
+        fileInput.value = '';  // Limpa a seleção do input
+      }
     }
-  }
+  }  
+
 
   onFileChangeUpdate(event: any) {
-    const file = event.target.files[0];  // Pega o primeiro arquivo selecionado
+    const fileInput = event.target;
+    const file = fileInput.files[0];
+  
     if (file) {
-      this.atualizarPrefeitura.Logo = file;  // Armazena o arquivo na variável 'logo'
+      if (file.type.startsWith('image/')) {
+        this.atualizarPrefeitura.Logo = file;
+      } else {
+        this._toastService.mensagemError("Você deve informar arquivos do tipo de imagem");
+        fileInput.value = '';  // Limpa a seleção do input
+      }
     }
-  }
+  }  
 
   async salvar(){
     this.isLoading = true;

@@ -49,6 +49,7 @@ export class AlterarMedicaoProjetoRequest {
     idMedicoesProjeto: number;
     idProjeto: number;
     secretaria: string;
+    resumo: string;
   }
 
   export class RegistroDocumentosMedicoesRequest{
