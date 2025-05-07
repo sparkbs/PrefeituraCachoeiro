@@ -17,6 +17,7 @@ export class TabelaLevantamento {
   idItem: number;
   nome: string;
   medicoes: MedicaoLevantamento[] = [];
+  medicaoTotal: number;
 }
 
 @Component({
@@ -77,11 +78,14 @@ export class ModalLevantamentoComponent implements OnInit {
 
       await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
       .then((res) => {
-        const listaProjetosFilter = this.data.contrato ?
-        res.data.filter(resF => resF.contratos[0].contratos.prefeituraId == this.data.contrato.prefeituraId) :
-        res.data;
+        debugger
+        // const listaProjetosFilter = this.data.contrato ?
+        // res.data.filter(resF => resF.contratos[0].contratos.prefeituraId == this.data.contrato.prefeituraId) :
+        // res.data;
 
-        this.listaProjetos = listaProjetosFilter;
+        // this.listaProjetos = listaProjetosFilter;
+
+        this.listaProjetos = res.data;
       })
       .catch((erro) => {
         this._toastService.mensagemError(erro.error.message);
@@ -113,6 +117,7 @@ export class ModalLevantamentoComponent implements OnInit {
               medicaoLevantamento.idItemContrato = resItem.idItemContrato;
               medicaoLevantamento.valorComBdi = resItem.itemsContrato.item.valorComBdi;
 
+              this.dadosTabela[indexTab].medicaoTotal += medicaoLevantamento.qtdItem * medicaoLevantamento.valorComBdi;
               this.dadosTabela[indexTab].medicoes.push(medicaoLevantamento);
             }
             else {
@@ -125,6 +130,7 @@ export class ModalLevantamentoComponent implements OnInit {
 
               dadoTabela.idItem = resItem.itemsContrato.itemId
               dadoTabela.nome = resItem.itemsContrato.item.descricao
+              dadoTabela.medicaoTotal = medicaoLevantamento.valorComBdi * medicaoLevantamento.qtdItem;
               dadoTabela.medicoes.push(medicaoLevantamento);
 
               this.dadosTabela.push(dadoTabela);
@@ -133,7 +139,7 @@ export class ModalLevantamentoComponent implements OnInit {
         });
 
         this.maxMedicoes = Math.max(...this.dadosTabela.map(item => item.medicoes.length));
-        this.displayedColumns = ['nome', ...Array.from({ length: this.maxMedicoes }, (_, i) => `medicao${i + 1}`)];
+        this.displayedColumns = ['nome', ...Array.from({ length: this.maxMedicoes }, (_, i) => `medicao${i + 1}`), 'medicaoTotal'];
         this.dataSource.data = this.dadosTabela;
       }
     })
