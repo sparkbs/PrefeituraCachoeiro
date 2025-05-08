@@ -97,7 +97,7 @@
         Base de dados:
       </div>
       <div>
-        <input #baseDadosInput type="file" style="width: 100%" />
+        <input #baseDadosInput type="file" (change)="validarArquivo($event)" style="width: 100%" />
       </div>
     </div>
     <div *ngFor="let item of listaDocumentoContrato">

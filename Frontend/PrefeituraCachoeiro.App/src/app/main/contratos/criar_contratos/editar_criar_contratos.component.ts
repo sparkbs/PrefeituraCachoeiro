@@ -198,4 +198,18 @@ export class Editar_criar_contratosComponent implements OnInit {
       return null;
     }
   }
+
+  validarArquivo(event: Event): void {
+    const input = event.target as HTMLInputElement;
+  
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      const nomeArquivo = file.name.toLowerCase();
+  
+      if (!nomeArquivo.endsWith('.xlsb')) {
+        this._toastService.mensagemError('Arquivo inválido! Apenas arquivos .xlsb são permitidos.');
+        input.value = ''; // limpa o input
+      } 
+    }
+  }  
 }

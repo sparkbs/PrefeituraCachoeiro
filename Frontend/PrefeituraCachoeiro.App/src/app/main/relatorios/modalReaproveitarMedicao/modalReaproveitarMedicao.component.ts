@@ -64,7 +64,7 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
   async salvar(){
     this.isLoading = true;
     let medicaoRequest = new InserirMedicao();
-    console.log(this.medicoesReaproveitadas)
+    console.log(this.data.projetos)
 
     var medicoesQueVamosReaproveitar = this.medicoesReaproveitadas.filter(x => x.selecionado == true)
 
@@ -72,14 +72,14 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
       medicaoRequest.dataMedicao = new Date();
       medicaoRequest.idContrato = x.idContrato;
       medicaoRequest.idProjeto = x.idProjeto;
-      medicaoRequest.secretaria = x.secretaria ?? "";
+      medicaoRequest.secretaria = this.data.projetos[0].secretaria ?? "";
       medicaoRequest.items = x.items.map(item => ({
         idItemContrato: item.idItemContrato,
         unidade: item.unidade
       }));
       medicaoRequest.numeroMedicao = this.data.numeroMedicao;
-      medicaoRequest.resumo = x.resumo;
-      medicaoRequest.observacao = x.observacao;
+      medicaoRequest.resumo = this.data.projetos[0].resumo;
+      medicaoRequest.observacao = this.data.projetos[0].observacao;
       console.log(medicaoRequest)
 
       await this.apiMed.CriarMedicoes(medicaoRequest)

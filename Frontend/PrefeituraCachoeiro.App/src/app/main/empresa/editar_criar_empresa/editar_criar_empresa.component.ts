@@ -120,7 +120,7 @@ export class Editar_criar_empresaComponent implements OnInit {
   
     if (file) {
       if (file.type.startsWith('image/')) {
-        this.criarEmpresa.Logo = file;
+        this.atualizarEmpresa.Logo = file;
       } else {
         this._toastService.mensagemError("Você deve informar arquivos do tipo de imagem");
         fileInput.value = '';  // Limpa a seleção do input

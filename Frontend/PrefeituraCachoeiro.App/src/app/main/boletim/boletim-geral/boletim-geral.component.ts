@@ -420,7 +420,7 @@ export class BoletimGeralComponent implements OnInit {
 
 
         var unidadesSomadas = Number(item.unidade) + Number(acc![chave].unidade) ;
-        acc[chave].unidade = unidadesSomadas.toString();
+        acc[chave].unidade = unidadesSomadas.toFixed(6).toString();
 
       } else {
         // Caso contrário, adiciona um novo item ao acumulador
