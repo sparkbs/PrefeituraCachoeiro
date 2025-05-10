@@ -213,42 +213,58 @@ export class AprovacaoBoletimComponent implements OnInit {
     });
   }
   
-  async aprovarMedicao(idMedicao: number){
-    this.dialog.open(AprovarMedicaoComponent,{data:{idMedicoesProj: idMedicao}});
-    this.dialog.afterAllClosed.subscribe(async () => {
-      this._toastService.mensagemSuccess("Aguarde, atualizando as medições!");
-      this.isLoading = true;
-      await this.buscar(this.contratoSelecionado)
-      .then(() =>{
-        this._toastService.mensagemSuccess("Atualizado com sucesso!");
-      })
-      .catch((res) =>{
-        this._toastService.mensagemError(res.error.message);
-      })
-      .finally(() =>{
-        this.isLoading = false;
-      });
+  async aprovarMedicao(idMedicao: number, medicao: MedicoesResponse) {
+    const dialogRef = this.dialog.open(AprovarMedicaoComponent, {
+      data: { idMedicoesProj: idMedicao, medicao: medicao }
+    });
+  
+    dialogRef.afterClosed().subscribe(async (resultado) => {
+      if (resultado) {
+        this._toastService.mensagemSuccess("Aguarde, atualizando as medições!");
+        this.isLoading = true;
+  
+        await this.buscar(this.contratoSelecionado)
+          .then(() => {
+            this._toastService.mensagemSuccess("Atualizado com sucesso!");
+          })
+          .catch((res) => {
+            this._toastService.mensagemError(res.error.message);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      }
     });
   }
-
-  async aprovarTodasMedicoes(todasMedicoes: MedicoesResponse[]){
+  
+  async aprovarTodasMedicoes(todasMedicoes: MedicoesResponse[]) {
     console.log(todasMedicoes);
-    this.dialog.open(AprovarMedicaoComponent,{data:{idMedicoesProj: 0, todasMedicoes: todasMedicoes}});
-    this.dialog.afterAllClosed.subscribe(async () => {
-      this._toastService.mensagemSuccess("Aguarde, atualizando as medições!");
-      this.isLoading = true;
-      await this.buscar(this.contratoSelecionado)
-      .then(() =>{
-        this._toastService.mensagemSuccess("Atualizado com sucesso!");
-      })
-      .catch((res) =>{
-        this._toastService.mensagemError(res.error.message);
-      })
-      .finally(() =>{
-        this.isLoading = false;
-      });
+  
+    const dialogRef = this.dialog.open(AprovarMedicaoComponent, {
+      data: { idMedicoesProj: 0, todasMedicoes: todasMedicoes }
     });
-  }
+  
+    dialogRef.afterClosed().subscribe(async (resultado) => {
+      if (resultado) {
+        // Aqui você trata o valor retornado do dialog, se necessário
+        console.log("Valor retornado do dialog:", resultado);
+  
+        this._toastService.mensagemSuccess("Aguarde, atualizando as medições!");
+        this.isLoading = true;
+  
+        await this.buscar(this.contratoSelecionado)
+          .then(() => {
+            this._toastService.mensagemSuccess("Atualizado com sucesso!");
+          })
+          .catch((res) => {
+            this._toastService.mensagemError(res.error.message);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      }
+    });
+  }  
 
   nomeProjeto(id:number, projetos: Projeto[]){
     return id == null ? "": projetos?.find(x => x.idProjeto == id )?.nomeProjeto;
