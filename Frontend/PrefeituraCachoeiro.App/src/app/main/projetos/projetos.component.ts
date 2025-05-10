@@ -24,6 +24,7 @@ export class ProjetosComponent implements OnInit {
   listaProjetos: ProjetoResponse[] = [];
   dataSource = new MatTableDataSource<ProjetoResponse>(this.listaProjetos);
   projetos: ProjetosResponse;
+  isLoading = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -119,6 +120,7 @@ export class ProjetosComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmaExclusaoComponent);
 
     dialogRef.afterClosed().subscribe(async result => {
+      this.isLoading = true;
 
       if(result){
         let projeto = this.listaProjetos.find(res => res.idProjeto == id);
@@ -127,9 +129,11 @@ export class ProjetosComponent implements OnInit {
         this._projetoControllerService.DeletarProjeto(id)
         .then((res) => {
           this.getAllProjects();
+          this.isLoading = false;
           this._toastService.mensagemSuccess("Sucesso ao deletar projeto!");
         })
         .catch((erro) => {
+          this.isLoading = false;
           this._toastService.mensagemError(erro.error.message);
         });
       }
@@ -143,13 +147,16 @@ export class ProjetosComponent implements OnInit {
           this._projetoControllerService.DeletarProjeto(id)
           .then((res) => {
             this.getAllProjects();
+            this.isLoading = false;
             this._toastService.mensagemSuccess("Sucesso ao deletar projeto!");
           })
           .catch((erro) => {
+            this.isLoading = false;
             this._toastService.mensagemError(erro.error.message);
           });
         })
         .catch((erro) => {
+          this.isLoading = false;
           this._toastService.mensagemError(erro.error.message);
         });
       }

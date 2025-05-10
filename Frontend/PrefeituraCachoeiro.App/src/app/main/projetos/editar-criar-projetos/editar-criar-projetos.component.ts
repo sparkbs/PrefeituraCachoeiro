@@ -26,6 +26,7 @@ export class EditarCriarProjetosComponent implements OnInit {
   listaContratos: ContratosResponse[] = [];
   listaFiltrada: any[] = [];
   selectedPrefeitura: number | null = null; // Valor selecionado
+  isLoading = false;
 
   constructor(
     public dialogRef: MatDialogRef<EditarCriarProjetosComponent>,
@@ -86,6 +87,7 @@ export class EditarCriarProjetosComponent implements OnInit {
   }
 
   saveForm() {
+    this.isLoading = true;
     var nome = this.form.get('prefeitura').value;
     var prefeituraId = this.listaPrefeitura.find(x => x.nome == nome).idPrefeitura
 
@@ -105,9 +107,11 @@ export class EditarCriarProjetosComponent implements OnInit {
       this._projetoControllerService.AtualizarProjeto(projetoUpdate)
       .then((res) => {
         this._toastService.mensagemSuccess('Projeto atualizado com sucesso!');
+        this.isLoading = false;
         this.dialogRef.close(true);
       })
       .catch((res) => {
+        this.isLoading = false;
         this._toastService.mensagemError(res.error.message);
       });
     }
@@ -122,14 +126,17 @@ export class EditarCriarProjetosComponent implements OnInit {
         this._contratoControllerService.AdicionarProjetoContrato(vinculoProjContrato)
         .then((res) => {
           this._toastService.mensagemSuccess('Projeto salvo com sucesso!');
+          this.isLoading = false;
           this.dialogRef.close(true);
         })
         .catch((erro) => {
           this._projetoControllerService.DeletarProjeto(res.idProjeto);
+          this.isLoading = false;
           this._toastService.mensagemError(erro.error.message);
         });
       })
       .catch((erro) => {
+        this.isLoading = false;
         this._toastService.mensagemError(erro.error.message);
       })
     }

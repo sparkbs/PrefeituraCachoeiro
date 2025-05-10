@@ -373,60 +373,59 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   }
   
 
-  async enviar(numeroMedicao: number){
+  async enviar(numeroMedicao: number) {
     const result = window.confirm('Você deseja enviar a medição?');
-    if (result) {
-      this.isLoading = true;
-
-      var projetosPorMedicao = this.medicaoProjetos.filter( x=> x.numeroMedicao == numeroMedicao);
-
-      projetosPorMedicao.forEach(async (item) => {
-
-        item.data.forEach(async (data) =>{
-          console.log(data);
-          if(data.idStatusMedicao == StatusMedicaoEnum.Recusada || data.idStatusMedicao == StatusMedicaoEnum.EmEdicao || data.idStatusMedicao == StatusMedicaoEnum.Criada)
-          {
-            this.isLoading = true;
-
-            var req = new BuscarArquivosMedicaoIdProjRequest();
+    if (!result) return;
+  
+    this.isLoading = true;
+  
+    try {
+      const projetosPorMedicao = this.medicaoProjetos.filter(x => x.numeroMedicao === numeroMedicao);
+      const promessasEnvio: Promise<void>[] = [];
+  
+      for (const item of projetosPorMedicao) {
+        for (const data of item.data) {
+          if (
+            data.idStatusMedicao === StatusMedicaoEnum.Recusada ||
+            data.idStatusMedicao === StatusMedicaoEnum.EmEdicao ||
+            data.idStatusMedicao === StatusMedicaoEnum.Criada
+          ) {
+            console.log( data.idStatusMedicao )
+            const req = new BuscarArquivosMedicaoIdProjRequest();
             req.IdMedicoesProjeto = data.idMedicoesProjeto;
-      
-            await this.apiMedicoes.EnviarMedicaoCliente(req)
-            .then((result) => {
-              if(result.isSucesso){        
-                var medicaoFiltrada = this.medicaoProjetos.filter(x => x.numeroMedicao == numeroMedicao);
-                console.log(medicaoFiltrada);
-
-                medicaoFiltrada.forEach((x) => {
-                  x.data.forEach((item) =>{
-                    item.statusMedicao.idStatusMedicao = 4;
-                    item.statusMedicao.nome = "Enviada";
-                  })
-                });
-                console.log(medicaoFiltrada);
-
-                this._toastService.mensagemSuccess("Medição enviada com sucesso");
-              }
-              else{
-                this._toastService.mensagemSuccess(result.mensagemErro);
-              }
-            })
-            .catch((erro) => 
-            {
-              this._toastService.mensagemError(erro.error.message);
-            })
-            .finally(()=>{
-              this.isLoading = false;
-            });
+  
+            const promessa = this.apiMedicoes.EnviarMedicaoCliente(req)
+              .then((result) => {
+                if (result.isSucesso) {
+                  // Atualiza o status da medição
+                  data.statusMedicao.idStatusMedicao = 4;
+                  data.statusMedicao.nome = "Enviada";
+                  this._toastService.mensagemSuccess("Medição enviada com sucesso");
+                } else {
+                  this._toastService.mensagemError(result.mensagemErro);
+                }
+              })
+              .catch((erro) => {
+                this._toastService.mensagemError(erro.error.message);
+              });
+  
+            promessasEnvio.push(promessa);
           }
-          else{
-            this.isLoading = false;
-            this._toastService.mensagemSuccess("Foram enviados somente casos com status de editados e criados");
-          }
-        })      
-      })
-    } 
+        }
+      }
+  
+      if (promessasEnvio.length === 0) {
+        this._toastService.mensagemSuccess("Foram enviados somente casos com status de editados e criados");
+      }
+  
+      // Aguarda todas as chamadas de envio
+      await Promise.all(promessasEnvio);
+  
+    } finally {
+      this.isLoading = false;
+    }
   }
+  
 
   openDialogConsolidado(medicao: MedicoesModel[]){
     this.dialog.open(ResumoMedicaoComponent,{data:

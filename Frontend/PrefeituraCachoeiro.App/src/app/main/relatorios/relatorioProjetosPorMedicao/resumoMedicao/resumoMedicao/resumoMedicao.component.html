@@ -5,13 +5,13 @@
 
   <div class="container" style="margin-top: 20px;">
     <div>
-      <div>Valor Total Medido: {{this.itemsToLoad ? "": formatToCurrency(this.itemsToLoad[0].data[0].contratos.valorTotalMedido)}}</div>
-      <div>Valor Total Solicitado: {{this.itemsToLoad ? "": formatToCurrency(this.itemsToLoad[0].data[0].contratos.valorTotalSolicitado)}}</div>
+      <div>Valor Total Medido: {{!this.lista ? "": formatToCurrency(this.itemsToLoad[0].data[0].contratos.valorTotalMedido)}}</div>
+      <div>Valor Total Solicitado: {{!this.lista ? "": formatToCurrency(this.itemsToLoad[0].data[0].contratos.valorTotalSolicitado)}}</div>
     </div>
 
     <div>
-      <div>Valor Total Previsto: {{this.itemsToLoad ? "": formatToCurrency(this.itemsToLoad[0].data[0].contratos.valorTotalPrevisto)}}</div>
-      <div>Valor Saldo Restante: {{this.itemsToLoad ? "" : formatToCurrency(this.itemsToLoad[0].data[0].contratos.valorSaldoRestante)}}</div>
+      <div>Valor Total Previsto: {{!this.lista ? "": formatToCurrency(this.itemsToLoad[0].data[0].contratos.valorTotalPrevisto)}}</div>
+      <div>Valor Saldo Restante: {{!this.lista ? "" : formatToCurrency(this.itemsToLoad[0].data[0].contratos.valorSaldoRestante)}}</div>
     </div>
   </div>
 

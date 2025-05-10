@@ -66,31 +66,33 @@ export class AprovarMedicaoComponent implements OnInit {
         });
       }
       else{
-        if(this.data.todasMedicoes){
-          this.data.todasMedicoes.forEach(async y => {
-            this.aprovarMedicoes.Resumo = y.resumo;
-            this.aprovarMedicoes.IdMedicoesProjeto = y.idMedicoesProjeto;
-            this.listaDocumentoContrato.forEach(x => this.aprovarMedicoes.Arquivos.push(x.file));    
-
-              await this.api.AprovarMedicoes(this.aprovarMedicoes)
-              .then((result) => {     
-                if(result.isSucesso){
-                  this._toastService.mensagemSuccess("Aprovação realizada com sucesso.");
-                }
-                else{
-                  this._toastService.mensagemError(result.mensagemErro);
-                }
-                this.dialogRef.close();
-              })
-              .catch((erro) =>
-              {
-                this._toastService.mensagemError(erro.error.message);
-                this.isLoading = false;
-              })
-              .finally(() =>{
-              })
-          });          
-        }
+        if (this.data.todasMedicoes) {
+          this.isLoading = true;
+          try {
+            for (const y of this.data.todasMedicoes) {
+              this.aprovarMedicoes.Resumo = y.resumo;
+              this.aprovarMedicoes.IdMedicoesProjeto = y.idMedicoesProjeto;
+              this.aprovarMedicoes.Arquivos = []; // Reinicia os arquivos a cada iteração, se necessário
+              this.listaDocumentoContrato.forEach(x => this.aprovarMedicoes.Arquivos.push(x.file));
+        
+              const result = await this.api.AprovarMedicoes(this.aprovarMedicoes);
+        
+              if (result.isSucesso) {
+                this._toastService.mensagemSuccess("Aprovação realizada com sucesso.");
+              } else {
+                this._toastService.mensagemError(result.mensagemErro);
+              }
+            }
+        
+            // Fecha o diálogo só após todas as aprovações
+            this.dialogRef.close(true);
+          } catch (erro) {
+            this.dialogRef.close(false);
+            this._toastService.mensagemError(erro.error?.message || 'Erro ao aprovar medições.');
+          } finally {
+            this.isLoading = false;
+          }
+        }        
         this.isLoading = false;
       }
     }
