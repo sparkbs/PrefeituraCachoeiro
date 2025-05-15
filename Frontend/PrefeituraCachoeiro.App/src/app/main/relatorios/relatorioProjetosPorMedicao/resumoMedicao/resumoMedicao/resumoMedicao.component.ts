@@ -14,7 +14,7 @@ export class ResumoMedicaoComponent implements OnInit {
   itemsToLoad : MedicoesModel[];
   lista: ItemResumo[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: MedicoesModel[]) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public data?: MedicoesModel[]) { 
     
     // Tente inicializar com dados brutos
 //    this.dataSource = new MatTableDataSource(this.data.contratos.items);
@@ -55,7 +55,8 @@ export class ResumoMedicaoComponent implements OnInit {
   
     this.lista = Object.values(agrupadosPorNome);
     console.log(this.lista);
-  
+      console.log("-----");
+
     this.dataSource = new MatTableDataSource(this.lista);
     console.log(this.dataSource);
   }
@@ -71,15 +72,20 @@ export class ResumoMedicaoComponent implements OnInit {
 
   formatToCurrency(valor: number): string {
     // Formatar o valor como string com 2 casas decimais
-    let valorFormatado = valor.toFixed(2);  // 2 casas decimais
+    if(valor != null){
+      let valorFormatado = valor.toFixed(2);  // 2 casas decimais
 
-    // Substituir o ponto (.) por vírgula para separar os decimais
-    valorFormatado = valorFormatado.replace('.', ',');
+      // Substituir o ponto (.) por vírgula para separar os decimais
+      valorFormatado = valorFormatado.replace('.', ',');
 
-    // Adicionar o separador de milhar (ponto) para valores maiores que 1.000
-    valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      // Adicionar o separador de milhar (ponto) para valores maiores que 1.000
+      valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-    // Adicionar o prefixo 'R$'
-    return 'R$ ' + valorFormatado;
+      // Adicionar o prefixo 'R$'
+      return 'R$ ' + valorFormatado;      
+    }
+    else{
+      return ''
+    }
   }
 }

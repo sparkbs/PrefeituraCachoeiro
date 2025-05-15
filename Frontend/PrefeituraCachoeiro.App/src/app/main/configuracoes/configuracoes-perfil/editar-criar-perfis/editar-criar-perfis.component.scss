@@ -30,3 +30,11 @@
 .group-buttons button {
   width: 10%;
 }
+
+.div-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+}

@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
 import { InserirMedicao } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { MedicoesModel, MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { MedicoesService } from 'src/app/services/medicoes.service';
@@ -35,7 +36,7 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
     console.log(idsProjetosJaListados)
 
     const projetosUnicos = this.data.medicoesProjetos.filter(medicao => {
-      return medicao.data.some(d => !idsProjetosJaListados.includes(d.idProjeto));
+      return medicao.data.some(d => !idsProjetosJaListados.includes(d.idProjeto) && d.statusMedicao.idStatusMedicao == StatusMedicaoEnum.Recusada);
     });
 
     console.log(projetosUnicos)
@@ -69,6 +70,7 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
     var medicoesQueVamosReaproveitar = this.medicoesReaproveitadas.filter(x => x.selecionado == true)
 
     medicoesQueVamosReaproveitar.forEach(async x => {
+      medicaoRequest.idMedicoesProjeto = x.idMedicoesProjeto;
       medicaoRequest.dataMedicao = new Date();
       medicaoRequest.idContrato = x.idContrato;
       medicaoRequest.idProjeto = x.idProjeto;
@@ -83,9 +85,16 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
       console.log(medicaoRequest)
 
       await this.apiMed.CriarMedicoes(medicaoRequest)
-      .then((result) => {
-        this._toastService.mensagemSuccess("Medição criada com sucesso.");
-        this.dialogRef.close(result.idMedicoesProjeto);
+      .then(async (result) => {
+        await this.apiMed.DeletarMedicao(medicaoRequest.idMedicoesProjeto)
+        .then( () => {
+            this._toastService.mensagemSuccess("Medição arrastada com sucesso.");
+            this.dialogRef.close(result.idMedicoesProjeto);
+        })
+        .catch((err) => {
+            this._toastService.mensagemError(err.error.message);
+            this.isLoading = false;
+        })
       })
       .catch((err) =>
       {

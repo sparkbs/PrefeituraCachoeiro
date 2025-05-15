@@ -6,6 +6,7 @@ export class UsuariosResponse {
   nomePrefeitura?: string;
   grupo: string;
   acoes?: string;
+  isSuperAdmin: boolean;
 }
 
 export class UsuariosMensagemResponse {

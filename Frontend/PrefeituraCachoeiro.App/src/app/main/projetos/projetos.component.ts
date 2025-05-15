@@ -125,9 +125,12 @@ export class ProjetosComponent implements OnInit {
       if(result){
         let projeto = this.listaProjetos.find(res => res.idProjeto == id);
 
-      if (projeto.contratos.length == 0) {
+        console.log(projeto);
+        console.log(this.listaProjetos);
+        console.log(id);
+
         this._projetoControllerService.DeletarProjeto(id)
-        .then((res) => {
+        .then(() => {
           this.getAllProjects();
           this.isLoading = false;
           this._toastService.mensagemSuccess("Sucesso ao deletar projeto!");
@@ -136,8 +139,8 @@ export class ProjetosComponent implements OnInit {
           this.isLoading = false;
           this._toastService.mensagemError(erro.error.message);
         });
-      }
-      else {
+      
+      /*else {
         let vinculoProjetoContrato: VinculoProjetoContratoRequest = {
           idProjeto: id,
           idContrato: projeto.contratos[0].idContrato
@@ -159,7 +162,7 @@ export class ProjetosComponent implements OnInit {
           this.isLoading = false;
           this._toastService.mensagemError(erro.error.message);
         });
-      }
+      }*/
     }
   });
   }

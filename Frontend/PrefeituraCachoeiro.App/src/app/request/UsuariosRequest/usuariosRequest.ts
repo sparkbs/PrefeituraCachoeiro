@@ -11,6 +11,7 @@ export class CriarUsuariosRequest
     nome: string = '';
     senha: string = '';
     prefeituraId?: number;
+    isSuperAdmin: boolean = false;
 }
 
 export class AtualizarUsuariosRequest

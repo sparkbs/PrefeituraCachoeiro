@@ -10,6 +10,7 @@ export class MedicoesRequest extends BaseFilter
 }
 
 export class InserirMedicao {
+    idMedicoesProjeto: number = 0;
     numeroMedicao: number = 0;
     idContrato: number = 0;
     dataMedicao: Date;

@@ -13,6 +13,8 @@ import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { Grupo } from 'src/app/response/grupoResponse/todosGruposResponse';
 import { UsuariosGruposService } from 'src/app/services/usuariosGrupos.service';
 import { UsuariosGruposRequest } from 'src/app/request/UsuariosGruposRequest/usuariosGruposRequest';
+import { AuthService } from 'src/app/services/auth.service';
+import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
 
 @Component({
   selector: 'app-editar-criar-perfis',
@@ -24,6 +26,8 @@ export class EditarCriarPerfisComponent implements OnInit {
   listaPrefeitura: PrefeituraResponse[] = [];
   listaGrupos: Grupo[] =[];
   form: FormGroup;
+  ehSuperAdmin = false;
+  userLogin: string;
 
   constructor(
     public dialogRef: MatDialogRef<EditarCriarPerfisComponent>,
@@ -33,13 +37,18 @@ export class EditarCriarPerfisComponent implements OnInit {
     public _gruposControllerService: GruposService,
     private _toastService: ToastService,
     public _prefeituraControllerService: PrefeituraService,
-    public _UsuariosGruposControllerService: UsuariosGruposService
+    public auth: AuthService,
+    public _UsuariosGruposControllerService: UsuariosGruposService,
+    private readonly aesEncryptDecript: AESEncryptDecriptService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
     this.getAllGroups();
     this.buscarListaPrefeituras();
+
+    const cookieValue = this.auth.getCookie('_acesso');
+    this.userLogin = this.aesEncryptDecript.decrypt(cookieValue);
 
     if (this.data.edicao && this.data.id) {
       this.getUserById(this.data.id);
@@ -105,15 +114,18 @@ export class EditarCriarPerfisComponent implements OnInit {
     this.form.get('email').setValue(this.usuarioEdit.login);
     this.form.get('prefeitura').setValue(this.usuarioEdit.prefeituraId);
     this.form.get('grupo')?.disable();
+    this.ehSuperAdmin = this.usuarioEdit.isSuperAdmin;
   }
 
   saveForm() {
     if (!this.data.edicao) {
+      console.log(this.ehSuperAdmin);
       var usuarioRequest: CriarUsuariosRequest = {
         login: this.form.get('email').value,
         nome: this.form.get('nome').value,
         senha: this.form.get('senha').value,
-        prefeituraId: this.form.get('prefeitura').value ? this.form.get('prefeitura').value : undefined
+        prefeituraId: this.form.get('prefeitura').value ? this.form.get('prefeitura').value : undefined,
+        isSuperAdmin: this.ehSuperAdmin
       };
 
       if(!this.isEmailValid(usuarioRequest.login))

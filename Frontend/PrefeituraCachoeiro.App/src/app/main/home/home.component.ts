@@ -30,7 +30,14 @@ export class HomeComponent implements OnInit {
       idUsuario = this.aesEncryptDecript.decrypt(idUsuario);
 
       await this.usuarioService.BuscarUsuario(Number(idUsuario))
-      .then(resultUser => {prefeituraId = resultUser.prefeituraId});
+      .then(resultUser => {
+        prefeituraId = resultUser.prefeituraId;
+
+        if(resultUser){
+          var acesso = resultUser.isSuperAdmin ? "admin" : "user";
+          this.cookie.setCookie("_acesso",acesso);
+        }
+      });
     }
     if (prefeituraId) {
       this.hasPrefeitura = true;

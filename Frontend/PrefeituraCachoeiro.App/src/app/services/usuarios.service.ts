@@ -45,6 +45,7 @@ export class UsuariosService {
     formData.append('Nome', usuarios.nome);
     formData.append('Login', usuarios.login);
     formData.append('Senha', usuarios.senha);
+    formData.append('IsSuperAdmin', usuarios.isSuperAdmin.toString());
     if (usuarios.prefeituraId)
       formData.append('PrefeituraId', usuarios.prefeituraId.toString());
 
