@@ -23,9 +23,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VerDocumentosComponent } from '../aprovacaoBoletim/verDocumentos/verDocumentos.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { HistoricoBoletimComponent } from '../historico-boletim/historico-boletim.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
-  declarations: [ BoletimComponent, BoletimDetalhadoComponent, BoletimProjetoComponent, BoletimGeralComponent, AprovacaoBoletimComponent, AprovarMedicaoComponent, VerDocumentosComponent ],
+  declarations: [ BoletimComponent, BoletimDetalhadoComponent, BoletimProjetoComponent, BoletimGeralComponent, AprovacaoBoletimComponent, AprovarMedicaoComponent, VerDocumentosComponent, HistoricoBoletimComponent ],
   imports: [
     CommonModule,
     MatGridListModule,
@@ -44,7 +46,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     BrowserModule,
     MatTableModule,
     MatListModule,
-    SharedModule
+    SharedModule,
+    MatPaginatorModule
   ]
 })
 export class BoletimModule {}

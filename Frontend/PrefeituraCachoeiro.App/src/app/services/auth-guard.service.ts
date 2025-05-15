@@ -11,8 +11,13 @@ export class AuthGuardService {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const idPrefeitura = this.cookieService.get('_idPrefeitura');
 
-    if (idPrefeitura && state.url !== '/main/aprovacaoBoletim' && !state.url.includes('/main/boletimDetalhado') && !state.url.includes('/main/boletimPorProjeto') && !state.url.includes('/main/boletimGeral')) {
+    if (idPrefeitura && state.url !== '/main/aprovacaoBoletim' && !state.url.includes('/main/boletimDetalhado') && !state.url.includes('/main/boletimPorProjeto') && !state.url.includes('/main/boletimGeral') && !state.url.includes('/main/historicoBoletim')) {
       this.router.navigate(['/main/aprovacaoBoletim']);
+      return false;
+    }
+
+    if (idPrefeitura && state.url !== '/main/historicoBoletim' && !state.url.includes('/main/boletimDetalhado') && !state.url.includes('/main/boletimPorProjeto') && !state.url.includes('/main/boletimGeral') && !state.url.includes('/main/aprovacaoBoletim')) {
+      this.router.navigate(['/main/historicoBoletim']);
       return false;
     }
 

@@ -67,6 +67,7 @@
       <div *ngIf="relatoriosExpanded" class="submenu">
         <button [routerLink]="['/main/boletim']" *ngIf="!hasPrefeitura">Boletins</button>
         <button [routerLink]="['/main/aprovacaoBoletim']" *ngIf="hasPrefeitura">Tela de Aprovações</button>
+        <button [routerLink]="['/main/historicoBoletim']" *ngIf="hasPrefeitura">Histórico de medições</button>
         <button [routerLink]="['/main/powerBi']" *ngIf="!hasPrefeitura">Dashboards</button>
       </div>
     </nav>

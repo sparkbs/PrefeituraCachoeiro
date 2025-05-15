@@ -19,6 +19,7 @@ import { AprovacaoBoletimComponent } from './main/aprovacaoBoletim/aprovacaoBole
 import { PowerBIComponent } from './main/relatorios/powerBI/powerBI.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { EmpresaComponent } from './main/empresa/empresa/empresa.component';
+import { HistoricoBoletimComponent } from './main/historico-boletim/historico-boletim.component';
 
 const routes: Routes = [
 
@@ -43,6 +44,7 @@ const routes: Routes = [
       { path: 'aprovacaoBoletim', component: AprovacaoBoletimComponent, canActivate: [AuthGuardService] },
       { path: 'powerBi', component: PowerBIComponent, canActivate: [AuthGuardService] },
       { path: 'empresa', component: EmpresaComponent, canActivate: [AuthGuardService] },
+      { path: 'historicoBoletim', component: HistoricoBoletimComponent, canActivate: [AuthGuardService] }
     ]
   }
 ];

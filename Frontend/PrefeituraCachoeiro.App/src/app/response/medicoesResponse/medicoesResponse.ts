@@ -13,7 +13,7 @@ export class MedicoesResponse {
     items: ItemMedicao[];
     idProjeto: number;
     nomeProjeto: string = null;
-    arquivosMedicoesProjeto: ArquivosMedicoesProjetoResponse[]; 
+    arquivosMedicoesProjeto: ArquivosMedicoesProjetoResponse[];
     observacao: string;
     secretaria: string;
     projetoMedicao: string;
@@ -58,7 +58,7 @@ export class MedicoesResponse {
     dataInicio: string;
     prefeituraId: number;
     prefeitura: Prefeitura;
-    arquivosContratos: ArquivosContratoResponse[]; 
+    arquivosContratos: ArquivosContratoResponse[];
     isContratoGlobal: boolean;
   }
 
@@ -181,4 +181,10 @@ export class MedicoesResponse {
     unidadeTotal: number;
     unidadeTotalMedida: number;
   }
-  
+
+  export class TableMedicaoHistorico {
+    numeroMedicao: number;
+    statusMedicao: StatusMedicao;
+    projetos: MedicoesResponse[] = [];
+    mostrarTodos?: boolean;
+  }
