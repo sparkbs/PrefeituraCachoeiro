@@ -20,10 +20,19 @@ export class MedicoesService {
     );
   }
 
-  public async BuscarTodasMedicoes(filter: MedicoesRequest): Promise<TodasMedicaoProjetoResponse> {
+  public async BuscarTodasMedicoesOld(filter: MedicoesRequest): Promise<TodasMedicaoProjetoResponse> {
     return await firstValueFrom(
       this.http.post<TodasMedicaoProjetoResponse>(
         `${Environments.APIUrl}/medicoes/buscartodos`,
+        filter
+      )
+    );
+  }
+
+  public async BuscarTodasMedicoes(filter: MedicoesRequest): Promise<TodasMedicaoProjetoResponse> {
+    return await firstValueFrom(
+      this.http.post<TodasMedicaoProjetoResponse>(
+        `${Environments.APIUrl}/medicoes/buscartodosnovo`,
         filter
       )
     );
