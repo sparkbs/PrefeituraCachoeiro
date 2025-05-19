@@ -16,35 +16,35 @@
         </span>
       </button>
 
-      <button [routerLink]="['/main/empresa']" *ngIf="!hasPrefeitura">
+      <button [routerLink]="['/main/empresa']" *ngIf="!hasPrefeitura || userLogin == UserRole.Admin">
         <span>
           <mat-icon>business</mat-icon>
           <span>Empresa</span>
         </span>
       </button>
 
-      <button [routerLink]="['/main/prefeitura']" *ngIf="!hasPrefeitura">
+      <button [routerLink]="['/main/prefeitura']" *ngIf="!hasPrefeitura || userLogin == UserRole.Admin">
         <span>
           <mat-icon>account_balance</mat-icon>
           <span>Cliente</span>
         </span>
       </button>
 
-      <button [routerLink]="['/main/contratos']" *ngIf="!hasPrefeitura">
+      <button [routerLink]="['/main/contratos']" *ngIf="!hasPrefeitura || userLogin == UserRole.Admin">
         <span>
           <mat-icon>description</mat-icon>
           <span>Contrato</span>
         </span>
       </button>
 
-      <button [routerLink]="['/main/projetos']" *ngIf="!hasPrefeitura">
+      <button [routerLink]="['/main/projetos']" *ngIf="!hasPrefeitura || userLogin == UserRole.Admin">
         <span>
           <mat-icon>build</mat-icon>
           <span>Projeto</span>
         </span>
       </button>
 
-      <button [routerLink]="['/main/relatorioProjetosPorMedicao']" *ngIf="!hasPrefeitura">
+      <button [routerLink]="['/main/relatorioProjetosPorMedicao']" *ngIf="!hasPrefeitura || userLogin == UserRole.Admin">
         <span>
           <mat-icon>assignment</mat-icon>
           <span>Medições</span>
@@ -65,10 +65,10 @@
       </button>
 
       <div *ngIf="relatoriosExpanded" class="submenu">
-        <button [routerLink]="['/main/boletim']" *ngIf="!hasPrefeitura">Boletins</button>
-        <button [routerLink]="['/main/aprovacaoBoletim']" *ngIf="hasPrefeitura">Tela de Aprovações</button>
-        <button [routerLink]="['/main/historicoBoletim']" *ngIf="hasPrefeitura">Histórico de medições</button>
-        <button [routerLink]="['/main/powerBi']" *ngIf="!hasPrefeitura">Dashboards</button>
+        <button [routerLink]="['/main/boletim']" *ngIf="!hasPrefeitura || userLogin == UserRole.Admin">Boletins</button>
+        <button [routerLink]="['/main/aprovacaoBoletim']" *ngIf="hasPrefeitura || userLogin == UserRole.Admin">Tela de Aprovações</button>
+        <button [routerLink]="['/main/historicoBoletim']" *ngIf="hasPrefeitura || userLogin == UserRole.Admin">Histórico de medições</button>
+        <button [routerLink]="['/main/powerBi']" *ngIf="!hasPrefeitura || userLogin == UserRole.Admin">Dashboards</button>
       </div>
     </nav>
   </aside>

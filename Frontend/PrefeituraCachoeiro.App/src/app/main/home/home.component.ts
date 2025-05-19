@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { PerfilLogin } from 'src/app/enums/perfilLogin';
 import { AuthService } from 'src/app/services/auth.service';
 import { CookieProjetaService } from 'src/app/services/AuthService/cookie-projeta.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
@@ -34,7 +35,7 @@ export class HomeComponent implements OnInit {
         prefeituraId = resultUser.prefeituraId;
 
         if(resultUser){
-          var acesso = resultUser.isSuperAdmin ? "admin" : "user";
+          var acesso = resultUser.isSuperAdmin ? PerfilLogin.Admin : PerfilLogin.User;
           this.cookie.setCookie("_acesso",acesso);
         }
       });

@@ -225,6 +225,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     this.contratoSelecionado = null;
     this.exibirContrato = false;
     this.exibir = false;
+    this.listaFiltrada = this.listaPrefeitura;
     this.cdr.detectChanges();
   }
 

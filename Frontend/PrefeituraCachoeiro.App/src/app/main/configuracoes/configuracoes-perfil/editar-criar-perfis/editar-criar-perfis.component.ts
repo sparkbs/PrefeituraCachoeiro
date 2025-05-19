@@ -15,6 +15,7 @@ import { UsuariosGruposService } from 'src/app/services/usuariosGrupos.service';
 import { UsuariosGruposRequest } from 'src/app/request/UsuariosGruposRequest/usuariosGruposRequest';
 import { AuthService } from 'src/app/services/auth.service';
 import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
+import { PerfilLogin } from 'src/app/enums/perfilLogin';
 
 @Component({
   selector: 'app-editar-criar-perfis',
@@ -28,6 +29,7 @@ export class EditarCriarPerfisComponent implements OnInit {
   form: FormGroup;
   ehSuperAdmin = false;
   userLogin: string;
+  UserRole = PerfilLogin; // necessário para usar no template
 
   constructor(
     public dialogRef: MatDialogRef<EditarCriarPerfisComponent>,

@@ -3,8 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { filter } from 'rxjs';
+import { PerfilLogin } from 'src/app/enums/perfilLogin';
 import { ModalLevantamentoComponent } from 'src/app/main/relatorios/modalLevantamento/modalLevantamento.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,13 +17,16 @@ export class SidebarComponent {
   sidenavOpened: boolean = false;
   relatoriosExpanded = false;
   hasPrefeitura: boolean = false;
+  UserRole = PerfilLogin; // necessário para usar no template
+  userLogin: string;
 
   constructor(
     private authService: AuthService,
     private el: ElementRef,
     private renderer: Renderer2,
     private cookieService: CookieService,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    private readonly aesEncryptDecript: AESEncryptDecriptService) {
   }
 
   ngAfterViewInit() {
@@ -31,6 +36,8 @@ export class SidebarComponent {
   }
 
   ngOnInit() {
+    const cookieValue = this.authService.getCookie('_acesso');
+    this.userLogin = this.aesEncryptDecript.decrypt(cookieValue);
   }
 
   toggleSidenav(opened: boolean) {

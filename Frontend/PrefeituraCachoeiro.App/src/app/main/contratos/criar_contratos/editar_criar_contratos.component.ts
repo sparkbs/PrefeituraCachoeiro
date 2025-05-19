@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, Inject, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AfterViewInit, Component, inject, Inject, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Item } from '../contratos.component';
 import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
@@ -13,6 +13,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { AbstractControl, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { EmpresaResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { EmpresaService } from 'src/app/services/empresa.service';
+import { ConfirmaModalComponent } from 'src/app/shared/confirma-modal/confirma-modal.component';
 
 @Component({
   selector: 'app-editar_criar_contratos',
@@ -22,6 +23,7 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 export class Editar_criar_contratosComponent implements OnInit {
   @ViewChild('documentoInput') documentoInput: any;
   @ViewChild('baseDadosInput') baseDadosInput: any;
+  readonly dialog = inject(MatDialog);
 
   listaPrefeitura: PrefeituraResponse[] = [];
   listaGerentes: UsuariosResponse[] = [];
@@ -116,31 +118,61 @@ export class Editar_criar_contratosComponent implements OnInit {
 
     if (this.dateControl.status != "INVALID" && this.dateInicioControl.status != "INVALID" && this.dateTerminoControl.status != "INVALID") {
 
-    //this.criarContrato.EmpresaId = 2;
-    //retirar o valor
-    this.criarContrato.ArquivoTemplate = this.adicionarBaseDados();
+      if(this.criarContrato.IsContratoGlobal){
+       const dialogRef = this.dialog.open(ConfirmaModalComponent);
+       dialogRef.afterClosed().subscribe(async result => {
+         if(result){
+          this.criarContrato.ArquivoTemplate = this.adicionarBaseDados();
 
-    let documentoContrato: File[] = [];
-    this.listaDocumentoContrato.forEach(x => documentoContrato.push(x.file));
+          let documentoContrato: File[] = [];
+          this.listaDocumentoContrato.forEach(x => documentoContrato.push(x.file));
 
-    this.criarContrato.Arquivos = documentoContrato;
-    this._toastService.mensagemSuccess("Iniciando processo de criar o contrato");
-    await this.api.CriarContrato(this.criarContrato)
-    .then((result) => {
-      this._toastService.mensagemSuccess("Contrato criado com sucesso");
-      this.dialogRef.close(result);
-    })
-    .catch((res) => {
-      this._toastService.mensagemError(res.error.message);
-    })
-    .finally(() => {
+          this.criarContrato.Arquivos = documentoContrato;
+          this._toastService.mensagemSuccess("Iniciando processo de criar o contrato");
+          await this.api.CriarContrato(this.criarContrato)
+          .then((result) => {
+            this._toastService.mensagemSuccess("Contrato criado com sucesso");
+            this.dialogRef.close(result);
+          })
+          .catch((res) => {
+            this._toastService.mensagemError(res.error.message);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+        }
+         else{
+          this.isLoading = false;
+         }
+       });
+      }
+
+      else{
+        this.criarContrato.ArquivoTemplate = this.adicionarBaseDados();
+
+        let documentoContrato: File[] = [];
+        this.listaDocumentoContrato.forEach(x => documentoContrato.push(x.file));
+
+        this.criarContrato.Arquivos = documentoContrato;
+        this._toastService.mensagemSuccess("Iniciando processo de criar o contrato");
+        await this.api.CriarContrato(this.criarContrato)
+        .then((result) => {
+          this._toastService.mensagemSuccess("Contrato criado com sucesso");
+          this.dialogRef.close(result);
+        })
+        .catch((res) => {
+          this._toastService.mensagemError(res.error.message);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+      }
+      
+    }
+    else{
+      this._toastService.mensagemError("Informe uma data válida");
       this.isLoading = false;
-    });
-  }
-  else{
-    this._toastService.mensagemError("Informe uma data válida");
-    this.isLoading = false;
-  }
+    }
   }
 
   handleKeyDown(event: KeyboardEvent): void {

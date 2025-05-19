@@ -44,7 +44,7 @@
 
   </form>
 
-  <div class="div-form" *ngIf="this.userLogin == 'admin'">
+  <div class="div-form" *ngIf="this.userLogin == UserRole.Admin">
     <mat-checkbox name="selecionado" [disabled]="this.data.edicao" [(ngModel)]="ehSuperAdmin">
       Super Admin
     </mat-checkbox>
