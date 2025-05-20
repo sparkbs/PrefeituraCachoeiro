@@ -21,6 +21,7 @@ import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeitur
 import { AuthService } from 'src/app/services/auth.service';
 import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
+import { PerfilLogin } from 'src/app/enums/perfilLogin';
 
 @Component({
   selector: 'app-boletim-detalhado',
@@ -89,7 +90,10 @@ export class BoletimDetalhadoComponent implements OnInit {
 
     var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
 
-    if(idPrefeituraUser){
+    const cookieValue = this.auth.getCookie('_acesso');
+    var acesso = this.aesEncryptDecript.decrypt(cookieValue);
+
+    if(idPrefeituraUser && acesso != PerfilLogin.Admin){
       idPrefeituraUser = this.aesEncryptDecript.decrypt(idPrefeituraUser);
       if(idPrefeituraUser){
         await this.buscarPrefeitura(Number(idPrefeituraUser));

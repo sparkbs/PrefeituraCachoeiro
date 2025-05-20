@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { PerfilLogin } from 'src/app/enums/perfilLogin';
 import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
 import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
 import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
@@ -59,7 +60,10 @@ export class HistoricoBoletimComponent {
 
     var idPrefeituraUser = this.auth.getCookie('_idPrefeitura');
 
-    if (idPrefeituraUser) {
+    const cookieValue = this.auth.getCookie('_acesso');
+    var acesso = this.aesEncryptDecript.decrypt(cookieValue);
+
+    if (idPrefeituraUser && acesso != PerfilLogin.Admin) {
       idPrefeituraUser = this.aesEncryptDecript.decrypt(idPrefeituraUser);
       if (idPrefeituraUser) {
         await this.buscarPrefeitura(Number(idPrefeituraUser));

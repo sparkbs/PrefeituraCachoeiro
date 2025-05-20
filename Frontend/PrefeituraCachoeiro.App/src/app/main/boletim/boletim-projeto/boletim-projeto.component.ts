@@ -20,6 +20,7 @@ import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ProjetoService } from 'src/app/services/projeto.service';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { EmpresaService } from 'src/app/services/empresa.service';
+import { PerfilLogin } from 'src/app/enums/perfilLogin';
 
 
 @Component({
@@ -95,11 +96,10 @@ export class BoletimProjetoComponent implements OnInit {
 
      var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
 
+    const cookieValue = this.auth.getCookie('_acesso');
+    var acesso = this.aesEncryptDecript.decrypt(cookieValue);
 
-     //this.createForm();
-     var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
-
-     if(idPrefeituraUser){
+     if(idPrefeituraUser && acesso != PerfilLogin.Admin){
        idPrefeituraUser = this.aesEncryptDecript.decrypt(idPrefeituraUser);
        if(idPrefeituraUser){
          await this.buscarPrefeitura(Number(idPrefeituraUser));

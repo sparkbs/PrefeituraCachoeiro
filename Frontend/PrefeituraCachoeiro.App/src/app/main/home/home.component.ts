@@ -33,11 +33,6 @@ export class HomeComponent implements OnInit {
       await this.usuarioService.BuscarUsuario(Number(idUsuario))
       .then(resultUser => {
         prefeituraId = resultUser.prefeituraId;
-
-        if(resultUser){
-          var acesso = resultUser.isSuperAdmin ? PerfilLogin.Admin : PerfilLogin.User;
-          this.cookie.setCookie("_acesso",acesso);
-        }
       });
     }
     if (prefeituraId) {

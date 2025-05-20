@@ -17,6 +17,10 @@ import { StatusOrdenacao } from 'src/app/enums/statusOrdenacao';
 import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { OrigemArquivoAnexadoEnum } from 'src/app/enums/origemArquivoAnexado';
 import { ConfirmaExclusaoComponent } from 'src/app/shared/confirma-exclusao/confirma-exclusao.component';
+import { AuthService } from 'src/app/services/auth.service';
+import { CookieService } from 'ngx-cookie-service';
+import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
+import { PerfilLogin } from 'src/app/enums/perfilLogin';
 
 @Component({
   selector: 'app-listaMedicao',
@@ -42,8 +46,10 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
 
   @ViewChild(MatSort) sort!: MatSort;
 
+  permissaoAcesso: PerfilLogin;
+  UserRole = PerfilLogin; // necessário para usar no template
   alterarMedicaoProjeto = false;
-  constructor(private readonly apiMedicao: MedicoesService, private readonly api: ProjetoService,private globalService: GlobalServicesService,private _toastService: ToastService) {
+  constructor( private authService: AuthService, private readonly aesEncryptDecript: AESEncryptDecriptService,  private cookieService: CookieService ,private readonly apiMedicao: MedicoesService, private readonly api: ProjetoService,private globalService: GlobalServicesService,private _toastService: ToastService) {
     this.dataSource = new MatTableDataSource(this.medicoes.items);
    }
 
@@ -87,6 +93,9 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     }
     
   async ngOnInit() {
+    const cookieValue = this.authService.getCookie('_acesso');
+    this.permissaoAcesso = this.aesEncryptDecript.decrypt(cookieValue);
+
     this.medicoes.items.forEach(item =>{
       item.unidadeSalvaMedida = item.unidade;
       if(item?.itemsContrato != null && item.itemsContrato.valorComBdi != null){

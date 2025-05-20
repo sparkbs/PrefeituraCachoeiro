@@ -1,29 +1,36 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthService } from './auth.service';
+import { AESEncryptDecriptService } from '../shared/aesEncryptDecript.service';
+import { PerfilLogin } from '../enums/perfilLogin';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuardService {
-  constructor(private router: Router, private cookieService: CookieService) {}
+  constructor(private router: Router, private authService: AuthService, private cookieService: CookieService, private readonly aesEncryptDecript: AESEncryptDecriptService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const idPrefeitura = this.cookieService.get('_idPrefeitura');
+    const cookieValue = this.authService.getCookie('_acesso');
+    var acesso = this.aesEncryptDecript.decrypt(cookieValue);
 
-    if (idPrefeitura && state.url !== '/main/aprovacaoBoletim' && !state.url.includes('/main/boletimDetalhado') && !state.url.includes('/main/boletimPorProjeto') && !state.url.includes('/main/boletimGeral') && !state.url.includes('/main/historicoBoletim')) {
-      this.router.navigate(['/main/aprovacaoBoletim']);
-      return false;
-    }
+    if(acesso == PerfilLogin.User){
+      if (idPrefeitura && state.url !== '/main/aprovacaoBoletim' && !state.url.includes('/main/boletimDetalhado') && !state.url.includes('/main/boletimPorProjeto') && !state.url.includes('/main/boletimGeral') && !state.url.includes('/main/historicoBoletim')) {
+        this.router.navigate(['/main/aprovacaoBoletim']);
+        return false;
+      }
 
-    if (idPrefeitura && state.url !== '/main/historicoBoletim' && !state.url.includes('/main/boletimDetalhado') && !state.url.includes('/main/boletimPorProjeto') && !state.url.includes('/main/boletimGeral') && !state.url.includes('/main/aprovacaoBoletim')) {
-      this.router.navigate(['/main/historicoBoletim']);
-      return false;
-    }
+      if (idPrefeitura && state.url !== '/main/historicoBoletim' && !state.url.includes('/main/boletimDetalhado') && !state.url.includes('/main/boletimPorProjeto') && !state.url.includes('/main/boletimGeral') && !state.url.includes('/main/aprovacaoBoletim')) {
+        this.router.navigate(['/main/historicoBoletim']);
+        return false;
+      }
 
-    if (!idPrefeitura && state.url === '/main/aprovacaoBoletim') {
-      this.router.navigate(['/main/home']);
-      return false;
+      if (!idPrefeitura && state.url === '/main/aprovacaoBoletim') {
+        this.router.navigate(['/main/home']);
+        return false;
+      }
     }
 
     return true;
