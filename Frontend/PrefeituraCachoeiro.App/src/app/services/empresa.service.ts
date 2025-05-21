@@ -66,7 +66,7 @@ export class EmpresaService {
 
     return await firstValueFrom(
       this.http.post<GenericResultResponse<AtualizarEmpresaResponse>>(
-        `${Environments.APIUrl}/empresa`,
+        `${Environments.APIUrl}empresa`,
         formData
       )
     );

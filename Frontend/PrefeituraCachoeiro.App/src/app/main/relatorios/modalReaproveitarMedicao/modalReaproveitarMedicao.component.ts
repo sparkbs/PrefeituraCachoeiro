@@ -16,6 +16,7 @@ import { ToastService } from 'src/app/services/toast.service';
 export class ModalReaproveitarMedicaoComponent implements OnInit {
   isLoading = false;
   medicoesReaproveitadas: MedicoesResponse[] = [];
+  enableSalvar = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { medicoesProjetos: MedicoesModel[], numeroMedicao: number, projetos: MedicoesResponse[] },
@@ -30,10 +31,6 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
   ngOnInit() {
     const idsProjetosJaListados = this.data.projetos
     .map(d => d.idProjeto);
-
-    console.log(this.data.medicoesProjetos)
-
-    console.log(idsProjetosJaListados)
 
     const projetosUnicos = this.data.medicoesProjetos.filter(medicao => {
       return medicao.data.some(d => !idsProjetosJaListados.includes(d.idProjeto) && d.statusMedicao.idStatusMedicao == StatusMedicaoEnum.Recusada);
@@ -51,6 +48,7 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
     var medicoesPodemSerReaproveitadas = teste.filter(x => x.numeroMedicao != this.data.numeroMedicao);
 
     medicoesPodemSerReaproveitadas.forEach(async x => {
+      if(x.statusMedicao.idStatusMedicao == StatusMedicaoEnum.Recusada){
       x.nomeProjeto = await this.BuscarProjeto(x.idProjeto);
 
       if(this.medicoesReaproveitadas){
@@ -59,7 +57,20 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
       else{
         this.medicoesReaproveitadas.push(x);
       }
+    }
     })
+
+    console.log(this.medicoesReaproveitadas);
+
+  }
+
+  onChangeSalvar(){
+    if(this.medicoesReaproveitadas.some(x => x.selecionado)){
+      this.enableSalvar = false;
+    }
+    else{
+      this.enableSalvar = true;
+    }
   }
 
   async salvar(){

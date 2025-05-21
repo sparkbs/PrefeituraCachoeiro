@@ -15,7 +15,7 @@ import { EmpresaResponse } from 'src/app/response/contratosResponse/todosContrat
   templateUrl: './editar_criar_empresa.component.html',
   styleUrls: ['./editar_criar_empresa.component.scss']
 })
-export class Editar_criar_empresaComponent implements OnInit {
+export class Editar_criar_empresaComponent {
   criarEmpresa: BaseEmpresaRequest = new BaseEmpresaRequest();
   atualizarEmpresa: AtualizarEmpresaRequest = new AtualizarEmpresaRequest();
   isLoading = false;
@@ -30,16 +30,17 @@ export class Editar_criar_empresaComponent implements OnInit {
 
   }
 
-  ngOnInit(){
+  /*ngOnInit(){
     if(this.data.email){
       let emailsCadastrados = this.data.email.split("; ");
       this.emails = emailsCadastrados;
     }
-  }
+  }*/
 
   async cadastrar(){
     this.isLoading = true;
-    this.criarEmpresa.Email = this.emails.join("; ");
+    //this.criarEmpresa.Email = this.emails.join("; ");
+    this.criarEmpresa.Email = "email@email.com";
     console.log(this.criarEmpresa);
     await this.api.CriarEmpresa(this.criarEmpresa)
     .then((result) => {
@@ -134,7 +135,7 @@ export class Editar_criar_empresaComponent implements OnInit {
     this.atualizarEmpresa.EmpresaId = this.data.empresaId;
     this.atualizarEmpresa.Nome = this.data.nome;
     this.atualizarEmpresa.CNPJ = this.data.cnpj;
-    this.atualizarEmpresa.Email = this.emails.join("; ");
+    this.atualizarEmpresa.Email = "email@email.com";
 
     await this.api.AtualizarEmpresa(this.atualizarEmpresa)
     .then((result) => {

@@ -105,7 +105,6 @@ export interface ContratosResponse {
     nome: string;
     logo: string;
     cnpj: string;
-    email: string;
   }
   
   export interface PrefeituraResponse {

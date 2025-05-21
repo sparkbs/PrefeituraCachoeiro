@@ -1,4 +1,4 @@
-<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Projetos Serem Reaproveitados</h1>
+<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Projetos serem Reaproveitados</h1>
 <mat-dialog-content class="mat-typography">
   <div style="margin-top: 20px;">
     <div class="cadastrarMedicao">
@@ -6,6 +6,7 @@
         <li *ngFor="let medicao of medicoesReaproveitadas">
           <input 
             type="checkbox" 
+            (change)="onChangeSalvar()"
             [(ngModel)]="medicao.selecionado" 
           />
           <span>Projeto: {{ medicao.nomeProjeto }}</span> |
@@ -18,7 +19,7 @@
 </mat-dialog-content>
 <mat-dialog-actions >
   <button mat-button style="border: solid 1px; border-color: black;" (click)="voltar()" >Voltar</button>
-  <button mat-button style="border: solid 1px; border-color: black;"  (click)="salvar()">Salvar</button>
+  <button mat-button style="border: solid 1px; border-color: black;" [disabled]="enableSalvar" (click)="salvar()">Salvar</button>
 </mat-dialog-actions>
 
 <app-loading *ngIf="this.isLoading"></app-loading>
