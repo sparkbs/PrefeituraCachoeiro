@@ -32,6 +32,14 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
   listaGerentes: UsuariosResponse[] = [];
   isLoading = false;
   listaEmpresa: EmpresaResponse[] = [];
+  listaFiltrada: any[] = [];
+  nomeCliente: string;
+  listaGerenteFiltrada: any[] = [];
+  selectedGerente: number | null = null; // Valor selecionado
+  nomeGerente: string;
+  selectedEmpresa: number | null = null; // Valor selecionado
+  nomeEmpresa: string;
+  listaEmpresaFiltrada: any[] = [];
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: ContratosResponse,
   private readonly apiMedicao: MedicoesService,
@@ -52,8 +60,17 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
     }
 
   async ngOnInit() {
+    this.isLoading = true;
     await this.buscarListaempresas();
     await this.buscarListaPrefeituras();
+    await this.buscarListaGerentes();
+    this.listaFiltrada = [...this.listaPrefeitura];
+    this.nomeCliente = this.listaPrefeitura?.find(x => x.idPrefeitura == this.data.prefeituraId)?.nome;
+    this.listaGerenteFiltrada = [...this.listaGerentes];
+    this.nomeGerente = this.listaGerentes?.find(x => x.nome == this.data.gerente)?.nome;
+    this.listaEmpresaFiltrada = [...this.listaEmpresa];
+    this.nomeEmpresa = this.listaEmpresa?.find(x => x.empresaId == this.data.empresaId)?.nome;
+    this.isLoading = false;
   }
 
   async buscarListaGerentes(){
@@ -64,6 +81,9 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
     await this.apiUsuarios.BuscarTodosUsuarios(usuarioRequest)
     .then((result) => {
       this.listaGerentes = result.data;
+    })
+    .catch(() =>{
+      this.isLoading = false;
     });
   }
 
@@ -76,6 +96,9 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
     await this.apiPrefeitura.BuscarTodasPrefeituras(prefeituraFilter)
     .then((result) => {
       this.listaPrefeitura = result.data;
+    })
+    .catch(() => {
+      this.isLoading = false;
     });
   }
 
@@ -95,6 +118,41 @@ exibirData(data: Date){
 
   return dataFormatada;
 }
+
+  async onSelectionChange(nome: string){
+    var prefeituraId = this.listaPrefeitura.find(x => x.nome === nome).idPrefeitura;
+    this.data.prefeituraId = prefeituraId;
+  }
+
+  filtrarPrefeitura(valor: string) {
+    // Filtra a lista com base no valor digitado
+    this.listaFiltrada = this.listaPrefeitura.filter(prefeitura => 
+      prefeitura.nome.toLowerCase().includes(valor.toLowerCase())
+    );
+  }
+
+ filtrarGerente(valor: string) {
+    // Filtra a lista com base no valor digitado
+    this.listaGerenteFiltrada = this.listaGerentes.filter(gerente => 
+      gerente.nome.toLowerCase().includes(valor.toLowerCase())
+    );
+  }
+
+  async onSelectionGerenteChange(nome: string){
+    this.data.gerente = nome;
+  }
+
+  filtrarEmpresa(valor: string) {
+    // Filtra a lista com base no valor digitado
+    this.listaEmpresaFiltrada = this.listaEmpresa.filter(empresa => 
+      empresa.nome.toLowerCase().includes(valor.toLowerCase())
+    );
+  }
+  
+  async onSelectionEmpresaChange(nome: string){
+    var empresaId = this.listaEmpresa.find(x => x.nome === nome).empresaId;
+    this.data.empresaId = empresaId;
+  }
 
 formatDateToString(date: Date): string {
   if (date instanceof Date && !isNaN(date.getTime())) {
@@ -116,6 +174,9 @@ async buscarListaempresas(){
   await this.apiEmpresa.BuscarTodasEmpresas(prefeituraFilter)
   .then((result) => {
     this.listaEmpresa = result.data;
+  })
+  .catch(() => {
+    this.isLoading = false;
   });
 }
 

@@ -23,6 +23,8 @@ export class CadastrarMedicaoComponent implements OnInit {
   isLoading = false;
   secretaria = "";
   projetoMedicao = "";
+  listaFiltrada: any[] = [];
+  selectedProjeto: number | null = null; // Valor selecionado
 
   constructor(private readonly api: MedicoesService,
     @Inject(MAT_DIALOG_DATA) public data: {medicoes: Contrato, numeroMedicao?:
@@ -91,6 +93,13 @@ export class CadastrarMedicaoComponent implements OnInit {
     }
   }
 
+  filtrarProjeto(valor: string) {
+    // Filtra a lista com base no valor digitado
+    this.listaFiltrada = this.listaProjetos.filter(projeto => 
+      projeto.nomeProjeto.toLowerCase().includes(valor.toLowerCase())
+    );
+  }
+
   async getAllProjects() {
     console.log(this.data);
     const projetoRequest: ProjetoRequest = {
@@ -111,6 +120,7 @@ export class CadastrarMedicaoComponent implements OnInit {
         else{
           this.listaProjetos = res.data;
         }
+        this.listaFiltrada = [...this.listaProjetos];
       });
 
     } catch (error) {
@@ -119,5 +129,10 @@ export class CadastrarMedicaoComponent implements OnInit {
     finally{
       this.isLoading = false;
     }
+  }
+
+  async onSelectionProjetoChange(nome: string){
+    var projetoId = this.listaProjetos.find(x => x.nomeProjeto === nome).idProjeto;
+    this.projetoSelecionado = projetoId;
   }
 }

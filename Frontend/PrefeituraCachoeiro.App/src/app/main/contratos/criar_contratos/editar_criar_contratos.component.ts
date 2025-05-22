@@ -33,7 +33,11 @@ export class Editar_criar_contratosComponent implements OnInit {
   valorContrato: string;
   isLoading = false;
   listaFiltrada: any[] = [];
+  listaGerenteFiltrada: any[] = [];
+  listaEmpresaFiltrada: any[] = [];
   selectedPrefeitura: number | null = null; // Valor selecionado
+  selectedGerente: number | null = null; // Valor selecionado
+  selectedEmpresa: number | null = null; // Valor selecionado
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Item, 
   private dialogRef: MatDialogRef<Editar_criar_contratosComponent>,
@@ -50,11 +54,22 @@ export class Editar_criar_contratosComponent implements OnInit {
     await this.buscarListaPrefeituras();
     await this.buscarListaempresas();
     this.listaFiltrada = [...this.listaPrefeitura];
+    this.listaGerenteFiltrada = [...this.listaGerentes];
+    this.listaEmpresaFiltrada = [...this.listaEmpresa];
   }
 
   async onSelectionChange(nome: string){
     var prefeituraId = this.listaPrefeitura.find(x => x.nome === nome).idPrefeitura;
     this.criarContrato.PrefeituraId = prefeituraId;
+  }
+
+  async onSelectionGerenteChange(nome: string){
+    this.criarContrato.Gerente = nome;
+  }
+
+  async onSelectionEmpresaChange(nome: string){
+    var empresaId = this.listaEmpresa.find(x => x.nome === nome).empresaId;
+    this.criarContrato.EmpresaId = empresaId;
   }
 
   async buscarListaempresas(){
@@ -110,6 +125,20 @@ export class Editar_criar_contratosComponent implements OnInit {
     // Filtra a lista com base no valor digitado
     this.listaFiltrada = this.listaPrefeitura.filter(prefeitura => 
       prefeitura.nome.toLowerCase().includes(valor.toLowerCase())
+    );
+  }
+
+  filtrarGerente(valor: string) {
+    // Filtra a lista com base no valor digitado
+    this.listaGerenteFiltrada = this.listaGerentes.filter(gerente => 
+      gerente.nome.toLowerCase().includes(valor.toLowerCase())
+    );
+  }
+
+  filtrarEmpresa(valor: string) {
+    // Filtra a lista com base no valor digitado
+    this.listaEmpresaFiltrada = this.listaEmpresa.filter(empresa => 
+      empresa.nome.toLowerCase().includes(valor.toLowerCase())
     );
   }
 

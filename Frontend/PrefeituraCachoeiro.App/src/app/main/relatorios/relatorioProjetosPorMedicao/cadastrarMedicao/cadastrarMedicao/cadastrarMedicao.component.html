@@ -7,11 +7,22 @@
         <input [(ngModel)]="nomeMedicao" type="number" [disabled]="disabledNomeMedicao" matInput/>
       </mat-form-field>
 
-      <mat-form-field style="margin-left: 8px;">
+     <!-- <mat-form-field style="margin-left: 8px;">
         <mat-label>Selecione o projeto</mat-label>
         <mat-select disableRipple [(ngModel)]="projetoSelecionado">
           <mat-option *ngFor="let projeto of listaProjetos" [value]="projeto.idProjeto" >{{projeto.nomeProjeto}}</mat-option>
         </mat-select>
+      </mat-form-field>-->
+
+      <mat-form-field style="margin-left: 8px;">
+        <mat-label>Selecione o projeto</mat-label>
+        <input matInput [matAutocomplete]="autoProjeto" [(ngModel)]="selectedProjeto" (ngModelChange)="filtrarProjeto($event)">
+        
+        <mat-autocomplete  #autoProjeto="matAutocomplete" (optionSelected)="onSelectionProjetoChange($event.option.value)">
+          <mat-option *ngFor="let projeto of listaFiltrada" [value]="projeto.nomeProjeto">
+            {{ projeto.nomeProjeto }}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
 
       <br>

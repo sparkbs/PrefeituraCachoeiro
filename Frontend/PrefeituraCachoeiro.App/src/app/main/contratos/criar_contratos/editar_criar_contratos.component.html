@@ -62,18 +62,40 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field style="margin-left: 10px;">
+     <!-- <mat-form-field style="margin-left: 10px;">
         <mat-label>Selecione o Gerente</mat-label>
         <mat-select disableRipple [(ngModel)]="criarContrato.Gerente">
           <mat-option *ngFor="let gerente of listaGerentes" [value]="gerente.nome" >{{gerente.nome}}</mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field>-->
 
       <mat-form-field style="margin-left: 10px;">
+        <mat-label>Selecione o Gerente</mat-label>
+        <input matInput [matAutocomplete]="autoGerente" [(ngModel)]="selectedGerente" (ngModelChange)="filtrarGerente($event)">
+        
+        <mat-autocomplete  #autoGerente="matAutocomplete" (optionSelected)="onSelectionGerenteChange($event.option.value)">
+          <mat-option *ngFor="let gerente of listaGerenteFiltrada" [value]="gerente.nome">
+            {{ gerente.nome }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+     <!-- <mat-form-field style="margin-left: 10px;">
         <mat-label>Selecione a Empresa</mat-label>
         <mat-select disableRipple [(ngModel)]="criarContrato.EmpresaId">
           <mat-option *ngFor="let empresa of listaEmpresa" [value]="empresa.empresaId" >{{empresa.nome}}</mat-option>
         </mat-select>
+      </mat-form-field> -->
+
+      <mat-form-field style="margin-left: 10px;">
+        <mat-label>Selecione a Empresa</mat-label>
+        <input matInput [matAutocomplete]="autoEmpresa" [(ngModel)]="selectedEmpresa" (ngModelChange)="filtrarEmpresa($event)">
+        
+        <mat-autocomplete  #autoEmpresa="matAutocomplete" (optionSelected)="onSelectionEmpresaChange($event.option.value)">
+          <mat-option *ngFor="let empresa of listaEmpresaFiltrada" [value]="empresa.nome">
+            {{ empresa.nome }}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
 
     </div>
