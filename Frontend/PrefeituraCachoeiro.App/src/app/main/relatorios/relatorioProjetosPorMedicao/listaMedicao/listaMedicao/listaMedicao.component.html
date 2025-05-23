@@ -36,7 +36,10 @@
       <!-- Primeira div - Quando a condição for verdadeira -->
       <div style="margin-top: 10px; display: flex; align-items: center; flex: 1;">
         <mat-label style="font-weight: bold; margin-right: 8px;">Número da nota fiscal: </mat-label>
-        <input type="text" style="width: 25%; margin-right: 16px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Aprovada  ? 'block' : 'none'" [(ngModel)]="medicoes.observacao" (blur)="salvar()"/>
+        <input type="text" style="width: 25%; margin-right: 16px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Aprovada  ? 'block' : 'none'" [(ngModel)]="medicoes.observacao" />
+        <span matTooltip="Salvar número da nota fiscal" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="salvar()">
+          <mat-icon>save</mat-icon>
+        </span>
         <span style="font-size: 14px; font-weight: bold;" [style.display]="!alterarMedicaoProjeto && medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Recusada ? 'block' : 'none'">{{medicoes.observacao}}</span>
       </div>
 

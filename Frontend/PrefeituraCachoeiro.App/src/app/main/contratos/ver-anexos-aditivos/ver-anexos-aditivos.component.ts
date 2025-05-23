@@ -28,7 +28,6 @@ export class VerAnexosAditivosComponent {
   isAditivoQuantidade = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: ContratosAditivosResponse, private readonly api: ContratosService, private _toastService: ToastService,   private dialogRef: MatDialogRef<VerAnexosAditivosComponent>, ) {
-    console.log(this.data.arquivosAditivos);
     this.lista = this.data; 
   }
 

@@ -125,10 +125,6 @@ export class ProjetosComponent implements OnInit {
       if(result){
         let projeto = this.listaProjetos.find(res => res.idProjeto == id);
 
-        console.log(projeto);
-        console.log(this.listaProjetos);
-        console.log(id);
-
         this._projetoControllerService.DeletarProjeto(id)
         .then(() => {
           this.getAllProjects();

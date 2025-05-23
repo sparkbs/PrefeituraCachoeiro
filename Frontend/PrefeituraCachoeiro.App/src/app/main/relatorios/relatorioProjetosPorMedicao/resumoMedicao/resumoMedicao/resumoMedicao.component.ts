@@ -54,11 +54,8 @@ export class ResumoMedicaoComponent implements OnInit {
     }, {} as { [key: string]: ItemResumo });
   
     this.lista = Object.values(agrupadosPorNome);
-    console.log(this.lista);
-      console.log("-----");
 
     this.dataSource = new MatTableDataSource(this.lista);
-    console.log(this.dataSource);
   }
   
   

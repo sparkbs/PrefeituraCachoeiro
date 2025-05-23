@@ -101,7 +101,6 @@ export class CadastrarMedicaoComponent implements OnInit {
   }
 
   async getAllProjects() {
-    console.log(this.data);
     const projetoRequest: ProjetoRequest = {
       nome: '',
       itemsPorPagina: 1000000,

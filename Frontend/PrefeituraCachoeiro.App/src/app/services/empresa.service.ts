@@ -54,7 +54,6 @@ export class EmpresaService {
 
   public async CriarEmpresa(request: BaseEmpresaRequest): Promise<GenericResultResponse<AtualizarEmpresaResponse>> {
     const formData = new FormData();
-    console.log(request);
     formData.append('Nome', request.Nome);
     formData.append('CNPJ', request.CNPJ);
     formData.append('Email', request.Email);
@@ -62,7 +61,6 @@ export class EmpresaService {
     if (request.Logo) {
       formData.append('Logo', request.Logo);
     }
-    console.log(formData);
 
     return await firstValueFrom(
       this.http.post<GenericResultResponse<AtualizarEmpresaResponse>>(

@@ -80,7 +80,7 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
     usuarioRequest.pagina = 1;
     await this.apiUsuarios.BuscarTodosUsuarios(usuarioRequest)
     .then((result) => {
-      this.listaGerentes = result.data;
+      this.listaGerentes = result.data.filter(x => x.prefeituraId == null);
     })
     .catch(() =>{
       this.isLoading = false;
@@ -140,6 +140,8 @@ exibirData(data: Date){
 
   async onSelectionGerenteChange(nome: string){
     this.data.gerente = nome;
+    var gerenteId = this.listaGerentes.find(x => x.nome === nome).idUsuario;
+    this.atualizarContrato.GerenteId = gerenteId;
   }
 
   filtrarEmpresa(valor: string) {
@@ -223,7 +225,6 @@ formatStringToDate(data: string) {
       var id = this.data.idContrato;
       const documentoFile = this.documentoInput.nativeElement.files[0] as File;
       let documentoRequest: salvarDocumentoContratoRequest = new salvarDocumentoContratoRequest();
-      console.log(id);
       documentoRequest.IdContrato = id,
       documentoRequest.Arquivos = [documentoFile];
       /*this.listaDocumentoContrato.push({

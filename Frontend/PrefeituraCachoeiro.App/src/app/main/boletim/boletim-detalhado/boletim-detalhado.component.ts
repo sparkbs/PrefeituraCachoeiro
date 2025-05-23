@@ -304,7 +304,6 @@ export class BoletimDetalhadoComponent implements OnInit {
           this.dataSource.unshift(projeto);
 
           this.dadosSeparadosProjeto = this.dadosSeparadosProjeto.concat(this.dataSource);
-          console.log(this.dadosSeparadosProjeto);
 
           this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
           this.valorTotalMedicao = dados.valorTotalMedicao || 0;

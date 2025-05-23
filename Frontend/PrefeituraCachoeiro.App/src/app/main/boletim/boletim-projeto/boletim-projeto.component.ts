@@ -293,7 +293,6 @@ export class BoletimProjetoComponent implements OnInit {
      this.isLoading = true;
      //this.form.get('medicaoId').enable();
      this.contratoSelecionado = this.listaContratos.find(res => res.idContrato == contratoId);
-     console.log(this.contratoSelecionado);
      if(contratoId != undefined && contratoId != null && contratoId != 0)
        await this.getProjectsByClientId();
      this.isLoading = false;
@@ -428,7 +427,6 @@ export class BoletimProjetoComponent implements OnInit {
            //Se tornou boletim geral
            this.boletimCabecalho = dados.boletimDetalhadoCabecalho;
 
-           console.log(this.boletimCabecalho);
            // Verificar o tipo do campo logoTipoImg
            await this.RetornarLogoCliente(this.contratoSelecionado.prefeituraId);
            await this.RetornarLogoEmpresa(this.contratoSelecionado.empresaId);

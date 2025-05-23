@@ -36,15 +36,11 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
       return medicao.data.some(d => !idsProjetosJaListados.includes(d.idProjeto) && d.statusMedicao.idStatusMedicao == StatusMedicaoEnum.Recusada);
     });
 
-    console.log(projetosUnicos)
-
 
     const teste: MedicoesResponse[] = projetosUnicos
     .flatMap(x => x.data) // Junta todos os MedicoesResponse
     .filter(y => !idsProjetosJaListados.includes(y.idProjeto)); // Fica só com os que têm idProjeto único
     
-    console.log(teste);
-
     var medicoesPodemSerReaproveitadas = teste.filter(x => x.numeroMedicao != this.data.numeroMedicao);
 
     medicoesPodemSerReaproveitadas.forEach(async x => {
@@ -60,7 +56,6 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
     }
     })
 
-    console.log(this.medicoesReaproveitadas);
 
   }
 
@@ -76,7 +71,6 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
   async salvar(){
     this.isLoading = true;
     let medicaoRequest = new InserirMedicao();
-    console.log(this.data.projetos)
 
     var medicoesQueVamosReaproveitar = this.medicoesReaproveitadas.filter(x => x.selecionado == true)
 
@@ -93,7 +87,6 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
       medicaoRequest.numeroMedicao = this.data.numeroMedicao;
       medicaoRequest.resumo = this.data.projetos[0].resumo;
       medicaoRequest.observacao = this.data.projetos[0].observacao;
-      console.log(medicaoRequest)
 
       await this.apiMed.CriarMedicoes(medicaoRequest)
       .then(async (result) => {

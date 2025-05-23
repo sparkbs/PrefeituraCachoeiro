@@ -77,8 +77,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     }
     this.listaFiltrada = [...this.listaPrefeitura];
 
-    console.log(this.listaContratos)
-    console.log("ngOnInit");
+
   }
 
   async buscarPrefeitura(id: number){
@@ -193,8 +192,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     this.exibirContrato = true;
     this.isLoading = true;
     await this.buscarListaContratos(prefeituraId);
-    console.log(this.listaContratos)
-    console.log("onSelectionChange");
+
   }
 
   async buscarListaContratos(prefeituraId: number){
@@ -216,8 +214,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
 
   async buscar(){
     this.isLoading = true;
-    console.log(this.contratoSelecionado);
-    console.log(this.listaContratos);
+
     this.contratoSelecionadoEstrutura = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
     await this.buscarMedicoes();
     this.exibir = true;
@@ -356,7 +353,6 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
         try {
           const result = await this.apiMedicoes.DeletarMedicao(x.idMedicoesProjeto);
           if (result) {
-            console.log(result);
             medicaoDeletada = true;
           }
         } catch (erro) {
@@ -396,7 +392,6 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
             data.idStatusMedicao === StatusMedicaoEnum.EmEdicao ||
             data.idStatusMedicao === StatusMedicaoEnum.Criada
           ) {
-            console.log( data.idStatusMedicao )
             const req = new BuscarArquivosMedicaoIdProjRequest();
             req.IdMedicoesProjeto = data.idMedicoesProjeto;
   

@@ -16,6 +16,7 @@ export class GlobalServicesService {
       var restante = quantidade - quantidadeMedida;
       if(restante < 0 && !isContratoGlobal){
         this.itemInvalido = true;
+        console.log("primeiro IF")
         this._toastService.mensagemError("Não é permitido a quantidade restante de cada item ser menor que 0!");
       }
       else{
@@ -28,9 +29,13 @@ export class GlobalServicesService {
       }
     }
     else{
+                      console.log("========")
+      console.log(quantidadeMedida)
+            console.log( this.itensMedidos[itemExiste] )
       var restante = this.itensMedidos[itemExiste].quantidades - quantidadeMedida;
       if(restante < 0 && !isContratoGlobal){
         this.itemInvalido = true;
+                console.log("SEGUNDO IF")
         this._toastService.mensagemError("Não é permitido a quantidade restante de cada item ser menor que 0!");
       }
       else{

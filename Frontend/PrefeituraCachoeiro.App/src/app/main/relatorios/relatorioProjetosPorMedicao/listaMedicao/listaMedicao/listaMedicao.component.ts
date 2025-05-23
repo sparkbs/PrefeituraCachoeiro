@@ -96,12 +96,15 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     const cookieValue = this.authService.getCookie('_acesso');
     this.permissaoAcesso = this.aesEncryptDecript.decrypt(cookieValue);
 
+    if(this.medicoes.statusMedicao.idStatusMedicao != StatusMedicaoEnum.Aprovada){    
+
     this.medicoes.items.forEach(item =>{
       item.unidadeSalvaMedida = item.unidade;
       if(item?.itemsContrato != null && item.itemsContrato.valorComBdi != null){
         this.globalService.addItem(item.itemsContrato.item.descricao, item.itemsContrato.unidade, item.idItemContrato, item.unidade, this.medicoes.contratos.isContratoGlobal)
       }
     })
+  }
 
     this.arquivosAnexadosTelaMedicao = this.medicoes.arquivosMedicoesProjeto.filter(x => x.idOrigemArquivo == OrigemArquivoAnexadoEnum.Medicao);
     this.arquivosAnexadosTelaAprovacao = this.medicoes.arquivosMedicoesProjeto.filter(x => x.idOrigemArquivo == OrigemArquivoAnexadoEnum.Aprovacao);
@@ -160,10 +163,6 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     }
     else{
       let quantidade = item.unidade - item.unidadeSalvaMedida;
-      console.log(item.unidade);
-      console.log(item.unidadeSalvaMedida);
-      console.log(quantidade);
-      console.log(this.somarValorTotal());
       let somaTotal = this.somarValorTotal();
 
       if(somaTotal > this.medicoes.contratos.valorAtualContrato){

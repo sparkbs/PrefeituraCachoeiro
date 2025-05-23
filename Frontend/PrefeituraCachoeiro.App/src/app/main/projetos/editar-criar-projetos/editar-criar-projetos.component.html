@@ -35,7 +35,7 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Código do projeto</mat-label>
-        <input matInput formControlName="codigoProjeto">
+        <input matInput formControlName="codigoProjeto" (keypress)="apenasNumeros($event)">
         <mat-error *ngIf="form.get('codigoProjeto').hasError('required')">Campo obrigatório!</mat-error>
       </mat-form-field>
   </form>

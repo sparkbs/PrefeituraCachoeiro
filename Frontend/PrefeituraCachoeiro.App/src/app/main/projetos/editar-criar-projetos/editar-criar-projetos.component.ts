@@ -55,6 +55,13 @@ export class EditarCriarProjetosComponent implements OnInit {
     );
   }
 
+  apenasNumeros(event: KeyboardEvent): void {
+    const charCode = event.key;
+    if (!/^\d$/.test(charCode)) {
+      event.preventDefault(); // bloqueia letras e símbolos
+    }
+  }  
+
   createForm() {
     this.form = this.fb.group({
       nome: [{ value: '', disabled: true }, Validators.required],

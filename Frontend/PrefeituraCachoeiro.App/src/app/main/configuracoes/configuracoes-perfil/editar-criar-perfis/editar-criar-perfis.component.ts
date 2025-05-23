@@ -121,7 +121,6 @@ export class EditarCriarPerfisComponent implements OnInit {
 
   saveForm() {
     if (!this.data.edicao) {
-      console.log(this.ehSuperAdmin);
       var usuarioRequest: CriarUsuariosRequest = {
         login: this.form.get('email').value,
         nome: this.form.get('nome').value,

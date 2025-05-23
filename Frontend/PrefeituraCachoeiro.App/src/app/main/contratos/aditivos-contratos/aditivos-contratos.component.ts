@@ -95,7 +95,6 @@ export class AditivosContratosComponent implements AfterViewInit {
     }
     this.listaDocumentoContrato.forEach(x => this.requestCriarAditivo.Arquivos.push(x.file));
 
-    console.log(this.requestCriarAditivo);
 
     await this.api.CriarAditivos(this.requestCriarAditivo)
     .then((result) => {

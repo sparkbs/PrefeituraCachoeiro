@@ -65,6 +65,8 @@ export class Editar_criar_contratosComponent implements OnInit {
 
   async onSelectionGerenteChange(nome: string){
     this.criarContrato.Gerente = nome;
+    var gerenteId = this.listaGerentes.find(x => x.nome === nome).idUsuario;
+    this.criarContrato.GerenteId = gerenteId;
   }
 
   async onSelectionEmpresaChange(nome: string){
@@ -101,7 +103,7 @@ export class Editar_criar_contratosComponent implements OnInit {
     usuarioRequest.pagina = 1;
     await this.apiUsuarios.BuscarTodosUsuarios(usuarioRequest)
     .then((result) => {
-      this.listaGerentes = result.data;
+      this.listaGerentes = result.data.filter(x => x.prefeituraId == null);
     });
   }
 
@@ -147,10 +149,42 @@ export class Editar_criar_contratosComponent implements OnInit {
 
     if (this.dateControl.status != "INVALID" && this.dateInicioControl.status != "INVALID" && this.dateTerminoControl.status != "INVALID") {
 
-      if(this.criarContrato.IsContratoGlobal){
-       const dialogRef = this.dialog.open(ConfirmaModalComponent);
-       dialogRef.afterClosed().subscribe(async result => {
-         if(result){
+      if(this.criarContrato.PrefeituraId == null || this.criarContrato.GerenteId == null || this.criarContrato.EmpresaId == null){
+        this._toastService.mensagemError("Informe todos os campos!");
+        this.isLoading = false;
+      }
+      else{
+
+        if(this.criarContrato.IsContratoGlobal){
+        const dialogRef = this.dialog.open(ConfirmaModalComponent);
+        dialogRef.afterClosed().subscribe(async result => {
+          if(result){
+            this.criarContrato.ArquivoTemplate = this.adicionarBaseDados();
+
+            let documentoContrato: File[] = [];
+            this.listaDocumentoContrato.forEach(x => documentoContrato.push(x.file));
+
+            this.criarContrato.Arquivos = documentoContrato;
+            this._toastService.mensagemSuccess("Iniciando processo de criar o contrato");
+            await this.api.CriarContrato(this.criarContrato)
+            .then((result) => {
+              this._toastService.mensagemSuccess("Contrato criado com sucesso");
+              this.dialogRef.close(result);
+            })
+            .catch((res) => {
+              this._toastService.mensagemError(res.error.message);
+            })
+            .finally(() => {
+              this.isLoading = false;
+            });
+          }
+          else{
+            this.isLoading = false;
+          }
+        });
+        }
+
+        else{
           this.criarContrato.ArquivoTemplate = this.adicionarBaseDados();
 
           let documentoContrato: File[] = [];
@@ -170,33 +204,7 @@ export class Editar_criar_contratosComponent implements OnInit {
             this.isLoading = false;
           });
         }
-         else{
-          this.isLoading = false;
-         }
-       });
       }
-
-      else{
-        this.criarContrato.ArquivoTemplate = this.adicionarBaseDados();
-
-        let documentoContrato: File[] = [];
-        this.listaDocumentoContrato.forEach(x => documentoContrato.push(x.file));
-
-        this.criarContrato.Arquivos = documentoContrato;
-        this._toastService.mensagemSuccess("Iniciando processo de criar o contrato");
-        await this.api.CriarContrato(this.criarContrato)
-        .then((result) => {
-          this._toastService.mensagemSuccess("Contrato criado com sucesso");
-          this.dialogRef.close(result);
-        })
-        .catch((res) => {
-          this._toastService.mensagemError(res.error.message);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-      }
-      
     }
     else{
       this._toastService.mensagemError("Informe uma data válida");

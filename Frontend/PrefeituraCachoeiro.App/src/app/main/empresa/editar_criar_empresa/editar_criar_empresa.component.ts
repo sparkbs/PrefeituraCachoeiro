@@ -41,7 +41,6 @@ export class Editar_criar_empresaComponent {
     this.isLoading = true;
     //this.criarEmpresa.Email = this.emails.join("; ");
     this.criarEmpresa.Email = "email@email.com";
-    console.log(this.criarEmpresa);
     await this.api.CriarEmpresa(this.criarEmpresa)
     .then((result) => {
       this._toastService.mensagemSuccess("Emrpesa criado com sucesso");
@@ -85,8 +84,6 @@ export class Editar_criar_empresaComponent {
 
   adicionarEmail(){
     let isValid = this.isEmailValid(this.emailSerCadastrado)
-    console.log(isValid);
-    console.log(!this.emails.some(x => x == this.emailSerCadastrado))
     if(isValid && !this.emails.some(x => x == this.emailSerCadastrado)){
       this.emails.push(this.emailSerCadastrado);
     }

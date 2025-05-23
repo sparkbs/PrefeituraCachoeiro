@@ -242,7 +242,6 @@ export class AprovacaoBoletimComponent implements OnInit {
   }
   
   async aprovarTodasMedicoes(todasMedicoes: MedicoesResponse[]) {
-    console.log(todasMedicoes);
   
     const dialogRef = this.dialog.open(AprovarMedicaoComponent, {
       data: { idMedicoesProj: 0, todasMedicoes: todasMedicoes }
@@ -251,7 +250,6 @@ export class AprovacaoBoletimComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async (resultado) => {
       if (resultado) {
         // Aqui você trata o valor retornado do dialog, se necessário
-        console.log("Valor retornado do dialog:", resultado);
   
         this._toastService.mensagemSuccess("Aguarde, atualizando as medições!");
         this.isLoading = true;

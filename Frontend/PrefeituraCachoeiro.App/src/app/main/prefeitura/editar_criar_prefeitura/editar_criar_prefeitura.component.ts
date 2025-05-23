@@ -57,8 +57,6 @@ export class Editar_criar_prefeituraComponent implements OnInit{
 
   adicionarEmail(){
     let isValid = this.isEmailValid(this.emailSerCadastrado)
-    console.log(isValid);
-    console.log(!this.emails.some(x => x == this.emailSerCadastrado))
     if(isValid && !this.emails.some(x => x == this.emailSerCadastrado)){
       this.emails.push(this.emailSerCadastrado);
     }

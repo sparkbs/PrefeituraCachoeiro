@@ -4,6 +4,7 @@ export class CriarContratoRequest {
     EmpresaId: number;
     TipoContratacao: number;
     Gerente: string = "";
+    GerenteId: number;
     DataInicio: Date;
     DataTermino: Date;
     PrefeituraId: number;
