@@ -195,6 +195,16 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
+  buscarSaldoItemMedicao(idItemContrato: number){
+    if(this.globalService.getItems(idItemContrato).quantidades < 0 && this.medicoes.contratos.isContratoGlobal)
+    {
+      return 0;
+    }
+    else{
+      return this.globalService.getItems(idItemContrato).quantidades.toFixed(6).replace(".",",");
+    }
+  }
+
 
   async reprovarMedicao(idMedicao: number){
     let request = new DadosMedicoesRequest()

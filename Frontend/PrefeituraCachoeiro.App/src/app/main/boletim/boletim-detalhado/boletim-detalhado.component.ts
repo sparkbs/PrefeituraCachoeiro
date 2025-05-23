@@ -219,10 +219,12 @@ export class BoletimDetalhadoComponent implements OnInit {
 
   async onSelectionChange(contratoId: number) {
     //this.form.get('medicaoId').enable();
+    this.isLoading = true;
     this.enableMedicao = true;
     this.contratoSelecionado = this.listaContratos.find(res => res.idContrato == contratoId);
     if(contratoId != undefined && contratoId != null && contratoId != 0)
       await this.buscarMedicoes(contratoId);
+    this.isLoading = false;
   }
 
   async onSelectionChangeMedicao(medicaoId: number) {
@@ -408,8 +410,10 @@ export class BoletimDetalhadoComponent implements OnInit {
   }
 
   async onSelectionClienteChange(prefeituraId: number) {
+    this.isLoading = true;
     this.enableContrato = true;
     await this.buscarListaContratosPrefeituraId(prefeituraId);
+    this.isLoading = false;
   }
 
   async buscarListaContratosPrefeituraId(prefeituraId: number){

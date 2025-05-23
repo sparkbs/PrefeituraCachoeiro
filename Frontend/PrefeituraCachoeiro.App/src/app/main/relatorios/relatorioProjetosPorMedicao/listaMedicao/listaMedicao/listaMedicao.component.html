@@ -37,7 +37,7 @@
       <div style="margin-top: 10px; display: flex; align-items: center; flex: 1;">
         <mat-label style="font-weight: bold; margin-right: 8px;">Número da nota fiscal: </mat-label>
         <input type="text" style="width: 25%; margin-right: 16px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Aprovada  ? 'block' : 'none'" [(ngModel)]="medicoes.observacao" />
-        <span matTooltip="Salvar número da nota fiscal" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="salvar()">
+        <span matTooltip="Salvar número da nota fiscal" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Aprovada  ? 'block' : 'none'" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="salvar()">
           <mat-icon>save</mat-icon>
         </span>
         <span style="font-size: 14px; font-weight: bold;" [style.display]="!alterarMedicaoProjeto && medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Recusada ? 'block' : 'none'">{{medicoes.observacao}}</span>
@@ -89,7 +89,7 @@
       <ng-container matColumnDef="qtdRestante">
         <th mat-header-cell *matHeaderCellDef  style="font-size: 13px;" > Saldo </th>
         <td mat-cell *matCellDef="let item" style="width: 5%;">
-          <span style="font-size: 12px;" >{{ buscarItemMedicao(item.idItemContrato)}}</span>
+          <span style="font-size: 12px;" >{{ buscarSaldoItemMedicao(item.idItemContrato)}}</span>
         </td>
       </ng-container>
 

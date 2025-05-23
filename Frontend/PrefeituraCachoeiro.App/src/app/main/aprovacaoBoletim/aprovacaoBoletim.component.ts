@@ -184,11 +184,11 @@ export class AprovacaoBoletimComponent implements OnInit {
     });
   }
 
-  async reprovarMedicao(idMedicao: number){
+  async reprovarMedicao(idMedicao: number, medicao: MedicoesResponse){
     this.isLoading = true;
     let request = new DadosMedicoesRequest()
     request.DataRegistro = new Date().toISOString().split('T')[0]; 
-    request.Resumo = "";
+    request.Resumo = medicao.resumo;
     request.IdMedicoesProjeto = idMedicao;
     await this.apiMedicoes.ReprovarMedicoes(request)
     .then(async (result) => {     

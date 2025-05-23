@@ -33,13 +33,13 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
     .map(d => d.idProjeto);
 
     const projetosUnicos = this.data.medicoesProjetos.filter(medicao => {
-      return medicao.data.some(d => !idsProjetosJaListados.includes(d.idProjeto) && d.statusMedicao.idStatusMedicao == StatusMedicaoEnum.Recusada);
+      return medicao.data.some(d => d.statusMedicao.idStatusMedicao == StatusMedicaoEnum.Recusada);
     });
 
 
     const teste: MedicoesResponse[] = projetosUnicos
     .flatMap(x => x.data) // Junta todos os MedicoesResponse
-    .filter(y => !idsProjetosJaListados.includes(y.idProjeto)); // Fica só com os que têm idProjeto único
+    //.filter(y => !idsProjetosJaListados.includes(y.idProjeto)); // Fica só com os que têm idProjeto único
     
     var medicoesPodemSerReaproveitadas = teste.filter(x => x.numeroMedicao != this.data.numeroMedicao);
 
@@ -87,6 +87,19 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
       medicaoRequest.numeroMedicao = this.data.numeroMedicao;
       medicaoRequest.resumo = this.data.projetos[0].resumo;
       medicaoRequest.observacao = this.data.projetos[0].observacao;
+
+      var projetoExistente = this.data.projetos.find(x => x.idProjeto == medicaoRequest.idProjeto)
+
+      if(projetoExistente){
+        await this.apiMed.DeletarMedicao(projetoExistente.idMedicoesProjeto)
+        .then( () => {
+            this._toastService.mensagemSuccess("Medição atual deletada com sucesso.");
+        })
+        .catch((err) => {
+            this._toastService.mensagemError(err.error.message);
+            this.isLoading = false;
+        })
+      }
 
       await this.apiMed.CriarMedicoes(medicaoRequest)
       .then(async (result) => {

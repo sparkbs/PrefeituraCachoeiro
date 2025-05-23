@@ -237,6 +237,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: contrato, numeroMedicao :1, associarMedicao: false}});
 
       dialogRef.afterClosed().subscribe(async result => {
+        this.isLoading = true;
         if(result){
           await this.apiMedicoes.BuscarMedicoes(result)
           .then((response) => {      
@@ -247,6 +248,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
             this.medicaoProjetos.push(novoMedicao);   
           });          
         }
+        this.isLoading = false;
       });
     }
     else{
@@ -259,6 +261,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
       const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos , numeroMedicao :maiorNumero }});
 
       dialogRef.afterClosed().subscribe(async result => {
+        this.isLoading = true;
         if(result){
           await this.apiMedicoes.BuscarMedicoes(result)
           .then((response) => {      
@@ -269,6 +272,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
             this.medicaoProjetos.push(novoMedicao);   
           });          
         }
+        this.isLoading = false;
       });
     }
   }
@@ -300,6 +304,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
 
     const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao, projetosMedidos: projetosMedidos, associarMedicao: true}});    
     dialogRef.afterClosed().subscribe(async result => {
+      this.isLoading = true;
       if(result){
         await this.apiMedicoes.BuscarMedicoes(result)
         .then((response) => {      
@@ -310,6 +315,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
           this.medicaoProjetos.push(novoMedicao);   
         });          
       }
+      this.isLoading = false;
     });
   }
 
