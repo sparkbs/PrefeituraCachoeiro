@@ -90,7 +90,7 @@
               </div>
               
               <div *ngFor="let medicao of medicoes.data">
-                <app-listaMedicao [medicoes]="medicao"></app-listaMedicao>              
+                <app-listaMedicao [medicoes]="medicao" (atualizarListaMedicao)="buscar()"></app-listaMedicao>              
               </div>
             
             </mat-expansion-panel>         

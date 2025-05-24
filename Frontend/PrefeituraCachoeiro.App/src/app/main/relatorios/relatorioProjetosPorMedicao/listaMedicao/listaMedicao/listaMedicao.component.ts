@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
@@ -31,6 +31,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
   readonly dialog = inject(MatDialog);
   @ViewChild('documentoInput') documentoInput: any;
   @Input() medicoes: MedicoesResponse = new MedicoesResponse();
+  @Output() atualizarListaMedicao = new EventEmitter<string>();
   StatusEnum = StatusMedicaoEnum;  // Expondo o enum no componente
   isLoading = false;
   listaDocumentoContrato: BuscarArquivosMedicaoResponse[] = [];
@@ -68,13 +69,16 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
      async deleteContrato(id: any){
        const dialogRef = this.dialog.open(ConfirmaExclusaoComponent);
        dialogRef.afterClosed().subscribe(async result => {
+        this.isLoading = true;
          if(result){
    
            await this.apiMedicao.DeletarMedicao(id)  
            .then((result) => {
              this.medicoes = null;
+             this.atualizarListaMedicao.emit('Medição deletada com sucesso');
            });
          }
+        this.isLoading = false;
        });
      }
 

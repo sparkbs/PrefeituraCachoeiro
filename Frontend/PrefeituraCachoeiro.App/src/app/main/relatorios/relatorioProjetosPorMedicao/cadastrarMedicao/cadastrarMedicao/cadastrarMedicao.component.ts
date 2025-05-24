@@ -74,8 +74,8 @@ export class CadastrarMedicaoComponent implements OnInit {
     medicaoRequest.numeroMedicao = this.nomeMedicao;
     if(this.data?.projetosMedidos != null && this.data?.projetosMedidos != undefined && this.data.projetosMedidos.some(x => x.idProjeto == this.projetoSelecionado)){
       this.isLoading = false;
-      this.dialogRef.close();
       this._toastService.mensagemError("Projeto ja existe nessa medição");
+      this.dialogRef.close();
     }
     else{
       await this.api.CriarMedicoes(medicaoRequest)
@@ -86,8 +86,6 @@ export class CadastrarMedicaoComponent implements OnInit {
       .catch((err) =>
       {
         this._toastService.mensagemError(err.error.message);
-      })
-      .finally(() => {
         this.isLoading = false;
       });
     }

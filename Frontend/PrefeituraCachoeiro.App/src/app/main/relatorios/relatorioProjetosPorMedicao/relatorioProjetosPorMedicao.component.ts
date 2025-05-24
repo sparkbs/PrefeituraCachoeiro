@@ -306,14 +306,15 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async result => {
       this.isLoading = true;
       if(result){
-        await this.apiMedicoes.BuscarMedicoes(result)
+        /*await this.apiMedicoes.BuscarMedicoes(result)
         .then((response) => {      
           let novoMedicao = new MedicoesModel();
           novoMedicao.numeroMedicao = response.numeroMedicao;
           novoMedicao.data.push(response);
   
           this.medicaoProjetos.push(novoMedicao);   
-        });          
+        });*/
+        await this.buscar();          
       }
       this.isLoading = false;
     });
