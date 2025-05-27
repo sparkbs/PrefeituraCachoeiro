@@ -100,15 +100,15 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     const cookieValue = this.authService.getCookie('_acesso');
     this.permissaoAcesso = this.aesEncryptDecript.decrypt(cookieValue);
 
-    if(this.medicoes.statusMedicao.idStatusMedicao != StatusMedicaoEnum.Aprovada){    
+    //if(this.medicoes.statusMedicao.idStatusMedicao != StatusMedicaoEnum.Aprovada){    
 
     this.medicoes.items.forEach(item =>{
       item.unidadeSalvaMedida = item.unidade;
       if(item?.itemsContrato != null && item.itemsContrato.valorComBdi != null){
-        this.globalService.addItem(item.itemsContrato.item.descricao, item.itemsContrato.unidade, item.idItemContrato, item.unidade, this.medicoes.contratos.isContratoGlobal)
+        this.globalService.addItem(item.itemsContrato.item.descricao, item.itemsContrato.unidade, item.idItemContrato, item.unidade, this.medicoes.contratos.isContratoGlobal, this.medicoes.statusMedicao.idStatusMedicao)
       }
     })
-  }
+  //}
 
     this.arquivosAnexadosTelaMedicao = this.medicoes.arquivosMedicoesProjeto.filter(x => x.idOrigemArquivo == OrigemArquivoAnexadoEnum.Medicao);
     this.arquivosAnexadosTelaAprovacao = this.medicoes.arquivosMedicoesProjeto.filter(x => x.idOrigemArquivo == OrigemArquivoAnexadoEnum.Aprovacao);
@@ -175,7 +175,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       }
       else
       {
-        this.globalService.addItem("",0, item.idItemContrato,quantidade, this.medicoes.contratos.isContratoGlobal)
+        this.globalService.addItem("",0, item.idItemContrato,quantidade, this.medicoes.contratos.isContratoGlobal, this.medicoes.statusMedicao.idStatusMedicao)
         if(this.globalService.itemInvalido){
           item.unidade = item.unidadeSalvaMedida;
           item.itemInvalido = false;
@@ -200,7 +200,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   buscarSaldoItemMedicao(idItemContrato: number){
-    if(this.globalService.getItems(idItemContrato).quantidades < 0 && this.medicoes.contratos.isContratoGlobal)
+    if(this.globalService.getItems(idItemContrato)?.quantidades < 0 && this.medicoes.contratos.isContratoGlobal)
     {
       return 0;
     }

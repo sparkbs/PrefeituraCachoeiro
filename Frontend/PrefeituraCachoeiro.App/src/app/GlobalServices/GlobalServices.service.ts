@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastService } from '../services/toast.service';
+import { StatusMedicaoEnum } from '../enums/statusMedicao';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,16 @@ export class GlobalServicesService {
 
   constructor(private _toastService: ToastService) { }
 
-  addItem(nome: string, quantidade: number, idItemContrato:number, quantidadeMedida:number, isContratoGlobal:boolean) {
+  addItem(nome: string, quantidade: number, idItemContrato:number, quantidadeMedida:number, isContratoGlobal:boolean, idStatusMedicao: number) {
     let itemExiste = this.itensMedidos.findIndex(x => x.idItemContrato == idItemContrato);
     if(itemExiste == -1){
-      var restante = quantidade - quantidadeMedida;
+      var restante = 0;
+      if(idStatusMedicao != StatusMedicaoEnum.Aprovada){
+        restante = quantidade - quantidadeMedida;
+      }
+      else{
+        restante = quantidade;
+      }
       if(restante < 0 && !isContratoGlobal){
         this.itemInvalido = true;
         console.log("primeiro IF")
@@ -29,10 +36,13 @@ export class GlobalServicesService {
       }
     }
     else{
-                      console.log("========")
-      console.log(quantidadeMedida)
-            console.log( this.itensMedidos[itemExiste] )
-      var restante = this.itensMedidos[itemExiste].quantidades - quantidadeMedida;
+      var restante = 0;
+      if(idStatusMedicao != StatusMedicaoEnum.Aprovada){
+        restante = this.itensMedidos[itemExiste].quantidades - quantidadeMedida;
+      }else{
+        restante = this.itensMedidos[itemExiste].quantidades;
+      }
+
       if(restante < 0 && !isContratoGlobal){
         this.itemInvalido = true;
                 console.log("SEGUNDO IF")
@@ -40,12 +50,11 @@ export class GlobalServicesService {
       }
       else{
         if(restante < 0 && isContratoGlobal){
-          console.log("test")
-          this.itensMedidos[itemExiste].quantidades = restante;
+          this.itensMedidos[itemExiste].quantidades = restante;          
           this.itemInvalido = false;
         }
         else{
-          this.itensMedidos[itemExiste].quantidades = restante;
+            this.itensMedidos[itemExiste].quantidades = restante;          
           this.itemInvalido = false;
         }
       }

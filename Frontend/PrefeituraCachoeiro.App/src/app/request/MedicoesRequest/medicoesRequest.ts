@@ -65,3 +65,9 @@ export class BuscarArquivosMedicaRequest extends BaseFilter{
 export class BuscarArquivosMedicaoIdProjRequest {
   IdMedicoesProjeto: number;
 }
+
+export class RegistroDocumentosPorMedicoesRequest{
+    IdContrato: number;
+    NumeroMedicao: number;
+    Arquivos: File;
+}

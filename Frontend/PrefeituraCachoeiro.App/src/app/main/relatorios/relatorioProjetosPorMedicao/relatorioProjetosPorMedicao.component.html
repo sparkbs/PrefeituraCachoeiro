@@ -79,13 +79,28 @@
                 <div style="width: 20px;"></div>
               
                 <div style="margin-left: 10px;">
-                  <div>Documentos:</div>
-                  <div style="display: flex; align-items: center;">
-                    <input #documentoInput type="file" style="width: 350px; margin-right: 10px;" />
-                    <span matTooltip="Exibir Todos" style="cursor: pointer;">
-                      <mat-icon>playlist_add</mat-icon>
-                    </span>
+                  <div>
+                    Documentos:
                   </div>
+                  <div >
+                    <input #documentoInput type="file" style="width: 100%" />
+                    <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;" (click)="adicionarDocumento(medicoes)">
+                      <mat-icon>playlist_add</mat-icon>
+                    </span>  
+                  </div>
+                  
+
+                  <div *ngFor="let item of medicoes.documentos.data">
+                    <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
+                      {{item.arquivo}}
+                      <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarDocumentoMedicao(item.id, medicoes)">
+                        <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
+                      </span>
+                      <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumentoMedicao(item.id, item.arquivo)">
+                        <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
+                      </span>
+                    </div>
+                  </div> 
                 </div>
               </div>
               

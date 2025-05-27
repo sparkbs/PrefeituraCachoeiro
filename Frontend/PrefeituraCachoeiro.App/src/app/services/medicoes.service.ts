@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Environments } from '../environments/Environments';
 import { GenericResultResponse } from '../response/genericResultResponse';
-import { BuscarArquivosMedicaoResponse, InserirDocumentoMedicaoResponse, MedicoesResponse, RetornoIdMedicao, RetornoReprovacaoAprovacaoResponse, TodasMedicaoProjetoResponse } from '../response/medicoesResponse/medicoesResponse';
-import { AlterarMedicaoProjetoRequest, AprovarMedicoesRequest, BuscarArquivosMedicaoIdProjRequest, BuscarArquivosMedicaRequest, DadosMedicoesRequest, InserirMedicao, MedicoesRequest, RegistroDocumentosMedicoesRequest } from '../request/MedicoesRequest/medicoesRequest';
+import { BuscarArquivosMedicaoResponse, DocumentosMedicoesModel, InserirDocumentoMedicaoResponse, MedicoesResponse, RetornoIdMedicao, RetornoReprovacaoAprovacaoResponse, TodasMedicaoProjetoResponse } from '../response/medicoesResponse/medicoesResponse';
+import { AlterarMedicaoProjetoRequest, AprovarMedicoesRequest, BuscarArquivosMedicaoIdProjRequest, BuscarArquivosMedicaRequest, DadosMedicoesRequest, InserirMedicao, MedicoesRequest, RegistroDocumentosMedicoesRequest, RegistroDocumentosPorMedicoesRequest } from '../request/MedicoesRequest/medicoesRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -109,10 +109,32 @@ export class MedicoesService {
     );
   }
 
+  public async RegistrarDocumentosMedicaoGlobal(filter: RegistroDocumentosPorMedicoesRequest): Promise<InserirDocumentoMedicaoResponse> {
+    const formData = new FormData();
+    Object.keys(filter).forEach(key => {
+      formData.append(key, filter[key]);
+    });
+
+    return await firstValueFrom(
+      this.http.post<InserirDocumentoMedicaoResponse>(
+        `${Environments.APIUrl}medicoes/registrardocumentosglobal`,
+        formData
+      )
+    );
+  }
+
   public async DeletarArquivoMedicao(id: number): Promise<GenericResultResponse<string>> {
     return await firstValueFrom(
       this.http.delete<GenericResultResponse<string>>(
         `${Environments.APIUrl}medicoes/apagararquivomedicao/${id}`
+      )
+    );
+  }
+
+  public async DeletarArquivoMedicaoGlobal(id: number): Promise<GenericResultResponse<string>> {
+    return await firstValueFrom(
+      this.http.delete<GenericResultResponse<string>>(
+        `${Environments.APIUrl}medicoes/apagararquivoglobalmedicao/${id}`
       )
     );
   }
@@ -140,6 +162,15 @@ export class MedicoesService {
     );
   }
 
+  public async DownloadArquivoMedicaoGlobal(id: number) : Promise<Blob>{
+    return await firstValueFrom(
+      this.http.get<Blob>(
+        `${Environments.APIUrl}medicoes/downloadarquivomedicaoglobal/${id}`,
+        {responseType: 'blob' as 'json'}
+      )
+    );
+  }
+
   public async EnviarMedicaoCliente(IdMedicoesProjeto: BuscarArquivosMedicaoIdProjRequest) : Promise<RetornoReprovacaoAprovacaoResponse>{
     const formData = new FormData();
     Object.keys(IdMedicoesProjeto).forEach(key => {
@@ -158,6 +189,14 @@ export class MedicoesService {
     return await firstValueFrom(
       this.http.delete<GenericResultResponse<string>>(
         `${Environments.APIUrl}medicoes/${id}`
+      )
+    );
+  }
+
+  public async BuscarDocumentosMedicoes(contradoId: number, numeroMedicao: number) : Promise<DocumentosMedicoesModel>{
+    return await firstValueFrom(
+      this.http.get<DocumentosMedicoesModel>(
+        `${Environments.APIUrl}medicoes/obterdocumentosglobais?contradoId=${contradoId}&numeroMedicao=${numeroMedicao}`
       )
     );
   }

@@ -37,6 +37,7 @@
     </mat-form-field>
     <div style="margin-top: auto; display: flex; justify-content: flex-end;padding: 20px;">
       <button mat-button
+      [disabled]="!medicaoSelecionado"
       style="background-color: royalblue; color: white; "
       (click)="onSelectionChangeMedicao(medicaoSelecionado)">
         Buscar

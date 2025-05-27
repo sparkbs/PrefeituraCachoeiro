@@ -28,7 +28,7 @@ export class MedicoesResponse {
     id: number;
     arquivoMedicao: string;
     arquivo: string;
-    idOrigemArquivo: number;
+    idOrigemArquivo?: number;
   }
 
   export class ArquivosAprovacao {
@@ -150,6 +150,11 @@ export class MedicoesResponse {
   export class MedicoesModel {
     numeroMedicao: number = 0;
     data: MedicoesResponse[] = [];
+    documentos?: DocumentosMedicoesModel;
+  }
+
+  export class DocumentosMedicoesModel {
+    data: IdsResponse[] = [];
   }
 
   export class MedicaoLevantamento {
@@ -167,6 +172,7 @@ export class MedicoesResponse {
   export class IdsResponse{
     id: number;
     arquivoMedicao: string;
+    arquivo?: string;
   }
 
   export class InserirDocumentoMedicaoResponse{

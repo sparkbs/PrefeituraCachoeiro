@@ -8,8 +8,8 @@ import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeitur
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { MedicoesService } from 'src/app/services/medicoes.service';
-import { BuscarArquivosMedicaoIdProjRequest, MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
-import { Contrato, Empresa, Item, ItemContrato, ItemMedicao, MedicoesModel, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { BuscarArquivosMedicaoIdProjRequest, MedicoesRequest, RegistroDocumentosPorMedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
+import { ArquivosMedicoesProjetoResponse, Contrato, DocumentosMedicoesModel, Empresa, IdsResponse, Item, ItemContrato, ItemMedicao, MedicoesModel, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ResumoMedicaoComponent } from './resumoMedicao/resumoMedicao/resumoMedicao.component';
 import { GlobalServicesService, ItensMedidos } from 'src/app/GlobalServices/GlobalServices.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -29,6 +29,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   listaPrefeitura: PrefeituraResponse[] = [];
   listaContratos: ContratosResponse[] = [];
+  @ViewChild('documentoInput') documentoInput: any;
 
   @ViewChildren(MatAccordion) accordions!: QueryList<MatAccordion>; 
   exibir = false;
@@ -43,6 +44,8 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   isLoading = false;
   listaFiltrada: any[] = [];
   contratoSelecionadoEstrutura: ContratosResponse = null;
+  arquivosAnexadosTelaMedicao: ArquivosMedicoesProjetoResponse[] =[];
+  todasDocumentosMedicaoProjetoResponse = new DocumentosMedicoesModel();
 
   constructor(private cdr: ChangeDetectorRef, 
     private readonly apiPrefeitura: PrefeituraService,
@@ -143,9 +146,9 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     medicoesRequest.itemsPorPagina = 1000000;
     medicoesRequest.pagina = 1;
     await this.apiMedicoes.BuscarTodasMedicoes(medicoesRequest)
-    .then((result) => {      
+    .then(async (result) => {      
       this.todasMedicaoProjetoResponse = result;
-      this.popularMedicao(result);
+      await this.popularMedicao(result);
     }).catch((erro) => {
       this._toastService.mensagemError(erro.error.message);
     })
@@ -154,21 +157,33 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     });;
   }
 
-  popularMedicao(result: TodasMedicaoProjetoResponse){
-    result?.data?.forEach(valor => {
-      let existeMedicao = this.medicaoProjetos.find(x => x.numeroMedicao == valor.numeroMedicao);
-      if(existeMedicao){
-        existeMedicao.data.push(valor);
+async popularMedicao(result: TodasMedicaoProjetoResponse) {
+  for (const valor of result?.data ?? []) {
+    let existeMedicao = this.medicaoProjetos.find(x => x.numeroMedicao == valor.numeroMedicao);
+    
+    if (existeMedicao) {
+      existeMedicao.data.push(valor);
+    } else {
+      try {
+        this.todasDocumentosMedicaoProjetoResponse = await this.apiMedicoes.BuscarDocumentosMedicoes(
+          this.contratoSelecionado,
+          valor.numeroMedicao
+        );
+      } catch (erro) {
+        this._toastService.mensagemError(erro.error.message);
+        continue;
       }
-      else{
-        let novoMedicao = new MedicoesModel();
-        novoMedicao.numeroMedicao = valor.numeroMedicao;
-        novoMedicao.data.push(valor);
 
-        this.medicaoProjetos.push(novoMedicao);
-      }
-    })
+      let novoMedicao = new MedicoesModel();
+      novoMedicao.numeroMedicao = valor.numeroMedicao;
+      novoMedicao.documentos = this.todasDocumentosMedicaoProjetoResponse;
+      novoMedicao.data.push(valor);
+
+      this.medicaoProjetos.push(novoMedicao);
+    }
   }
+}
+
 
   async buscarListaPrefeituras(){
     var prefeituraFilter : PrefeituraFilter = new PrefeituraFilter();
@@ -331,6 +346,80 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   onOptionSelected(value: any) {
     console.log('Prefeitura selecionada:', value);
   }
+
+  async adicionarDocumento(medicoes: MedicoesModel){
+    this.isLoading = true;
+
+    if(this.documentoInput.nativeElement.files[0] != undefined){
+      const documentoFile = this.documentoInput.nativeElement.files[0] as File;
+
+      var request = new RegistroDocumentosPorMedicoesRequest();
+      request.IdContrato = this.contratoSelecionado;
+      request.NumeroMedicao = medicoes.numeroMedicao;
+      request.Arquivos = (documentoFile);
+      await this.apiMedicoes.RegistrarDocumentosMedicaoGlobal(request)
+      .then((result) => {
+
+        var addArqMedicao = new IdsResponse();
+        addArqMedicao.arquivo = documentoFile.name;
+        addArqMedicao.arquivoMedicao = result.ids[0].arquivoMedicao;
+        addArqMedicao.id = result.ids[0].id;
+        medicoes.documentos.data.push(addArqMedicao);
+      })
+      .catch(() =>
+      {
+        this.isLoading = false;
+      });
+
+
+      this.documentoInput.nativeElement.value = '';
+    }
+    this.isLoading = false;
+  }
+
+  async deletarDocumentoMedicao(idDocumento: number, medicoes: MedicoesModel) {
+    this.isLoading = true;
+    // Filtra os documentos, removendo o que for igual ao item a ser deletado
+    await this.apiMedicoes.DeletarArquivoMedicaoGlobal(idDocumento)
+    .then(async (result) => {
+      this._toastService.mensagemSuccess("Documento deletado com sucesso.");
+      //this.arquivosAnexadosTelaMedicao = this.arquivosAnexadosTelaMedicao.filter(x => x.id != idDocumento);
+      const index = medicoes.documentos.data.findIndex(doc => doc.id == idDocumento);
+      if (index !== -1) {
+        medicoes.documentos.data.splice(index, 1);
+      }
+    })
+    .catch(() =>
+    {
+      this._toastService.mensagemSuccess("Erro ao deletar documento.");
+    })
+    .finally(()=>{
+      this.isLoading = false;
+    });
+  }
+
+  async downloadDocumentoMedicao(idDocumento: number, arquivo:string) {
+    this.isLoading = true;
+    // Filtra os documentos, removendo o que for igual ao item a ser deletado
+    await this.apiMedicoes.DownloadArquivoMedicaoGlobal(idDocumento)
+    .then((result) => {
+      const url = window.URL.createObjectURL(result);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = arquivo;  // Você pode definir o nome do arquivo
+      a.click();
+      window.URL.revokeObjectURL(url);  // Limpar a URL após o download
+      this._toastService.mensagemSuccess("Download realizado com sucesso.");
+    })
+    .catch((erro) =>
+    {
+      this._toastService.mensagemError(erro.error.message);
+    })
+    .finally(()=>{
+      this.isLoading = false;
+    });
+  }
+
 
   associarProjetoOutraMedicao(numeroMedicao: number, medicoes: MedicoesModel){
     const dialogRef = this.dialog.open(ModalReaproveitarMedicaoComponent, {
