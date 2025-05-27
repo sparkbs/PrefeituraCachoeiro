@@ -90,7 +90,7 @@
                   </div>
                   
 
-                  <div *ngFor="let item of medicoes.documentos.data">
+                  <div *ngFor="let item of medicoes?.documentos?.data">
                     <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
                       {{item.arquivo}}
                       <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarDocumentoMedicao(item.id, medicoes)">
