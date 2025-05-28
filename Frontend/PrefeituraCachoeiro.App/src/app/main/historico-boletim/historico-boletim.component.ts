@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { PerfilLogin } from 'src/app/enums/perfilLogin';
 import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
 import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
@@ -9,7 +10,7 @@ import {
   ContratosResponse,
   PrefeituraResponse,
 } from 'src/app/response/contratosResponse/todosContratosResponse';
-import { MedicoesModel, Projeto, TableMedicaoHistorico, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { ItemMedicao, MedicoesModel, Projeto, TableMedicaoHistorico, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { PrefeituraFilter } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { AuthService } from 'src/app/services/auth.service';
 import { ContratosService } from 'src/app/services/contratos.service';
@@ -36,7 +37,7 @@ export class HistoricoBoletimComponent {
   showProjetos: boolean = false;
   tableMedicao: TableMedicaoHistorico[] = [];
 
-  displayedColumns: string[] = ['numeroMedicao', 'statusMedicao', 'projetos'];
+  displayedColumns: string[] = ['numeroMedicao', 'statusMedicao', 'projetos', 'acao'];
   dataSource = new MatTableDataSource<TableMedicaoHistorico>(this.tableMedicao);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -52,6 +53,7 @@ export class HistoricoBoletimComponent {
     public _projetoControllerService: ProjetoService,
     private readonly apiMedicoes: MedicoesService,
     private _toastService: ToastService,
+    private router: Router,
     private readonly aesEncryptDecript: AESEncryptDecriptService
   ) {}
 
@@ -83,6 +85,41 @@ export class HistoricoBoletimComponent {
     await this.buscarListaContratos(prefeituraId);
   }
 
+  somarItemMedicao(itemMedicao?: ItemMedicao[]){
+    var total = 0;
+    itemMedicao.forEach(x => x?.unidade > 0 ? total += (x.unidade * x.itemsContrato.item.valorComBdi) : total = total)
+    return total
+  }
+
+
+  formatToCurrency(valor?: number): string {
+    if(valor){
+    let valorFormatado = valor.toFixed(2);  // 2 casas decimais
+
+    valorFormatado = valorFormatado.replace('.', ',');
+
+    valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    return 'R$ ' + valorFormatado;
+    }else{
+      return 'R$ 0,00'
+    }
+  }
+
+  openBoletim(idMedicao: number) {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/main/boletimDetalhado', this.selectedPrefeitura, this.contratoSelecionado, idMedicao])
+    );
+    window.open(url, '_blank');  // Abre em uma nova guia
+  }
+
+  openBoletimGeral(idMedicao: number) {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/main/boletimGeral', this.selectedPrefeitura, this.contratoSelecionado, idMedicao])
+    );
+    window.open(url, '_blank');  // Abre em uma nova guia
+  }
+
   async buscarListaContratos(prefeituraId: number) {
     var contratosFilter: BuscarContratosRequest = new BuscarContratosRequest();
     contratosFilter.itemsPorPagina = 1000000;
@@ -104,6 +141,7 @@ export class HistoricoBoletimComponent {
     this.contrato = this.listaContratos.find((x) => x.idContrato == contratoId);
 
     this.isLoading = true;
+    this.tableMedicao = [];
     await this.buscarMedicoes();
     this.showProjetos = true;
   }
@@ -117,7 +155,7 @@ export class HistoricoBoletimComponent {
     await this.apiMedicoes
       .BuscarTodasMedicoes(medicoesRequest)
       .then((result) => {
-        result.data = result.data.filter(x => x.idStatusMedicao != StatusMedicaoEnum.Enviada);
+        result.data = result.data.filter(x => x.idStatusMedicao == StatusMedicaoEnum.Aprovada || x.idStatusMedicao == StatusMedicaoEnum.Recusada);
               if(result.data && result.data.length > 0){
                 this.popularMedicao(result);
               }else{

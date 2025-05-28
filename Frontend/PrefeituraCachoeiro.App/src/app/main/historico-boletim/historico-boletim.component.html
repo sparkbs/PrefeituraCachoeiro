@@ -39,7 +39,7 @@
         <ng-container *ngIf="!element.mostrarTodos">
         <ul>
         <li *ngFor="let projeto of element.projetos.slice(0, 3); let i = index">
-          {{ nomeProjeto(projeto.idProjeto, projeto.contratos?.projetos) }}
+          {{ nomeProjeto(projeto.idProjeto, projeto.contratos?.projetos) + ' - '+ (projeto?.dataMedicao | date: 'dd/MM/yyyy HH:mm' ) + ' - ' + formatToCurrency(somarItemMedicao(projeto?.items))}}
         </li>
       </ul>
         <button *ngIf="element.projetos.length > 3" mat-button color="primary" (click)="toggleHobbies(element)">
@@ -59,6 +59,23 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="acao">
+      <th mat-header-cell *matHeaderCellDef> </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-button 
+                style="background-color: royalblue; color: white; width: 30%;margin-left: 8px;" 
+                (click)="openBoletim(element.numeroMedicao)">
+          Boletim Detalhado
+        </button>
+
+        <button mat-button 
+                style="background-color: royalblue; color: white; width: 30%;margin-left: 8px;" 
+                (click)="openBoletimGeral(element.numeroMedicao)">
+          Boletim Geral
+        </button>
+      </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
@@ -70,3 +87,5 @@
 </div>
   </mat-card>
 </div>
+
+<app-loading *ngIf="this.isLoading"></app-loading>
