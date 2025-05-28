@@ -3,5 +3,5 @@ export enum StatusMedicaoEnum {
     Recusada = 2,  // ID = 2
     Aprovada = 3,  // ID = 3
     Enviada = 4,  // ID = 4
-    EmEdicao = 5  // ID = 5
+    EmEdicao = 7  // ID = 5
   }
