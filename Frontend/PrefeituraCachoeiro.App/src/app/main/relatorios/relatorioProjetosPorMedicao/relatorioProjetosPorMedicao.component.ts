@@ -229,11 +229,11 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
 
   async buscar(){
     this.isLoading = true;
+    this.globalService.resetItems();
 
     this.contratoSelecionadoEstrutura = this.listaContratos.find(x => x.idContrato == this.contratoSelecionado);
     await this.buscarMedicoes();
     this.exibir = true;
-    this.globalService.resetItems();
     this.cdr.detectChanges();
   }
 

@@ -12,8 +12,8 @@ export class GlobalServicesService {
   constructor(private _toastService: ToastService) { }
 
   addItem(nome: string, quantidade: number, idItemContrato:number, quantidadeMedida:number, isContratoGlobal:boolean, idStatusMedicao: number) {
-    let itemExiste = this.itensMedidos.findIndex(x => x.idItemContrato == idItemContrato);
-    if(itemExiste == -1){
+    let itemExiste = this.itensMedidos.find(x => x.idItemContrato == idItemContrato);
+    if(itemExiste == null){
       var restante = 0;
       if(idStatusMedicao != StatusMedicaoEnum.Aprovada){
         restante = quantidade - quantidadeMedida;
@@ -38,9 +38,9 @@ export class GlobalServicesService {
     else{
       var restante = 0;
       if(idStatusMedicao != StatusMedicaoEnum.Aprovada){
-        restante = this.itensMedidos[itemExiste].quantidades - quantidadeMedida;
+        restante = itemExiste.quantidades - quantidadeMedida;
       }else{
-        restante = this.itensMedidos[itemExiste].quantidades;
+        restante = itemExiste.quantidades;
       }
 
       if(restante < 0 && !isContratoGlobal){
@@ -50,11 +50,11 @@ export class GlobalServicesService {
       }
       else{
         if(restante < 0 && isContratoGlobal){
-          this.itensMedidos[itemExiste].quantidades = restante;          
+          itemExiste.quantidades = restante;          
           this.itemInvalido = false;
         }
         else{
-            this.itensMedidos[itemExiste].quantidades = restante;          
+            itemExiste.quantidades = restante;          
           this.itemInvalido = false;
         }
       }
