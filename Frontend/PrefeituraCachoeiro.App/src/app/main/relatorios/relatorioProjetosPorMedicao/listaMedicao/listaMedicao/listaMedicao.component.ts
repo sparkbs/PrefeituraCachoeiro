@@ -96,7 +96,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       }
     }
     
-  async ngOnInit() {
+  ngOnInit() {
     const cookieValue = this.authService.getCookie('_acesso');
     this.permissaoAcesso = this.aesEncryptDecript.decrypt(cookieValue);
 
