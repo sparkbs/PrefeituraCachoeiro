@@ -27,7 +27,8 @@
           <ng-container *ngIf="element.medicoes[i] !== undefined">
             <span style="font-size: 12px;">{{ element.medicoes[i].qtdItem }}</span><br />
             <!-- <span style="font-size: 12px; color: gray;">{{ element.medicoes[i].valorTotalComBdi | currency:'BRL':'symbol':'1.2-2' }}</span> -->
-            <span style="font-size: 12px; color: gray;">{{ formatToCurrency(buscarItemMedicao(element.medicoes[i].idItemContrato) * element.medicoes[i].valorComBdi) }}</span>
+            <!-- <span style="font-size: 12px; color: gray;">{{ formatToCurrency(buscarItemMedicao(element.medicoes[i].idItemContrato) * element.medicoes[i].valorComBdi) }}</span> -->
+            <span style="font-size: 12px; color: gray;">{{formatToCurrency(multiplicarValorTotalMedicao(listaMedicoes, i+1, element.medicoes[i].idItemContrato))}}</span>
           </ng-container>
         </td>
       </ng-container>

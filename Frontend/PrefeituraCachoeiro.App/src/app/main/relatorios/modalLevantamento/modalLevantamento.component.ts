@@ -78,7 +78,6 @@ export class ModalLevantamentoComponent implements OnInit {
 
       await this._projetoControllerService.BuscarTodosProjetos(projetoRequest)
       .then((res) => {
-        debugger
         // const listaProjetosFilter = this.data.contrato ?
         // res.data.filter(resF => resF.contratos[0].contratos.prefeituraId == this.data.contrato.prefeituraId) :
         // res.data;
@@ -190,6 +189,20 @@ export class ModalLevantamentoComponent implements OnInit {
     valorFormatado = valorFormatado.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
     return 'R$ ' + valorFormatado;
+  }
+
+  multiplicarValorTotalMedicao(medicao: MedicoesResponse[], numero: number, idItemContrato: number){
+    let valorMultiplicado = 0;
+
+    var medicaoFiltrada = medicao.find(x => x.numeroMedicao == numero);
+
+    medicaoFiltrada.items.forEach(med => {
+      if (med.idItemContrato == idItemContrato) {
+        valorMultiplicado = med.unidade * med.itemsContrato.item.valorComBdi;
+      }
+    });
+
+    return valorMultiplicado
   }
 
 }

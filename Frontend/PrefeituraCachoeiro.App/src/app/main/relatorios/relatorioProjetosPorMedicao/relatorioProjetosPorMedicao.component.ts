@@ -31,7 +31,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   listaContratos: ContratosResponse[] = [];
   @ViewChild('documentoInput') documentoInput: any;
 
-  @ViewChildren(MatAccordion) accordions!: QueryList<MatAccordion>; 
+  @ViewChildren(MatAccordion) accordions!: QueryList<MatAccordion>;
   exibir = false;
   alterarMedicaoProjeto1 = false;
   alterarMedicaoProjeto2 = false;
@@ -47,14 +47,14 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   arquivosAnexadosTelaMedicao: ArquivosMedicoesProjetoResponse[] =[];
   todasDocumentosMedicaoProjetoResponse = new DocumentosMedicoesModel();
 
-  constructor(private cdr: ChangeDetectorRef, 
+  constructor(private cdr: ChangeDetectorRef,
     private readonly apiPrefeitura: PrefeituraService,
     private readonly api: ContratosService,
     private readonly apiMedicoes: MedicoesService,
     private globalService: GlobalServicesService,
     private _toastService: ToastService,
     private readonly apiEmpresa: EmpresaService,
-    private auth: AuthService, 
+    private auth: AuthService,
     private readonly aesEncryptDecript: AESEncryptDecriptService) {
      }
 
@@ -62,7 +62,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     //this.todasMedicaoProjetoResponse.data = this.generateMockMedicoes();
     this.isLoading = true;
     var idPrefeituraUser = this.auth.getCookie("_idPrefeitura");
-    
+
     const cookieValue = this.auth.getCookie('_acesso');
     var acesso = this.aesEncryptDecript.decrypt(cookieValue);
 
@@ -146,7 +146,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
     medicoesRequest.itemsPorPagina = 1000000;
     medicoesRequest.pagina = 1;
     await this.apiMedicoes.BuscarTodasMedicoes(medicoesRequest)
-    .then(async (result) => {      
+    .then(async (result) => {
       this.todasMedicaoProjetoResponse = result;
       await this.popularMedicao(result);
     }).catch((erro) => {
@@ -160,7 +160,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
 async popularMedicao(result: TodasMedicaoProjetoResponse) {
   for (const valor of result?.data ?? []) {
     let existeMedicao = this.medicaoProjetos.find(x => x.numeroMedicao == valor.numeroMedicao);
-    
+
     if (existeMedicao) {
       existeMedicao.data.push(valor);
     } else {
@@ -255,13 +255,13 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
         this.isLoading = true;
         if(result){
           await this.apiMedicoes.BuscarMedicoes(result)
-          .then((response) => {      
+          .then((response) => {
             let novoMedicao = new MedicoesModel();
             novoMedicao.numeroMedicao = response.numeroMedicao;
             novoMedicao.data.push(response);
 
-            this.medicaoProjetos.push(novoMedicao);   
-          });          
+            this.medicaoProjetos.push(novoMedicao);
+          });
         }
         this.isLoading = false;
       });
@@ -270,7 +270,7 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
       var numeroMedicao = this.todasMedicaoProjetoResponse.data.sort((a, b) => {
         return b.numeroMedicao - a.numeroMedicao;  // Ordem decrescente
       });
-      
+
       const maiorNumero = numeroMedicao[0].numeroMedicao + 1;
 
       const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos , numeroMedicao :maiorNumero }});
@@ -279,13 +279,13 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
         this.isLoading = true;
         if(result){
           await this.apiMedicoes.BuscarMedicoes(result)
-          .then((response) => {      
+          .then((response) => {
             let novoMedicao = new MedicoesModel();
             novoMedicao.numeroMedicao = response.numeroMedicao;
             novoMedicao.data.push(response);
             this.todasMedicaoProjetoResponse.data.push(response);
-            this.medicaoProjetos.push(novoMedicao);   
-          });          
+            this.medicaoProjetos.push(novoMedicao);
+          });
         }
         this.isLoading = false;
       });
@@ -298,7 +298,7 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
       numeroMedicao: numeroMedicao,
       idContrato: this.contratoSelecionado,
       items: [],
-  }] as MedicoesResponse[]; 
+  }] as MedicoesResponse[];
 
     var medicoesRequest : MedicoesRequest = new MedicoesRequest();
     medicoesRequest.idContrato = this.contratoSelecionado;
@@ -308,7 +308,7 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
     if(this.todasMedicaoProjetoResponse.data == undefined){
       this.isLoading = true;
       await this.apiMedicoes.BuscarTodasMedicoes(medicoesRequest)
-      .then((result) => {      
+      .then((result) => {
         this.todasMedicaoProjetoResponse = result;
       }).catch((erro) => {
         this._toastService.mensagemError(erro.error.message);
@@ -317,19 +317,19 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
       })
     }
 
-    const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao, projetosMedidos: projetosMedidos, associarMedicao: true}});    
+    const dialogRef = this.dialog.open(CadastrarMedicaoComponent,{data:{medicoes: this.todasMedicaoProjetoResponse.data[0].contratos, numeroMedicao :numeroMedicao, projetosMedidos: projetosMedidos, associarMedicao: true}});
     dialogRef.afterClosed().subscribe(async result => {
       this.isLoading = true;
       if(result){
         /*await this.apiMedicoes.BuscarMedicoes(result)
-        .then((response) => {      
+        .then((response) => {
           let novoMedicao = new MedicoesModel();
           novoMedicao.numeroMedicao = response.numeroMedicao;
           novoMedicao.data.push(response);
-  
-          this.medicaoProjetos.push(novoMedicao);   
+
+          this.medicaoProjetos.push(novoMedicao);
         });*/
-        await this.buscar();          
+        await this.buscar();
       }
       this.isLoading = false;
     });
@@ -337,7 +337,7 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
 
   filtrarPrefeitura(valor: string) {
     // Filtra a lista com base no valor digitado
-    this.listaFiltrada = this.listaPrefeitura.filter(prefeitura => 
+    this.listaFiltrada = this.listaPrefeitura.filter(prefeitura =>
       prefeitura.nome.toLowerCase().includes(valor.toLowerCase())
     );
   }
@@ -441,10 +441,10 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
   async deletarMedicao(medicoes: MedicoesModel) {
     const existeMedicaoAprovada = medicoes.data.some(x => x.idStatusMedicao == StatusMedicaoEnum.Aprovada);
     let medicaoDeletada = false;
-  
+
     if (!existeMedicaoAprovada) {
       this.isLoading = true;
-  
+
       for (const x of medicoes.data) {
         try {
           const result = await this.apiMedicoes.DeletarMedicao(x.idMedicoesProjeto);
@@ -457,30 +457,30 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
           return;
         }
       }
-  
+
       if (medicaoDeletada) {
         this._toastService.mensagemSuccess("Sucesso ao deletar medições de projetos com status diferentes de aprovadas");
         this.medicaoProjetos = [];
         await this.buscar();
       }
-  
+
       this.isLoading = false;
     } else {
       this._toastService.mensagemError("Não pode deletar medição que possui projetos com status aprovados.");
     }
   }
-  
+
 
   async enviar(numeroMedicao: number) {
     const result = window.confirm('Você deseja enviar a medição?');
     if (!result) return;
-  
+
     this.isLoading = true;
-  
+
     try {
       const projetosPorMedicao = this.medicaoProjetos.filter(x => x.numeroMedicao === numeroMedicao);
       const promessasEnvio: Promise<void>[] = [];
-  
+
       for (const item of projetosPorMedicao) {
         for (const data of item.data) {
           if (
@@ -490,7 +490,7 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
           ) {
             const req = new BuscarArquivosMedicaoIdProjRequest();
             req.IdMedicoesProjeto = data.idMedicoesProjeto;
-  
+
             const promessa = this.apiMedicoes.EnviarMedicaoCliente(req)
               .then((result) => {
                 if (result.isSucesso) {
@@ -505,29 +505,29 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
               .catch((erro) => {
                 this._toastService.mensagemError(erro.error.message);
               });
-  
+
             promessasEnvio.push(promessa);
           }
         }
       }
-  
+
       if (promessasEnvio.length === 0) {
         this._toastService.mensagemSuccess("Foram enviados somente casos com status de editados e criados");
       }
-  
+
       // Aguarda todas as chamadas de envio
       await Promise.all(promessasEnvio);
-  
+
     } finally {
       this.isLoading = false;
     }
   }
-  
+
 
   openDialogConsolidado(medicao: MedicoesModel[]){
     this.dialog.open(ResumoMedicaoComponent,{data:
       medicao
-    });    
+    });
   }
 
   closeAllAccordions() {
