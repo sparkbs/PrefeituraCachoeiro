@@ -24,17 +24,15 @@
   </div>
 
   <div class="list-container table-wrapper" *ngIf="isDivVisible" style="max-height: 530px; overflow-y: auto; margin-top:10px;">
-    <div style="display: flex; align-items: center; flex: none; justify-content: flex-start;">
+    <div style="margin-top: 10px;display: flex; align-items: center; flex: none; justify-content: flex-start;">
       <mat-label style="font-weight: bold; margin-right: 8px;">Secretaria: </mat-label>
       <!--<input type="text" style="width: 25%; margin-right: 16px;" [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" [(ngModel)]="medicoes.secretaria"/>-->
       <span style="font-size: 14px; font-weight: bold;" >{{medicoes.secretaria}}</span>
     </div>
-  </div>
-
-  <div class="list-container table-wrapper" *ngIf="isDivVisible" style="max-height: 530px; overflow-y: auto;">
-    <div style="margin-top: 10px; display: flex; align-items: center; flex-wrap: wrap;">
+    <br/>
+    <div style=" display: flex; align-items: center; flex-wrap: wrap;">
       <!-- Primeira div - Quando a condição for verdadeira -->
-      <div style="margin-top: 10px; display: flex; align-items: center; flex: 1;">
+      <div style="display: flex; align-items: center; flex: 1;">
         <mat-label style="font-weight: bold; margin-right: 8px;">Número da nota fiscal: </mat-label>
         <input type="text" style="width: 25%; margin-right: 16px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Aprovada  ? 'block' : 'none'" [(ngModel)]="medicoes.observacao" />
         <span matTooltip="Salvar número da nota fiscal" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Aprovada  ? 'block' : 'none'" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="salvar()">
@@ -51,6 +49,10 @@
         </mat-label>
       </div>
     </div>
+  </div>
+
+  <div class="list-container table-wrapper" *ngIf="isDivVisible" style="max-height: 530px; overflow-y: auto;">
+
 
     <div >
     <!-- Títulos exibidos uma única vez -->

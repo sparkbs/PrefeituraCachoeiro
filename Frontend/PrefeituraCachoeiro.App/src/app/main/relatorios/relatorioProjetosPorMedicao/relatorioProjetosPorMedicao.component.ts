@@ -476,7 +476,8 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
     if (!result) return;
   
     this.isLoading = true;
-  
+    var medicoesZeradas = false;
+    
     try {
       const projetosPorMedicao = this.medicaoProjetos.filter(x => x.numeroMedicao === numeroMedicao);
       const promessasEnvio: Promise<void>[] = [];
@@ -488,31 +489,51 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
             data.idStatusMedicao === StatusMedicaoEnum.EmEdicao ||
             data.idStatusMedicao === StatusMedicaoEnum.Criada
           ) {
-            const req = new BuscarArquivosMedicaoIdProjRequest();
-            req.IdMedicoesProjeto = data.idMedicoesProjeto;
-  
-            const promessa = this.apiMedicoes.EnviarMedicaoCliente(req)
-              .then((result) => {
-                if (result.isSucesso) {
-                  // Atualiza o status da medição
-                  data.statusMedicao.idStatusMedicao = 4;
-                  data.statusMedicao.nome = "Enviada";
-                  this._toastService.mensagemSuccess("Medição enviada com sucesso");
-                } else {
-                  this._toastService.mensagemError(result.mensagemErro);
-                }
-              })
-              .catch((erro) => {
-                this._toastService.mensagemError(erro.error.message);
-              });
-  
-            promessasEnvio.push(promessa);
+
+            const items = this.medicaoProjetos
+              .find(x => x.data.some(y => y.idMedicoesProjeto === data.idMedicoesProjeto))
+              ?.data.find(y => y.idMedicoesProjeto === data.idMedicoesProjeto)
+              ?.items;
+
+            const todosUnidadeIgual0 = items.every(data => data.unidade == 0);
+
+            console.log(todosUnidadeIgual0);
+
+            if(!todosUnidadeIgual0){
+
+              const req = new BuscarArquivosMedicaoIdProjRequest();
+              req.IdMedicoesProjeto = data.idMedicoesProjeto;
+    
+              const promessa = this.apiMedicoes.EnviarMedicaoCliente(req)
+                .then((result) => {
+                  if (result.isSucesso) {
+                    // Atualiza o status da medição
+                    data.statusMedicao.idStatusMedicao = 4;
+                    data.statusMedicao.nome = "Enviada";
+                    this._toastService.mensagemSuccess("Medição enviada com sucesso");
+                  } else {
+                    this._toastService.mensagemError(result.mensagemErro);
+                  }
+                })
+                .catch((erro) => {
+                  this._toastService.mensagemError(erro.error.message);
+                });
+    
+              promessasEnvio.push(promessa);
+            }
+            else{
+              medicoesZeradas = true;
+            }
           }
         }
       }
   
-      if (promessasEnvio.length === 0) {
-        this._toastService.mensagemSuccess("Foram enviados somente casos com status de editados e criados");
+      if(!medicoesZeradas){
+        if (promessasEnvio.length === 0) {
+          this._toastService.mensagemSuccess("Foram enviados somente casos com status de editados e criados");
+        }
+      }else{
+          this._toastService.mensagemError("Não é possivel enviar uma medição toda zerada.");
       }
   
       // Aguarda todas as chamadas de envio

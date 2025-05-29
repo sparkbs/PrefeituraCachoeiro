@@ -34,6 +34,14 @@
     background: white;
   }
   
+  .sticky-header {
+    position: sticky;
+    top: 0; /* ou ajuste conforme necessário, ex: top: 40px */
+    z-index: 2;
+    background: white;
+    padding: 10px 0;
+  }
+
   .card-content {
     width: 90%;
     height: 90%;
