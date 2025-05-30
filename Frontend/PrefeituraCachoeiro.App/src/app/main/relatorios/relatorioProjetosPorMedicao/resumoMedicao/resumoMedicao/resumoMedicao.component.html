@@ -25,18 +25,18 @@
       </ng-container>
       
       <!-- Coluna para 'Origem' -->
-      <ng-container matColumnDef="unidadeTotalMedida">
+      <ng-container matColumnDef="qtdContratual">
         <th mat-header-cell *matHeaderCellDef> Qtd. Contratual </th>
         <td mat-cell *matCellDef="let it">{{ it?.unidadeTotalMedida }}</td>
       </ng-container>
 
       <!-- Coluna para 'Item / Quantidade' -->
-      <ng-container matColumnDef="unidadeTotal">
+      <ng-container matColumnDef="qtdMedida">
         <th mat-header-cell *matHeaderCellDef> Qtd. Medida </th>
         <td mat-cell *matCellDef="let it">{{ it?.unidadeTotal }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="valor(c)Bdi">
+      <ng-container matColumnDef="unitComBDI">
         <th mat-header-cell *matHeaderCellDef> Unit. Com BDI</th>
         <td mat-cell *matCellDef="let it">
           <span>{{ formatToCurrency(it?.valorComBdi) }}</span><br/>
@@ -50,7 +50,7 @@
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="valorTotalItem">
+      <ng-container matColumnDef="totalContratual">
         <th mat-header-cell *matHeaderCellDef> Total Contratual</th>
         <td mat-cell *matCellDef="let it">
           <span>{{ formatToCurrency(calcularValorTotalItem(it?.unidadeTotal, it?.valorComBdi)) }}</span><br/>
