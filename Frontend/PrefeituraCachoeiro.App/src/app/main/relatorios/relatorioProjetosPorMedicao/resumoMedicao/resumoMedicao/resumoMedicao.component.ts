@@ -10,7 +10,7 @@ import { ItemContrato, ItemMedicao, ItemResumo, MedicoesModel, MedicoesResponse 
 })
 export class ResumoMedicaoComponent implements OnInit {
   dataSource: MatTableDataSource<ItemResumo>;
-  displayedColumns: string[] = ['nome', 'unidadeTotal', 'unidadeTotalMedida', 'valor(c)Bdi', 'valorTotalMedido', 'valorTotalItem'];
+  displayedColumns: string[] = ['nome', 'qtdContratual', 'qtdMedida', 'unitComBDI', 'valorTotalMedido', 'totalContratual'];
   itemsToLoad : MedicoesModel[];
   lista: ItemResumo[] = [];
 

@@ -259,7 +259,10 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
             let novoMedicao = new MedicoesModel();
             novoMedicao.numeroMedicao = response.numeroMedicao;
             novoMedicao.data.push(response);
-
+            console.log(response);
+            this.todasMedicaoProjetoResponse.data = [];
+            console.log(this.todasMedicaoProjetoResponse.data)
+            this.todasMedicaoProjetoResponse.data.push(response) ;
             this.medicaoProjetos.push(novoMedicao);
           });
         }
