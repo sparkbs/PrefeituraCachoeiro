@@ -5,7 +5,7 @@
     <div *ngFor="let item of data?.arquivosMedicoesProjetoResponse" >
       <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
         {{item.arquivo}}
-        <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumentoMedicoes(item.id, item.arquivo)">
+        <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumentoMedicao(item.id, item.arquivo)">
           <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
         </span>
       </div>

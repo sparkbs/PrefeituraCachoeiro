@@ -8,7 +8,7 @@ import { PrefeituraFilter, PrefeituraResponse } from 'src/app/response/prefeitur
 import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
 import { MedicoesService } from 'src/app/services/medicoes.service';
-import { BuscarArquivosMedicaoIdProjRequest, MedicoesRequest, RegistroDocumentosPorMedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
+import { AlterarMedicaoProjetoRequest, BuscarArquivosMedicaoIdProjRequest, MedicoesRequest, RegistroDocumentosPorMedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ArquivosMedicoesProjetoResponse, Contrato, DocumentosMedicoesModel, Empresa, IdsResponse, Item, ItemContrato, ItemMedicao, MedicoesModel, MedicoesResponse, Origem, Prefeitura, Projeto, Quantidade, StatusMedicao, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ResumoMedicaoComponent } from './resumoMedicao/resumoMedicao/resumoMedicao.component';
 import { GlobalServicesService, ItensMedidos } from 'src/app/GlobalServices/GlobalServices.service';
@@ -46,6 +46,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   contratoSelecionadoEstrutura: ContratosResponse = null;
   arquivosAnexadosTelaMedicao: ArquivosMedicoesProjetoResponse[] =[];
   todasDocumentosMedicaoProjetoResponse = new DocumentosMedicoesModel();
+  observacao: string = "";
 
   constructor(private cdr: ChangeDetectorRef,
     private readonly apiPrefeitura: PrefeituraService,
@@ -83,6 +84,39 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
 
   }
 
+  salvar(medicoesResponse: MedicoesResponse[]){
+    this.isLoading = true;
+    medicoesResponse.forEach(async x => {
+      x.resumo = medicoesResponse[0].resumo ?? "";
+
+      let alterarMedicaoRequest = new AlterarMedicaoProjetoRequest();
+      alterarMedicaoRequest.dataMedicao = x.dataMedicao;
+      alterarMedicaoRequest.idContrato = x.idContrato;
+      alterarMedicaoRequest.secretaria = x?.secretaria ?? "";
+      alterarMedicaoRequest.idMedicoesProjeto = x.idMedicoesProjeto;
+      alterarMedicaoRequest.idProjeto = x.idProjeto;
+      const novaLista = x.items.map(item => ({
+        idItemContrato: item.idItemContrato,
+        unidade: item.unidade || 0
+      }));
+      alterarMedicaoRequest.items = novaLista;
+      alterarMedicaoRequest.numeroMedicao = x.numeroMedicao;
+      alterarMedicaoRequest.observacao = x.observacao;
+      alterarMedicaoRequest.periodoMedicao = x?.periodoMedicao ?? "";
+      alterarMedicaoRequest.resumo = x.resumo ?? "";
+
+      await this.apiMedicoes.AlterarMedicoes(alterarMedicaoRequest)
+      .then((result) => {
+        this._toastService.mensagemSuccess("Sucesso ao salvar observacao.");
+      })
+      .catch((erro) => {
+        this.isLoading = false;
+        this._toastService.mensagemError(erro.error.message);
+      });
+    });
+    this.isLoading = false;
+  }
+
   async buscarPrefeitura(id: number){
     await this.apiPrefeitura.BuscarPrefeitura(id)
     .then((result) => {
@@ -117,8 +151,8 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
   periodoMedicao(medicao: MedicoesResponse[], numero: number){
     var itemsMedidos = medicao.filter(x => x.numeroMedicao == numero);
 
-    if(itemsMedidos[0]?.resumo){
-      return itemsMedidos[0]?.resumo;
+    if(itemsMedidos[0]?.periodoMedicao){
+      return itemsMedidos[0]?.periodoMedicao;
     }
     else{
       return ""
@@ -350,11 +384,14 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
     console.log('Prefeitura selecionada:', value);
   }
 
-  async adicionarDocumento(medicoes: MedicoesModel){
+  async adicionarDocumento(medicoes: MedicoesModel, documentoInput: HTMLInputElement){
+          console.log("acionar")
     this.isLoading = true;
+          console.log(documentoInput.files[0])
 
-    if(this.documentoInput.nativeElement.files[0] != undefined){
-      const documentoFile = this.documentoInput.nativeElement.files[0] as File;
+    if(documentoInput.files[0] != undefined){
+      console.log("teste")
+      const documentoFile = documentoInput.files[0] as File;
 
       var request = new RegistroDocumentosPorMedicoesRequest();
       request.IdContrato = this.contratoSelecionado;
@@ -375,6 +412,7 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
       });
 
 
+      documentoInput.value = '';
       this.documentoInput.nativeElement.value = '';
     }
     this.isLoading = false;

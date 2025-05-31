@@ -84,7 +84,7 @@
                   </div>
                   <div >
                     <input #documentoInput type="file" style="width: 100%" />
-                    <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;" (click)="adicionarDocumento(medicoes)">
+                    <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;" (click)="adicionarDocumento(medicoes, documentoInput)">
                       <mat-icon>playlist_add</mat-icon>
                     </span>  
                   </div>
@@ -108,6 +108,15 @@
                 <app-listaMedicao [medicoes]="medicao" (atualizarListaMedicao)="buscar()"></app-listaMedicao>              
               </div>
             
+              <div style="margin-top: 10px;">
+                  <span><strong style="color: black;">Observação: </strong></span>
+                  <span matTooltip="Salvar Observação" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="salvar(medicoes.data)">
+                    <mat-icon>save</mat-icon>
+                  </span>
+                  <br/>
+                  <textarea id="message" name="message" [(ngModel)]="medicoes.data[0].resumo" rows="5" style="width: 100%;"></textarea>
+              </div>
+
             </mat-expansion-panel>         
           </mat-accordion>
         </div>

@@ -20,6 +20,7 @@ export class InserirMedicao {
     items: PermissoesItemsRequest[] = [];
     secretaria: string;
     projetoMedicao: string;
+    periodoMedicao: string = "";
   }
 
   export class ItemMedicao {
@@ -51,6 +52,7 @@ export class AlterarMedicaoProjetoRequest {
     idProjeto: number;
     secretaria: string;
     resumo: string;
+    periodoMedicao: string;
   }
 
   export class RegistroDocumentosMedicoesRequest{

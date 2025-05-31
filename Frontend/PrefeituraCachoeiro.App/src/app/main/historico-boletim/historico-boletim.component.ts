@@ -1,16 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { PerfilLogin } from 'src/app/enums/perfilLogin';
 import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
-import { BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
+import { BuscarAditivosContrato, BuscarContratosRequest } from 'src/app/request/ContratoRequest/buscarContratosRequest';
 import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import {
+  ArquivosContratoResponse,
   ContratosResponse,
   PrefeituraResponse,
 } from 'src/app/response/contratosResponse/todosContratosResponse';
-import { ItemMedicao, MedicoesModel, Projeto, TableMedicaoHistorico, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { ArquivosAprovacao, ItemMedicao, MedicoesModel, Projeto, TableMedicaoHistorico, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { PrefeituraFilter } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { AuthService } from 'src/app/services/auth.service';
 import { ContratosService } from 'src/app/services/contratos.service';
@@ -19,6 +21,7 @@ import { PrefeituraService } from 'src/app/services/prefeitura.service';
 import { ProjetoService } from 'src/app/services/projeto.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
+import { VerDocumentosComponent } from '../aprovacaoBoletim/verDocumentos/verDocumentos.component';
 
 @Component({
   selector: 'app-historico-boletim',
@@ -26,6 +29,7 @@ import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.servi
   styleUrls: ['./historico-boletim.component.scss'],
 })
 export class HistoricoBoletimComponent {
+  readonly dialog = inject(MatDialog);
   selectedPrefeitura: number | null = null;
   listaPrefeitura: PrefeituraResponse[] = [];
   exibirContrato = false;
@@ -155,7 +159,7 @@ export class HistoricoBoletimComponent {
     await this.apiMedicoes
       .BuscarTodasMedicoes(medicoesRequest)
       .then((result) => {
-        result.data = result.data.filter(x => x.idStatusMedicao == StatusMedicaoEnum.Aprovada || x.idStatusMedicao == StatusMedicaoEnum.Recusada);
+        result.data = result.data.filter(x => x.idStatusMedicao == StatusMedicaoEnum.Aprovada);
               if(result.data && result.data.length > 0){
                 this.popularMedicao(result);
               }else{
@@ -238,4 +242,34 @@ export class HistoricoBoletimComponent {
   nomeProjeto(id:number, projetos: Projeto[]){
       return id == null ? "": projetos?.find(x => x.idProjeto == id )?.nomeProjeto;
   }
+
+  async openModalVerAnexo(numeroMedicao: number){    
+      this.isLoading = true
+      var arquivoVisualizacao: ArquivosAprovacao = new ArquivosAprovacao();
+      var todasDocumentosMedicaoProjetoResponse = await this.apiMedicoes.BuscarDocumentosMedicoes(
+            this.contratoSelecionado,
+            numeroMedicao
+          );
+  
+      arquivoVisualizacao.arquivosMedicoesProjetoResponse = todasDocumentosMedicaoProjetoResponse.data;
+      arquivoVisualizacao.arquivosContratosResponse = this.contrato.arquivosContratos;
+  
+      var aditivoFilter : BuscarAditivosContrato = new BuscarAditivosContrato();
+      aditivoFilter.idContrato = this.contratoSelecionado;
+      await this.api.BuscarTodosAditivos(aditivoFilter).then((result) => {
+        result?.data?.forEach((item) => {
+          // Soma o valorTotalComBdi de cada item
+          arquivoVisualizacao.arquivosAditivosResponse.push(...item.arquivosAditivos);
+        });
+      })
+  
+      .finally(() =>{
+        this.isLoading = false
+      });
+  
+      const dialogRef = this.dialog.open(VerDocumentosComponent,{
+        data: arquivoVisualizacao
+      });
+    }
+  
 }

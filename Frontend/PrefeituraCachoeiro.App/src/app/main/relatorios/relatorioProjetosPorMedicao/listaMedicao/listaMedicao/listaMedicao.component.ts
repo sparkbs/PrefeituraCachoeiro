@@ -286,6 +286,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       alterarMedicaoRequest.numeroMedicao = this.medicoes.numeroMedicao;
       alterarMedicaoRequest.observacao = this.medicoes.observacao;
       alterarMedicaoRequest.resumo = this.medicoes?.resumo ?? "";
+      alterarMedicaoRequest.periodoMedicao = this.medicoes?.periodoMedicao ?? "";
 
       if(this.medicoes.statusMedicao.idStatusMedicao == this.StatusEnum.Recusada){
         this.medicoes.statusMedicao.nome = "Em Edição"

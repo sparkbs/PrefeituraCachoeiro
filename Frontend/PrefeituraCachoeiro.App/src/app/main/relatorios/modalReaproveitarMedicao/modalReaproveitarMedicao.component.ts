@@ -87,6 +87,7 @@ export class ModalReaproveitarMedicaoComponent implements OnInit {
       medicaoRequest.numeroMedicao = this.data.numeroMedicao;
       medicaoRequest.resumo = this.data.projetos[0].resumo;
       medicaoRequest.observacao = this.data.projetos[0].observacao;
+      medicaoRequest.periodoMedicao = this.data.projetos[0].periodoMedicao;
 
       var projetoExistente = this.data.projetos.find(x => x.idProjeto == medicaoRequest.idProjeto)
 

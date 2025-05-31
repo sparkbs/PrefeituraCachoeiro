@@ -23,6 +23,7 @@ export class CadastrarMedicaoComponent implements OnInit {
   isLoading = false;
   secretaria = "";
   projetoMedicao = "";
+  resumo = "";
   listaFiltrada: any[] = [];
   selectedProjeto: number | null = null; // Valor selecionado
 
@@ -38,7 +39,8 @@ export class CadastrarMedicaoComponent implements OnInit {
       this.nomeMedicao = data.numeroMedicao;
       if(data.associarMedicao){
         this.secretaria = data.projetosMedidos[0].secretaria;
-        this.projetoMedicao = data.projetosMedidos[0].resumo;
+        this.projetoMedicao = data.projetosMedidos[0].periodoMedicao;
+        this.resumo = data.projetosMedidos[0].resumo;
       }
       this.disabledNomeMedicao = true;
     }
@@ -65,7 +67,8 @@ export class CadastrarMedicaoComponent implements OnInit {
     medicaoRequest.idContrato = this.data.medicoes.idContrato;
     medicaoRequest.idProjeto = this.projetoSelecionado;
     medicaoRequest.secretaria = this.secretaria;
-    medicaoRequest.resumo = this.projetoMedicao;
+    medicaoRequest.periodoMedicao = this.projetoMedicao;
+    medicaoRequest.resumo = this.resumo;
 
     medicaoRequest.items = this.data.medicoes.items.map(item => ({
       idItemContrato: item.idItemContrato,

@@ -3,7 +3,7 @@ import { BuscarAditivosContrato, BuscarContratosRequest } from 'src/app/request/
 import { DadosMedicoesRequest, MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
 import { ArquivosContratoResponse, ContratosResponse } from 'src/app/response/contratosResponse/todosContratosResponse';
-import { ArquivosAprovacao, ArquivosMedicoesProjetoResponse, MedicoesModel, MedicoesResponse, Projeto, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { ArquivosAprovacao, ArquivosMedicoesProjetoResponse, IdsResponse, MedicoesModel, MedicoesResponse, Projeto, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ProjetoResponse } from 'src/app/response/projetoResponse/projetoResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { MedicoesService } from 'src/app/services/medicoes.service';
@@ -160,10 +160,15 @@ export class AprovacaoBoletimComponent implements OnInit {
     });;
   }
 
-  async openModalVerAnexo(arquivos: ArquivosMedicoesProjetoResponse[], arquivosContrato: ArquivosContratoResponse[]){    
+  async openModalVerAnexo(arquivosContrato: ArquivosContratoResponse[], numeroMedicao: number){    
     this.isLoading = true
     var arquivoVisualizacao: ArquivosAprovacao = new ArquivosAprovacao();
-    arquivoVisualizacao.arquivosMedicoesProjetoResponse = arquivos;
+    var todasDocumentosMedicaoProjetoResponse = await this.apiMedicoes.BuscarDocumentosMedicoes(
+          this.contratoSelecionado,
+          numeroMedicao
+        );
+
+    arquivoVisualizacao.arquivosMedicoesProjetoResponse = todasDocumentosMedicaoProjetoResponse.data;
     arquivoVisualizacao.arquivosContratosResponse = this.contrato.arquivosContratos;
 
     var aditivoFilter : BuscarAditivosContrato = new BuscarAditivosContrato();
