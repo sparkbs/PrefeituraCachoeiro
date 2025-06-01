@@ -30,6 +30,8 @@ export class Detalhe {
   projeto: string;
   subCabecalho: string;
   subBoletins: SubBoletim[];
+  resumo: string = '';
+  periodoMedicao: string = '';
 }
 
 export class SubBoletim {

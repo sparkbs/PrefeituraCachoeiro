@@ -60,7 +60,7 @@
       <!-- Linha do título principal -->
       <tr>
         <th colspan="25" class="main-title" style="text-align: start !important;">
-          {{ boletimCabecalho.tipoBoletimEmissao }}
+           BOLETIM DE MEDIÇÃO {{ boletim.detalhes[0].periodoMedicao}}
         </th>
       </tr>
       <!-- Linha do resumo -->
@@ -178,6 +178,10 @@
         <td style="background-color: #df0101; display: flex; justify-content: space-between;" colspan="1" class="highlight">
           <span>{{ formatCurrency(calcularSomaValorTotal()) }}</span>
         </td>
+      </tr>
+
+      <tr>
+        <td style="background-color: #ffffff; text-align: left;" colspan="24" class="highlight">Observação: <span style="font-weight: lighter;">{{boletim.detalhes[0].resumo}}</span></td>
       </tr>
     </tbody>
   </table>
