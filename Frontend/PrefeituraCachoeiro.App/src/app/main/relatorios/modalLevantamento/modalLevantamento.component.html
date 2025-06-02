@@ -1,17 +1,22 @@
 <div class="modalLevantamentoBody">
-  <form [formGroup]="form">
-    <mat-form-field appearance="outline">
-      <mat-label>Selecione o Projeto:</mat-label>
-      <mat-select formControlName="projetoId">
-        <mat-option *ngFor="let projetoItem of listaProjetos" [value]="projetoItem.idProjeto">
-          {{ projetoItem.nomeProjeto }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-button mat-stroked-button class="button-add" (click)="buscarMedicoesProjeto()">
-      <span>Buscar Projeto</span>
+  <form [formGroup]="form" class="form">
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Selecione o Projeto:</mat-label>
+        <mat-select formControlName="projetoId">
+          <mat-option *ngFor="let projetoItem of listaProjetos" [value]="projetoItem.idProjeto">
+            {{ projetoItem.nomeProjeto }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-button mat-stroked-button class="button-add" (click)="buscarMedicoesProjeto()">
+        <span>Buscar Projeto</span>
         <mat-icon>add</mat-icon>
-    </button>
+      </button>
+    </div>
+    <div style="width: 20%;">
+      <span class="somaMedicoes">{{ formatToCurrency(somaTotalMedicoes) || '' }}</span>
+    </div>
   </form>
 
   <div class="table-wrapper" *ngIf="this.dadosTabela.length != 0">
@@ -22,13 +27,13 @@
       </ng-container>
 
       <ng-container *ngFor="let index of [].constructor(maxMedicoes); let i = index" [matColumnDef]="'medicao' + (i + 1)">
-        <th mat-header-cell *matHeaderCellDef> Medição {{ i + 1 }} <span style="display: block;">({{ listaContratos[i] }})</span> </th>
+        <th mat-header-cell *matHeaderCellDef> Medição {{ retornarNumeroMedicao(i) }} <span style="display: block;">({{ listaContratos[i] }})</span> </th>
         <td mat-cell *matCellDef="let element">
           <ng-container *ngIf="element.medicoes[i] !== undefined">
             <span style="font-size: 12px;">{{ element.medicoes[i].qtdItem }}</span><br />
             <!-- <span style="font-size: 12px; color: gray;">{{ element.medicoes[i].valorTotalComBdi | currency:'BRL':'symbol':'1.2-2' }}</span> -->
             <!-- <span style="font-size: 12px; color: gray;">{{ formatToCurrency(buscarItemMedicao(element.medicoes[i].idItemContrato) * element.medicoes[i].valorComBdi) }}</span> -->
-            <span style="font-size: 12px; color: gray;">{{formatToCurrency(multiplicarValorTotalMedicao(listaMedicoes, i+1, element.medicoes[i].idItemContrato))}}</span>
+            <span style="font-size: 12px; color: gray;">{{formatToCurrency(multiplicarValorTotalMedicao(listaMedicoes, element.medicoes[i].numeroMedicao, element.medicoes[i].idItemContrato))}}</span>
           </ng-container>
         </td>
       </ng-container>
