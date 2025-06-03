@@ -43,7 +43,7 @@
   <div *ngIf="this.data?.arquivosAprovacao">
     <div *ngFor="let item of data?.arquivosAprovacao">
       <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
-        {{item.arquivo}}
+        {{item.arquivo}} - {{item.projeto}}
         <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumentoAprovador(item.id, item.arquivo)">
           <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
         </span>
