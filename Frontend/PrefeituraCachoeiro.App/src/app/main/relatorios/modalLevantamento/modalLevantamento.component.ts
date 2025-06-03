@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
 import { GlobalServicesService } from 'src/app/GlobalServices/GlobalServices.service';
 import { MedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ProjetoRequest } from 'src/app/request/ProjetoRequest/projetoRequest';
@@ -33,6 +34,7 @@ export class ModalLevantamentoComponent implements OnInit {
   listaProjetos: ProjetoResponse[] = [];
   listaMedicoes: MedicoesResponse[] = [];
   listaContratos: string[] =[];
+  somaTotalMedicoes: number = 0;
 
   dataSource = new MatTableDataSource<TabelaLevantamento>(this.dadosTabela);
 
@@ -100,7 +102,7 @@ export class ModalLevantamentoComponent implements OnInit {
 
     this._medicaoControllerService.BuscarTodasMedicoes(medicoesRequest)
     .then((res) => {
-      this.listaMedicoes = res.data;
+      this.listaMedicoes = res.data.filter(x => x.idStatusMedicao == StatusMedicaoEnum.Aprovada || x.idStatusMedicao == StatusMedicaoEnum.Enviada);
       this.listaContratos = [];
 
       if (this.listaMedicoes.length != 0) {
@@ -112,6 +114,7 @@ export class ModalLevantamentoComponent implements OnInit {
             const indexTab = this.dadosTabela.findIndex(resIndex => resIndex.idItem == resItem.itemsContrato.itemId);
             if (indexTab !== -1) {
               let medicaoLevantamento: MedicaoLevantamento = new MedicaoLevantamento();
+              medicaoLevantamento.numeroMedicao = res.numeroMedicao;
               medicaoLevantamento.qtdItem = resItem.unidade;
               medicaoLevantamento.idItemContrato = resItem.idItemContrato;
               medicaoLevantamento.valorComBdi = resItem.itemsContrato.item.valorComBdi;
@@ -123,6 +126,7 @@ export class ModalLevantamentoComponent implements OnInit {
               dadoTabela = new TabelaLevantamento();
 
               let medicaoLevantamento: MedicaoLevantamento = new MedicaoLevantamento();
+              medicaoLevantamento.numeroMedicao = res.numeroMedicao;
               medicaoLevantamento.qtdItem = resItem.unidade;
               medicaoLevantamento.idItemContrato = resItem.idItemContrato;
               medicaoLevantamento.valorComBdi = resItem.itemsContrato.item.valorComBdi;
@@ -135,6 +139,10 @@ export class ModalLevantamentoComponent implements OnInit {
               this.dadosTabela.push(dadoTabela);
             }
           });
+        });
+
+        this.dadosTabela.forEach(res => {
+          this.somaTotalMedicoes += res.medicaoTotal;
         });
 
         this.maxMedicoes = Math.max(...this.dadosTabela.map(item => item.medicoes.length));
@@ -203,6 +211,10 @@ export class ModalLevantamentoComponent implements OnInit {
     });
 
     return valorMultiplicado
+  }
+
+  retornarNumeroMedicao(index: number): number {
+    return this.listaMedicoes[index].numeroMedicao;
   }
 
 }

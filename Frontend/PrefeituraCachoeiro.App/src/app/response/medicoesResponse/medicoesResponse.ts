@@ -161,6 +161,7 @@ export class MedicoesResponse {
   }
 
   export class MedicaoLevantamento {
+    numeroMedicao: number;
     qtdItem: number;
     idItemContrato: number;
     valorComBdi: number;
