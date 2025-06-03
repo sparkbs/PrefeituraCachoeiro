@@ -85,7 +85,7 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
 
   }
 
-  salvar(medicoesResponse: MedicoesResponse[]){
+  async salvar(medicoesResponse: MedicoesResponse[]){
     this.isLoading = true;
     medicoesResponse.forEach(async x => {
       x.resumo = medicoesResponse[0].resumo ?? "";
@@ -111,11 +111,12 @@ export class RelatorioProjetosPorMedicaoComponent implements OnInit {
         this._toastService.mensagemSuccess("Sucesso ao salvar observacao.");
       })
       .catch((erro) => {
-        this.isLoading = false;
         this._toastService.mensagemError(erro.error.message);
+      })
+      .finally(() =>{
+        this.isLoading = false;
       });
     });
-    this.isLoading = false;
   }
 
   async buscarPrefeitura(id: number){
