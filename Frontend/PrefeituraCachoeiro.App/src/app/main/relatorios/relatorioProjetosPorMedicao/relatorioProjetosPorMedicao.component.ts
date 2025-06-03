@@ -19,6 +19,7 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 import { StatusMedicaoEnum } from 'src/app/enums/statusMedicao';
 import { ModalReaproveitarMedicaoComponent } from '../modalReaproveitarMedicao/modalReaproveitarMedicao.component';
 import { PerfilLogin } from 'src/app/enums/perfilLogin';
+import { DadosContratoResponse } from 'src/app/response/contratosResponse/dadosContratoResponse';
 
 @Component({
   selector: 'app-relatorioProjetosPorMedicao',
@@ -586,10 +587,21 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
   }
 
 
-  openDialogConsolidado(medicao: MedicoesModel[]){
-    this.dialog.open(ResumoMedicaoComponent,{data:
-      medicao
-    });
+  async openDialogConsolidado(medicao: MedicoesModel[]){
+    this.isLoading = true;
+    await this.api.BuscarContrato(this.contratoSelecionado).then((result) => {
+      if(medicao.some(z => z.data)){
+        medicao[0].data[0].contratos.valorSaldoRestante = result?.valorSaldoRestante;
+        medicao[0].data[0].contratos.valorTotalMedido = result?.valorTotalMedido;
+        medicao[0].data[0].contratos.valorTotalPrevisto = result?.valorTotalPrevisto;
+        medicao[0].data[0].contratos.valorTotalSolicitado = result?.valorTotalSolicitado;
+      }
+      this.isLoading = false;
+
+      this.dialog.open(ResumoMedicaoComponent,{data:
+        medicao
+      });
+    })
   }
 
   closeAllAccordions() {

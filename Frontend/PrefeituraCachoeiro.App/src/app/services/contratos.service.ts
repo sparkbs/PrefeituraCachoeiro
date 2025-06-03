@@ -44,10 +44,10 @@ export class ContratosService {
     );
   }
 
-  public async BuscarContrato(id: number) : Promise<GenericResultResponse<DadosContratoResponse>>{
+  public async BuscarContrato(id: number) : Promise<DadosContratoResponse>{
     return await firstValueFrom(
-      this.http.get<GenericResultResponse<DadosContratoResponse>>(
-        `${Environments.APIUrl}contratos?id=${id}`
+      this.http.get<DadosContratoResponse>(
+        `${Environments.APIUrl}contratos/${id}`
       )
     );
   }

@@ -38,6 +38,19 @@
     </div> 
   </div> 
 
+  <h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;" >Documentos Anexados Pelo Aprovador:</h1>
+  
+  <div *ngIf="this.data?.arquivosAprovacao">
+    <div *ngFor="let item of data?.arquivosAprovacao">
+      <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
+        {{item.arquivo}}
+        <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumentoAprovador(item.id, item.arquivo)">
+          <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
+        </span>
+      </div>
+    </div> 
+  </div> 
+
 </mat-dialog-content>
 <mat-dialog-actions >
 </mat-dialog-actions>

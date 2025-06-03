@@ -12,7 +12,7 @@ import {
   ContratosResponse,
   PrefeituraResponse,
 } from 'src/app/response/contratosResponse/todosContratosResponse';
-import { ArquivosAprovacao, ItemMedicao, MedicoesModel, Projeto, TableMedicaoHistorico, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
+import { ArquivosAprovacao, ArquivosMedicoesProjetoResponse, ItemMedicao, MedicoesModel, MedicoesResponse, Projeto, TableMedicaoHistorico, TodasMedicaoProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { PrefeituraFilter } from 'src/app/response/prefeituraResponse/prefeituraResponse';
 import { AuthService } from 'src/app/services/auth.service';
 import { ContratosService } from 'src/app/services/contratos.service';
@@ -243,17 +243,28 @@ export class HistoricoBoletimComponent {
       return id == null ? "": projetos?.find(x => x.idProjeto == id )?.nomeProjeto;
   }
 
-  async openModalVerAnexo(numeroMedicao: number){    
+  async openModalVerAnexo(numeroMedicao: number, projetosMedidos:MedicoesResponse[]){    
       this.isLoading = true
       var arquivoVisualizacao: ArquivosAprovacao = new ArquivosAprovacao();
       var todasDocumentosMedicaoProjetoResponse = await this.apiMedicoes.BuscarDocumentosMedicoes(
             this.contratoSelecionado,
             numeroMedicao
           );
+
+      var doc:ArquivosMedicoesProjetoResponse[] = [];
+
+      projetosMedidos.forEach(x => {
+        x.arquivosMedicoesProjeto.forEach(y => {
+          y.projeto = x.nomeProjeto
+          doc.push(y)
+        })
+        
+      });
   
       arquivoVisualizacao.arquivosMedicoesProjetoResponse = todasDocumentosMedicaoProjetoResponse.data;
       arquivoVisualizacao.arquivosContratosResponse = this.contrato.arquivosContratos;
-  
+      arquivoVisualizacao.arquivosAprovacao = doc;
+
       var aditivoFilter : BuscarAditivosContrato = new BuscarAditivosContrato();
       aditivoFilter.idContrato = this.contratoSelecionado;
       await this.api.BuscarTodosAditivos(aditivoFilter).then((result) => {

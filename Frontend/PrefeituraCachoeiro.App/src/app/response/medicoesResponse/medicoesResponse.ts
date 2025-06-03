@@ -30,12 +30,14 @@ export class MedicoesResponse {
     arquivoMedicao: string;
     arquivo: string;
     idOrigemArquivo?: number;
+    projeto?: string;
   }
 
   export class ArquivosAprovacao {
     arquivosMedicoesProjetoResponse: IdsResponse[]=[];
     arquivosContratosResponse: ArquivosContratoResponse[] =[];
     arquivosAditivosResponse: ArquivosAditivos[] = [];
+    arquivosAprovacao: ArquivosMedicoesProjetoResponse[] =[];
   }
 
   export class Contrato {
