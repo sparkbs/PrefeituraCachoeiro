@@ -24,10 +24,18 @@
   </div>
 
   <div class="list-container table-wrapper" *ngIf="isDivVisible" style="max-height: 530px; overflow-y: auto; margin-top:10px;">
-    <div style="margin-top: 10px;display: flex; align-items: center; flex: none; justify-content: flex-start;">
-      <mat-label style="font-weight: bold; margin-right: 8px;">Secretaria: </mat-label>
-      <!--<input type="text" style="width: 25%; margin-right: 16px;" [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" [(ngModel)]="medicoes.secretaria"/>-->
-      <span style="font-size: 14px; font-weight: bold;" >{{medicoes.secretaria}}</span>
+    <div style=" display: flex; align-items: center; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; flex: 1;">
+          <mat-label style="font-weight: bold; margin-right: 8px;">Secretaria: </mat-label>
+          <!--<input type="text" style="width: 25%; margin-right: 16px;" [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" [(ngModel)]="medicoes.secretaria"/>-->
+          <span style="font-size: 14px; font-weight: bold;" >{{medicoes.secretaria}}</span>
+        </div>
+        <div style="display: flex; align-items: center; flex: none; justify-content: flex-start;"  [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Recusada  ? 'block' : 'none'" >
+          <button mat-button mat-stroked-button style="background-color:white; color: black; margin-left: 10px; border: solid 1px; border-color: black;" (click)="openBoletimReprovada()">
+            <span>Ver Historico Reprovadas</span>
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
     </div>
     <br/>
     <div style=" display: flex; align-items: center; flex-wrap: wrap;">

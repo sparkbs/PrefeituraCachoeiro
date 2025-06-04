@@ -1,6 +1,6 @@
 <div class="modalLevantamentoBody">
   <form [formGroup]="form" class="form">
-    <div>
+    <div style="margin-top: 17px;">
       <mat-form-field appearance="outline">
         <mat-label>Selecione o Projeto:</mat-label>
         <mat-select formControlName="projetoId">
@@ -14,8 +14,10 @@
         <mat-icon>add</mat-icon>
       </button>
     </div>
-    <div style="width: 20%;">
-      <span class="somaMedicoes">{{ formatToCurrency(somaTotalMedicoes) || '' }}</span>
+    <div style="width: 23%;">
+      <span><strong>Total das Medições</strong></span>
+      <br/>
+      <span class="somaMedicoes"><strong>{{ formatToCurrency(somaTotalMedicoes) || '' }}</strong></span>
     </div>
   </form>
 
@@ -48,3 +50,4 @@
     </table>
   </div>
 </div>
+<app-loading *ngIf="this.isLoading"></app-loading>

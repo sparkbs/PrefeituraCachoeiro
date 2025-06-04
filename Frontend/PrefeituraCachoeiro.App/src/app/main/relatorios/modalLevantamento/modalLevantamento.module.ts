@@ -12,6 +12,11 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSelectModule} from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatOptionModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -26,7 +31,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTableModule,
     MatButtonModule,
     MatDialogModule,
-    FormsModule
+    FormsModule,
+    SharedModule,
+    BrowserAnimationsModule,
+    BrowserModule,
+    MatAutocompleteModule,
+    MatOptionModule
   ],
   declarations: [ModalLevantamentoComponent]
 })

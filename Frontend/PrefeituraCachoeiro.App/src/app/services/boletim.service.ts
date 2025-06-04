@@ -41,4 +41,13 @@ export class BoletimService {
       )
     );
   }
+
+  public async BuscarBoletiRecusado(medicaoRequest: BuscarBoletimDetalhadoRequest): Promise<BoletimMedicaoDetalhadoResponse> {
+    return await firstValueFrom(
+      this.http.post<BoletimMedicaoDetalhadoResponse>(
+        `${Environments.APIUrl}/boletins/buscarboletimmedicaoreprovadodetalhado`,
+        medicaoRequest
+      )
+    );
+  }
 }

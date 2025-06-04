@@ -21,6 +21,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AESEncryptDecriptService } from 'src/app/shared/aesEncryptDecript.service';
 import { PerfilLogin } from 'src/app/enums/perfilLogin';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listaMedicao',
@@ -50,7 +51,8 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
   permissaoAcesso: PerfilLogin;
   UserRole = PerfilLogin; // necessário para usar no template
   alterarMedicaoProjeto = false;
-  constructor( private authService: AuthService, private readonly aesEncryptDecript: AESEncryptDecriptService,  private cookieService: CookieService ,private readonly apiMedicao: MedicoesService, private readonly api: ProjetoService,private globalService: GlobalServicesService,private _toastService: ToastService) {
+  constructor( private authService: AuthService, private readonly aesEncryptDecript: AESEncryptDecriptService, 
+      private router: Router ,private readonly apiMedicao: MedicoesService, private readonly api: ProjetoService,private globalService: GlobalServicesService,private _toastService: ToastService) {
     this.dataSource = new MatTableDataSource(this.medicoes.items);
    }
 
@@ -96,6 +98,13 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       }
     }
     
+  openBoletimReprovada() {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/main/boletimRecusadaPorProjeto',this.medicoes.contratos.prefeituraId,this.medicoes.idContrato, this.medicoes.idProjeto, this.medicoes.numeroMedicao])
+    );
+    window.open(url, '_blank');  // Abre em uma nova guia
+  }
+
   ngOnInit() {
     const cookieValue = this.authService.getCookie('_acesso');
     this.permissaoAcesso = this.aesEncryptDecript.decrypt(cookieValue);

@@ -35,6 +35,7 @@ export class ModalLevantamentoComponent implements OnInit {
   listaMedicoes: MedicoesResponse[] = [];
   listaContratos: string[] =[];
   somaTotalMedicoes: number = 0;
+  isLoading = false;
 
   dataSource = new MatTableDataSource<TabelaLevantamento>(this.dadosTabela);
 
@@ -100,7 +101,7 @@ export class ModalLevantamentoComponent implements OnInit {
     medicoesRequest.itemsPorPagina = 1000000;
     medicoesRequest.pagina = 1;
 
-    this._medicaoControllerService.BuscarTodasMedicoes(medicoesRequest)
+    await this._medicaoControllerService.BuscarTodasMedicoes(medicoesRequest)
     .then((res) => {
       this.listaMedicoes = res.data.filter(x => x.idStatusMedicao == StatusMedicaoEnum.Aprovada || x.idStatusMedicao == StatusMedicaoEnum.Enviada);
       this.listaContratos = [];
@@ -167,6 +168,8 @@ export class ModalLevantamentoComponent implements OnInit {
 
 
   async buscarMedicoesProjeto(){
+    this.isLoading = true;
+    this.somaTotalMedicoes = 0;
     this.dataSource.data = [];
     this.dadosTabela = [];
     const projetoId: number = this.form.get('projetoId').value;
@@ -177,11 +180,12 @@ export class ModalLevantamentoComponent implements OnInit {
         this._toastService.mensagemError("Projeto não encontrado na lista");
       }
 
-      this.buscarMedicao(projetoId, projetoSelecionado.contratos[0].idContrato);
+      await this.buscarMedicao(projetoId, projetoSelecionado.contratos[0].idContrato);
     }
     else {
       this._toastService.messageWarning("Um projeto deve ser selecionado!");
     }
+    this.isLoading = false;
   }
 
   buscarItemMedicao(idItemContrato: number){

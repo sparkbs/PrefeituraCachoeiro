@@ -161,6 +161,7 @@ export class EditarCriarProjetosComponent implements OnInit {
     }
   
     async onSelectionChange(prefeituraNome: string){
+      this.isLoading = true;
       if (this.listaContratos.length != 0) {
         this.listaContratos = [];
         this.form.get('nome').setValue('');
@@ -170,6 +171,7 @@ export class EditarCriarProjetosComponent implements OnInit {
       var prefeituraId = this.listaFiltrada.find(x => x.nome == prefeituraNome).idPrefeitura;
       this.form.get('contrato').enable();
       await this.buscarListaContratos(prefeituraId);
+      this.isLoading = false;
     }
 
     async onSelectionChangeContrato() {
