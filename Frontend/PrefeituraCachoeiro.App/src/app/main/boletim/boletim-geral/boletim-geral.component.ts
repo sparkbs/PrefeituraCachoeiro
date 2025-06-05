@@ -294,93 +294,63 @@ export class BoletimGeralComponent implements OnInit {
   }*/
 
  async carregarBoletinsMedicao(medicaoId: number) {
-    // this.boletimService.getBoletinsMedicao().subscribe({
-    //   next: (dados) => {
-    //     if (dados) {
-    //       this.boletimCabecalho = dados.boletimMedicaoCabecalho;
 
-    //       // Verificar o tipo do campo logoTipoImg
-    //       const logoTipoImg = this.boletimCabecalho?.logoTipoImg;
-
-    //       if (logoTipoImg instanceof File) {
-    //         // Se for um arquivo, converte para URL acessível
-    //         this.logoTipoImgUrl = URL.createObjectURL(logoTipoImg);
-    //       } else if (typeof logoTipoImg === 'string') {
-    //         // Se for uma string, usa diretamente
-    //         this.logoTipoImgUrl = logoTipoImg;
-    //       }
-
-    //       this.nomeUnidade = this.boletimCabecalho?.nomeUnidade;
-    //       this.valorTotalMedicao = dados.valorTotalMedicao;
-    //       this.dataSource = dados.subBoletins;
-    //     }
-    //     this.isLoading = false;
-    //   },
-    //   error: (erro) => {
-    //     const message = 'Erro ao carregar os dados do boletim: '
-    //     console.error(message, erro);
-    //     this.isLoading = false;
-    //   }
-    // });
     this.isLoading = true;
 
     this.dadosSeparadosProjeto = [];
     this.listaMedicoesSelecionadasAgrupados = this.listaMedicoesAgrupados.filter(x => x.numeroMedicao == this.medicaoSelecionado)[0];
 
-    this.listaMedicoesSelecionadasAgrupados.medicaoResponse.forEach(async element => {
-      var boletimDetalhadoRequest: BuscarBoletimDetalhadoRequest = {
-        idMedicao: element.idMedicoesProjeto
-      }
+      const requisicoes = this.listaMedicoesSelecionadasAgrupados.medicaoResponse.map(async (element) => {
+        const boletimDetalhadoRequest: BuscarBoletimDetalhadoRequest = {
+          idMedicao: element.idMedicoesProjeto
+        };
 
-      await this._boletimControllerService.BuscarBoletimGeral(boletimDetalhadoRequest)
-      .then(async (dados) => {
-        if (dados.detalhes.length != 0) {
-          this.boletim = dados;
-          this.boletimCabecalho = dados.boletimDetalhadoCabecalho;
+        try {
+          const dados = await this._boletimControllerService.BuscarBoletimGeral(boletimDetalhadoRequest);
 
-          // Verificar o tipo do campo logoTipoImg
-          await this.RetornarLogoCliente(this.contratoSelecionado.prefeituraId);
-          await this.RetornarLogoEmpresa(this.contratoSelecionado.empresaId);
+          if (dados.detalhes.length > 0) {
+            this.boletim = dados;
+            this.boletimCabecalho = dados.boletimDetalhadoCabecalho;
 
-          /*if (logoTipoImg instanceof File) {
-            // Se for um arquivo, converte para URL acessível
-            this.logoTipoImgUrl = URL.createObjectURL(logoTipoImg);
-          } else if (typeof logoTipoImg === 'string') {
-            // Se for uma string, usa diretamente
-            this.logoTipoImgUrl = logoTipoImg;
-          }*/
-          dados.detalhes[0].subBoletins = (dados.detalhes[0].subBoletins.filter(x => parseFloat(x.unidade) != 0));
-          this.dataSource = dados.detalhes.length == 0 ? [] : dados.detalhes[0].subBoletins;
+            await this.RetornarLogoCliente(this.contratoSelecionado.prefeituraId);
+            await this.RetornarLogoEmpresa(this.contratoSelecionado.empresaId);
 
-          var projeto = new SubBoletim();
-          projeto.descricao = dados.detalhes[0].projeto;
-          this.projetosNome += this.projetosNome == '' ? projeto.descricao :', '+projeto.descricao;
-          //this.dataSource.unshift(projeto);
+            dados.detalhes[0].subBoletins = dados.detalhes[0].subBoletins.filter(x => parseFloat(x.unidade) != 0);
+            this.dataSource = dados.detalhes[0].subBoletins;
 
-          this.dadosSeparadosProjeto = this.dadosSeparadosProjeto.concat(this.dataSource);
+            const projeto = new SubBoletim();
+            projeto.descricao = dados.detalhes[0].projeto;
+            this.projetosNome += this.projetosNome == '' ? projeto.descricao : ', ' + projeto.descricao;
 
-          this.agruparEDistribuirQuantidades();
+            this.dadosSeparadosProjeto = this.dadosSeparadosProjeto.concat(this.dataSource);
+            this.agruparEDistribuirQuantidades();
+            this.dadosSeparadosProjeto.sort((a, b) => this.compareVersions(a.numero, b.numero));
 
-          this.dadosSeparadosProjeto.sort((a, b) => this.compareVersions(a.numero, b.numero));
+            this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
+            this.valorTotalMedicao = dados.valorTotalMedicao || 0;
+            
+            return true; // Indica sucesso
+          } else {
+            return false; // Indica que não tinha dados
+          }
 
-          //this.agruparPorDigitoInicial();
-
-          this.nomeUnidade = this.boletimCabecalho?.nomeUnidade || '';
-          this.valorTotalMedicao = dados.valorTotalMedicao || 0;
-          this.isLoading = false;
+        } catch (erro) {
+          console.error(erro);
+          return false; // Indica falha
         }
-        else {
-          this.isLoading = false;
-          this._toastService.messageWarning('Sem medição para apresentar!');
-        }
-      })
-      .catch((erro) => {
-        this.isLoading = false;
-        console.error(erro);
-        this._toastService.mensagemError('Erro ao buscar boletins!');
-      });
-
     });
+
+    // Aguarda todas as requisições terminarem
+    const resultados = await Promise.all(requisicoes);
+
+    // Se todos falharam ou não retornaram dados
+    const sucesso = resultados.some(result => result === true);
+
+    this.isLoading = false;
+
+    if (!sucesso) {
+      this._toastService.messageWarning('Nenhuma medição com dados foi encontrada!');
+    }
   }
 
   formatarCNPJ(cnpj: string): string {
