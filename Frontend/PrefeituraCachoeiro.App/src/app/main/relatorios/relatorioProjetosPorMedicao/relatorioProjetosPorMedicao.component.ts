@@ -590,6 +590,14 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
 
   async openDialogConsolidado(medicao: MedicoesModel[]){
     this.isLoading = true;
+
+    medicao = medicao
+      .map(x => ({
+        ...x,
+        data: x.data.filter(y => y.idStatusMedicao !== StatusMedicaoEnum.Recusada)
+      }))
+      .filter(x => x.data.length > 0);
+
     await this.api.BuscarContrato(this.contratoSelecionado).then((result) => {
       if(medicao.some(z => z.data)){
         medicao[0].data[0].contratos.valorSaldoRestante = result?.valorSaldoRestante;

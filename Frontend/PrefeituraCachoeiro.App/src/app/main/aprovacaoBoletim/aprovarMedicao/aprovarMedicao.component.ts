@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AprovarMedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
+import { AprovarMedicoesRequest, ReprovarMedicoesRequest } from 'src/app/request/MedicoesRequest/medicoesRequest';
 import { ListaDocumentosContrato } from 'src/app/response/contratosResponse/dadosContratoResponse';
 import { MedicoesResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { MedicoesService } from 'src/app/services/medicoes.service';
@@ -15,9 +15,10 @@ export class AprovarMedicaoComponent implements OnInit {
   listaDocumentoContrato: ListaDocumentosContrato[] = [];
   @ViewChild('documentoInput') documentoInput: any;
   aprovarMedicoes: AprovarMedicoesRequest = new AprovarMedicoesRequest();
+  reprovarMedicoes: ReprovarMedicoesRequest = new ReprovarMedicoesRequest();
   isLoading = false;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { idMedicoesProj: any, todasMedicoes: MedicoesResponse[], medicao: MedicoesResponse },
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { idMedicoesProj: any, todasMedicoes: MedicoesResponse[], medicao: MedicoesResponse, reprovado: boolean},
   private _toastService: ToastService, 
   private readonly api: MedicoesService,
   private dialogRef: MatDialogRef<AprovarMedicaoComponent>,
@@ -105,4 +106,34 @@ export class AprovarMedicaoComponent implements OnInit {
   voltar(){
     this.dialogRef.close();
   }
+
+  async criarReprovacao(){
+      this.isLoading = true;
+
+      if(this.data.idMedicoesProj){
+        this.reprovarMedicoes.IdMedicoesProjeto = this.data.idMedicoesProj;
+        this.reprovarMedicoes.Resumo = this.data.medicao.resumo;
+        this.listaDocumentoContrato.forEach(x => this.reprovarMedicoes.Arquivos.push(x.file));
+        
+        await this.api.ReprovarMedicoes(this.reprovarMedicoes)
+        .then((result) => {     
+          if(result.isSucesso){
+            this._toastService.mensagemSuccess("Reprovação realizada com sucesso.");
+            this.dialogRef.close(true);
+          }
+          else{
+            this.dialogRef.close(false);
+            this._toastService.mensagemError(result.mensagemErro);
+          }
+        })
+        .catch((erro) =>
+        {
+          this.dialogRef.close(false);
+          this._toastService.mensagemError(erro.error.message);
+        })
+        .finally(() =>{
+          this.isLoading = false;
+        });
+      }     
+    }
 }

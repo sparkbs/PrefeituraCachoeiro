@@ -35,6 +35,13 @@ export class AprovarMedicoesRequest{
   Resumo: string;
 }
 
+export class ReprovarMedicoesRequest{
+  Arquivos: File[] = [];
+  IdMedicoesProjeto: number;
+  DataRegistro: string;
+  Resumo: string;
+}
+
 export class DadosMedicoesRequest{
     IdMedicoesProjeto: number;
     DataRegistro: string;

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { OrigemArquivoAnexadoEnum } from 'src/app/enums/origemArquivoAnexado';
 import { ArquivosAprovacao, ArquivosMedicoesProjetoResponse } from 'src/app/response/medicoesResponse/medicoesResponse';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { MedicoesService } from 'src/app/services/medicoes.service';
@@ -11,6 +12,8 @@ import { ToastService } from 'src/app/services/toast.service';
   styleUrls: ['./verDocumentos.component.scss']
 })
 export class VerDocumentosComponent implements OnInit {
+
+  OrigemArquivoEnum = OrigemArquivoAnexadoEnum;  // Expondo o enum no componente
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: ArquivosAprovacao,
   private readonly apiMedicao: MedicoesService,

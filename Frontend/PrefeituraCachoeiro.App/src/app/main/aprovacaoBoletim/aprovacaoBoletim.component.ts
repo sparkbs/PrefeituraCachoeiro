@@ -189,7 +189,7 @@ export class AprovacaoBoletimComponent implements OnInit {
     });
   }
 
-  async reprovarMedicao(idMedicao: number, medicao: MedicoesResponse){
+  /*async reprovarMedicao(idMedicao: number, medicao: MedicoesResponse){
     this.isLoading = true;
     let request = new DadosMedicoesRequest()
     request.DataRegistro = new Date().toISOString().split('T')[0]; 
@@ -220,11 +220,36 @@ export class AprovacaoBoletimComponent implements OnInit {
     .finally(() =>{
       this.isLoading = false;
     });
-  }
+  }*/
   
   async aprovarMedicao(idMedicao: number, medicao: MedicoesResponse) {
     const dialogRef = this.dialog.open(AprovarMedicaoComponent, {
-      data: { idMedicoesProj: idMedicao, medicao: medicao }
+      data: { idMedicoesProj: idMedicao, medicao: medicao, reprovado: false }
+    });
+  
+    dialogRef.afterClosed().subscribe(async (resultado) => {
+      if (resultado) {
+        this._toastService.mensagemSuccess("Aguarde, atualizando as medições!");
+        this.isLoading = true;
+  
+        await this.buscar(this.contratoSelecionado)
+          .then(() => {
+            this._toastService.mensagemSuccess("Atualizado com sucesso!");
+          })
+          .catch((res) => {
+            this._toastService.mensagemError(res.error.message);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      }
+    });
+  }
+
+
+  async ReprovarMedicaoModal(idMedicao: number, medicao: MedicoesResponse) {
+    const dialogRef = this.dialog.open(AprovarMedicaoComponent, {
+      data: { idMedicoesProj: idMedicao, medicao: medicao, reprovado: true }
     });
   
     dialogRef.afterClosed().subscribe(async (resultado) => {

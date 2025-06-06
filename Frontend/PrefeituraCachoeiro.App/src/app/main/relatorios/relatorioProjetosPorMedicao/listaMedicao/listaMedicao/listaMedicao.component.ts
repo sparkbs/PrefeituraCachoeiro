@@ -40,6 +40,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
   isDisabledBtnEnviar = true;
   arquivosAnexadosTelaMedicao: ArquivosMedicoesProjetoResponse[] =[];
   arquivosAnexadosTelaAprovacao: ArquivosMedicoesProjetoResponse[] =[];
+  arquivosAnexadosTelaRecusada: ArquivosMedicoesProjetoResponse[] =[];
 
   statusOrdem: StatusOrdenacao = StatusOrdenacao.SemOrdem;
 
@@ -121,6 +122,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
 
     this.arquivosAnexadosTelaMedicao = this.medicoes.arquivosMedicoesProjeto.filter(x => x.idOrigemArquivo == OrigemArquivoAnexadoEnum.Medicao);
     this.arquivosAnexadosTelaAprovacao = this.medicoes.arquivosMedicoesProjeto.filter(x => x.idOrigemArquivo == OrigemArquivoAnexadoEnum.Aprovacao);
+    this.arquivosAnexadosTelaRecusada = this.medicoes.arquivosMedicoesProjeto.filter(x => x.idOrigemArquivo == OrigemArquivoAnexadoEnum.Recusada);
 
     /*const cleanUrlsWithId = this.medicoes.arquivosMedicoesProjeto.map(x => {
       const arquivoMedicao = x.arquivoMedicao.replace("https://imagensprefeituracachoeiro.s3.amazonaws.com/", ""); // Remove o prefixo
@@ -214,12 +216,12 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
       return 0;
     }
     else{
-      return this.globalService.getItems(idItemContrato).quantidades.toFixed(6).replace(".",",");
+      return this.globalService.getItems(idItemContrato)?.quantidades?.toFixed(6).replace(".",",");
     }
   }
 
 
-  async reprovarMedicao(idMedicao: number){
+  /*async reprovarMedicao(idMedicao: number){
     let request = new DadosMedicoesRequest()
     request.DataRegistro = new Date().toString();
     request.Resumo = "";
@@ -231,7 +233,7 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     .catch(() => {
       this._toastService.mensagemSuccess("Erro ao reprovar medição.");
     });
-  }
+  }*/
 
   enableEditInput(){
     this.alterarMedicaoProjeto = !this.alterarMedicaoProjeto;

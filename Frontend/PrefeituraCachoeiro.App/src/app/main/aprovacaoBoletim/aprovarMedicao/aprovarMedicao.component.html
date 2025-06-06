@@ -1,7 +1,8 @@
-<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;">Aprovar Medição</h1>
+<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;" *ngIf="!data.reprovado">Aprovar Medição</h1>
+<h1 mat-dialog-title style="font-weight: bold; font-size: 20px; text-align: center;" *ngIf="data.reprovado">Reprovar Medição</h1>
 <mat-dialog-content class="mat-typography">
   <div style="margin-top: 20px;">
-    <div class="cadastrarMedicao">
+    <div class="cadastrarMedicao" *ngIf="!data.reprovado">
       <!--<mat-form-field>
         <mat-label>Resumo</mat-label>
         <input [(ngModel)]="aprovarMedicoes.Resumo" type="text" matInput/>
@@ -32,10 +33,44 @@
         </div>
       </div>   
     </div>
+
+
+    <div class="cadastrarMedicao" *ngIf="data.reprovado">
+      <!--<mat-form-field>
+        <mat-label>Resumo</mat-label>
+        <input [(ngModel)]="aprovarMedicoes.Resumo" type="text" matInput/>
+      </mat-form-field>
+    -->
+      <mat-form-field>
+        <mat-label>Data Registro</mat-label>
+        <input matInput type="date" [(ngModel)]="reprovarMedicoes.DataRegistro" />
+      </mat-form-field>
+      
+      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <div>
+          Documentos:
+        </div>
+        <div>
+          <input #documentoInput type="file" style="width: 100%" />
+        </div>
+        <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;" (click)="adicionarDocumento()">
+          <mat-icon>playlist_add</mat-icon>
+        </span>   
+        </div>    
+      <div *ngFor="let item of listaDocumentoContrato">
+        <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
+          {{item.nome}}
+          <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" (click)="deletarDocumentos(item)">
+            <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
+          </span>
+        </div>
+      </div>   
+    </div>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions >
   <button mat-button style="border: solid 1px; border-color: black;" (click)="voltar()">Voltar</button>
-  <button mat-button style="border: solid 1px; border-color: black;" (click)="criarAprovacao()">Salvar</button>
+  <button mat-button style="border: solid 1px; border-color: black;" *ngIf="!data.reprovado" (click)="criarAprovacao()">Salvar</button>
+  <button mat-button style="border: solid 1px; border-color: black;" *ngIf="data.reprovado" (click)="criarReprovacao()">Salvar</button>
 </mat-dialog-actions>
 <app-loading *ngIf="this.isLoading"></app-loading>
