@@ -101,6 +101,9 @@ export class ModalLevantamentoComponent implements OnInit {
     medicoesRequest.itemsPorPagina = 1000000;
     medicoesRequest.pagina = 1;
 
+    // Buscar pelo codigo do projeto, esperar o endpoint do fred
+    //await this._medicaoControllerService.BuscarTodasMedicoes(medicoesRequest)
+
     await this._medicaoControllerService.BuscarTodasMedicoes(medicoesRequest)
     .then((res) => {
       this.listaMedicoes = res.data.filter(x => x.idStatusMedicao == StatusMedicaoEnum.Aprovada || x.idStatusMedicao == StatusMedicaoEnum.Enviada);

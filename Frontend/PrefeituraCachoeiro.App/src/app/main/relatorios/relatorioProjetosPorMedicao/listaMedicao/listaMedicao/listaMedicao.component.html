@@ -14,6 +14,9 @@
       <span matTooltip="Medições do Projeto" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="openModalLevantamento(this.medicoes.idProjeto)">
         <mat-icon>assessment</mat-icon>
       </span>
+     <!-- <span matTooltip="Medições do Projeto" (click)="goToHistoricoProjeto()" style="cursor: pointer; margin-right: 16px; padding-right: 0px;">
+        <mat-icon>assessment</mat-icon>
+      </span> -->
       <span matTooltip="Editar Dados" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" *ngIf="permissaoAcesso == UserRole.Admin || medicoes?.statusMedicao.idStatusMedicao == StatusEnum.EmEdicao || medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Recusada || medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada" (click)="enableEditInput()">
         <mat-icon>edit</mat-icon>
       </span>

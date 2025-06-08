@@ -343,6 +343,13 @@ export class ListaMedicaoComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
+  goToHistoricoProjeto() {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/main/historicoProjeto'])
+    );
+    window.open(url, '_blank');
+  }
+
   async adicionarDocumento(){
     this.isLoading = true;
 
