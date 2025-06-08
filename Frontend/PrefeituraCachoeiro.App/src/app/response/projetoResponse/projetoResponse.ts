@@ -4,6 +4,7 @@ export class ProjetoResponse{
     idProjeto: number = 0;
     nomeProjeto: string = '';
     nomeContrato?: string;
+    idPrefeitura?: number = 0; 
     nomePrefeitura?: string;
     codigoProjeto: number;
     contratos: ContratoModel[];

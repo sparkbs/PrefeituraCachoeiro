@@ -7,6 +7,8 @@ export class MedicoesRequest extends BaseFilter
     statusMedicao?: number;
     idMedicaoAtual?: number;
     idProjeto?: number;
+    codigoProjeto?: number;
+    prefeituraId?: number;
 }
 
 export class InserirMedicao {

@@ -38,6 +38,15 @@ export class MedicoesService {
     );
   }
 
+  public async BuscarTodasProjetosHistoricos(filter: MedicoesRequest): Promise<TodasMedicaoProjetoResponse> {
+    return await firstValueFrom(
+      this.http.post<TodasMedicaoProjetoResponse>(
+        `${Environments.APIUrl}medicoes/buscartodoshistorico`,
+        filter
+      )
+    );
+  }
+
   public async CriarMedicoes(filter: InserirMedicao): Promise<RetornoIdMedicao> {
     return await firstValueFrom(
       this.http.post<RetornoIdMedicao>(

@@ -23,7 +23,6 @@ export class GlobalServicesService {
       }
       if(restante < 0 && !isContratoGlobal){
         this.itemInvalido = true;
-        console.log("primeiro IF")
         this._toastService.mensagemError("Não é permitido a quantidade restante de cada item ser menor que 0!");
       }
       else{
@@ -45,7 +44,6 @@ export class GlobalServicesService {
 
       if(restante < 0 && !isContratoGlobal){
         this.itemInvalido = true;
-                console.log("SEGUNDO IF")
         this._toastService.mensagemError("Não é permitido a quantidade restante de cada item ser menor que 0!");
       }
       else{

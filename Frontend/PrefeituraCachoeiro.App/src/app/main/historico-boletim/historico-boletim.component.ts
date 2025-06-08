@@ -252,7 +252,6 @@ export class HistoricoBoletimComponent {
           );
 
       var doc:ArquivosMedicoesProjetoResponse[] = [];
-      console.log(projetosMedidos);
       projetosMedidos.forEach(x => {
         x.arquivosMedicoesProjeto.forEach(async y => {
           await this._projetoControllerService.BuscarProjeto(x.idProjeto)
