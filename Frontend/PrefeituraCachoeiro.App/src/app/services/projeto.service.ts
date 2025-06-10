@@ -44,6 +44,7 @@ export class ProjetoService {
     formData.append('Nome', projetoRequest.nome);
     formData.append('CodigoProjeto', projetoRequest.codigoProjeto.toString());
     formData.append('IdPrefeitura', projetoRequest.idPrefeitura.toString());
+    formData.append('ContratoId', projetoRequest.idContrato.toString());
 
     return await firstValueFrom(
       this.http.post<RetornaProjetoIdResponse>(
@@ -59,6 +60,7 @@ export class ProjetoService {
     formData.append('nome', request.nome);
     formData.append('CodigoProjeto', request.codigoProjeto.toString());
     formData.append('IdPrefeitura', request.idPrefeitura.toString());
+    formData.append('ContratoId', request.idContrato.toString());
 
     return await firstValueFrom(
       this.http.put<GenericResultResponse<RetornaProjetoIdResponse>>(

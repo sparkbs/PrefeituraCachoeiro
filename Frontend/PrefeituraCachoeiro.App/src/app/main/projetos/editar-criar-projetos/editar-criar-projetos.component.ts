@@ -101,7 +101,8 @@ export class EditarCriarProjetosComponent implements OnInit {
     const projetoRequest: CriarProjetoRequest  = {
       nome: this.form.get('nome').value,
       codigoProjeto: this.form.get('codigoProjeto').value,
-      idPrefeitura: prefeituraId
+      idPrefeitura: prefeituraId,
+      idContrato: this.form.get('contrato').value
     };
 
     if (this.data.edicao && this.data.id) {
@@ -110,6 +111,7 @@ export class EditarCriarProjetosComponent implements OnInit {
         nome: this.form.get('nome').value,
         idPrefeitura: prefeituraId,
         codigoProjeto: this.form.get('codigoProjeto').value,
+        idContrato: this.form.get('contrato').value
       }
       this._projetoControllerService.AtualizarProjeto(projetoUpdate)
       .then((res) => {

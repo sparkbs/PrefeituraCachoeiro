@@ -54,7 +54,7 @@ export class Editar_contratosComponent implements OnInit, AfterViewInit {
   async ngAfterViewInit() {
     await this.buscarListaGerentes();
     this.dataInicioString = this.exibirData(this.data.dataInicio)
-    this.dataTerminoAtualizadaString = this.exibirData(this.data.dataTerminoAtualizada)
+    this.dataTerminoAtualizadaString = this.data.dataTerminoAtualizada ? this.exibirData(this.data.dataTerminoAtualizada) : this.exibirData(this.data.dataTermino)
     this.dataTerminoString = this.exibirData(this.data.dataTermino)
     this.dataContratoString = this.exibirData(this.data.dataContrato)
     }

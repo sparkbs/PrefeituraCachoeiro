@@ -11,6 +11,7 @@ export class CriarProjetoRequest
     nome: string = '';
     codigoProjeto: number;
     idPrefeitura: number;
+    idContrato: number;
 }
 
 export class AtualizarProjetoRequest
@@ -19,4 +20,5 @@ export class AtualizarProjetoRequest
     nome: string;
     idPrefeitura: number;
     codigoProjeto: number;
+    idContrato: number;
 }
