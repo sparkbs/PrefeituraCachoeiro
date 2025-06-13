@@ -315,12 +315,16 @@ async buscarMedicao(projetoId: number, contratoId: number, projeto: ProjetoRespo
 
     let valorMultiplicado = 0;
 
-    var medicaoFiltrada = medicao.find(x => x.numeroMedicao == medicaoNum);
+    var medicaoFiltrada = medicao.filter(x => x.numeroMedicao == medicaoNum);
 
-    medicaoFiltrada.items.forEach(med => {
-      if (med.idItemContrato == idItemContrato) {
-        valorMultiplicado = med.unidade * med.itemsContrato.item.valorComBdi;
-      }
+    medicaoFiltrada.forEach(medicao => {
+      medicao.items.forEach(med => {
+        if (med.idItemContrato == idItemContrato) {
+          console.log(this.dadosTabela);
+          console.log(valorMultiplicado);
+          valorMultiplicado = med.unidade * med.itemsContrato.item.valorComBdi;
+        }
+      });
     });
 
     return valorMultiplicado
