@@ -320,8 +320,6 @@ async buscarMedicao(projetoId: number, contratoId: number, projeto: ProjetoRespo
     medicaoFiltrada.forEach(medicao => {
       medicao.items.forEach(med => {
         if (med.idItemContrato == idItemContrato) {
-          console.log(this.dadosTabela);
-          console.log(valorMultiplicado);
           valorMultiplicado = med.unidade * med.itemsContrato.item.valorComBdi;
         }
       });

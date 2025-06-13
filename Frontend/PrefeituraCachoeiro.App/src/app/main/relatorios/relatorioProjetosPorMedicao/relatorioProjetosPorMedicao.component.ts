@@ -385,12 +385,9 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
   }
 
   async adicionarDocumento(medicoes: MedicoesModel, documentoInput: HTMLInputElement){
-          console.log("acionar")
     this.isLoading = true;
-          console.log(documentoInput.files[0])
 
     if(documentoInput.files[0] != undefined){
-      console.log("teste")
       const documentoFile = documentoInput.files[0] as File;
 
       var request = new RegistroDocumentosPorMedicoesRequest();
@@ -537,8 +534,6 @@ async popularMedicao(result: TodasMedicaoProjetoResponse) {
               ?.items;
 
             const todosUnidadeIgual0 = items.every(data => data.unidade == 0);
-
-            console.log(todosUnidadeIgual0);
 
             if(!todosUnidadeIgual0){
 
