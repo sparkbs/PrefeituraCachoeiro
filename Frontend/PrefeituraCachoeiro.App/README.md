@@ -1,27 +1,53 @@
 # ProjetaApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+**ProjetaApp** é uma aplicação web desenvolvida em Angular para gestão de projetos, contratos, clientes (prefeituras/empresas) e medições, com foco em obras e serviços de engenharia.
 
-## Development server
+## ✨ Funcionalidades Principais
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Autenticação de Usuários**: Login seguro e controle de acesso por perfil.
+- **Gestão de Projetos**: Criação, edição e visualização de projetos vinculados a contratos e clientes.
+- **Gestão de Contratos**: Cadastro e gerenciamento de contratos associados a clientes.
+- **Gestão de Clientes (Prefeituras/Empresas)**: Cadastro e configuração de clientes.
+- **Medições e Boletins**: Registro, detalhamento e emissão de boletins de medição, com geração de relatórios em PDF.
+- **Relatórios**: Visualização de relatórios de medições, projetos e históricos, incluindo integração com PowerBI.
+- **Interface Moderna**: Utilização de Angular Material para uma experiência de usuário intuitiva e responsiva.
 
-## Code scaffolding
+## 🚀 Como rodar o projeto
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
 
-## Build
+2. **Inicie o servidor de desenvolvimento:**
+   ```bash
+   npm start
+   ```
+   Acesse em [http://localhost:4200](http://localhost:4200)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+## 🗂️ Estrutura do Projeto
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- `src/app/authentication/` - Módulo de autenticação (login, registro)
+- `src/app/main/` - Funcionalidades principais (home, projetos, contratos, clientes, medições, relatórios)
+- `src/app/services/` - Serviços de integração com backend e utilitários
+- `src/app/layout/` - Componentes de layout (sidebar, navbar)
+- `src/app/shared/` - Componentes e serviços compartilhados
 
-## Running end-to-end tests
+## 🛠️ Scripts Úteis
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- `npm start` - Inicia o servidor de desenvolvimento
+- `npm run build` - Gera a build de produção
+- `npm test` - Executa os testes unitários
 
-## Further help
+## 📦 Dependências Principais
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- Angular 16+
+- Angular Material
+- Bootstrap 5
+- json-server (mock de API)
+- jsPDF, pdfmake (geração de PDFs)
+- PowerBI (relatórios)
+
+## 👤 Contribuição
+
