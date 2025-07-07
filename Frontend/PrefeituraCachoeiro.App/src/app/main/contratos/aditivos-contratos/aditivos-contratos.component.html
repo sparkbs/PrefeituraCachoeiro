@@ -25,12 +25,10 @@
       </div> 
 
       <div style="display: flex; flex-direction: column; gap: 10px;" *ngIf="isAditivoQuantidade">
-        <!-- Label Base de dados -->
         <div>
           Base de dados:
         </div>
         
-        <!-- Input -->
         <div>
           <input #baseDadosInput type="file" style="width: 100%" />
         </div>
@@ -44,11 +42,9 @@
           Documentos:
         </div>
       
-        <!-- Wrapper para o input e ícone lado a lado -->
         <div style="display: flex; align-items: center; gap: 10px;">
           <input #documentoInput type="file" style="flex: 1;" />
           
-          <!-- Ícone ao lado do input -->
           <span matTooltip="Exibir Todos" style="cursor: pointer;" (click)="adicionarDocumento()">
             <mat-icon>playlist_add</mat-icon>
           </span>
@@ -82,11 +78,6 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </th>
         <td mat-cell *matCellDef="let row"> {{row.descricao}} </td>
       </ng-container>
-
-     <!-- <ng-container matColumnDef="planilha">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Planilha </th>
-        <td mat-cell *matCellDef="let row"> <a>{{row.planilha}}</a> </td>
-      </ng-container> -->
 
       <ng-container matColumnDef="valor">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor </th>

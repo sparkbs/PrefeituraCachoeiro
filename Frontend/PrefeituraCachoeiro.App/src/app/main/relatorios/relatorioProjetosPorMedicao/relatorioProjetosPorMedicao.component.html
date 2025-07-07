@@ -50,7 +50,6 @@
               <mat-expansion-panel-header>
                 <mat-panel-title> Medição {{medicoes.numeroMedicao}} </mat-panel-title>
                 <mat-panel-description>
-                  <!--Ao expandir, devem ser exibidos todos os projetos medidos na medição {{medicoes.numeroMedicao}}-->
                   <span> Valor Total: <strong style="color: black;">{{formatToCurrency(somarValorTotalMedicao(medicoes.data, medicoes.numeroMedicao))}}</strong></span>
                   <span> Periodo medição: <strong style="color: black;">{{periodoMedicao(medicoes.data, medicoes.numeroMedicao)}}</strong></span>
                   <button mat-button mat-stroked-button style="background-color:white; color: black; margin-left: 10px; border: solid 1px; border-color: black;" (click)="deletarMedicao(medicoes)">

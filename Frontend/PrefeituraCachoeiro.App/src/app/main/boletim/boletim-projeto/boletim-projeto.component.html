@@ -1,7 +1,6 @@
 <div class="boletim-projeto" >
   <h2>Boletim por Projeto</h2>
 
-  <!-- Container para os campos de seleção -->
   <div  class="select-container">
     <mat-form-field>
       <mat-label>Selecione o Cliente:</mat-label>
@@ -74,7 +73,6 @@
       <th colspan="20" rowspan="2" class="summary">
         RESUMO: {{projetosNome}}
       </th>
-      <!--<th colspan="5" class="consultancy-header">{{ boletimCabecalho.descontoFiscalizacao }}</th>-->
     </tr>
     <tr>
       <th colspan="3" class="bdi"></th>
@@ -132,37 +130,7 @@
         <td>{{ boletim.precoComBdi ? (formatCurrency(boletim.precoComBdi.toFixed(2))) : '' }}</td>
         <td>{{ boletim?.valorTotal ? (formatCurrency(calcularValorTotalItemBoletim(boletim?.unidade, boletim?.precoComBdi))) : '' }}</td>
       </tr>
-
-      <!-- Nível 2: SubBoletins -->
-      <!-- <ng-container *ngFor="let subBoletim of boletim.subBoletins"> -->
-        <!-- <tr class="sub-boletim">
-          <td>{{ subBoletim.numero }}</td>
-          <td>{{ subBoletim.codigoATA }}</td>
-          <td colspan="17">{{ subBoletim.descricao }}</td>
-          <td>{{ subBoletim.quantidade }}</td>
-          <td>{{ subBoletim.unidade }}</td>
-          <td>{{ subBoletim.precoSemBDI ? ('R$ ' + subBoletim.precoSemBDI.toFixed(2)) : '' }}</td>
-          <td>{{ subBoletim.bdi ? (subBoletim.bdi * 100).toFixed(2) + '%' : '' }}</td>
-          <td>{{ subBoletim.precoComBDI ? ('R$ ' + subBoletim.precoComBDI.toFixed(2)) : '' }}</td>
-          <td>{{ subBoletim.valorTotal ? ('R$ ' + subBoletim.valorTotal.toFixed(2)) : '' }}</td>
-        </tr> -->
-
-        <!-- Nível 3: Subitens -->
-        <!-- <ng-container *ngFor="let subItem of subBoletim.subitens">
-          <tr class="subitem">
-            <td>{{ subItem.numero }}</td>
-            <td>{{ subItem.codigoATA }}</td>
-            <td colspan="17">{{ subItem.descricao }}</td>
-            <td>{{ subItem.quantidade }}</td>
-            <td>{{ subItem.unidade }}</td>
-            <td>{{ subItem.precoSemBDI ? ('R$ ' + subItem.precoSemBDI.toFixed(2)) : '' }}</td>
-            <td>{{ subItem.bdi ? (subItem.bdi * 100).toFixed(2) + '%' : '' }}</td>
-            <td>{{ subItem.precoComBDI ? ('R$ ' + subItem.precoComBDI.toFixed(2)) : '' }}</td>
-            <td>{{ subItem.valorTotal ? ('R$ ' + subItem.valorTotal.toFixed(2)) : '' }}</td>
-          </tr>
-        </ng-container> -->
       </ng-container>
-    <!-- </ng-container> -->
 
     <tr>
       <td style="background-color: #ffffff;" colspan="24" class="highlight">VALOR TOTAL DA MEDIÇÃO:</td>
@@ -187,7 +155,7 @@
 </tfoot>
 </div>
 </div>
-<!-- Botão para gerar PDF -->
+
 <button (click)="generatePDF()" class="button-class" *ngIf="this.boletim">Gerar PDF</button>
 
 

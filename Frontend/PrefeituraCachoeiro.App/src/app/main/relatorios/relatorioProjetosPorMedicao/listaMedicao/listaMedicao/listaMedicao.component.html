@@ -1,22 +1,12 @@
 <div *ngIf="medicoes != null">
   <div class="container rounded-shadow-div" style="margin-top: 10px; width: 98%;"  >
-    <!-- <h3 class="texto"> Pegar nome projeto</h3> -->
      <div (click)="toggleDiv()" style="width: 88%;     padding: 10px;">
       <h3 class="texto"> {{ medicoes?.idProjeto != null ? nomeProjeto(medicoes?.idProjeto) : ''}}</h3>
      </div>
-    <!--<span matTooltip="Aprovar Medição" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="aprovarMedicao(medicoes.idMedicoesProjeto)">
-      <mat-icon>done_outline</mat-icon>
-    </span>
-    <span matTooltip="Recusar Medição" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="reprovarMedicao(medicoes.idMedicoesProjeto)">
-      <mat-icon>highlight_off</mat-icon>
-    </span> -->
     <div style="width: 12%;">
       <span matTooltip="Medições do Projeto" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" (click)="openModalLevantamento(this.medicoes.idProjeto)">
         <mat-icon>assessment</mat-icon>
       </span>
-     <!-- <span matTooltip="Medições do Projeto" (click)="goToHistoricoProjeto()" style="cursor: pointer; margin-right: 16px; padding-right: 0px;">
-        <mat-icon>assessment</mat-icon>
-      </span> -->
       <span matTooltip="Editar Dados" style="cursor: pointer;margin-right: 16px; padding-right: 0px;" *ngIf="permissaoAcesso == UserRole.Admin || medicoes?.statusMedicao.idStatusMedicao == StatusEnum.EmEdicao || medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Recusada || medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada" (click)="enableEditInput()">
         <mat-icon>edit</mat-icon>
       </span>
@@ -30,7 +20,6 @@
     <div style=" display: flex; align-items: center; flex-wrap: wrap;">
         <div style="display: flex; align-items: center; flex: 1;">
           <mat-label style="font-weight: bold; margin-right: 8px;">Secretaria: </mat-label>
-          <!--<input type="text" style="width: 25%; margin-right: 16px;" [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" [(ngModel)]="medicoes.secretaria"/>-->
           <span style="font-size: 14px; font-weight: bold;" >{{medicoes.secretaria}}</span>
         </div>
         <div style="display: flex; align-items: center; flex: none; justify-content: flex-start;"  [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Recusada  ? 'block' : 'none'" >
@@ -79,9 +68,7 @@
         <th mat-header-cell *matHeaderCellDef  style="font-size: 13px;" > Descrição / Quantidade </th>
         <td mat-cell *matCellDef="let item">
           <span style="font-size: 12px;">{{ item.itemsContrato.item.descricao }}</span><br/>
-          <!--<input matInput style="margin-top: 5px;" [value]=2 >-->
           <span style="font-size: 12px; color: gray;">{{ item.itemsContrato.unidadeOriginal +" ("+item.itemsContrato.unidade+")"}} - {{ item?.itemsContrato?.quantidade?.nome }}</span>
-          <!--<span style="font-size: 12px; color: gray;">{{ item.itemsContrato.unidade }} - {{ item.itemsContrato.item.quantidade.nome }}</span> -->
         </td>
       </ng-container>
 
@@ -134,64 +121,6 @@
     </table>
     </div>
 
-    <!--
-    <div style="font-weight: bold; font-size: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 12px;">
-      <span style="margin-right: 3px;">Valor Total a Medir: {{ formatToCurrency(somarValorTotal())}}</span>
-      <span style="margin-right: 3px;">Valor Saldo Total: {{ formatToCurrency(somarValorSaldoTotal())}}</span>
-      <span style="margin-right: 3px;">Valor Contratual: {{ formatToCurrency(this.medicoes.contratos.valor)}}<br>
-        <span style="font-size: 13px;">Valor Total do Contrato + Aditivo : {{ formatToCurrency(this.medicoes.contratos.valorAtualContrato)}}</span>
-      </span>
-      <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="salvar()" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Salvar</button>
-      <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" [ngClass]="{'disabled-btn': isDisabledBtnEnviar}"  [disabled]="isDisabledBtnEnviar" (click)="enviar(medicoes.idMedicoesProjeto)" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Enviar</button>
-
-    </div>
-      <div style="font-weight: bold; font-size: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 17px;">
-      <div style=" flex-wrap: wrap; gap: 10px;" >
-          <div>
-            Documentos:
-          </div>
-          <div  [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" >
-            <input #documentoInput type="file" style="width: 100%" />
-            <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;" (click)="adicionarDocumento()">
-              <mat-icon>playlist_add</mat-icon>
-            </span>  
-          </div>
-           
-
-          <div *ngFor="let item of arquivosAnexadosTelaMedicao">
-            <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
-              {{item.arquivo}}
-              <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" (click)="deletarDocumentoMedicao(item.id)">
-                <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
-              </span>
-              <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumento(item.id, item.arquivo)">
-                <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
-              </span>
-            </div>
-          </div> 
-        </div>    
-      
-        <div style=" flex-wrap: wrap; gap: 10px;" >
-          <div>
-            Documentos Anexados Pelo Aprovador:
-          </div>                     
-
-          <div *ngFor="let item of arquivosAnexadosTelaAprovacao">
-            <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
-              {{item.arquivo}}
-              <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" (click)="deletarDocumentoAprovacao(item.id)">
-                <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
-              </span>
-              <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumento(item.id, item.arquivo)">
-                <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
-              </span>
-            </div>
-          </div> 
-        </div>  
-      
-      </div>
-    -->
-       <!-- Lista de Documentos Anexados -->
   </div>
 </div>
 
@@ -204,36 +133,11 @@
     <span style="font-size: 13px;">Valor Total do Contrato + Aditivo : {{ formatToCurrency(this.medicoes.contratos.valorAtualContrato)}}</span>
   </span>
   <button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" (click)="salvar()" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.EmEdicao || medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Recusada || medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Salvar</button>
-  <!--<button mat-button [style.display]="alterarMedicaoProjeto ? 'block' : 'none'" style="background-color: royalblue; color: white;" [ngClass]="{'disabled-btn': isDisabledBtnEnviar}"  [disabled]="isDisabledBtnEnviar" (click)="enviar(medicoes.idMedicoesProjeto)" *ngIf="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada">Enviar</button>-->
 
 </div>
   <!-- Parte de Anexar Documento -->
   <div style="font-weight: bold; font-size: 15px; margin-bottom: 10px; justify-content: space-between; align-items: center; padding-left: 16px; padding-right: 16px; margin-top: 17px;">
-  <!--<div style=" flex-wrap: wrap; gap: 10px;" >
-      <div>
-        Documentos:
-      </div>
-      <div  [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" >
-        <input #documentoInput type="file" style="width: 100%" />
-        <span matTooltip="Exibir Todos" style="cursor: pointer; margin-right: 10px;" (click)="adicionarDocumento()">
-          <mat-icon>playlist_add</mat-icon>
-        </span>  
-      </div>
-       
-
-      <div *ngFor="let item of arquivosAnexadosTelaMedicao">
-        <div style="display: flex; align-items: center; font-size: 13px; margin: 0; padding: 0;">
-          {{item.arquivo}}
-          <span matTooltip="Excluir Documento" style="cursor: pointer; margin-left: 10px;" [style.display]="medicoes?.statusMedicao.idStatusMedicao == StatusEnum.Criada ? 'flex' : 'none'" (click)="deletarDocumentoMedicao(item.id)">
-            <mat-icon style="font-size: 19px; vertical-align: middle;">delete</mat-icon>
-          </span>
-          <span matTooltip="Download Documento" style="cursor: pointer; margin-left: 10px;" (click)="downloadDocumento(item.id, item.arquivo)">
-            <mat-icon style="font-size: 19px; vertical-align: middle;">cloud_download</mat-icon>
-          </span>
-        </div>
-      </div> 
-    </div>    -->
-  
+   
     <div style=" flex-wrap: wrap; gap: 10px;" >
       <div>
         Documentos Anexados Pelo Aprovador:
@@ -281,7 +185,6 @@
 
     </div>  
   
-    <!-- Botão de Salvar -->
   </div>
 </div>
 <app-loading *ngIf="this.isLoading"></app-loading>

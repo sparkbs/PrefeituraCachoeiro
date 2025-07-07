@@ -2,7 +2,6 @@
 <mat-dialog-content class="mat-typography">
   <div style="margin-top: 20px;">
     <div style="display: flex; gap: 16px;" *ngIf="!this.data">
-      <!-- Campo Nome Prefeitura -->
       <mat-form-field style="flex: 1;">
         <mat-label>Nome Cliente</mat-label>
         <input matInput [(ngModel)]="criarPrefeitura.Nome" />
@@ -29,7 +28,6 @@
     </div>
     
     <div style="display: flex; gap: 16px;margin-top: 10px;" *ngIf="!this.data">
-      <!-- Campo Logo -->
       <div style="flex: 1;">
         <label for="logo-upload" style="display: block;">Logo:</label>
         <input type="file" id="logo-upload" (change)="onFileChange($event)" />
@@ -37,7 +35,6 @@
     </div>
 
     <div style="display: flex; gap: 16px;" *ngIf="this.data">
-      <!-- Campo Nome Prefeitura -->
       <mat-form-field style="flex: 1; height: 100%;">
         <mat-label>Nome Cliente</mat-label>
         <input matInput [(ngModel)]="data.nome" />
@@ -62,7 +59,6 @@
       </div> 
     </div>
     <div style="display: flex; gap: 16px; margin-top: 10px;" *ngIf="this.data">
-      <!-- Campo Logo -->
       <div style="flex: 1;">
         <label for="logo-upload" style="display: block;">Logo:</label>
         <input type="file" id="logo-upload" (change)="onFileChangeUpdate($event)" />

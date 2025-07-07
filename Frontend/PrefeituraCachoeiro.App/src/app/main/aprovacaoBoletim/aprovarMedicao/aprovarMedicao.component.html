@@ -3,11 +3,7 @@
 <mat-dialog-content class="mat-typography">
   <div style="margin-top: 20px;">
     <div class="cadastrarMedicao" *ngIf="!data.reprovado">
-      <!--<mat-form-field>
-        <mat-label>Resumo</mat-label>
-        <input [(ngModel)]="aprovarMedicoes.Resumo" type="text" matInput/>
-      </mat-form-field>
-    -->
+
       <mat-form-field>
         <mat-label>Data Registro</mat-label>
         <input matInput type="date" [(ngModel)]="aprovarMedicoes.DataRegistro" />
@@ -36,11 +32,6 @@
 
 
     <div class="cadastrarMedicao" *ngIf="data.reprovado">
-      <!--<mat-form-field>
-        <mat-label>Resumo</mat-label>
-        <input [(ngModel)]="aprovarMedicoes.Resumo" type="text" matInput/>
-      </mat-form-field>
-    -->
       <mat-form-field>
         <mat-label>Data Registro</mat-label>
         <input matInput type="date" [(ngModel)]="reprovarMedicoes.DataRegistro" />

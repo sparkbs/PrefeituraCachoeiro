@@ -3,12 +3,6 @@
   <div style="margin-top: 20px;">
     <div>
 
-     <!-- <mat-form-field>
-        <mat-label>Selecione o Cliente</mat-label>
-        <mat-select disableRipple [(ngModel)]="data.prefeituraId">
-          <mat-option *ngFor="let prefeitura of listaPrefeitura" [value]="prefeitura.idPrefeitura" >{{prefeitura.nome}}</mat-option>
-        </mat-select>
-      </mat-form-field>-->
       <mat-form-field>
         <mat-label>Selecione o cliente</mat-label>
         <input matInput [matAutocomplete]="auto" [(ngModel)]="nomeCliente" (ngModelChange)="filtrarPrefeitura($event)">
@@ -50,13 +44,6 @@
         <input matInput type="date"  [(ngModel)]="dataTerminoAtualizadaString" />
       </mat-form-field>
 
-      <!--<mat-form-field style="margin-left: 10px;">
-        <mat-label>Selecione o Gerente</mat-label>
-        <mat-select disableRipple [(ngModel)]="data.gerente">
-          <mat-option *ngFor="let gerente of listaGerentes" [value]="gerente.login" >{{gerente.login}}</mat-option>
-        </mat-select>
-      </mat-form-field>-->
-
       <mat-form-field style="margin-left: 10px;">
         <mat-label>Selecione o Gerente</mat-label>
         <input matInput [matAutocomplete]="autoGerente" [(ngModel)]="nomeGerente" (ngModelChange)="filtrarGerente($event)">
@@ -67,13 +54,6 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-
-     <!-- <mat-form-field style="margin-left: 10px;">
-        <mat-label>Selecione a Empresa</mat-label>
-        <mat-select disableRipple [(ngModel)]="data.empresaId">
-          <mat-option *ngFor="let empresa of listaEmpresa" [value]="empresa.empresaId" >{{empresa.nome}}</mat-option>
-        </mat-select>
-      </mat-form-field>-->
 
       <mat-form-field style="margin-left: 10px;">
         <mat-label>Selecione a Empresa</mat-label>
